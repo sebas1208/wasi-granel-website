@@ -1,169 +1,254 @@
-import { Navigation } from "@/components/navigation"
-import { Footer } from "@/components/footer"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Leaf, Heart, Award, ShoppingBag } from "lucide-react"
-import Link from "next/link"
+"use client"
 
-export default function HomePage() {
+import Image from "next/image"
+
+export default function UnderConstructionPage() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navigation />
+    <div className="bg-background text-on-background font-body selection:bg-primary-container selection:text-on-primary-container">
+      {/* TopNavBar */}
+      <nav className="fixed top-0 w-full z-50 bg-white/90 dark:bg-stone-900/90 backdrop-blur-md border-b border-stone-200 dark:border-stone-800 shadow-sm">
+        <div className="flex justify-center items-center px-6 h-18 max-w-7xl mx-auto">
+          <Image
+            src="/logo.svg"
+            alt="Wasi Granel Logo"
+            loading="eager"
+            width={120}
+            height={40}
+            className="h-15 w-auto"
+          />
+        </div>
+      </nav>
 
-      <main className="flex-1">
+      <main className="pt-16">
         {/* Hero Section */}
-        <section className="relative bg-secondary py-20 md:py-32">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center">
-              <h1
-                className="text-4xl md:text-6xl font-serif font-bold text-primary mb-6 text-balance"
-                style={{ fontFamily: "var(--font-playfair)" }}
-              >
-                Bienvenidos a JatunWasi
-              </h1>
-              <p className="text-lg md:text-xl text-foreground/80 mb-8 leading-relaxed text-pretty">
-                Tradición familiar en frutos secos y productos naturales desde hace más de tres décadas
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                  <Link href="/tienda">Explorar Productos</Link>
-                </Button>
-                <Button asChild variant="outline" size="lg">
-                  <Link href="/contacto">Contáctanos</Link>
-                </Button>
+        <section className="relative min-h-[870px] flex items-center justify-center px-6 hero-pattern overflow-hidden">
+          {/* Decorative Elements */}
+          <div className="absolute top-20 left-10 opacity-60 transform -rotate-12 hidden lg:block">
+            <span className="material-symbols-outlined text-5xl! text-primary">eco</span>
+          </div>
+          <div className="absolute bottom-20 right-10 opacity-60 transform rotate-12 hidden lg:block">
+            <span className="material-symbols-outlined text-5xl! text-secondary">wheat</span>
+          </div>
+          <div className="max-w-4xl w-full text-center relative z-10">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-container text-sm font-semibold mb-8">
+              <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>
+                poker_chip
+              </span>
+              Tu rincón saludable, ahora online!
+            </div>
+            <h1 className="font-headline font-black text-5xl md:text-7xl text-on-background leading-tight mb-6 tracking-tight">
+              ¡Tu tienda a Granel se está <span className="text-primary">Preparando!</span>
+            </h1>
+            <p className="text-xl text-on-surface-variant max-w-2xl mx-auto mb-12">
+              Nutrición pura y consciente, ahora más cerca de ti. Estamos preparando nuestra tienda online para que pidas tus productos orgánicos favoritos desde casa.
+            </p>
+            {/* Progress / Countdown UI */}
+            <div className="bg-white p-8 rounded-lg shadow-xl shadow-surface-dim/20 border border-surface-variant max-w-xl mx-auto">
+              <div className="flex justify-between items-end mb-4">
+                <span className="font-headline font-bold text-secondary flex items-center gap-2">
+                  <span className="material-symbols-outlined">hourglass_empty</span>
+                  Configurando tu carrito de compras
+                </span>
+                <span className="text-primary font-black text-2xl">25%</span>
+              </div>
+              <div className="h-4 w-full bg-surface-container rounded-full overflow-hidden p-1">
+                <div className="h-full bg-primary rounded-full w-[25%] relative overflow-hidden">
+                  <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+                </div>
+              </div>
+              <div className="mt-6 flex justify-between gap-4">
+                <div className="flex-1">
+                  <p className="text-xs uppercase tracking-widest text-outline font-bold mb-1">Estado</p>
+                  <p className="font-semibold text-on-surface">Puliendo detalles saludables</p>
+                </div>
+                <div className="flex-1 text-right">
+                  <p className="text-xs uppercase tracking-widest text-outline font-bold mb-1">Finalización estimada</p>
+                  <p className="font-semibold text-on-surface">faltan ? días</p>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* History Section */}
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <h2
-                className="text-3xl md:text-4xl font-serif font-bold text-primary mb-8 text-center"
-                style={{ fontFamily: "var(--font-playfair)" }}
-              >
-                Nuestra Historia
+        {/* Narrative Section */}
+        <section className="py-24 bg-surface-container-low px-6">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
+            <div className="w-full md:w-1/2">
+              <div className="aspect-[4/5] rounded-lg overflow-hidden shadow-2xl relative group">
+                <Image
+                  src="/stock-image.png"
+                  alt="Imagen de stock"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-secondary/60 to-transparent"></div>
+                <div className="absolute bottom-8 left-8 text-white">
+                  <p className="font-headline font-bold text-2xl">Calidad que nutre. 100% Granel.</p>
+                </div>
+              </div>
+            </div>
+            <div className="w-full md:w-1/2">
+              <h2 className="font-headline font-black text-4xl text-on-background mb-6">
+                ¿Nuestra Filosofía? <br />
+                Calidad y Consciencia.
               </h2>
-
-              <div className="prose prose-lg max-w-none">
-                <Card className="bg-card border-border">
-                  <CardContent className="p-8 md:p-12">
-                    <div className="space-y-6 text-foreground/90 leading-relaxed">
-                      <p className="text-lg">
-                        JatunWasi nació en 1990 como un pequeño negocio familiar con una gran pasión: ofrecer los
-                        mejores frutos secos y productos naturales a nuestra comunidad. El nombre "JatunWasi", que
-                        significa "casa grande" en quechua, refleja nuestra filosofía de acoger a cada cliente como
-                        parte de nuestra familia.
-                      </p>
-
-                      <p>
-                        Durante más de 30 años, hemos mantenido nuestro compromiso con la calidad, seleccionando
-                        cuidadosamente cada producto de proveedores locales y nacionales que comparten nuestros valores
-                        de sostenibilidad y excelencia.
-                      </p>
-
-                      <p>
-                        Lo que comenzó como una pequeña tienda de barrio ha crecido gracias a la confianza de nuestros
-                        clientes, pero nunca hemos perdido ese toque personal y familiar que nos caracteriza. Cada nuez,
-                        cada fruto seco, cada producto que ofrecemos es seleccionado con el mismo cuidado y dedicación
-                        que el primer día.
-                      </p>
-
-                      <p className="font-medium text-primary">
-                        Hoy, JatunWasi es más que una tienda: es un lugar donde la tradición se encuentra con la
-                        calidad, y donde cada visita es como volver a casa.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
+              <p className="text-lg text-on-surface-variant leading-relaxed mb-6">
+                Seguimos comprometidos con ofrecerte granos, especias y frutos secos de la más alta calidad, ahora con la facilidad de pedirlos online.
+              </p>
+              <p className="text-lg text-on-surface-variant leading-relaxed mb-8">
+                Queremos que el bienestar sea parte de tu rutina. Con productos orgánicos y honestos, transformamos tu cocina en un espacio de salud y vitalidad.
+              </p>
+              <div className="flex gap-8">
+                <div className="flex flex-col">
+                  <span className="text-primary font-black text-3xl">100%</span>
+                  <span className="text-sm text-outline font-bold">Saludable</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-secondary font-black text-3xl">Siempre</span>
+                  <span className="text-sm text-outline font-bold">Pensando en tu economía</span>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Values Section */}
-        <section className="py-16 bg-muted">
-          <div className="container mx-auto px-4">
-            <h2
-              className="text-3xl md:text-4xl font-serif font-bold text-primary mb-12 text-center"
-              style={{ fontFamily: "var(--font-playfair)" }}
-            >
-              Nuestros Valores
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card className="bg-card border-border">
-                <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Leaf className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-lg mb-2 text-foreground">Natural</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Productos 100% naturales sin aditivos artificiales
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-card border-border">
-                <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Award className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-lg mb-2 text-foreground">Calidad</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Selección rigurosa de los mejores productos
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-card border-border">
-                <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Heart className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-lg mb-2 text-foreground">Familiar</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">Atención personalizada y cercana</p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-card border-border">
-                <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <ShoppingBag className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-lg mb-2 text-foreground">Variedad</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">Amplio catálogo de productos selectos</p>
-                </CardContent>
-              </Card>
+        {/* Sneak Peek Section - Bento Grid Style */}
+        <section className="py-24 px-6 max-w-7xl mx-auto">
+          <div className="mb-16 text-center">
+            <h2 className="font-headline font-black text-4xl text-on-background mb-4">Un vistazo al Wasi Granel</h2>
+            <p className="text-on-surface-variant">Conoce algunos de nuestros productos mas populares.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Product 1 */}
+            <div className="group relative overflow-hidden rounded-lg bg-white border border-surface-variant shadow-sm hover:shadow-xl transition-all duration-300">
+              <div className="aspect-square overflow-hidden relative">
+                <Image
+                  src="/mix.png"
+                  alt="Mix de Frutos Secos"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-6">
+                <span className="text-xs font-bold text-primary uppercase tracking-widest mb-2 block">
+                  Crunch Saludable
+                </span>
+                <h3 className="font-headline font-bold text-xl mb-2 text-on-background">Mix de Frutos Secos</h3>
+                <p className="text-sm text-on-surface-variant">
+                  Una mezcla equilibrada de frutos secos mezclados a la perfección para un snack delicioso y nutritivo.
+                </p>
+              </div>
+            </div>
+            {/* Product 2 */}
+            <div className="group relative overflow-hidden rounded-lg bg-white border border-surface-variant shadow-sm hover:shadow-xl transition-all duration-300">
+              <div className="aspect-square overflow-hidden relative">
+                <Image
+                  src="/almendras.png"
+                  alt="Almendras"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-6">
+                <span className="text-xs font-bold text-primary uppercase tracking-widest mb-2 block">
+                  Puro Bienestar
+                </span>
+                <h3 className="font-headline font-bold text-xl mb-2 text-on-background">Almendras</h3>
+                <p className="text-sm text-on-surface-variant">
+                  Almendras seleccionadas por su tamaño y calidad, tostadas a la perfección para un snack delicioso y nutritivo.
+                </p>
+              </div>
+            </div>
+            {/* Product 3 */}
+            <div className="group relative overflow-hidden rounded-lg bg-white border border-surface-variant shadow-sm hover:shadow-xl transition-all duration-300">
+              <div className="aspect-square overflow-hidden relative">
+                <Image
+                  src="/chocolates.png"
+                  alt="Chocolates de frutos secos"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-6">
+                <span className="text-xs font-bold text-primary uppercase tracking-widest mb-2 block">
+                  Gusto Dulce
+                </span>
+                <h3 className="font-headline font-bold text-xl mb-2 text-on-background">Chocolates</h3>
+                <p className="text-sm text-on-surface-variant">
+                  Diferente variedad de chocolates con frutos secos en su interior que te encantarán.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2
-                className="text-3xl md:text-4xl font-serif font-bold text-primary mb-6"
-                style={{ fontFamily: "var(--font-playfair)" }}
+        {/* CTA Section - Newsletter */}
+        <section className="py-24 px-6">
+          <div className="max-w-4xl mx-auto bg-secondary rounded-xl p-12 text-center text-white relative overflow-hidden">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 opacity-10 pointer-events-none">
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
+                  backgroundSize: "20px 20px",
+                }}
+              ></div>
+            </div>
+            <div className="relative z-10">
+              <span
+                className="material-symbols-outlined text-6xl mb-6 text-primary"
+                style={{ fontVariationSettings: "'FILL' 1" }}
               >
-                Visítanos Hoy
-              </h2>
-              <p className="text-lg text-foreground/80 mb-8 leading-relaxed">
-                Descubre nuestra selección de frutos secos, nueces y productos naturales. Te esperamos con los brazos
-                abiertos.
+                mail
+              </span>
+              <h2 className="font-headline font-black text-4xl mb-4">¡Tu Wasi, ahora más cerca!</h2>
+              <p className="text-lg text-white/80 max-w-xl mx-auto mb-10">
+                Déjanos tu correo y te avisaremos apenas nuestra tienda online esté lista. ¡Regresa el Wasi con beneficios exclusivos!
               </p>
-              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                <Link href="/contacto">Cómo Llegar</Link>
-              </Button>
+              <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
+                <input
+                  className="flex-1 px-6 py-4 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  placeholder="Introduce tu correo electrónico"
+                  type="email"
+                />
+                <button
+                  className="bg-primary text-secondary font-bold px-8 py-4 rounded-lg hover:bg-amber-400 transition-colors active:scale-95 duration-150"
+                  type="submit"
+                >
+                  Avísame
+                </button>
+              </form>
+              <p className="mt-6 text-sm text-white/50">Solo noticias saludables y del lanzamiento web.</p>
             </div>
           </div>
         </section>
       </main>
 
-      <Footer />
+      {/* Footer */}
+      <footer className="w-full py-12 px-6 bg-stone-100 dark:bg-stone-950 border-t border-stone-200 dark:border-stone-800">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 max-w-7xl mx-auto">
+          <div className="flex items-center gap-2">
+            <Image
+              src="/logo.svg"
+              alt="Wasi Granel Logo"
+              width={120}
+              height={40}
+              className="h-10 w-auto"
+            />
+          </div>
+          <div className="flex gap-8">
+            
+          </div>
+          <div className="text-stone-500 dark:text-stone-400 text-sm font-body">
+            © 2026 Wasi Granel. Todos los derechos reservados.
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

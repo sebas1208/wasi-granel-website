@@ -63,9 +63,9 @@ export default function ContactoPage() {
                       <div>
                         <h3 className="font-semibold mb-1 text-foreground">Dirección</h3>
                         <p className="text-sm text-muted-foreground leading-relaxed">
-                          Calle Principal 123
+                          Guayaquil y Sebastián de Benalcázar
                           <br />
-                          28001 Madrid, España
+                          Riobamba, Ecuador
                         </p>
                       </div>
                     </div>
@@ -76,7 +76,7 @@ export default function ContactoPage() {
                       </div>
                       <div>
                         <h3 className="font-semibold mb-1 text-foreground">Teléfono</h3>
-                        <p className="text-sm text-muted-foreground">+34 123 456 789</p>
+                        <p className="text-sm text-muted-foreground">+593 986 016 764</p>
                       </div>
                     </div>
 
@@ -86,7 +86,7 @@ export default function ContactoPage() {
                       </div>
                       <div>
                         <h3 className="font-semibold mb-1 text-foreground">Email</h3>
-                        <p className="text-sm text-muted-foreground">info@jatunwasi.com</p>
+                        <p className="text-sm text-muted-foreground">jatunwasigranel@gmail.com</p>
                       </div>
                     </div>
 
@@ -97,8 +97,8 @@ export default function ContactoPage() {
                       <div>
                         <h3 className="font-semibold mb-1 text-foreground">Horario</h3>
                         <div className="text-sm text-muted-foreground space-y-1">
-                          <p>Lunes - Viernes: 9:00 - 20:00</p>
-                          <p>Sábados: 10:00 - 14:00</p>
+                          <p>Lunes - Viernes: 9:00 - 19:00</p>
+                          <p>Sábados: 9:00 - 18:00</p>
                           <p>Domingos: Cerrado</p>
                         </div>
                       </div>
@@ -137,7 +137,7 @@ export default function ContactoPage() {
                         <label htmlFor="phone" className="block text-sm font-medium mb-2 text-foreground">
                           Teléfono
                         </label>
-                        <Input id="phone" type="tel" placeholder="+34 123 456 789" className="bg-background" />
+                        <Input id="phone" type="tel" placeholder="+593 986 016 764" className="bg-background" />
                       </div>
 
                       <div>
@@ -182,7 +182,7 @@ export default function ContactoPage() {
               <Card className="bg-card border-border overflow-hidden">
                 <div className="aspect-video w-full">
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3037.4254634607!2d-3.7037902!3d40.4167754!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd42287e5e1e1e1f%3A0x1e1e1e1e1e1e1e1e!2sMadrid%2C%20Spain!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.473333633135!2d-78.6477544!3d-1.6758726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d3a922e9bd0681%3A0x35fc8990eb8e45ec!2sJatunwasi%20Granel%20Gourmet%20Matriz!5e0!3m2!1sen!2sus!4v1678901234567!5m2!1sen!2sus"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -196,9 +196,7 @@ export default function ContactoPage() {
 
               <div className="mt-6 text-center">
                 <p className="text-muted-foreground leading-relaxed">
-                  Estamos ubicados en el corazón de Madrid, con fácil acceso en transporte público.
-                  <br />
-                  Metro: Línea 1 - Estación Sol (5 minutos a pie)
+                  Estamos ubicados en el corazón de la ciudad, con fácil acceso en transporte público y privado.
                 </p>
               </div>
             </div>
