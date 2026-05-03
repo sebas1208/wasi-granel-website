@@ -8,14 +8,18 @@ export default function UnderConstructionPage() {
       {/* TopNavBar */}
       <nav className="fixed top-0 w-full z-50 bg-white/90 dark:bg-stone-900/90 backdrop-blur-md border-b border-stone-200 dark:border-stone-800 shadow-sm">
         <div className="flex justify-center items-center px-6 h-18 max-w-7xl mx-auto">
-          <Image
-            src="/logo.svg"
-            alt="Wasi Granel Logo"
-            loading="eager"
-            width={120}
-            height={40}
-            className="h-15 w-auto"
-          />
+          <div className="relative overflow-hidden flex items-center justify-center rounded-sm">
+            <Image
+              src="/logo.svg"
+              alt="Wasi Granel Logo"
+              loading="eager"
+              width={120}
+              height={40}
+              className="h-15 w-auto relative z-0"
+            />
+            {/* Efecto de brillo */}
+            <div className="absolute top-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/80 to-transparent -skew-x-12 animate-shine pointer-events-none z-10"></div>
+          </div>
         </div>
       </nav>
 
@@ -36,37 +40,31 @@ export default function UnderConstructionPage() {
               </span>
               Tu rincón saludable, ahora online!
             </div>
-            <h1 className="font-headline font-black text-5xl md:text-7xl text-on-background leading-tight mb-6 tracking-tight">
-              ¡Tu tienda a Granel se está <span className="text-primary">Preparando!</span>
+            <h1 className="relative overflow-hidden font-headline font-black text-5xl md:text-7xl text-on-background leading-tight mb-6 tracking-tight py-2">
+              ¡Wasi Granel esta dando <span className="text-primary">un paso adelante!</span>
+              {/* Efecto de brillo */}
+              <span className="absolute top-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/60 to-transparent -skew-x-12 animate-shine pointer-events-none z-10"></span>
             </h1>
             <p className="text-xl text-on-surface-variant max-w-2xl mx-auto mb-12">
-              Nutrición pura y consciente, ahora más cerca de ti. Estamos preparando nuestra tienda online para que pidas tus productos orgánicos favoritos desde casa.
+              Muy pronto descubrirás una nueva experiencia para comprar a granel: más cercana, más clara y pensada para crecer contigo.
             </p>
-            {/* Progress / Countdown UI */}
-            <div className="bg-white p-8 rounded-lg shadow-xl shadow-surface-dim/20 border border-surface-variant max-w-xl mx-auto">
-              <div className="flex justify-between items-end mb-4">
-                <span className="font-headline font-bold text-secondary flex items-center gap-2">
-                  <span className="material-symbols-outlined">hourglass_empty</span>
-                  Configurando tu carrito de compras
-                </span>
-                <span className="text-primary font-black text-2xl">25%</span>
-              </div>
-              <div className="h-4 w-full bg-surface-container rounded-full overflow-hidden p-1">
-                <div className="h-full bg-primary rounded-full w-[25%] relative overflow-hidden">
-                  <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
-                </div>
-              </div>
-              <div className="mt-6 flex justify-between gap-4">
-                <div className="flex-1">
-                  <p className="text-xs uppercase tracking-widest text-outline font-bold mb-1">Estado</p>
-                  <p className="font-semibold text-on-surface">Puliendo detalles saludables</p>
-                </div>
-                <div className="flex-1 text-right">
-                  <p className="text-xs uppercase tracking-widest text-outline font-bold mb-1">Finalización estimada</p>
-                  <p className="font-semibold text-on-surface">faltan ? días</p>
-                </div>
+          <div className="bg-white p-10 rounded-xl shadow-2xl shadow-surface-dim/30 border-2 border-primary/20 max-w-xl mx-auto relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110 duration-500"></div>
+            <div className="relative z-10">
+              <h2 className="font-headline font-black text-3xl text-on-background mb-4 leading-tight">
+                Sé parte de este <span className="text-primary">lanzamiento!</span>
+              </h2>
+              <p className="text-on-surface-variant mb-8 leading-relaxed">
+                Suscríbete para recibir un <span className="font-bold text-secondary text-lg">15% de descuento</span> en tu primer pedido.
+              </p>
+              <div className="flex flex-col gap-4">
+                <a className="inline-flex items-center justify-center gap-2 bg-[#fcbf00] text-[#544738] font-black px-8 py-4 rounded-lg hover:bg-amber-400 transition-all active:scale-95 shadow-lg shadow-primary/20" href="#">
+                  <span className="material-symbols-outlined">star</span>
+                  Quiero mi descuento exclusivo
+                </a>
               </div>
             </div>
+          </div>
           </div>
         </section>
 
@@ -90,23 +88,23 @@ export default function UnderConstructionPage() {
             </div>
             <div className="w-full md:w-1/2">
               <h2 className="font-headline font-black text-4xl text-on-background mb-6">
-                ¿Nuestra Filosofía? <br />
-                Calidad y Consciencia.
+                ¿Nuestra esencia? <br />
+                Calidad y Cercanía.
               </h2>
               <p className="text-lg text-on-surface-variant leading-relaxed mb-6">
-                Seguimos comprometidos con ofrecerte granos, especias y frutos secos de la más alta calidad, ahora con la facilidad de pedirlos online.
+                Seguimos ofreciéndote la mejor selección de granos, especias y frutos secos, ahora con la comodidad de pedir online.
               </p>
               <p className="text-lg text-on-surface-variant leading-relaxed mb-8">
-                Queremos que el bienestar sea parte de tu rutina. Con productos orgánicos y honestos, transformamos tu cocina en un espacio de salud y vitalidad.
+                Queremos acompañarte en esta nueva etapa, brindándote la variedad que buscas, comprando exactamente lo que necesitas a granel y al mejor precio.
               </p>
               <div className="flex gap-8">
                 <div className="flex flex-col">
                   <span className="text-primary font-black text-3xl">100%</span>
-                  <span className="text-sm text-outline font-bold">Saludable</span>
+                  <span className="text-sm text-outline font-bold">A granel</span>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-secondary font-black text-3xl">Siempre</span>
-                  <span className="text-sm text-outline font-bold">Pensando en tu economía</span>
+                  <span className="text-sm text-outline font-bold">Cerca de ti</span>
                 </div>
               </div>
             </div>
@@ -187,7 +185,7 @@ export default function UnderConstructionPage() {
         </section>
 
         {/* CTA Section - Newsletter */}
-        <section className="py-24 px-6">
+        <section className="pb-24 px-6" id="contacto">
           <div className="max-w-4xl mx-auto bg-secondary rounded-xl p-12 text-center text-white relative overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 opacity-10 pointer-events-none">
@@ -208,7 +206,7 @@ export default function UnderConstructionPage() {
               </span>
               <h2 className="font-headline font-black text-4xl mb-4">¡Tu Wasi, ahora más cerca!</h2>
               <p className="text-lg text-white/80 max-w-xl mx-auto mb-10">
-                Déjanos tu correo y te avisaremos apenas nuestra tienda online esté lista. ¡Regresa el Wasi con beneficios exclusivos!
+                Seguimos construyendo esta nueva etapa de Wasi Granel. <br />Déjanos tu correo y sé parte del lanzamiento.
               </p>
               <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
                 <input
@@ -226,6 +224,7 @@ export default function UnderConstructionPage() {
               <p className="mt-6 text-sm text-white/50">Solo noticias saludables y del lanzamiento web.</p>
             </div>
           </div>
+          <p></p>
         </section>
       </main>
 
@@ -242,7 +241,7 @@ export default function UnderConstructionPage() {
             />
           </div>
           <div className="flex gap-8">
-            
+
           </div>
           <div className="text-stone-500 dark:text-stone-400 text-sm font-body">
             © 2026 Wasi Granel. Todos los derechos reservados.

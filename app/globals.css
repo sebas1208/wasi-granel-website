@@ -106,4 +106,14 @@
     display: inline-block;
     vertical-align: middle;
   }
+
+  @keyframes shine {
+    0% { left: -100%; }
+    40% { left: 200%; }
+    100% { left: 200%; }
+  }
+
+  .animate-shine {
+    animation: shine 5s infinite;
+  }
 }
