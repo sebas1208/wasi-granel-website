@@ -28,9 +28,8 @@ const zalandoSans = localFont({
 })
 
 export const metadata: Metadata = {
-  title: "Wasi Granel - Tueste en Progreso",
-  description: "El mejor crujiente de la naturaleza, tostado a la perfección en lotes pequeños.",
-  generator: "v0.app",
+  title: "Wasi Granel - Espéranos Pronto!",
+  description: "Tu tienda favorita, ¡ahora online!",
 }
 
 export default function RootLayout({

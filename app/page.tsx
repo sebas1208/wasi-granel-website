@@ -38,7 +38,7 @@ export default function UnderConstructionPage() {
               <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>
                 poker_chip
               </span>
-              Tu rincón saludable, ahora online!
+              Tu tienda favorita, ¡ahora online!
             </div>
             <h1 className="relative overflow-hidden font-headline font-black text-5xl md:text-7xl text-on-background leading-tight mb-6 tracking-tight py-2">
               ¡Wasi Granel esta dando <span className="text-primary">un paso adelante!</span>
