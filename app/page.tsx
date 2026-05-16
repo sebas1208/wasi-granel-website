@@ -14,19 +14,18 @@ export default function UnderConstructionPage() {
     setStatus("loading");
 
     try {
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbwmplykcIyzBlbnBGAGetcg1tC4RUFrdHdzhw9lTCqmSdF-9j2MsNrR8r6xilWnhS0/exec",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "text/plain"
-          },
-          mode: "no-cors",
-          body: JSON.stringify({ email: email }),
-        }
-      );
+      // Call your local Next.js API route instead of Google directly
+      const response = await fetch("/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email }),
+      });
 
-      if (response.ok) {
+      const data = await response.json();
+
+      if (response.ok && data.status === "success") {
         setStatus("success");
         setEmail("");
       } else {
@@ -83,23 +82,23 @@ export default function UnderConstructionPage() {
             <p className="text-xl text-on-surface-variant max-w-2xl mx-auto mb-12">
               Muy pronto descubrirás una nueva experiencia para comprar a granel: más cercana, más clara y pensada para crecer contigo.
             </p>
-          <div className="bg-white p-10 rounded-xl shadow-2xl shadow-surface-dim/30 border-2 border-primary/20 max-w-xl mx-auto relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110 duration-500"></div>
-            <div className="relative z-10">
-              <h2 className="font-headline font-black text-3xl text-on-background mb-4 leading-tight">
-                Sé parte de este <span className="text-primary">lanzamiento!</span>
-              </h2>
-              <p className="text-on-surface-variant mb-8 leading-relaxed">
-                Suscríbete para recibir un <span className="font-bold text-secondary text-lg">15% de descuento</span> en tu primer pedido.
-              </p>
-              <div className="flex flex-col gap-4">
-                <a href="#contacto" className="inline-flex items-center justify-center gap-2 bg-[#fcbf00] text-[#544738] font-black px-8 py-4 rounded-lg hover:bg-amber-400 transition-all active:scale-95 shadow-lg shadow-primary/20">
-                  <span className="material-symbols-outlined">star</span>
-                  Quiero mi descuento exclusivo
-                </a>
+            <div className="bg-white p-10 rounded-xl shadow-2xl shadow-surface-dim/30 border-2 border-primary/20 max-w-xl mx-auto relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110 duration-500"></div>
+              <div className="relative z-10">
+                <h2 className="font-headline font-black text-3xl text-on-background mb-4 leading-tight">
+                  Sé parte de este <span className="text-primary">lanzamiento!</span>
+                </h2>
+                <p className="text-on-surface-variant mb-8 leading-relaxed">
+                  Suscríbete para recibir un <span className="font-bold text-secondary text-lg">15% de descuento</span> en tu primer pedido.
+                </p>
+                <div className="flex flex-col gap-4">
+                  <a href="#contacto" className="inline-flex items-center justify-center gap-2 bg-[#fcbf00] text-[#544738] font-black px-8 py-4 rounded-lg hover:bg-amber-400 transition-all active:scale-95 shadow-lg shadow-primary/20">
+                    <span className="material-symbols-outlined">star</span>
+                    Quiero mi descuento exclusivo
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
           </div>
         </section>
 
