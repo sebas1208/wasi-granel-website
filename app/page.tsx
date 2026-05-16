@@ -1,8 +1,43 @@
 "use client"
 
 import Image from "next/image"
+import { useState } from "react"
 
 export default function UnderConstructionPage() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setStatus("loading");
+
+    try {
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbwmplykcIyzBlbnBGAGetcg1tC4RUFrdHdzhw9lTCqmSdF-9j2MsNrR8r6xilWnhS0/exec",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain"
+          },
+          mode: "no-cors",
+          body: JSON.stringify({ email: email }),
+        }
+      );
+
+      if (response.ok) {
+        setStatus("success");
+        setEmail("");
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setStatus("error");
+    }
+  };
+
   return (
     <div className="bg-background text-on-background font-body selection:bg-primary-container selection:text-on-primary-container">
       {/* TopNavBar */}
@@ -58,7 +93,7 @@ export default function UnderConstructionPage() {
                 Suscríbete para recibir un <span className="font-bold text-secondary text-lg">15% de descuento</span> en tu primer pedido.
               </p>
               <div className="flex flex-col gap-4">
-                <a className="inline-flex items-center justify-center gap-2 bg-[#fcbf00] text-[#544738] font-black px-8 py-4 rounded-lg hover:bg-amber-400 transition-all active:scale-95 shadow-lg shadow-primary/20" href="#">
+                <a href="#contacto" className="inline-flex items-center justify-center gap-2 bg-[#fcbf00] text-[#544738] font-black px-8 py-4 rounded-lg hover:bg-amber-400 transition-all active:scale-95 shadow-lg shadow-primary/20">
                   <span className="material-symbols-outlined">star</span>
                   Quiero mi descuento exclusivo
                 </a>
@@ -208,19 +243,31 @@ export default function UnderConstructionPage() {
               <p className="text-lg text-white/80 max-w-xl mx-auto mb-10">
                 Seguimos construyendo esta nueva etapa de Wasi Granel. <br />Déjanos tu correo y sé parte del lanzamiento.
               </p>
-              <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
+              <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={handleSubmit}>
                 <input
-                  className="flex-1 px-6 py-4 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  className="flex-1 px-6 py-4 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all disabled:opacity-50"
                   placeholder="Introduce tu correo electrónico"
                   type="email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={status === "loading" || status === "success"}
+                  required
                 />
                 <button
-                  className="bg-primary text-secondary font-bold px-8 py-4 rounded-lg hover:bg-amber-400 transition-colors active:scale-95 duration-150"
+                  className="bg-primary text-secondary font-bold px-8 py-4 rounded-lg hover:bg-amber-400 transition-colors active:scale-95 duration-150 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   type="submit"
+                  disabled={status === "loading" || status === "success"}
                 >
-                  Avísame
+                  {status === "loading" ? "Enviando..." : status === "success" ? "¡Suscrito!" : "Avísame"}
                 </button>
               </form>
+              {status === "success" && (
+                <p className="mt-4 text-sm text-green-400 font-medium">¡Gracias por suscribirte! Te avisaremos pronto.</p>
+              )}
+              {status === "error" && (
+                <p className="mt-4 text-sm text-red-400 font-medium">Hubo un error al suscribirte. Inténtalo de nuevo.</p>
+              )}
               <p className="mt-6 text-sm text-white/50">Solo noticias saludables y del lanzamiento web.</p>
             </div>
           </div>
