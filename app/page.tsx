@@ -238,7 +238,7 @@ export default function UnderConstructionPage() {
               >
                 mail
               </span>
-              <h2 className="font-headline font-black text-4xl mb-4">¡Tu Wasi, ahora más cerca!</h2>
+              <h2 className="font-headline font-black text-4xl mb-4">¡Tu Wasi Granel, ahora más cerca!</h2>
               <p className="text-lg text-white/80 max-w-xl mx-auto mb-10">
                 Seguimos construyendo esta nueva etapa de Wasi Granel. <br />Déjanos tu correo y sé parte del lanzamiento.
               </p>
