@@ -4,7 +4,7 @@ export async function POST(request: Request) {
   try {
     const { email } = await request.json();
 
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzmKxDwp70Rm0Krvw6poQZgMYSzSVluqXh85bpw4TE8sQp327vCTdA1Nj-JVbRulAIL/exec";
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzKlATLMfu3WirHZTBqujJ58plGcJzW8ZI4I9ut609T-rsleKxGeKqGOZsKgIZvV32h/execT";
 
     // Server-to-server requests don't care about browser CORS
     const googleResponse = await fetch(GOOGLE_SCRIPT_URL, {
