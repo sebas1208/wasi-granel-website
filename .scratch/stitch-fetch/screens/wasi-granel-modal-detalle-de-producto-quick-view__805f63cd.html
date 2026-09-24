@@ -1,0 +1,991 @@
+<!DOCTYPE html><html class="light scroll-smooth" lang="es" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Wasi Granel | Equilibrio en cada grano</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "inverse-on-surface": "#ffeedd",
+          "inverse-primary": "#fabd00",
+          "primary": "#785a00",
+          "on-tertiary": "#ffffff",
+          "on-error": "#ffffff",
+          "secondary": "#6c5b4f",
+          "on-background": "#241a0d",
+          "primary-fixed": "#ffdf9d",
+          "on-primary-fixed": "#251a00",
+          "surface-container-low": "#fff1e5",
+          "secondary-fixed-dim": "#d8c3b3",
+          "primary-container": "#fcbf00",
+          "surface-bright": "#fff8f4",
+          "on-secondary-fixed": "#251910",
+          "tertiary-fixed": "#f1dfd0",
+          "background": "#fff8f4",
+          "on-primary": "#ffffff",
+          "surface-container": "#ffebd6",
+          "on-secondary": "#ffffff",
+          "tertiary-fixed-dim": "#d4c4b5",
+          "outline-variant": "#d3c5ab",
+          "surface-variant": "#f3dfcb",
+          "on-primary-container": "#6b4f00",
+          "on-tertiary-fixed-variant": "#50453a",
+          "on-tertiary-fixed": "#231a11",
+          "surface-tint": "#785a00",
+          "inverse-surface": "#3a2e21",
+          "on-error-container": "#93000a",
+          "surface-dim": "#ead7c3",
+          "surface-container-lowest": "#ffffff",
+          "primary-fixed-dim": "#fabd00",
+          "on-surface": "#241a0d",
+          "surface": "#fff8f4",
+          "error-container": "#ffdad6",
+          "outline": "#817660",
+          "tertiary-container": "#d7c6b7",
+          "error": "#ba1a1a",
+          "surface-container-highest": "#f3dfcb",
+          "on-secondary-fixed-variant": "#534438",
+          "on-secondary-container": "#726155",
+          "surface-container-high": "#f9e5d0",
+          "secondary-fixed": "#f5dece",
+          "on-primary-fixed-variant": "#5b4300",
+          "on-tertiary-container": "#5e5246",
+          "secondary-container": "#f5dece",
+          "tertiary": "#695c50",
+          "on-surface-variant": "#4f4632",
+          "sun-yellow": "#FCBF00",
+          "deep-earth": "#544738",
+          "warm-gray": "#A08D7F",
+          "sand": "#C1B1A3",
+          "pure-white": "#FFFFFF"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.25rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+        "fontFamily": {
+          "sans": ["Plus Jakarta Sans", "sans-serif"],
+          "heading": ["Fredoka", "sans-serif"],
+          "display": ["Plus Jakarta Sans", "sans-serif"],
+          "body": ["Plus Jakarta Sans", "sans-serif"],
+          "label": ["Plus Jakarta Sans", "sans-serif"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  @layer base {
+    html {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #fff8f4;
+      color: #544738;
+      -webkit-font-smoothing: antialiased;
+    }
+  }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    transition: font-variation-settings 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .material-symbols-outlined.fill-active {
+    font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    color: #ba1a1a !important;
+    animation: heartBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  h1, h2, h3, h4, .font-heading {
+    font-family: 'Fredoka', sans-serif;
+  }
+  .nav-link {
+    position: relative;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2.5px;
+    background-color: #785a00;
+    border-radius: 9999px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .nav-link:hover::after, .nav-link.active-nav-link::after {
+    width: 100%;
+  }
+
+  /* Product Card Lift & Micro-interactions */
+  .product-item {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+    will-change: transform, box-shadow;
+  }
+  .product-item:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 32px -8px rgba(84, 71, 56, 0.12), 0 4px 12px -2px rgba(84, 71, 56, 0.06);
+  }
+
+  /* Favorite pop bounce */
+  @keyframes heartBounce {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.35); }
+    60% { transform: scale(0.88); }
+    100% { transform: scale(1); }
+  }
+  .fav-toggle {
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease;
+  }
+  .fav-toggle:hover {
+    transform: scale(1.12);
+  }
+  .fav-toggle:active {
+    transform: scale(0.9);
+  }
+
+  /* Gram pills */
+  .portion-btn {
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .portion-btn:hover:not(.active-portion) {
+    transform: translateY(-1px);
+    background-color: #f3dfcb;
+  }
+  .portion-btn:active {
+    transform: scale(0.94);
+  }
+
+  /* Shimmer effect for CTA elements */
+  .btn-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-shimmer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.75s ease;
+  }
+  .btn-shimmer:hover::before {
+    left: 150%;
+  }
+
+  /* Cart ripple & Click feedback */
+  .btn-ripple {
+    position: relative;
+    overflow: hidden;
+  }
+  .ripple-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    transform: scale(0);
+    animation: rippleEffect 0.55s linear;
+    pointer-events: none;
+  }
+  @keyframes rippleEffect {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+
+  /* Ambient floating badge animation */
+  @keyframes floatBadge {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+  }
+  .animate-float {
+    animation: floatBadge 4.5s ease-in-out infinite;
+  }
+
+  /* Eco badge subtle pulse */
+  @keyframes softGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(120, 90, 0, 0.25); }
+    50% { box-shadow: 0 0 0 6px rgba(120, 90, 0, 0); }
+  }
+  .animate-eco-glow {
+    animation: softGlow 2.8s infinite ease-in-out;
+  }
+
+  /* Filter chip dismiss animation */
+  .chip-dismissing {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Staggered entrance animation for product items */
+  @keyframes cardSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(22px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .reveal-card {
+    opacity: 0;
+    animation: cardSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Accessibility: Focus visible outline ring */
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 2px solid #544738 !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .animate-float, .animate-eco-glow, .fav-toggle:hover, .product-item:hover {
+      animation: none !important;
+      transform: none !important;
+    }
+    .reveal-card {
+      opacity: 1 !important;
+      animation: none !important;
+    }
+  }
+</style>
+<meta content="web_standard" name="shell-type"></head>
+<body class="bg-surface text-deep-earth font-sans selection:bg-sun-yellow selection:text-deep-earth overflow-x-hidden antialiased min-h-screen flex flex-col">
+<!-- Floating Toast Notification for Cart feedback -->
+<div aria-live="polite" class="fixed top-20 right-6 z-50 bg-[#544738] text-pure-white px-5 py-3 rounded-2xl shadow-2xl border border-sun-yellow flex items-center gap-3 transform translate-y-[-120%] opacity-0 transition-all duration-300 pointer-events-none" id="cart-toast" role="status">
+<span class="material-symbols-outlined text-sun-yellow text-[22px]">check_circle</span>
+<span class="text-sm font-semibold" id="cart-toast-text">Producto agregado a tu pedido</span>
+</div>
+<!-- 1. SOLID PILL NAVBAR -->
+<header class="fixed top-0 inset-x-0 z-50 pt-4 px-4 pointer-events-none transition-all duration-300">
+<div class="pointer-events-auto max-w-7xl mx-auto h-16 border border-[#ead7c3] rounded-full shadow-md hover:shadow-lg shadow-deep-earth/5 px-6 flex items-center justify-between transition-all duration-300 bg-surface-container-lowest/95 backdrop-blur-sm">
+<div class="flex items-center gap-8">
+<a aria-label="Página de inicio Wasi Granel" class="flex items-center group transition-transform duration-200 active:scale-95" data-path="inicio" href="#">
+<img alt="Wasi Granel Logo" class="h-8 md:h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida/AEtjO1WTny8DydRRmBOhn3sJ8VzRMLBkHMFFFOijOUNZ3WstqQbqgh1MbTITk6gpItAbMSxCqhlnM4Kq88QlDLoxoV8L6gA6MEMQrDbzYsA24YAKVsgrY1Mmha0rVmi2ZWiQSl8_utDcVFfQHXbnpk6ESZdTHuZ8cUDVweAhwrxcFW8HbLaiO7Br4kU23K1PkwFUKfD5-6Z_lM7OZqzS8CCWoyXrp5_Rw2Hu1j9YhFB3S00U_RLaLKa4U_DhEYvY12zOm4jNVOGFDV5UuFM">
+</a>
+<nav class="hidden md:flex gap-6" id="primary-navbar">
+<a class="nav-link text-sm font-semibold text-deep-earth hover:text-primary transition-colors pb-1" data-path="inicio" href="#">Inicio</a>
+<a aria-current="page" class="nav-link pb-1 text-primary font-bold active-nav-link border-b-2 border-primary" data-path="tienda" href="#">Tienda</a>
+<a class="nav-link text-sm font-semibold text-deep-earth hover:text-primary transition-colors pb-1" data-path="contacto" href="#">Contacto</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<form action="#" class="hidden lg:flex items-center bg-[#fff8f4] rounded-full px-4 py-1.5 border border-[#d3c5ab]/60 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/30 focus-within:shadow-md transition-all duration-300" method="GET" role="search">
+<span class="material-symbols-outlined text-deep-earth mr-2 text-[20px] transition-transform duration-200 group-focus-within:scale-110">search</span>
+<input aria-label="Buscar en la tienda" class="bg-transparent border-none focus:ring-0 text-sm w-48 focus:w-64 text-deep-earth placeholder:text-warm-gray p-0 outline-none transition-all duration-300" placeholder="Buscar en la tienda..." type="search">
+</form>
+<div class="flex items-center gap-3">
+<button aria-label="Carrito de compras con 3 productos" class="relative w-10 h-10 bg-[#fff8f4] hover:bg-[#f3dfcb] active:scale-90 rounded-full border border-[#d3c5ab]/50 transition-all duration-200 text-deep-earth flex items-center justify-center group" id="nav-cart-btn">
+<span class="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:scale-110">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-sun-yellow text-deep-earth font-bold text-[11px] w-5 h-5 rounded-full flex items-center justify-center border border-white shadow-sm transition-transform duration-300" id="cart-counter">3</span>
+</button>
+<button aria-label="Mi Cuenta de usuario" class="w-10 h-10 bg-[#fff8f4] hover:bg-[#f3dfcb] active:scale-90 rounded-full border border-[#d3c5ab]/50 transition-all duration-200 text-deep-earth flex items-center justify-center group" data-path="mi-cuenta">
+<span class="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:scale-110">person</span>
+</button>
+<button aria-label="Abrir menú principal" class="md:hidden p-2 text-deep-earth active:scale-90 transition-transform flex items-center justify-center rounded-full hover:bg-[#f3dfcb]">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow pt-0 pb-16"><style id="list-view-styles">
+  #product-grid.is-list-view {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+  #product-grid.is-list-view .product-card,
+  #product-grid.is-list-view .product-item {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    max-height: 200px !important;
+    overflow: hidden !important;
+    border-radius: 1.25rem !important;
+  }
+  #product-grid.is-list-view .product-card .card-image-wrapper,
+  #product-grid.is-list-view .product-item > div:first-child > div:first-child {
+    width: 190px !important;
+    min-width: 190px !important;
+    height: 100% !important;
+    aspect-ratio: auto !important;
+    position: relative !important;
+    flex-shrink: 0 !important;
+  }
+  #product-grid.is-list-view .product-card .card-image-wrapper img,
+  #product-grid.is-list-view .product-item > div:first-child > div:first-child img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+  #product-grid.is-list-view .product-card .card-body,
+  #product-grid.is-list-view .product-item > div:first-child {
+    flex: 1 1 auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+  #product-grid.is-list-view .product-item > div:first-child > div:nth-child(2) {
+    flex: 1 1 auto !important;
+    padding: 1.25rem 1.5rem !important;
+  }
+  #product-grid.is-list-view .product-card .card-footer-actions,
+  #product-grid.is-list-view .product-item > div:last-child {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    gap: 0.75rem !important;
+    margin-top: 0 !important;
+    padding: 1.25rem 1.5rem !important;
+    border-top: none !important;
+    border-left: 1px solid rgba(243, 223, 203, 0.6) !important;
+    min-width: 170px !important;
+  }
+</style><div class="flex flex-col w-full"><!-- 1. SHOP HEADER HERO BANNER: FULL BLEED --><section class="w-full relative overflow-hidden bg-surface-container-low border-b border-[#ead7c3] pt-28 pb-12 px-4 sm:px-6 lg:px-8 mb-8"><div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 relative"><div class="absolute -right-10 -top-12 pointer-events-none select-none opacity-10 overflow-hidden"><img alt="Marca de agua Wasi Granel" class="h-80 md:h-96 w-auto object-contain transform rotate-6 transition-transform duration-700 pointer-events-none" src="https://lh3.googleusercontent.com/aida/AEtjO1WTny8DydRRmBOhn3sJ8VzRMLBkHMFFFOijOUNZ3WstqQbqgh1MbTITk6gpItAbMSxCqhlnM4Kq88QlDLoxoV8L6gA6MEMQrDbzYsA24YAKVsgrY1Mmha0rVmi2ZWiQSl8_utDcVFfQHXbnpk6ESZdTHuZ8cUDVweAhwrxcFW8HbLaiO7Br4kU23K1PkwFUKfD5-6Z_lM7OZqzS8CCWoyXrp5_Rw2Hu1j9YhFB3S00U_RLaLKa4U_DhEYvY12zOm4jNVOGFDV5UuFM"></div><div class="relative z-10 max-w-2xl"><div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-3 hover:scale-105 transition-transform duration-200 cursor-default"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>Tienda Oficial Wasi Granel</div><h1 class="font-heading text-3xl sm:text-4xl lg:text-5xl text-on-surface font-bold leading-tight mb-3">Despensa Consciente a Granel</h1><p class="text-sm sm:text-base text-secondary font-medium leading-relaxed max-w-xl">Alimentos puros, sin intermediarios y al peso exacto. Reduce desperdicios, cuida tu bolsillo y honra el origen de cada ingrediente.</p></div><!-- Packaging Selector Badge --><div class="relative z-10 bg-surface-container-lowest/95 border border-[#ead7c3] rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-300 w-full md:w-auto min-w-[290px]"><div class="flex items-center justify-between mb-3"><span class="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-primary">eco</span> Modalidad de empaque</span><span class="animate-eco-glow text-[10px] bg-[#fff1e5] border border-primary/20 text-primary font-bold px-2 py-0.5 rounded-full transition-transform duration-200 hover:scale-105 cursor-default">Eco-friendly</span></div><div aria-label="Selección de empaque" class="grid grid-cols-2 gap-1.5 bg-[#fff8f4] p-1 rounded-xl border border-[#d3c5ab]/50" role="radiogroup"><button aria-checked="true" class="pack-opt-btn flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all duration-200 bg-surface-container text-on-surface shadow-xs active:scale-95" role="radio"><span class="material-symbols-outlined text-[16px] transition-transform group-hover:scale-110">inventory_2</span><span class="">Bolsa Papel</span></button><button aria-checked="false" class="pack-opt-btn flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all duration-200 active:scale-95" role="radio"><span class="material-symbols-outlined text-[16px] transition-transform group-hover:scale-110">recycling</span><span class="">Frasco Vidrio</span></button></div><p class="text-[11px] text-secondary mt-2.5 text-center font-medium transition-all duration-200" id="packaging-helper">Bolsas 100% compostables o frascos retornables</p></div></div></section><!-- 2. MAIN CATALOG LAYOUT (2 Columns: Left Filters Sidebar + Right Column with Search, Chips, Products Grid) --><div class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-16"><!-- LEFT SIDEBAR: FILTERS --><aside class="lg:col-span-3 hidden lg:flex flex-col gap-6 bg-surface-container-lowest/80 border border-[#ead7c3] rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300" id="filter-sidebar"><!-- Sidebar Header --><div class="flex items-center justify-between pb-4 border-b border-[#ead7c3]"><div class="flex items-center gap-2 text-on-surface font-heading font-bold text-lg"><span class="material-symbols-outlined text-primary text-[22px]">tune</span><span class="">Filtros</span></div><button class="text-xs font-semibold text-primary hover:underline transition-colors active:scale-95" id="reset-categories">Limpiar todo</button></div><!-- Categorías --><div><h3 class="text-xs font-bold uppercase tracking-wider text-secondary mb-3">Categorías</h3><div aria-label="Filtro de categorías" class="flex flex-col gap-1.5" role="group"><button class="cat-pill active-cat w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold bg-surface-container text-on-surface transition-all duration-200 active:scale-[0.98]" data-cat="all"><span class="">Todas las categorías</span><span class="text-[11px] px-2 py-0.5 rounded-full bg-white/80 font-bold shadow-2xs">28</span></button><button class="cat-pill w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-on-surface-variant hover:bg-surface-container-low transition-all duration-200 active:scale-[0.98]" data-cat="frutos-secos"><span class="">Frutos Secos</span><span class="text-[11px] px-2 py-0.5 rounded-full bg-surface-container-low font-semibold">12</span></button><button class="cat-pill w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-on-surface-variant hover:bg-surface-container-low transition-all duration-200 active:scale-[0.98]" data-cat="semillas"><span class="">Semillas y Granos</span><span class="text-[11px] px-2 py-0.5 rounded-full bg-surface-container-low font-semibold">8</span></button><button class="cat-pill w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-on-surface-variant hover:bg-surface-container-low transition-all duration-200 active:scale-[0.98]" data-cat="chocolates"><span class="">Chocolates y Cacao</span><span class="text-[11px] px-2 py-0.5 rounded-full bg-surface-container-low font-semibold">6</span></button><button class="cat-pill w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-on-surface-variant hover:bg-surface-container-low transition-all duration-200 active:scale-[0.98]" data-cat="harinas"><span class="">Harinas y Cereales</span><span class="text-[11px] px-2 py-0.5 rounded-full bg-surface-container-low font-semibold">5</span></button><button class="cat-pill w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-on-surface-variant hover:bg-surface-container-low transition-all duration-200 active:scale-[0.98]" data-cat="deshidratados"><span class="">Deshidratados</span><span class="text-[11px] px-2 py-0.5 rounded-full bg-surface-container-low font-semibold">7</span></button></div></div><!-- Rango de Precio --><div class="pt-4 border-t border-[#ead7c3]"><div class="flex items-center justify-between mb-2"><h3 class="text-xs font-bold uppercase tracking-wider text-secondary">Rango de Precio</h3><span class="text-xs font-bold text-primary transition-all duration-200" id="price-slider-value">Hasta $25.00</span></div><input aria-label="Rango de precio máximo" class="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-[#785a00] hover:accent-[#fcbf00] transition-colors" id="price-range" max="25" min="1" step="0.50" type="range" value="25"><div class="flex items-center justify-between text-[11px] font-semibold text-warm-gray mt-2"><span class="">$1.00</span><span class="">$12.50</span><span class="">$25.00</span></div></div><!-- Origen --><div class="pt-4 border-t border-[#ead7c3]"><h3 class="text-xs font-bold uppercase tracking-wider text-secondary mb-3">Origen y Certificación</h3><div class="flex flex-col gap-2"><label class="flex items-center gap-2.5 text-xs font-semibold text-on-surface cursor-pointer group hover:text-primary transition-colors"><input checked="" class="rounded border-[#d3c5ab] text-primary focus:ring-primary h-4 w-4 transition-transform group-hover:scale-110" type="checkbox"><span class="">Andino / Local</span></label><label class="flex items-center gap-2.5 text-xs font-semibold text-on-surface cursor-pointer group hover:text-primary transition-colors"><input checked="" class="rounded border-[#d3c5ab] text-primary focus:ring-primary h-4 w-4 transition-transform group-hover:scale-110" type="checkbox"><span class="">Orgánico Certificado</span></label><label class="flex items-center gap-2.5 text-xs font-semibold text-on-surface cursor-pointer group hover:text-primary transition-colors"><input class="rounded border-[#d3c5ab] text-primary focus:ring-primary h-4 w-4 transition-transform group-hover:scale-110" type="checkbox"><span class="">Comercio Justo</span></label></div></div><!-- Modalidad --><div class="pt-4 border-t border-[#ead7c3]"><h3 class="text-xs font-bold uppercase tracking-wider text-secondary mb-3">Modalidad</h3><div class="flex flex-col gap-2"><label class="flex items-center gap-2.5 text-xs font-semibold text-on-surface cursor-pointer group hover:text-primary transition-colors"><input checked="" class="rounded-full border-[#d3c5ab] text-primary focus:ring-primary h-4 w-4 transition-transform group-hover:scale-110" name="modalidad" type="radio"><span class="">Granel directo</span></label><label class="flex items-center gap-2.5 text-xs font-semibold text-on-surface cursor-pointer group hover:text-primary transition-colors"><input class="rounded-full border-[#d3c5ab] text-primary focus:ring-primary h-4 w-4 transition-transform group-hover:scale-110" name="modalidad" type="radio"><span class="">Frasco precargado</span></label></div></div><!-- Botón Restablecer Filtros --><button class="w-full py-2.5 mt-2 rounded-full border border-[#d3c5ab] text-xs font-bold text-deep-earth hover:bg-surface-container active:scale-95 transition-all duration-200 flex items-center justify-center gap-2 group" id="btn-reset-all"><span class="material-symbols-outlined text-[16px] group-hover:rotate-180 transition-transform duration-500">restart_alt</span><span class="">Restablecer Filtros</span></button></aside><!-- RIGHT MAIN AREA: SEARCH/SORT BAR + ACTIVE CHIPS + PRODUCTS GRID + PAGINATION --><section class="lg:col-span-9 flex flex-col"><!-- FLOATING PILL SEARCH & FILTER TOOLBAR PLACED DIRECTLY ABOVE PRODUCTS GRID --><div class="bg-surface-container-lowest/90 backdrop-blur-sm border border-[#ead7c3] rounded-2xl md:rounded-full px-5 py-3 shadow-md hover:shadow-lg shadow-deep-earth/5 flex flex-col md:flex-row items-center justify-between gap-4 mb-5 transition-all duration-300"><div class="flex items-center gap-3 w-full md:w-auto flex-1 max-w-md"><div class="relative w-full group"><span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary text-[20px] transition-transform duration-200 group-focus-within:text-primary group-focus-within:scale-110">search</span><input aria-label="Buscar productos en el catálogo" class="w-full pl-10 pr-4 py-2 bg-[#fff8f4] border border-[#d3c5ab]/60 rounded-full text-sm text-on-surface placeholder:text-warm-gray outline-none focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all duration-300 shadow-2xs focus:shadow-md" id="catalog-search" placeholder="Buscar por quinua, almendras, cacao..." type="text"></div><span class="hidden sm:inline-block text-xs font-semibold text-secondary whitespace-nowrap">Mostrando <strong class="text-on-surface font-bold transition-all duration-200" id="visible-count">9</strong> de 28</span></div><div class="flex items-center justify-between md:justify-end gap-3 w-full md:w-auto"><button aria-label="Abrir filtros en dispositivos móviles" class="lg:hidden flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container text-xs font-bold text-on-surface hover:bg-surface-container-high active:scale-95 transition-all" id="toggle-mobile-filters"><span class="material-symbols-outlined text-[18px]">tune</span><span class="">Filtros</span></button><div class="flex items-center gap-2"><label class="text-xs font-semibold text-secondary whitespace-nowrap hidden sm:inline" for="sort-select">Ordenar por:</label><div class="relative"><select aria-label="Ordenar productos" class="appearance-none bg-[#fff8f4] border border-[#d3c5ab]/50 text-on-surface text-xs font-semibold pl-3.5 pr-8 py-2 rounded-full outline-none cursor-pointer hover:bg-surface-container-low hover:border-primary/50 focus:ring-2 focus:ring-primary/30 transition-all" id="sort-select"><option value="populares">Más Populares</option><option value="precio-asc">Precio: Menor a Mayor</option><option value="precio-desc">Precio: Mayor a Menor</option><option value="novedades">Novedades Cosecha</option></select><span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-secondary pointer-events-none text-[18px]">expand_more</span></div></div><div class="flex items-center bg-[#fff8f4] border border-[#d3c5ab]/50 p-1 rounded-full gap-1"><button aria-label="Ver en cuadrícula" class="p-1.5 rounded-full transition-all flex items-center justify-center active:scale-90 bg-surface-container-lowest text-on-surface shadow-xs" id="view-grid-btn" onclick="const g=document.getElementById('view-grid-btn'),l=document.getElementById('view-list-btn'),p=document.getElementById('product-grid');g.classList.add('bg-surface-container-lowest','text-on-surface','shadow-xs');g.classList.remove('text-secondary');l.classList.remove('bg-surface-container-lowest','text-on-surface','shadow-xs');l.classList.add('text-secondary');p.classList.remove('is-list-view');"><span class="material-symbols-outlined text-[18px]">grid_view</span></button><button aria-label="Ver en lista" class="p-1.5 rounded-full hover:text-on-surface transition-all flex items-center justify-center active:scale-90 text-secondary" id="view-list-btn" onclick="const g=document.getElementById('view-grid-btn'),l=document.getElementById('view-list-btn'),p=document.getElementById('product-grid');l.classList.add('bg-surface-container-lowest','text-on-surface','shadow-xs');l.classList.remove('text-secondary');g.classList.remove('bg-surface-container-lowest','text-on-surface','shadow-xs');g.classList.add('text-secondary');p.classList.add('is-list-view');"><span class="material-symbols-outlined text-[18px]">view_list</span></button></div></div></div><!-- Active Filter Chips --><div class="flex flex-wrap items-center gap-2 mb-6" id="active-chips-container"><span class="text-xs font-bold text-secondary mr-1">Filtros activos:</span><span class="filter-chip inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-surface-container text-on-surface border border-[#ead7c3] hover:border-primary/40 transition-all duration-200">Frutos Secos<button aria-label="Quitar filtro Frutos Secos" class="chip-remove-btn hover:text-error flex items-center transition-transform hover:scale-125"><span class="material-symbols-outlined text-[14px]">close</span></button></span><span class="filter-chip inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-surface-container text-on-surface border border-[#ead7c3] hover:border-primary/40 transition-all duration-200">Orgánico Certificado<button aria-label="Quitar filtro Orgánico Certificado" class="chip-remove-btn hover:text-error flex items-center transition-transform hover:scale-125"><span class="material-symbols-outlined text-[14px]">close</span></button></span><span class="filter-chip inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-surface-container text-on-surface border border-[#ead7c3] hover:border-primary/40 transition-all duration-200">Hasta $25<button aria-label="Quitar filtro de precio" class="chip-remove-btn hover:text-error flex items-center transition-transform hover:scale-125"><span class="material-symbols-outlined text-[14px]">close</span></button></span><button class="text-xs font-bold text-primary hover:underline ml-2 transition-transform active:scale-95" id="clear-chips-btn">Borrar filtros</button></div><!-- PRODUCT CATALOG GRID --><div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" id="product-grid"><!-- Card 1: Mix de Frutos Secos --><article class="product-item reveal-card group bg-surface-container-lowest border border-[#ead7c3] rounded-3xl overflow-hidden shadow-xs hover:border-primary/40 flex flex-col justify-between" data-category="frutos-secos" data-price="4.50" data-product="Mix de Frutos Secos" style="animation-delay: 50ms;"><div><div class="relative aspect-square overflow-hidden bg-surface-container-low" style="cursor: pointer;"><img alt="Mix de Frutos Secos" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1UxP5oA_eaueU1gHn7mJ1SP4P7qNgF_h3TfVDcOe6jpskkEO0iRqGcDwAsYbdOvSzvDehEi7NuZR4FuaYtqZ9Qg8dYEoEw6NkQHe8P-aBj9dAbNdOGT5dewJwnuJpbGQ9cLWqZcMNQx7CJaNXDqd8A4it5MY4IIwj3DGoGt71pyr1JsYzD6y0VpNr3Iq-pbO9ewjBsMcT3nscmaYRtpfnxpA3FJ483spKADg6L9Q4g1eYBJN_PmIaIYO_OK"><div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-xs text-[11px] font-bold text-primary px-2.5 py-1 rounded-full shadow-xs">Mezclas</div><button aria-label="Añadir a favoritos Mix de Frutos Secos" class="fav-toggle absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-lowest/95 backdrop-blur-xs text-secondary hover:text-error flex items-center justify-center shadow-xs active:scale-90"><span class="material-symbols-outlined text-[18px]">favorite</span></button></div><div class="p-5"><div class="flex items-baseline justify-between mb-1"><h3 class="font-heading font-bold text-base text-on-surface group-hover:text-primary transition-colors" style="cursor: pointer;">Mix de Frutos Secos</h3></div><p class="text-xs text-secondary mb-3">Nueces, almendras, pasas y castañas seleccionadas.</p><div aria-label="Opciones de peso" class="flex items-center gap-1.5 mb-4" role="group"><button class="portion-btn active-portion text-[11px] font-bold px-2 py-1 rounded-lg bg-surface-container text-on-surface shadow-2xs" data-mult="1">100g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="2.5">250g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="5">500g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="10">1kg</button></div></div></div><div class="px-5 pb-5 pt-1 border-t border-[#f3dfcb]/60 flex items-center justify-between"><div><span class="text-[11px] text-warm-gray block leading-none font-medium">Porción</span><span class="item-price font-heading text-lg font-bold text-deep-earth transition-all duration-200">$4.50</span></div><button aria-label="Agregar Mix de Frutos Secos" class="cart-add-btn btn-ripple btn-shimmer bg-deep-earth hover:bg-[#3a2e21] text-white p-2.5 rounded-2xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center gap-1.5 text-xs font-bold group/btn"><span class="material-symbols-outlined text-[18px] group-hover/btn:rotate-12 transition-transform duration-200">shopping_bag</span><span class="">Agregar</span></button></div></article><!-- Card 2: Almendras Naturales --><article class="product-item reveal-card group bg-surface-container-lowest border border-[#ead7c3] rounded-3xl overflow-hidden shadow-xs hover:border-primary/40 flex flex-col justify-between" data-category="frutos-secos" data-price="3.80" data-product="Almendras Naturales" style="animation-delay: 100ms;"><div><div class="relative aspect-square overflow-hidden bg-surface-container-low" style="cursor: pointer;"><img alt="Almendras Naturales" class="w-full h-full object-cover object-bottom group-hover:scale-105 transition-transform duration-500 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1Vt83x9NR5lHP5q9yGyyB0dTiRgk6BXizdlrAAKfMcHBTsqpEf0KNr5PS9Lj9k2s4oxnLpMm97EOUy-7dbnoKpxLC9-BrwCsrqn_GG0Dh5jRM5humyJ84ZX7le_QBBGEn4BflmCNy9Vx66g4xmePOhhVkUkCbgljoyKVSNRf_dPJsC71Qfm3GF0O14S1DQKXl8KMAZPCXq73M8c0-Ryc4avuIirQnQyLORX-z13KLh7uWNQbYBlkf6jhYA"><div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-xs text-[11px] font-bold text-primary px-2.5 py-1 rounded-full shadow-xs">Frutos Secos</div><button aria-label="Añadir a favoritos Almendras Naturales" class="fav-toggle absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-lowest/95 backdrop-blur-xs text-secondary hover:text-error flex items-center justify-center shadow-xs active:scale-90"><span class="material-symbols-outlined text-[18px]">favorite</span></button></div><div class="p-5"><div class="flex items-baseline justify-between mb-1"><h3 class="font-heading font-bold text-base text-on-surface group-hover:text-primary transition-colors" style="cursor: pointer;">Almendras Naturales</h3></div><p class="text-xs text-secondary mb-3">Crujientes, sin sal añadida y de cultivo regenerativo.</p><div aria-label="Opciones de peso" class="flex items-center gap-1.5 mb-4" role="group"><button class="portion-btn active-portion text-[11px] font-bold px-2 py-1 rounded-lg bg-surface-container text-on-surface shadow-2xs" data-mult="1">100g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="2.5">250g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="5">500g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="10">1kg</button></div></div></div><div class="px-5 pb-5 pt-1 border-t border-[#f3dfcb]/60 flex items-center justify-between"><div><span class="text-[11px] text-warm-gray block leading-none font-medium">Porción</span><span class="item-price font-heading text-lg font-bold text-deep-earth transition-all duration-200">$3.80</span></div><button aria-label="Agregar Almendras" class="cart-add-btn btn-ripple btn-shimmer bg-deep-earth hover:bg-[#3a2e21] text-white p-2.5 rounded-2xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center gap-1.5 text-xs font-bold group/btn"><span class="material-symbols-outlined text-[18px] group-hover/btn:rotate-12 transition-transform duration-200">shopping_bag</span><span class="">Agregar</span></button></div></article><!-- Card 3: Trufas de Chocolate 70% --><article class="product-item reveal-card group bg-surface-container-lowest border border-[#ead7c3] rounded-3xl overflow-hidden shadow-xs hover:border-primary/40 flex flex-col justify-between" data-category="chocolates" data-price="5.20" data-product="Trufas de Chocolate 70%" style="animation-delay: 150ms;"><div><div class="relative aspect-square overflow-hidden bg-surface-container-low" style="cursor: pointer;"><img alt="Trufas de Chocolate 70%" class="w-full h-full object-cover object-left group-hover:scale-105 transition-transform duration-500 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1W0y8OORhOojUjAytxeI8_EF805v2-xUaBQ5YGCuEnDkPmvzG106WkJv3slB_QHks1AKvj-J1hjv-pLxCaojJ4bca7poyDvcd3-ZPrISus7Oi6yHO3y5a-NvhMCju3d05Efab8nyIDDFkUi9YTxNLGkdZGrb6UnCW2SlO5JXoVpH9dDTil1Kt11dO4ZxafHl_zZZpta6g3-RNYSIjerCdmi20XANNjJrngqo4iVeXvpOPSEkwEvngJzgpUA"><div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-xs text-[11px] font-bold text-primary px-2.5 py-1 rounded-full shadow-xs">Dulces</div><button aria-label="Añadir a favoritos Trufas de Chocolate 70%" class="fav-toggle absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-lowest/95 backdrop-blur-xs text-secondary hover:text-error flex items-center justify-center shadow-xs active:scale-90"><span class="material-symbols-outlined text-[18px]">favorite</span></button></div><div class="p-5"><div class="flex items-baseline justify-between mb-1"><h3 class="font-heading font-bold text-base text-on-surface group-hover:text-primary transition-colors" style="cursor: pointer;">Trufas de Chocolate 70%</h3></div><p class="text-xs text-secondary mb-3">Cacao fino de aroma con cobertura de polvo puro.</p><div aria-label="Opciones de peso" class="flex items-center gap-1.5 mb-4" role="group"><button class="portion-btn active-portion text-[11px] font-bold px-2 py-1 rounded-lg bg-surface-container text-on-surface shadow-2xs" data-mult="1">100g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="2.5">250g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="5">500g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="10">1kg</button></div></div></div><div class="px-5 pb-5 pt-1 border-t border-[#f3dfcb]/60 flex items-center justify-between"><div><span class="text-[11px] text-warm-gray block leading-none font-medium">Porción</span><span class="item-price font-heading text-lg font-bold text-deep-earth transition-all duration-200">$5.20</span></div><button aria-label="Agregar Trufas" class="cart-add-btn btn-ripple btn-shimmer bg-deep-earth hover:bg-[#3a2e21] text-white p-2.5 rounded-2xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center gap-1.5 text-xs font-bold group/btn"><span class="material-symbols-outlined text-[18px] group-hover/btn:rotate-12 transition-transform duration-200">shopping_bag</span><span class="">Agregar</span></button></div></article><!-- Card 4: Higos Secos Premium --><article class="product-item reveal-card group bg-surface-container-lowest border border-[#ead7c3] rounded-3xl overflow-hidden shadow-xs hover:border-primary/40 flex flex-col justify-between" data-category="deshidratados" data-price="3.50" data-product="Higos Secos Premium" style="animation-delay: 200ms;"><div><div class="relative aspect-square overflow-hidden bg-surface-container-low" style="cursor: pointer;"><img alt="Higos Secos Premium" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1URilXYLRPsR0TJPfnalft4hR-4F9zG9Z_krxK5ZyacL6fBX-AeA6WM01Eel8nC2uq0ilJiA2Ku81dEHNKi0U-IOIfW5eWLJo8HEEgvOovbrC8T_aV3_oidWwNEwfddtQUbDmzwJa5LYlVpyiVaLGKG2Ye2_4I_fS8jXQhGlFTtSkmo0bNdhlGno69ejw6X2SY_G91eBCV3jmah9j0UoLE8CJg5ASiiWqFG7gMLa7YN46etn1osEiRsLlA3"><div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-xs text-[11px] font-bold text-primary px-2.5 py-1 rounded-full shadow-xs">Deshidratados</div><button aria-label="Añadir a favoritos Higos Secos Premium" class="fav-toggle absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-lowest/95 backdrop-blur-xs text-secondary hover:text-error flex items-center justify-center shadow-xs active:scale-90"><span class="material-symbols-outlined text-[18px]">favorite</span></button></div><div class="p-5"><div class="flex items-baseline justify-between mb-1"><h3 class="font-heading font-bold text-base text-on-surface group-hover:text-primary transition-colors" style="cursor: pointer;">Higos Secos Premium</h3></div><p class="text-xs text-secondary mb-3">Secados lentamente al sol andino, dulces y carnosos.</p><div aria-label="Opciones de peso" class="flex items-center gap-1.5 mb-4" role="group"><button class="portion-btn active-portion text-[11px] font-bold px-2 py-1 rounded-lg bg-surface-container text-on-surface shadow-2xs" data-mult="1">100g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="2.5">250g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="5">500g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="10">1kg</button></div></div></div><div class="px-5 pb-5 pt-1 border-t border-[#f3dfcb]/60 flex items-center justify-between"><div><span class="text-[11px] text-warm-gray block leading-none font-medium">Porción</span><span class="item-price font-heading text-lg font-bold text-deep-earth transition-all duration-200">$3.50</span></div><button aria-label="Agregar Higos" class="cart-add-btn btn-ripple btn-shimmer bg-deep-earth hover:bg-[#3a2e21] text-white p-2.5 rounded-2xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center gap-1.5 text-xs font-bold group/btn"><span class="material-symbols-outlined text-[18px] group-hover/btn:rotate-12 transition-transform duration-200">shopping_bag</span><span class="">Agregar</span></button></div></article><!-- Card 5: Nuez de Nogal Criolla --><article class="product-item reveal-card group bg-surface-container-lowest border border-[#ead7c3] rounded-3xl overflow-hidden shadow-xs hover:border-primary/40 flex flex-col justify-between" data-category="frutos-secos" data-price="4.10" data-product="Nuez de Nogal Criolla" style="animation-delay: 250ms;"><div><div class="relative aspect-square overflow-hidden bg-surface-container-low" style="cursor: pointer;"><img alt="Nuez de Nogal Criolla" class="w-full h-full object-cover object-right group-hover:scale-105 transition-transform duration-500 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1WF8EzCgoXVJdNgXH_qy3OdWLZP7Y5kyu5gm4yB0LADKmK749OoYN-Ac9wXHguNTujx5jiVBa8_CY7x3ZhuEP0zifnV9ro0Bz8xv4bfndi7Z44JYKYcepoWknCkhx_MQxd_CHU2zeazQUBxssj3JDr4akkBtGfn3gCSHFoDzRl-Etn0G5hGUd3HPJgRHF3EO0R9uUgwnnabNQzlNAuVadYv9tKKAhvmI9bmCMXsCz99lme5MDGxYT5LWci2"><div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-xs text-[11px] font-bold text-primary px-2.5 py-1 rounded-full shadow-xs">Frutos Secos</div><button aria-label="Añadir a favoritos Nuez de Nogal Criolla" class="fav-toggle absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-lowest/95 backdrop-blur-xs text-secondary hover:text-error flex items-center justify-center shadow-xs active:scale-90"><span class="material-symbols-outlined text-[18px]">favorite</span></button></div><div class="p-5"><div class="flex items-baseline justify-between mb-1"><h3 class="font-heading font-bold text-base text-on-surface group-hover:text-primary transition-colors" style="cursor: pointer;">Nuez de Nogal Criolla</h3></div><p class="text-xs text-secondary mb-3">Mariposas enteras de nogal, fuente alta de Omega 3.</p><div aria-label="Opciones de peso" class="flex items-center gap-1.5 mb-4" role="group"><button class="portion-btn active-portion text-[11px] font-bold px-2 py-1 rounded-lg bg-surface-container text-on-surface shadow-2xs" data-mult="1">100g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="2.5">250g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="5">500g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="10">1kg</button></div></div></div><div class="px-5 pb-5 pt-1 border-t border-[#f3dfcb]/60 flex items-center justify-between"><div><span class="text-[11px] text-warm-gray block leading-none font-medium">Porción</span><span class="item-price font-heading text-lg font-bold text-deep-earth transition-all duration-200">$4.10</span></div><button aria-label="Agregar Nueces" class="cart-add-btn btn-ripple btn-shimmer bg-deep-earth hover:bg-[#3a2e21] text-white p-2.5 rounded-2xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center gap-1.5 text-xs font-bold group/btn"><span class="material-symbols-outlined text-[18px] group-hover/btn:rotate-12 transition-transform duration-200">shopping_bag</span><span class="">Agregar</span></button></div></article><!-- Card 6: Cacao Nibs Andino --><article class="product-item reveal-card group bg-surface-container-lowest border border-[#ead7c3] rounded-3xl overflow-hidden shadow-xs hover:border-primary/40 flex flex-col justify-between" data-category="chocolates" data-price="3.90" data-product="Cacao Nibs Andino" style="animation-delay: 300ms;"><div><div class="relative aspect-square overflow-hidden bg-surface-container-low" style="cursor: pointer;"><img alt="Cacao Nibs Andino" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1W0y8OORhOojUjAytxeI8_EF805v2-xUaBQ5YGCuEnDkPmvzG106WkJv3slB_QHks1AKvj-J1hjv-pLxCaojJ4bca7poyDvcd3-ZPrISus7Oi6yHO3y5a-NvhMCju3d05Efab8nyIDDFkUi9YTxNLGkdZGrb6UnCW2SlO5JXoVpH9dDTil1Kt11dO4ZxafHl_zZZpta6g3-RNYSIjerCdmi20XANNjJrngqo4iVeXvpOPSEkwEvngJzgpUA"><div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-xs text-[11px] font-bold text-primary px-2.5 py-1 rounded-full shadow-xs">Cacao</div><button aria-label="Añadir a favoritos Cacao Nibs Andino" class="fav-toggle absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-lowest/95 backdrop-blur-xs text-secondary hover:text-error flex items-center justify-center shadow-xs active:scale-90"><span class="material-symbols-outlined text-[18px]">favorite</span></button></div><div class="p-5"><div class="flex items-baseline justify-between mb-1"><h3 class="font-heading font-bold text-base text-on-surface group-hover:text-primary transition-colors" style="cursor: pointer;">Cacao Nibs Andino</h3></div><p class="text-xs text-secondary mb-3">Trozos de granos de cacao tostado 100% puro.</p><div aria-label="Opciones de peso" class="flex items-center gap-1.5 mb-4" role="group"><button class="portion-btn active-portion text-[11px] font-bold px-2 py-1 rounded-lg bg-surface-container text-on-surface shadow-2xs" data-mult="1">100g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="2.5">250g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="5">500g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="10">1kg</button></div></div></div><div class="px-5 pb-5 pt-1 border-t border-[#f3dfcb]/60 flex items-center justify-between"><div><span class="text-[11px] text-warm-gray block leading-none font-medium">Porción</span><span class="item-price font-heading text-lg font-bold text-deep-earth transition-all duration-200">$3.90</span></div><button aria-label="Agregar Cacao Nibs" class="cart-add-btn btn-ripple btn-shimmer bg-deep-earth hover:bg-[#3a2e21] text-white p-2.5 rounded-2xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center gap-1.5 text-xs font-bold group/btn"><span class="material-symbols-outlined text-[18px] group-hover/btn:rotate-12 transition-transform duration-200">shopping_bag</span><span class="">Agregar</span></button></div></article><!-- Card 7: Quinua Real Orgánica --><article class="product-item reveal-card group bg-surface-container-lowest border border-[#ead7c3] rounded-3xl overflow-hidden shadow-xs hover:border-primary/40 flex flex-col justify-between" data-category="semillas" data-price="2.80" data-product="Quinua Real Orgánica" style="animation-delay: 350ms;"><div><div class="relative aspect-square overflow-hidden bg-surface-container-low" style="cursor: pointer;"><img alt="Quinua Real Orgánica" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1VDSHMWKBobZIkhka83htAqQUs_81vr4iAyz-BAmSgOJE_H6EOL3_hkCdJ1IYwj8ROts_xk47x40uDAIXmX8Eht76uoiK4LbImxjfarHQ7gsP-RolZJWHWQm6H-Wo_JZHUcUfyaOyi1EelrwYXubhUlHPjC5Ht6YnWRU9c6Df65TbwPtVR0ugb_vBXjD9RAGj5iIDHuq7TqgquForqWFnv90m2I5_eg74dbndQ0eOcO-poYSObzxKTp2WxW"><div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-xs text-[11px] font-bold text-primary px-2.5 py-1 rounded-full shadow-xs">Granos</div><button aria-label="Añadir a favoritos Quinua Real Orgánica" class="fav-toggle absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-lowest/95 backdrop-blur-xs text-secondary hover:text-error flex items-center justify-center shadow-xs active:scale-90"><span class="material-symbols-outlined text-[18px]">favorite</span></button></div><div class="p-5"><div class="flex items-baseline justify-between mb-1"><h3 class="font-heading font-bold text-base text-on-surface group-hover:text-primary transition-colors" style="cursor: pointer;">Quinua Real Orgánica</h3></div><p class="text-xs text-secondary mb-3">Grano blanco lavado, libre de saponinas y pesticidas.</p><div aria-label="Opciones de peso" class="flex items-center gap-1.5 mb-4" role="group"><button class="portion-btn active-portion text-[11px] font-bold px-2 py-1 rounded-lg bg-surface-container text-on-surface shadow-2xs" data-mult="1">100g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="2.5">250g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="5">500g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="10">1kg</button></div></div></div><div class="px-5 pb-5 pt-1 border-t border-[#f3dfcb]/60 flex items-center justify-between"><div><span class="text-[11px] text-warm-gray block leading-none font-medium">Porción</span><span class="item-price font-heading text-lg font-bold text-deep-earth transition-all duration-200">$2.80</span></div><button aria-label="Agregar Quinua Real" class="cart-add-btn btn-ripple btn-shimmer bg-deep-earth hover:bg-[#3a2e21] text-white p-2.5 rounded-2xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center gap-1.5 text-xs font-bold group/btn"><span class="material-symbols-outlined text-[18px] group-hover/btn:rotate-12 transition-transform duration-200">shopping_bag</span><span class="">Agregar</span></button></div></article><!-- Card 8: Semillas de Calabaza --><article class="product-item reveal-card group bg-surface-container-lowest border border-[#ead7c3] rounded-3xl overflow-hidden shadow-xs hover:border-primary/40 flex flex-col justify-between" data-category="semillas" data-price="3.20" data-product="Semillas de Calabaza" style="animation-delay: 400ms;"><div><div class="relative aspect-square overflow-hidden bg-surface-container-low" style="cursor: pointer;"><img alt="Semillas de Calabaza" class="w-full h-full object-cover object-bottom group-hover:scale-105 transition-transform duration-500 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1UxP5oA_eaueU1gHn7mJ1SP4P7qNgF_h3TfVDcOe6jpskkEO0iRqGcDwAsYbdOvSzvDehEi7NuZR4FuaYtqZ9Qg8dYEoEw6NkQHe8P-aBj9dAbNdOGT5dewJwnuJpbGQ9cLWqZcMNQx7CJaNXDqd8A4it5MY4IIwj3DGoGt71pyr1JsYzD6y0VpNr3Iq-pbO9ewjBsMcT3nscmaYRtpfnxpA3FJ483spKADg6L9Q4g1eYBJN_PmIaIYO_OK"><div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-xs text-[11px] font-bold text-primary px-2.5 py-1 rounded-full shadow-xs">Semillas</div><button aria-label="Añadir a favoritos Semillas de Calabaza" class="fav-toggle absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-lowest/95 backdrop-blur-xs text-secondary hover:text-error flex items-center justify-center shadow-xs active:scale-90"><span class="material-symbols-outlined text-[18px]">favorite</span></button></div><div class="p-5"><div class="flex items-baseline justify-between mb-1"><h3 class="font-heading font-bold text-base text-on-surface group-hover:text-primary transition-colors" style="cursor: pointer;">Semillas de Calabaza</h3></div><p class="text-xs text-secondary mb-3">Pepitas verdes crudas, alta fuente de zinc y magnesio.</p><div aria-label="Opciones de peso" class="flex items-center gap-1.5 mb-4" role="group"><button class="portion-btn active-portion text-[11px] font-bold px-2 py-1 rounded-lg bg-surface-container text-on-surface shadow-2xs" data-mult="1">100g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="2.5">250g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="5">500g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="10">1kg</button></div></div></div><div class="px-5 pb-5 pt-1 border-t border-[#f3dfcb]/60 flex items-center justify-between"><div><span class="text-[11px] text-warm-gray block leading-none font-medium">Porción</span><span class="item-price font-heading text-lg font-bold text-deep-earth transition-all duration-200">$3.20</span></div><button aria-label="Agregar Calabaza" class="cart-add-btn btn-ripple btn-shimmer bg-deep-earth hover:bg-[#3a2e21] text-white p-2.5 rounded-2xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center gap-1.5 text-xs font-bold group/btn"><span class="material-symbols-outlined text-[18px] group-hover/btn:rotate-12 transition-transform duration-200">shopping_bag</span><span class="">Agregar</span></button></div></article><!-- Card 9: Harina de Plátano Verde --><article class="product-item reveal-card group bg-surface-container-lowest border border-[#ead7c3] rounded-3xl overflow-hidden shadow-xs hover:border-primary/40 flex flex-col justify-between" data-category="harinas" data-price="2.10" data-product="Harina de Plátano Verde" style="animation-delay: 450ms;"><div><div class="relative aspect-square overflow-hidden bg-surface-container-low" style="cursor: pointer;"><img alt="Harina de Plátano Verde" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1VDSHMWKBobZIkhka83htAqQUs_81vr4iAyz-BAmSgOJE_H6EOL3_hkCdJ1IYwj8ROts_xk47x40uDAIXmX8Eht76uoiK4LbImxjfarHQ7gsP-RolZJWHWQm6H-Wo_JZHUcUfyaOyi1EelrwYXubhUlHPjC5Ht6YnWRU9c6Df65TbwPtVR0ugb_vBXjD9RAGj5iIDHuq7TqgquForqWFnv90m2I5_eg74dbndQ0eOcO-poYSObzxKTp2WxW"><div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-xs text-[11px] font-bold text-primary px-2.5 py-1 rounded-full shadow-xs">Harinas</div><button aria-label="Añadir a favoritos Harina de Plátano Verde" class="fav-toggle absolute top-3 right-3 w-8 h-8 rounded-full bg-surface-container-lowest/95 backdrop-blur-xs text-secondary hover:text-error flex items-center justify-center shadow-xs active:scale-90"><span class="material-symbols-outlined text-[18px]">favorite</span></button></div><div class="p-5"><div class="flex items-baseline justify-between mb-1"><h3 class="font-heading font-bold text-base text-on-surface group-hover:text-primary transition-colors" style="cursor: pointer;">Harina de Plátano Verde</h3></div><p class="text-xs text-secondary mb-3">Rica en almidón resistente, libre de gluten y versátil.</p><div aria-label="Opciones de peso" class="flex items-center gap-1.5 mb-4" role="group"><button class="portion-btn active-portion text-[11px] font-bold px-2 py-1 rounded-lg bg-surface-container text-on-surface shadow-2xs" data-mult="1">100g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="2.5">250g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="5">500g</button><button class="portion-btn text-[11px] font-medium px-2 py-1 rounded-lg bg-surface text-secondary hover:bg-surface-container-low" data-mult="10">1kg</button></div></div></div><div class="px-5 pb-5 pt-1 border-t border-[#f3dfcb]/60 flex items-center justify-between"><div><span class="text-[11px] text-warm-gray block leading-none font-medium">Porción</span><span class="item-price font-heading text-lg font-bold text-deep-earth transition-all duration-200">$2.10</span></div><button aria-label="Agregar Harina" class="cart-add-btn btn-ripple btn-shimmer bg-deep-earth hover:bg-[#3a2e21] text-white p-2.5 rounded-2xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center gap-1.5 text-xs font-bold group/btn"><span class="material-symbols-outlined text-[18px] group-hover/btn:rotate-12 transition-transform duration-200">shopping_bag</span><span class="">Agregar</span></button></div></article></div><!-- PAGINATION CONTROLS --><nav aria-label="Paginación" class="flex items-center justify-center gap-2 mt-12"><button aria-label="Página anterior" class="flex items-center gap-1 px-4 py-2 rounded-full border border-[#ead7c3] text-xs font-semibold text-secondary hover:bg-surface-container transition-all active:scale-95 disabled:opacity-50" disabled=""><span class="material-symbols-outlined text-[18px]">chevron_left</span><span class="">Anterior</span></button><button aria-current="page" class="w-9 h-9 rounded-full bg-deep-earth text-white text-xs font-bold shadow-xs transition-transform active:scale-95">1</button><button aria-label="Ir a la página 2" class="w-9 h-9 rounded-full border border-[#ead7c3] text-xs font-semibold text-on-surface hover:bg-surface-container transition-all active:scale-95">2</button><button aria-label="Ir a la página 3" class="w-9 h-9 rounded-full border border-[#ead7c3] text-xs font-semibold text-on-surface hover:bg-surface-container transition-all active:scale-95">3</button><button aria-label="Página siguiente" class="flex items-center gap-1 px-4 py-2 rounded-full border border-[#ead7c3] text-xs font-semibold text-secondary hover:bg-surface-container transition-all active:scale-95"><span class="">Siguiente</span><span class="material-symbols-outlined text-[18px]">chevron_right</span></button></nav></section></div><!-- 3. VALUE PROPOSITIONS / GUARANTEES STRIP --><section class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 mb-14"><div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-surface-container-low border border-[#ead7c3] rounded-3xl p-8 shadow-xs hover:shadow-md transition-shadow duration-300"><div class="flex items-center gap-4 group"><div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-primary shrink-0 shadow-xs group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300"><span class="material-symbols-outlined text-[28px]">local_shipping</span></div><div><h4 class="font-heading font-bold text-on-surface text-base">Envíos en 24h a todo el país</h4><p class="text-xs text-secondary font-medium">Logística refrigerada y rápida para que nada pierda frescura.</p></div></div><div class="flex items-center gap-4 group"><div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-primary shrink-0 shadow-xs group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300"><span class="material-symbols-outlined text-[28px]">compost</span></div><div><h4 class="font-heading font-bold text-on-surface text-base">Empaque 100% libre de plásticos</h4><p class="text-xs text-secondary font-medium">Empaque de papel kraft compostable o frascos de retorno.</p></div></div><div class="flex items-center gap-4 group"><div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-primary shrink-0 shadow-xs group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300"><span class="material-symbols-outlined text-[28px]">scale</span></div><div><h4 class="font-heading font-bold text-on-surface text-base">Pesa solo lo que necesitas</h4><p class="text-xs text-secondary font-medium">Desde 100g hasta porciones a granel familiar sin desperdicio.</p></div></div></div></section></div></main>
+<!-- BRAND YELLOW GROUNDED FOOTER -->
+<footer class="bg-sun-yellow text-deep-earth pt-14 pb-8 border-t-4 border-[#e5ac00] mt-auto">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+<!-- Brand column -->
+<div class="flex flex-col gap-4 items-start">
+<img alt="Wasi Granel Logo" class="h-11 w-auto object-contain self-start hover:opacity-90 transition-opacity drop-shadow-none" src="https://lh3.googleusercontent.com/aida/AEtjO1WTny8DydRRmBOhn3sJ8VzRMLBkHMFFFOijOUNZ3WstqQbqgh1MbTITk6gpItAbMSxCqhlnM4Kq88QlDLoxoV8L6gA6MEMQrDbzYsA24YAKVsgrY1Mmha0rVmi2ZWiQSl8_utDcVFfQHXbnpk6ESZdTHuZ8cUDVweAhwrxcFW8HbLaiO7Br4kU23K1PkwFUKfD5-6Z_lM7OZqzS8CCWoyXrp5_Rw2Hu1j9YhFB3S00U_RLaLKa4U_DhEYvY12zOm4jNVOGFDV5UuFM" style="filter: brightness(0) invert(1);">
+<p class="text-sm font-semibold leading-relaxed text-deep-earth">Alimentación contemporánea a granel. Dinamismo, orden y equilibrio cotidiano.</p>
+<div class="flex gap-2.5 mt-2">
+<a aria-label="Compartir en redes sociales" class="w-9 h-9 bg-white text-deep-earth hover:bg-deep-earth hover:text-sun-yellow active:scale-90 transition-all duration-200 rounded-full flex items-center justify-center shadow-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</a>
+<a aria-label="Visitar sitio web institucional" class="w-9 h-9 bg-white text-deep-earth hover:bg-deep-earth hover:text-sun-yellow active:scale-90 transition-all duration-200 rounded-full flex items-center justify-center shadow-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">public</span>
+</a>
+</div>
+</div>
+<!-- Navigation Links -->
+<div>
+<h4 class="font-heading mb-4 uppercase tracking-wider font-bold text-xs text-deep-earth">Navegación</h4>
+<ul class="flex flex-col gap-2.5">
+<li class=""><a class="text-sm font-semibold hover:underline hover:translate-x-1 inline-block transition-transform duration-200 text-deep-earth" data-path="inicio" href="#">Inicio</a></li>
+<li class=""><a class="text-sm font-bold underline hover:translate-x-1 inline-block transition-transform duration-200 text-deep-earth" data-path="tienda" href="#">Tienda</a></li>
+<li class=""><a class="text-sm font-semibold hover:underline hover:translate-x-1 inline-block transition-transform duration-200 text-deep-earth" data-path="contacto" href="#">Contacto</a></li>
+<li class=""><a class="text-sm font-semibold hover:underline hover:translate-x-1 inline-block transition-transform duration-200 text-deep-earth" data-path="mi-cuenta" href="#">Mi Cuenta</a></li>
+</ul>
+</div>
+<!-- Legal Links -->
+<div>
+<h4 class="font-heading mb-4 uppercase tracking-wider font-bold text-xs text-deep-earth">Legal</h4>
+<ul class="flex flex-col gap-2.5">
+<li class=""><a class="text-sm font-semibold hover:underline hover:translate-x-1 inline-block transition-transform duration-200 text-deep-earth" href="#">Términos y Condiciones</a></li>
+<li class=""><a class="text-sm font-semibold hover:underline hover:translate-x-1 inline-block transition-transform duration-200 text-deep-earth" href="#">Política de Privacidad</a></li>
+<li class=""><a class="text-sm font-semibold hover:underline hover:translate-x-1 inline-block transition-transform duration-200 text-deep-earth" href="#">Devoluciones</a></li>
+</ul>
+</div>
+<!-- Ubicación -->
+<div>
+<h4 class="font-heading mb-4 uppercase tracking-wider font-bold text-xs text-deep-earth">Ubicación</h4>
+<p class="text-sm font-semibold mb-3 leading-relaxed text-deep-earth">Calle de la Tierra 123,<br>Valle Sagrado, Ecuador</p>
+<p class="text-sm font-semibold leading-relaxed text-deep-earth">hola@wasigranel.com<br>+593 9 8765 4321</p>
+</div>
+</div>
+<!-- Copyright -->
+<div class="border-t border-deep-earth/20 pt-6 text-center">
+<p class="text-xs font-semibold text-deep-earth">© 2024 Wasi Granel. Dinamismo, orden y equilibrio cotidiano.</p>
+</div>
+</div>
+</footer>
+<!-- Floating Action Button for Support -->
+<button aria-label="Soporte y chat en vivo" class="animate-float fixed bottom-8 right-8 bg-[#544738] text-sun-yellow border-2 border-sun-yellow w-14 h-14 rounded-full flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-transform duration-200 z-40 group">
+<span class="material-symbols-outlined group-hover:rotate-12 transition-transform duration-200">chat_bubble</span>
+</button>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Toggle favorites with bounce animation
+    document.querySelectorAll('.fav-toggle').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const icon = btn.querySelector('.material-symbols-outlined');
+        const isFilled = icon.classList.contains('fill-active');
+        if (isFilled) {
+          icon.classList.remove('fill-active');
+          btn.setAttribute('aria-pressed', 'false');
+        } else {
+          icon.classList.add('fill-active');
+          btn.setAttribute('aria-pressed', 'true');
+        }
+      });
+    });
+
+    // 2. Interactive Portion weight calculations inside product cards
+    document.querySelectorAll('.product-item').forEach(card => {
+      const basePrice = parseFloat(card.getAttribute('data-price')) || 4.00;
+      const priceLabel = card.querySelector('.item-price');
+      const portionBtns = card.querySelectorAll('.portion-btn');
+
+      portionBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          portionBtns.forEach(b => {
+            b.classList.remove('active-portion', 'bg-surface-container', 'font-bold', 'text-on-surface', 'shadow-2xs');
+            b.classList.add('bg-surface', 'text-secondary', 'font-medium');
+          });
+          btn.classList.add('active-portion', 'bg-surface-container', 'font-bold', 'text-on-surface', 'shadow-2xs');
+          btn.classList.remove('bg-surface', 'text-secondary', 'font-medium');
+
+          const multiplier = parseFloat(btn.getAttribute('data-mult')) || 1;
+          const newPrice = (basePrice * multiplier).toFixed(2);
+          if (priceLabel) {
+            priceLabel.style.transform = 'scale(1.15)';
+            priceLabel.textContent = `$${newPrice}`;
+            setTimeout(() => {
+              priceLabel.style.transform = 'scale(1)';
+            }, 180);
+          }
+        });
+      });
+    });
+
+    // 3. Packaging switcher with responsive helper text feedback
+    const packBtns = document.querySelectorAll('.pack-opt-btn');
+    const packHelper = document.getElementById('packaging-helper');
+    packBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        packBtns.forEach(b => {
+          b.setAttribute('aria-checked', 'false');
+          b.classList.remove('bg-surface-container', 'text-on-surface', 'font-bold', 'shadow-xs');
+          b.classList.add('text-on-surface-variant', 'font-semibold');
+        });
+        btn.setAttribute('aria-checked', 'true');
+        btn.classList.add('bg-surface-container', 'text-on-surface', 'font-bold', 'shadow-xs');
+        btn.classList.remove('text-on-surface-variant', 'font-semibold');
+
+        if (packHelper) {
+          if (btn.textContent.includes('Frasco')) {
+            packHelper.textContent = 'Frasco de vidrio hermético retornable (+ $0.80 reembolso)';
+          } else {
+            packHelper.textContent = 'Bolsas 100% compostables de fibra vegetal';
+          }
+        }
+      });
+    });
+
+    // 4. Category filter buttons with dynamic active count
+    const catBtns = document.querySelectorAll('.cat-pill');
+    const productItems = document.querySelectorAll('.product-item');
+    const visibleCount = document.getElementById('visible-count');
+
+    catBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        catBtns.forEach(b => {
+          b.classList.remove('active-cat', 'bg-surface-container', 'font-bold');
+          b.classList.add('font-semibold', 'text-on-surface-variant');
+        });
+        btn.classList.add('active-cat', 'bg-surface-container', 'font-bold');
+        btn.classList.remove('font-semibold', 'text-on-surface-variant');
+
+        const selectedCat = btn.getAttribute('data-cat');
+        let count = 0;
+
+        productItems.forEach((item, index) => {
+          const itemCat = item.getAttribute('data-category');
+          if (selectedCat === 'all' || itemCat === selectedCat) {
+            item.classList.remove('hidden');
+            item.style.animationDelay = `${(count % 6) * 60}ms`;
+            item.classList.remove('reveal-card');
+            void item.offsetWidth; // trigger reflow for smooth re-stagger
+            item.classList.add('reveal-card');
+            count++;
+          } else {
+            item.classList.add('hidden');
+          }
+        });
+
+        if (visibleCount) {
+          visibleCount.style.transform = 'scale(1.25)';
+          visibleCount.textContent = count;
+          setTimeout(() => { visibleCount.style.transform = 'scale(1)'; }, 200);
+        }
+      });
+    });
+
+    // Reset categories
+    const resetCatBtn = document.getElementById('reset-categories');
+    const btnResetAll = document.getElementById('btn-reset-all');
+    function resetAllFilters() {
+      const allBtn = document.querySelector('[data-cat="all"]');
+      if (allBtn) allBtn.click();
+      const searchInput = document.getElementById('catalog-search');
+      if (searchInput) {
+        searchInput.value = '';
+      }
+      const priceSlider = document.getElementById('price-range');
+      const priceVal = document.getElementById('price-slider-value');
+      if (priceSlider) {
+        priceSlider.value = 25;
+        if (priceVal) priceVal.textContent = 'Hasta $25.00';
+      }
+    }
+    if (resetCatBtn) resetCatBtn.addEventListener('click', resetAllFilters);
+    if (btnResetAll) btnResetAll.addEventListener('click', resetAllFilters);
+
+    // 5. Active filter chip removal animation
+    document.querySelectorAll('.chip-remove-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const chip = btn.closest('.filter-chip');
+        if (chip) {
+          chip.classList.add('chip-dismissing');
+          setTimeout(() => {
+            chip.remove();
+          }, 250);
+        }
+      });
+    });
+
+    const clearChipsBtn = document.getElementById('clear-chips-btn');
+    if (clearChipsBtn) {
+      clearChipsBtn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+          chip.classList.add('chip-dismissing');
+          setTimeout(() => chip.remove(), 250);
+        });
+      });
+    }
+
+    // 6. Search Filter with live count update
+    const searchInput = document.getElementById('catalog-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        let count = 0;
+
+        productItems.forEach(item => {
+          const title = (item.getAttribute('data-product') || '').toLowerCase();
+          const category = (item.getAttribute('data-category') || '').toLowerCase();
+          if (title.includes(query) || category.includes(query)) {
+            item.classList.remove('hidden');
+            count++;
+          } else {
+            item.classList.add('hidden');
+          }
+        });
+
+        if (visibleCount) {
+          visibleCount.textContent = count;
+        }
+      });
+    }
+
+    // 7. View switcher: Grid vs List
+    const gridBtn = document.getElementById('view-grid-btn');
+    const listBtn = document.getElementById('view-list-btn');
+    const productGrid = document.getElementById('product-grid');
+
+    if (gridBtn && listBtn && productGrid) {
+      listBtn.addEventListener('click', () => {
+        listBtn.classList.add('bg-surface-container-lowest', 'text-on-surface', 'shadow-xs');
+        listBtn.classList.remove('text-secondary');
+        gridBtn.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'shadow-xs');
+        gridBtn.classList.add('text-secondary');
+
+        productGrid.classList.remove('sm:grid-cols-2', 'lg:grid-cols-3');
+        productGrid.classList.add('grid-cols-1');
+      });
+
+      gridBtn.addEventListener('click', () => {
+        gridBtn.classList.add('bg-surface-container-lowest', 'text-on-surface', 'shadow-xs');
+        gridBtn.classList.remove('text-secondary');
+        listBtn.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'shadow-xs');
+        listBtn.classList.add('text-secondary');
+
+        productGrid.classList.add('sm:grid-cols-2', 'lg:grid-cols-3');
+        productGrid.classList.remove('grid-cols-1');
+      });
+    }
+
+    // 8. Mobile Filters Toggle
+    const mobileFilterToggle = document.getElementById('toggle-mobile-filters');
+    const filterSidebar = document.getElementById('filter-sidebar');
+    if (mobileFilterToggle && filterSidebar) {
+      mobileFilterToggle.addEventListener('click', () => {
+        filterSidebar.classList.toggle('hidden');
+        filterSidebar.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+
+    // 9. Price Slider Listener
+    const priceSlider = document.getElementById('price-range');
+    const priceValueDisplay = document.getElementById('price-slider-value');
+    if (priceSlider && priceValueDisplay) {
+      priceSlider.addEventListener('input', (e) => {
+        const val = parseFloat(e.target.value);
+        priceValueDisplay.textContent = `Hasta $${val.toFixed(2)}`;
+        let count = 0;
+        productItems.forEach(item => {
+          const itemPrice = parseFloat(item.getAttribute('data-price')) || 0;
+          if (itemPrice <= val) {
+            item.classList.remove('hidden');
+            count++;
+          } else {
+            item.classList.add('hidden');
+          }
+        });
+        if (visibleCount) visibleCount.textContent = count;
+      });
+    }
+
+    // 10. Add to Cart with Ripple Effect, Counter Badge Pop, and Floating Toast
+    let cartTotal = 3;
+    const cartCounter = document.getElementById('cart-counter');
+    const cartToast = document.getElementById('cart-toast');
+    const cartToastText = document.getElementById('cart-toast-text');
+    let toastTimeout = null;
+
+    document.querySelectorAll('.cart-add-btn').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.stopPropagation();
+
+        // Ripple creation
+        const circle = document.createElement('span');
+        const diameter = Math.max(button.clientWidth, button.clientHeight);
+        const radius = diameter / 2;
+        const rect = button.getBoundingClientRect();
+        circle.style.width = circle.style.height = `${diameter}px`;
+        circle.style.left = `${e.clientX - rect.left - radius}px`;
+        circle.style.top = `${e.clientY - rect.top - radius}px`;
+        circle.classList.add('ripple-circle');
+        const existingRipple = button.querySelector('.ripple-circle');
+        if (existingRipple) existingRipple.remove();
+        button.appendChild(circle);
+
+        // Cart counter bump & animation
+        cartTotal++;
+        if (cartCounter) {
+          cartCounter.textContent = cartTotal;
+          cartCounter.style.transform = 'scale(1.4)';
+          setTimeout(() => { cartCounter.style.transform = 'scale(1)'; }, 220);
+        }
+
+        // Card title retrieve & toast popup
+        const card = button.closest('[data-product]');
+        const productName = card ? card.getAttribute('data-product') : 'Producto';
+        if (cartToast && cartToastText) {
+          cartToastText.textContent = `${productName} añadido al pedido`;
+          cartToast.classList.remove('translate-y-[-120%]', 'opacity-0');
+          cartToast.classList.add('translate-y-0', 'opacity-100');
+          clearTimeout(toastTimeout);
+          toastTimeout = setTimeout(() => {
+            cartToast.classList.add('translate-y-[-120%]', 'opacity-0');
+            cartToast.classList.remove('translate-y-0', 'opacity-100');
+          }, 2400);
+        }
+      });
+    });
+  });
+</script>
+<!-- PRODUCT DETAIL / QUICK VIEW MODAL DIALOG -->
+<div aria-labelledby="modal-product-title" aria-modal="true" class="fixed inset-0 z-50 bg-[#241a0d]/60 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 transition-all duration-300 overflow-y-auto opacity-0 pointer-events-none" id="product-modal-backdrop" role="dialog" style="display: none;">
+<div class="relative bg-surface rounded-3xl max-w-3xl w-full shadow-2xl border border-outline-variant flex flex-col md:flex-row overflow-hidden my-auto transform transition-all duration-300 scale-100 opacity-100 scale-95 opacity-0" id="product-modal-container">
+<!-- Close Button (Mobile & Desktop) -->
+
+<!-- Modal Left Column: Image Showcase & Origin Tags -->
+<div class="md:w-1/2 relative bg-surface-container-low flex flex-col items-center justify-center p-6 sm:p-8 min-h-[280px] md:min-h-[420px] overflow-hidden group">
+<div class="absolute top-4 left-4 z-10 flex flex-col gap-1.5">
+<span class="bg-surface-container-lowest/95 backdrop-blur-xs text-[11px] font-bold text-primary px-3 py-1 rounded-full shadow-xs uppercase tracking-wider" id="modal-badge-cat">Frutos Secos</span>
+<span class="animate-eco-glow text-[10px] bg-primary/10 border border-primary/20 text-primary font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 w-max"><span class="material-symbols-outlined text-[14px]">verified</span> Orgánico</span>
+</div>
+<!-- Modal Favorite Button -->
+<button aria-label="Añadir a favoritos" class="fav-toggle absolute bottom-4 left-4 z-10 w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur-xs text-secondary hover:text-error flex items-center justify-center shadow-xs active:scale-90">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<!-- Main Product Image -->
+<div class="relative w-full max-w-[260px] aspect-square rounded-2xl overflow-hidden shadow-sm bg-white p-2 flex items-center justify-center">
+<img alt="Almendras Naturales" class="w-full h-full object-cover object-bottom rounded-xl transition-transform duration-500 hover:scale-105" id="modal-product-img" src="https://lh3.googleusercontent.com/aida/AEtjO1Vt83x9NR5lHP5q9yGyyB0dTiRgk6BXizdlrAAKfMcHBTsqpEf0KNr5PS9Lj9k2s4oxnLpMm97EOUy-7dbnoKpxLC9-BrwCsrqn_GG0Dh5jRM5humyJ84ZX7le_QBBGEn4BflmCNy9Vx66g4xmePOhhVkUkCbgljoyKVSNRf_dPJsC71Qfm3GF0O14S1DQKXl8KMAZPCXq73M8c0-Ryc4avuIirQnQyLORX-z13KLh7uWNQbYBlkf6jhYA">
+</div>
+<!-- Origin Tag -->
+<div class="mt-4 flex items-center gap-1.5 text-xs text-secondary font-medium bg-surface-container-lowest/80 px-3 py-1 rounded-full border border-[#ead7c3]/60">
+<span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
+<span id="modal-origin-text" class="">Origen: Valle Sagrado, Ecuador</span>
+</div>
+</div>
+<!-- Modal Right Column: Details, Gram Selector & Add to Cart -->
+<div class="md:w-1/2 p-6 sm:p-8 flex flex-col justify-between bg-surface-container-lowest">
+<div>
+<!-- Category & Rating Strip -->
+<div class="flex items-center justify-between gap-4 mb-3"><div class="flex items-center flex-wrap gap-2.5"><span class="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-primary"></span><span id="modal-category-text" class="">Frutos Secos</span></span><div class="flex items-center gap-1 text-xs text-amber-600 bg-surface-container-low px-2.5 py-0.5 rounded-full font-semibold"><span class="material-symbols-outlined text-[16px] text-[#fcbf00] fill-1">star</span><span class="">4.9</span><span class="text-warm-gray text-[11px]">(42)</span></div></div><button aria-label="Cerrar ventana emergente" class="shrink-0 w-9 h-9 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface flex items-center justify-center shadow-xs hover:shadow-sm transition-all active:scale-90 border border-[#ead7c3]" id="close-modal-btn"><span class="material-symbols-outlined text-[20px]">close</span></button></div>
+<!-- Title -->
+<h2 class="font-heading text-2xl sm:text-3xl text-on-surface font-bold leading-tight mb-2" id="modal-product-title">Almendras Naturales</h2>
+<!-- Price Display -->
+<div class="flex items-baseline gap-2 mb-3">
+<span class="font-heading text-2xl sm:text-3xl font-bold text-deep-earth" id="modal-price-display">$3.80</span>
+<span class="text-xs font-semibold text-warm-gray" id="modal-weight-label">/ 100g</span>
+<span class="text-[11px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-md ml-1">$38.00 / kg</span>
+</div>
+<!-- Conscious Description -->
+<p class="text-xs sm:text-sm text-secondary leading-relaxed mb-5" id="modal-product-desc">Crujientes, sin sal añadida y de cultivo regenerativo.</p><div class="bg-surface-container-low/80 border border-[#ead7c3] rounded-2xl p-3 mb-4"><div class="flex items-center gap-1.5 text-xs font-bold text-on-surface mb-2"><span class="material-symbols-outlined text-[16px] text-primary">verified</span><span class="">Beneficios Clave</span></div><ul class="flex flex-col gap-1.5 text-[11px] text-secondary font-medium"><li class="flex items-center gap-2"><span class="text-xs shrink-0">⚡</span><span class="">Energía limpia y saciedad prolongada</span></li><li class="flex items-center gap-2"><span class="text-xs shrink-0">❤️</span><span class="">Salud cardiovascular y grasas buenas</span></li><li class="flex items-center gap-2"><span class="text-xs shrink-0">🛡️</span><span class="">Rico en Vitamina E y antioxidantes</span></li></ul></div>
+<!-- Gram / Portion Pills -->
+<div class="mb-5">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-bold uppercase tracking-wider text-secondary">Selecciona el peso:</span>
+<span class="text-[11px] font-semibold text-primary">Pesa exacta</span>
+</div>
+<div class="grid grid-cols-4 gap-1.5" id="modal-gram-selector"><button class="modal-gram-btn py-2 rounded-xl text-xs border transition-all active:scale-95 text-center active-modal-portion bg-[#fcbf00] border-[#e5ac00] text-deep-earth font-bold shadow-xs" data-multiplier="1" data-weight="100g">100g</button><button class="modal-gram-btn py-2 rounded-xl text-xs font-semibold bg-surface-container-low text-secondary border border-[#ead7c3] hover:bg-surface-container hover:text-on-surface transition-all active:scale-95 text-center" data-multiplier="2.5" data-weight="250g">250g</button><button class="modal-gram-btn py-2 rounded-xl text-xs font-semibold bg-surface-container-low text-secondary border border-[#ead7c3] hover:bg-surface-container hover:text-on-surface transition-all active:scale-95 text-center" data-multiplier="5" data-weight="500g">500g</button><button class="modal-gram-btn py-2 rounded-xl text-xs font-semibold bg-surface-container-low text-secondary border border-[#ead7c3] hover:bg-surface-container hover:text-on-surface transition-all active:scale-95 text-center" data-multiplier="10" data-weight="1kg">1kg</button></div><div class="flex items-center justify-between gap-2 mt-2.5 pt-2.5 border-t border-[#ead7c3]/60"><label class="text-[11px] font-bold text-secondary shrink-0" for="custom-gram-input">Gramaje exacto:</label><div class="flex items-center gap-1.5 flex-1 max-w-[190px]"><div class="relative flex-1"><input class="w-full py-1 pl-2.5 pr-5 text-xs font-bold text-on-surface bg-surface border border-[#d3c5ab] rounded-xl outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition-all" id="custom-gram-input" max="5000" min="10" placeholder="220" step="10" type="number"><span class="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-warm-gray pointer-events-none">g</span></div><button class="px-2.5 py-1 rounded-xl bg-surface-container hover:bg-primary hover:text-white border border-[#ead7c3] text-xs font-bold text-deep-earth transition-all active:scale-95 shrink-0" id="apply-custom-gram" type="button">Aplicar</button></div></div>
+</div>
+<!-- Packaging Selection inside Modal -->
+<div class="mb-5 p-3 rounded-2xl bg-surface-container-low border border-[#ead7c3] flex items-center justify-between gap-3">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-xl bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]">eco</span>
+</div>
+<div>
+<p class="text-xs font-bold text-on-surface leading-tight">Empaque Eco</p>
+<p class="text-[11px] text-secondary" id="modal-packaging-label">Bolsa kraft compostable</p>
+</div>
+</div>
+<button class="text-xs font-bold text-primary hover:underline px-2 py-1 rounded-lg hover:bg-surface-container active:scale-95 transition-all" id="toggle-modal-packaging">Cambiar a Frasco</button>
+</div>
+</div>
+<!-- Action Controls: Quantity + Add CTA -->
+<div>
+<div class="flex items-center gap-3 mb-4">
+<!-- Quantity Stepper -->
+<div class="flex items-center border border-[#d3c5ab] rounded-2xl bg-surface p-1 shadow-2xs">
+<button aria-label="Disminuir cantidad" class="w-8 h-8 rounded-xl flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-90 transition-all" id="modal-qty-minus">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<span class="w-9 text-center text-xs font-bold text-on-surface select-none" id="modal-qty-value">1</span>
+<button aria-label="Aumentar cantidad" class="w-8 h-8 rounded-xl flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-90 transition-all" id="modal-qty-plus">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+<!-- Prominent Add CTA -->
+<button class="btn-ripple btn-shimmer flex-1 py-3 px-5 rounded-2xl bg-deep-earth hover:bg-[#3a2e21] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.98] group/cta" id="modal-add-to-cart-btn">
+<span class="material-symbols-outlined text-[20px] group-hover/cta:rotate-12 transition-transform duration-200">shopping_bag</span>
+<span id="modal-cta-text" class="">Agregar a mi canasta</span>
+</button>
+</div>
+<!-- Micro-trust guarantees strip -->
+<div class="grid grid-cols-3 gap-2 pt-3 border-t border-[#ead7c3]/60 text-center text-[10px] text-secondary font-medium">
+<span class="flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[14px] text-primary">local_shipping</span> Envíos 24h</span>
+<span class="flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[14px] text-primary">eco</span> Cero Plástico</span>
+<span class="flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[14px] text-primary">handshake</span> Trato Justo</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- MODAL INTERACTIVITY SCRIPT -->
+<script id="modal-interactivity-script">
+(function() {
+  const modal = document.getElementById('product-modal-backdrop');
+  const closeBtn = document.getElementById('close-modal-btn');
+  const modalTitle = document.getElementById('modal-product-title');
+  const modalImg = document.getElementById('modal-product-img');
+  const modalDesc = document.getElementById('modal-product-desc');
+  const modalCatBadge = document.getElementById('modal-badge-cat');
+  const modalCatText = document.getElementById('modal-category-text');
+  const modalPrice = document.getElementById('modal-price-display');
+  const modalWeightLabel = document.getElementById('modal-weight-label');
+  const modalQty = document.getElementById('modal-qty-value');
+  const qtyMinus = document.getElementById('modal-qty-minus');
+  const qtyPlus = document.getElementById('modal-qty-plus');
+  const modalCta = document.getElementById('modal-add-to-cart-btn');
+  const packagingBtn = document.getElementById('toggle-modal-packaging');
+  const packagingLabel = document.getElementById('modal-packaging-label');
+  
+  let currentBasePrice = 3.80;
+  let currentMultiplier = 1;
+  let currentQty = 1;
+  let isGlassJar = false;
+
+  function updateModalPrice() {
+    const portionTotal = currentBasePrice * currentMultiplier;
+    const packagingExtra = isGlassJar ? 0.80 : 0.00;
+    const finalTotal = ((portionTotal + packagingExtra) * currentQty).toFixed(2);
+    if (modalPrice) {
+      modalPrice.textContent = `$${finalTotal}`;
+    }
+  }
+
+  // Weight selectors
+  const gramBtns = document.querySelectorAll('.modal-gram-btn');
+  gramBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      gramBtns.forEach(b => {
+        b.classList.remove('active-modal-portion', 'bg-[#fcbf00]', 'border-[#e5ac00]', 'text-deep-earth', 'font-bold', 'shadow-xs');
+        b.classList.add('bg-surface-container-low', 'border-[#ead7c3]', 'text-secondary', 'font-semibold');
+      });
+      btn.classList.add('active-modal-portion', 'bg-[#fcbf00]', 'border-[#e5ac00]', 'text-deep-earth', 'font-bold', 'shadow-xs');
+      btn.classList.remove('bg-surface-container-low', 'border-[#ead7c3]', 'text-secondary', 'font-semibold');
+      currentMultiplier = parseFloat(btn.getAttribute('data-multiplier')) || 1;
+      if (modalWeightLabel) {
+        modalWeightLabel.textContent = `/ ${btn.getAttribute('data-weight')}`;
+      }
+      updateModalPrice();
+    });
+  });
+
+  // Stepper
+  if (qtyMinus && modalQty) {
+    qtyMinus.addEventListener('click', () => {
+      if (currentQty > 1) {
+        currentQty--;
+        modalQty.textContent = currentQty;
+        updateModalPrice();
+      }
+    });
+  }
+  if (qtyPlus && modalQty) {
+    qtyPlus.addEventListener('click', () => {
+      currentQty++;
+      modalQty.textContent = currentQty;
+      updateModalPrice();
+    });
+  }
+
+  // Packaging toggle
+  if (packagingBtn && packagingLabel) {
+    packagingBtn.addEventListener('click', () => {
+      isGlassJar = !isGlassJar;
+      if (isGlassJar) {
+        packagingLabel.textContent = 'Frasco de vidrio (+ $0.80 retornable)';
+        packagingBtn.textContent = 'Cambiar a Bolsa';
+      } else {
+        packagingLabel.textContent = 'Bolsa kraft compostable';
+        packagingBtn.textContent = 'Cambiar a Frasco';
+      }
+      updateModalPrice();
+    });
+  }
+
+  // Close Modal
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    const container = document.getElementById('product-modal-container');
+    if (container) {
+      container.classList.add('scale-95', 'opacity-0');
+    }
+    setTimeout(() => {
+      modal.style.display = 'none';
+    }, 280);
+  }
+
+  // Open Modal
+  function openModal(data) {
+    if (!modal) return;
+    if (data) {
+      if (modalTitle) modalTitle.textContent = data.title;
+      if (modalDesc) modalDesc.textContent = data.desc;
+      if (modalImg && data.img) {
+        modalImg.src = data.img;
+        modalImg.alt = data.title;
+      }
+      if (modalCatBadge) modalCatBadge.textContent = data.catName;
+      if (modalCatText) modalCatText.textContent = data.catName;
+      currentBasePrice = data.price;
+      currentQty = 1;
+      if (modalQty) modalQty.textContent = '1';
+      // Reset gram selection to first
+      if (gramBtns.length > 0) {
+        gramBtns[0].click();
+      }
+      updateModalPrice();
+    }
+    modal.style.display = 'flex';
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    const container = document.getElementById('product-modal-container');
+    if (container) {
+      container.classList.remove('scale-95', 'opacity-0');
+    }
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // Attach click to product card images and titles to pop up detail modal
+  document.querySelectorAll('.product-item').forEach(card => {
+    const titleEl = card.querySelector('h3');
+    const imgEl = card.querySelector('img');
+    const descEl = card.querySelector('p');
+    const catEl = card.querySelector('.top-3.left-3');
+    const price = parseFloat(card.getAttribute('data-price')) || 3.80;
+
+    const handler = (e) => {
+      // avoid triggering when favorite or portion or cart button clicked
+      if (e.target.closest('.fav-toggle') || e.target.closest('.portion-btn') || e.target.closest('.cart-add-btn')) {
+        return;
+      }
+      openModal({
+        title: titleEl ? titleEl.textContent : 'Producto Granel',
+        desc: descEl ? descEl.textContent : 'Alimento andino puro al peso exacto.',
+        img: imgEl ? imgEl.src : '',
+        catName: catEl ? catEl.textContent : 'Granel',
+        price: price
+      });
+    };
+
+    if (imgEl) imgEl.parentElement.style.cursor = 'pointer';
+    if (imgEl) imgEl.parentElement.addEventListener('click', handler);
+    if (titleEl) {
+      titleEl.style.cursor = 'pointer';
+      titleEl.addEventListener('click', handler);
+    }
+  });
+
+  // Modal CTA add to cart
+  if (modalCta) {
+    modalCta.addEventListener('click', () => {
+      const cartCounter = document.getElementById('cart-counter');
+      if (cartCounter) {
+        let current = parseInt(cartCounter.textContent) || 0;
+        cartCounter.textContent = current + currentQty;
+        cartCounter.style.transform = 'scale(1.4)';
+        setTimeout(() => { cartCounter.style.transform = 'scale(1)'; }, 220);
+      }
+      const cartToast = document.getElementById('cart-toast');
+      const cartToastText = document.getElementById('cart-toast-text');
+      if (cartToast && cartToastText) {
+        const name = modalTitle ? modalTitle.textContent : 'Producto';
+        cartToastText.textContent = `${currentQty}x ${name} agregado(s) a tu canasta`;
+        cartToast.classList.remove('translate-y-[-120%]', 'opacity-0');
+        cartToast.classList.add('translate-y-0', 'opacity-100');
+        setTimeout(() => {
+          cartToast.classList.add('translate-y-[-120%]', 'opacity-0');
+          cartToast.classList.remove('translate-y-0', 'opacity-100');
+        }, 2400);
+      }
+      closeModal();
+    });
+  }
+})();
+</script>
+
+
+
+
+
+</body></html>

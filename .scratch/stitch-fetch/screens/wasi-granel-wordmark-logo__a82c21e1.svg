@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
+  <text x="10" y="42" font-family="Fredoka, sans-serif" font-weight="600" font-size="32" fill="#544738">Wasi Granel</text>
+  <path d="M185 30c0-8.284-6.716-15-15-15s-15 6.716-15 15 6.716 15 15 15 15-6.716 15-15z" fill="#FCBF00" opacity="0.8"/>
+  <path d="M180 30c0-5.523-4.477-10-10-10s-10 4.477-10 10 4.477 10 10 10 10-4.477 10-10z" fill="#544738"/>
+</svg>

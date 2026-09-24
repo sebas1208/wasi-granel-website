@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wasi Granel - Contacto y Sucursales</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "error": "#ba1a1a",
+            "tertiary-fixed": "#f1dfd0",
+            "secondary-fixed": "#f5dece",
+            "on-tertiary-fixed": "#231a11",
+            "surface-container-highest": "#f3dfcb",
+            "on-secondary-fixed": "#251910",
+            "inverse-on-surface": "#ffeedd",
+            "on-primary": "#ffffff",
+            "on-tertiary-fixed-variant": "#50453a",
+            "on-secondary": "#ffffff",
+            "surface-variant": "#f3dfcb",
+            "secondary": "#6c5b4f",
+            "surface-tint": "#785a00",
+            "surface-container": "#ffebd6",
+            "primary-container": "#fcbf00",
+            "inverse-primary": "#fabd00",
+            "outline-variant": "#d3c5ab",
+            "on-primary-container": "#6b4f00",
+            "tertiary": "#695c50",
+            "primary-fixed": "#ffdf9d",
+            "on-tertiary-container": "#5e5246",
+            "error-container": "#ffdad6",
+            "surface-container-high": "#f9e5d0",
+            "surface-container-low": "#fff1e5",
+            "tertiary-container": "#d7c6b7",
+            "secondary-container": "#f5dece",
+            "on-background": "#241a0d",
+            "on-secondary-fixed-variant": "#534438",
+            "primary-fixed-dim": "#fabd00",
+            "on-surface-variant": "#4f4632",
+            "outline": "#817660",
+            "inverse-surface": "#3a2e21",
+            "on-tertiary": "#ffffff",
+            "background": "#fff8f4",
+            "on-primary-fixed-variant": "#5b4300",
+            "on-error-container": "#93000a",
+            "on-surface": "#241a0d",
+            "on-primary-fixed": "#251a00",
+            "on-error": "#ffffff",
+            "secondary-fixed-dim": "#d8c3b3",
+            "on-secondary-container": "#726155",
+            "surface-dim": "#ead7c3",
+            "surface-bright": "#fff8f4",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed-dim": "#d4c4b5",
+            "primary": "#785a00",
+            "surface": "#fff8f4",
+            "deep-earth": "#241a0d"
+          },
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "sans-serif"],
+            headline: ["Plus Jakarta Sans", "sans-serif"],
+            display: ["Plus Jakarta Sans", "sans-serif"],
+            body: ["Plus Jakarta Sans", "sans-serif"],
+            label: ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-sans text-deep-earth min-h-screen antialiased flex flex-col justify-between selection:bg-primary/20">
+<!-- 1. Top Floating Glassmorphic Navbar -->
+<header class="fixed top-0 left-0 right-0 w-full z-50 px-4 sm:px-8 py-3 backdrop-blur-md bg-surface/90 transition-all duration-300">
+<div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-2.5 bg-surface-container-lowest/95 backdrop-blur-sm rounded-full shadow-sm border border-outline-variant/30 gap-4">
+<div class="flex items-center gap-8">
+<a class="flex items-center gap-2 flex-shrink-0" data-path="inicio" href="#">
+<img alt="Wasi Granel Logo" class="h-9 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WTny8DydRRmBOhn3sJ8VzRMLBkHMFFFOijOUNZ3WstqQbqgh1MbTITk6gpItAbMSxCqhlnM4Kq88QlDLoxoV8L6gA6MEMQrDbzYsA24YAKVsgrY1Mmha0rVmi2ZWiQSl8_utDcVFfQHXbnpk6ESZdTHuZ8cUDVweAhwrxcFW8HbLaiO7Br4kU23K1PkwFUKfD5-6Z_lM7OZqzS8CCWoyXrp5_Rw2Hu1j9YhFB3S00U_RLaLKa4U_DhEYvY12zOm4jNVOGFDV5UuFM"/>
+</a>
+<nav class="hidden sm:flex items-center gap-6">
+<a class="text-sm font-semibold tracking-wide text-on-surface hover:text-primary transition-colors" data-path="inicio" href="#">Inicio</a>
+<a class="text-sm font-semibold tracking-wide text-on-surface hover:text-primary transition-colors" data-path="tienda" href="#">Tienda</a>
+<a aria-current="page" class="text-sm font-bold tracking-wide text-primary border-b-2 border-primary-container pb-0.5" data-path="contacto" href="#">Contacto</a>
+</nav>
+</div>
+<div class="flex items-center gap-3 flex-shrink-0">
+<div class="hidden md:flex items-center relative w-48 lg:w-64">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-lg pointer-events-none">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low/60 rounded-full text-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary transition-all border border-outline-variant/20" placeholder="Buscar..." type="text"/>
+</div>
+<button aria-label="Buscar en móvil" class="md:hidden w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-lg">search</span>
+</button>
+<button aria-label="Carrito de compras" class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-primary-container hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined text-lg">shopping_cart</span>
+</button>
+<button aria-label="Mi Perfil" class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-primary-container hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined text-lg">person</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Flow -->
+<main class="w-full pt-20 flex-grow">
+<!-- 2. Hero / Intro Editorial Section -->
+<section class="relative w-full bg-[#fcf5ed] px-6 lg:px-12 py-12 lg:py-20 overflow-hidden">
+<!-- Andean Geometric Subtle Pattern Overlay -->
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none select-none flex items-center justify-center">
+<svg class="text-on-surface" fill="currentColor" height="900" viewbox="0 0 100 100" width="900">
+<polygon points="50,0 100,50 50,100 0,50"></polygon>
+<polygon points="50,15 85,50 50,85 15,50"></polygon>
+<polygon points="50,30 70,50 50,70 30,50"></polygon>
+</svg>
+</div>
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
+<!-- Columna Izquierda: Mensaje y Valores -->
+<div class="lg:col-span-7 flex flex-col items-start space-y-6">
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#faebd7] text-on-surface text-xs font-semibold uppercase tracking-widest">
+<span class="w-2 h-2 rounded-full bg-[#fcbf00]"></span>
+            Riobamba &amp; Quito, Ecuador • Despensa Urbana Consciente
+          </div>
+<h1 class="font-headline font-bold text-4xl sm:text-5xl lg:text-6xl text-[#241a0d] tracking-tight leading-[1.1]">
+            Conectemos desde <br/><span class="text-[#875d00]">la raíz</span>
+</h1>
+<p class="font-body text-base sm:text-lg text-on-surface-variant leading-relaxed max-w-2xl">
+            Wasi Granel nació para transformar el consumo cotidiano en un acto consciente de equilibrio, trayendo granos seleccionados, frutos secos y cacao puro directamente desde el corazón de los Andes ecuatorianos hasta tu mesa.
+          </p>
+<!-- Tres Pilares de Transparencia -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full pt-2">
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm flex flex-col gap-2">
+<span class="material-symbols-outlined text-[#875d00] text-2xl">eco</span>
+<h4 class="font-headline font-bold text-xs uppercase tracking-wider text-[#241a0d]">Cero Plásticos</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed">Trae tus frascos o usa nuestras bolsas de algodón y kraft 100% compostables.</p>
+</div>
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm flex flex-col gap-2">
+<span class="material-symbols-outlined text-[#875d00] text-2xl">scale</span>
+<h4 class="font-headline font-bold text-xs uppercase tracking-wider text-[#241a0d]">Pesaje Exacto</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed">Lleva exactamente lo que necesitas, desde 10 gramos hasta costales enteros.</p>
+</div>
+<div class="p-5 rounded-2xl bg-surface-container-lowest shadow-sm flex flex-col gap-2">
+<span class="material-symbols-outlined text-[#875d00] text-2xl">hub</span>
+<h4 class="font-headline font-bold text-xs uppercase tracking-wider text-[#241a0d]">Comercio Justo</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed">Trazabilidad directa con comunidades agroecológicas de la Sierra y Amazonía.</p>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-4 pt-3">
+<a class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#fcbf00] text-[#241a0d] font-headline font-bold text-xs uppercase tracking-wider shadow-sm hover:brightness-95 transition-all" href="#contacto-directo">
+<span class="material-symbols-outlined text-[19px]">chat</span>
+              Escríbenos por WhatsApp
+            </a>
+<a class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-surface-container text-[#241a0d] font-headline font-semibold text-xs uppercase tracking-wider hover:bg-surface-container-high transition-all" href="#sucursales">
+<span class="material-symbols-outlined text-[19px]">storefront</span>
+              Ver Nuestras Sedes
+            </a>
+</div>
+</div>
+<!-- Columna Derecha: Foto de la tienda y Badge -->
+<div class="lg:col-span-5 relative">
+<div class="relative rounded-3xl overflow-hidden shadow-xl bg-surface-container border border-outline-variant/30">
+<img alt="Interior moderno y cálido de Wasi Granel con estantes de madera y frascos de vidrio llenos de semillas" class="w-full h-[460px] lg:h-[520px] object-cover hover:scale-105 transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida/AEtjO1XJXduS9uWoqroaIZcxLbMXpKpUsiVWCyEn_gE8v3qt3MYifiD-_sOox3VqdPAR3t8N4JzFR5Ao1I40i2krzbuzdFQAl__MzYJlxqqk4eo-s94epia6CCrC5BH0hEUW2EhGcKLzNJKNcniEzKuEEe19C9hKMlLvUqPBS9FEOLx23bsxg6MBHajJsmAIdkqMqQ2XDHroeoAWw35LgUy3-4a96rraPa5iPPuCKnjsA6W0nUqsa6vDTnearYCV"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#241a0d]/60 via-transparent to-transparent"></div>
+<!-- Logo integrado de la marca -->
+<div class="absolute top-5 left-5 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-xl shadow-md flex items-center gap-2">
+<img alt="Logo Wasi Granel" class="h-6 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WTny8DydRRmBOhn3sJ8VzRMLBkHMFFFOijOUNZ3WstqQbqgh1MbTITk6gpItAbMSxCqhlnM4Kq88QlDLoxoV8L6gA6MEMQrDbzYsA24YAKVsgrY1Mmha0rVmi2ZWiQSl8_utDcVFfQHXbnpk6ESZdTHuZ8cUDVweAhwrxcFW8HbLaiO7Br4kU23K1PkwFUKfD5-6Z_lM7OZqzS8CCWoyXrp5_Rw2Hu1j9YhFB3S00U_RLaLKa4U_DhEYvY12zOm4jNVOGFDV5UuFM"/>
+</div>
+<!-- Badge flotante de sedes -->
+<div class="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-white/95 backdrop-blur-md shadow-lg flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-[#fcbf00] flex items-center justify-center text-[#241a0d]">
+<span class="material-symbols-outlined text-xl">location_on</span>
+</div>
+<div>
+<p class="font-headline font-bold text-xs uppercase tracking-wider text-on-surface">Visítanos en persona</p>
+<p class="font-body text-xs text-on-surface-variant font-medium">Riobamba (Matriz) &amp; Quito (La Floresta)</p>
+</div>
+</div>
+<span class="px-2.5 py-1 text-[11px] font-bold uppercase rounded-md bg-[#f5dece] text-[#726155]">2 Casas</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Section: Nuestras Casas Wasi -->
+<section class="w-full max-w-7xl mx-auto px-6 lg:px-12 py-16 lg:py-24" id="sucursales">
+<div class="flex flex-col items-center text-center max-w-3xl mx-auto space-y-3 mb-12">
+<span class="text-xs font-label uppercase tracking-widest font-bold text-[#875d00]">Encuéntranos en Ecuador</span>
+<h2 class="font-headline font-bold text-3xl lg:text-4xl text-on-surface tracking-tight">
+          Nuestras Casas Wasi
+        </h2>
+<p class="font-body text-sm sm:text-base text-on-surface-variant">
+          Ven con tus propios recipientes o utiliza nuestros envases biodegradables y de vidrio reciclable. En ambas tiendas te asesoramos en tu despensa a granel.
+        </p>
+<!-- Selector de Sucursal -->
+<div class="flex p-1.5 rounded-xl bg-surface-container mt-4 gap-2 border border-outline-variant/30" role="tablist">
+<button aria-selected="true" class="px-5 py-2.5 rounded-lg font-headline font-bold text-xs uppercase tracking-wider transition-all bg-surface-container-lowest text-on-surface shadow-sm" id="tab-btn-riobamba" onclick="switchLocation('riobamba')" role="tab">
+            1. Riobamba (Matriz)
+          </button>
+<button aria-selected="false" class="px-5 py-2.5 rounded-lg font-headline font-bold text-xs uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface" id="tab-btn-quito" onclick="switchLocation('quito')" role="tab">
+            2. Quito (La Floresta)
+          </button>
+</div>
+</div>
+<!-- Panel de Sucursales con Grid Asimétrico -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Tarjeta Interactiva de Información -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<!-- Riobamba Info Card -->
+<div class="block p-6 sm:p-8 rounded-3xl bg-[#fff5ea] border border-outline-variant/30 shadow-sm transition-all duration-300" id="card-riobamba">
+<div class="flex items-center justify-between pb-4">
+<span class="inline-flex items-center gap-1.5 text-xs font-label uppercase font-bold tracking-wider text-[#875d00]">
+<span class="w-2 h-2 rounded-full bg-[#875d00] animate-pulse"></span> Sede Fundadora
+              </span>
+<span class="text-xs text-on-surface-variant font-medium bg-white px-2.5 py-1 rounded-md border border-outline-variant/20">Chimborazo</span>
+</div>
+<h3 class="font-headline font-bold text-2xl text-on-surface mb-2">Wasi Granel Riobamba</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+              Nuestra casa matriz donde todo comenzó. Espacio luminoso con más de 200 referencias a granel y barra de molienda en vivo.
+            </p>
+<div class="space-y-4 pt-2">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-[#875d00]">
+<span class="material-symbols-outlined text-[20px]">pin_drop</span>
+</div>
+<div>
+<p class="text-xs uppercase font-label font-bold text-on-surface">Dirección</p>
+<p class="text-sm text-on-surface-variant">Calle de la Tierra 123 y Av. Chimborazo, Barrio Bellavista, Riobamba</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-[#875d00]">
+<span class="material-symbols-outlined text-[20px]">alarm</span>
+</div>
+<div>
+<p class="text-xs uppercase font-label font-bold text-on-surface">Horario de Atención</p>
+<p class="text-sm text-on-surface-variant">Lunes a Sábado: 08:30 – 19:30</p>
+<p class="text-xs text-on-surface-variant/80">Domingos: 09:30 – 15:00</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-[#875d00]">
+<span class="material-symbols-outlined text-[20px]">phone_iphone</span>
+</div>
+<div>
+<p class="text-xs uppercase font-label font-bold text-on-surface">Teléfono / WhatsApp</p>
+<a class="text-sm font-semibold text-[#875d00] hover:underline" href="https://wa.me/593987654321?text=Hola%20Wasi%20Granel%20Riobamba,%20quisiera%20consultar%20sobre..." rel="noopener noreferrer" target="_blank">
+                    +593 9 8765 4321
+                  </a>
+</div>
+</div>
+</div>
+<!-- Servicios especiales de la tienda -->
+<div class="mt-6 pt-6 border-t border-outline-variant/30 flex flex-wrap gap-2">
+<span class="text-xs px-2.5 py-1 rounded-md bg-white text-on-surface font-medium flex items-center gap-1 border border-outline-variant/20">
+<span class="material-symbols-outlined text-[15px] text-[#875d00]">check_circle</span> Molienda de Café en vivo
+              </span>
+<span class="text-xs px-2.5 py-1 rounded-md bg-white text-on-surface font-medium flex items-center gap-1 border border-outline-variant/20">
+<span class="material-symbols-outlined text-[15px] text-[#875d00]">check_circle</span> Taras automáticas
+              </span>
+<span class="text-xs px-2.5 py-1 rounded-md bg-white text-on-surface font-medium flex items-center gap-1 border border-outline-variant/20">
+<span class="material-symbols-outlined text-[15px] text-[#875d00]">check_circle</span> Parqueadero de bicicletas
+              </span>
+</div>
+<div class="mt-6">
+<a class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-surface-container-highest hover:bg-[#fcbf00] text-on-surface hover:text-[#241a0d] font-headline font-bold text-xs uppercase tracking-wider transition-colors" href="https://maps.google.com/?q=Riobamba,Ecuador" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[18px]">directions</span>
+                Cómo llegar (Google Maps / Waze)
+              </a>
+</div>
+</div>
+<!-- Quito Info Card -->
+<div class="hidden p-6 sm:p-8 rounded-3xl bg-[#fff5ea] border border-outline-variant/30 shadow-sm transition-all duration-300" id="card-quito">
+<div class="flex items-center justify-between pb-4">
+<span class="inline-flex items-center gap-1.5 text-xs font-label uppercase font-bold tracking-wider text-[#875d00]">
+<span class="w-2 h-2 rounded-full bg-[#875d00] animate-pulse"></span> Nueva Casa Cultural
+              </span>
+<span class="text-xs text-on-surface-variant font-medium bg-white px-2.5 py-1 rounded-md border border-outline-variant/20">Pichincha</span>
+</div>
+<h3 class="font-headline font-bold text-2xl text-on-surface mb-2">Wasi Granel Quito</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+              Ubicada en el barrio bohemio de La Floresta. Combina despensa sin empaques con un rincón de degustación de infusiones andinas.
+            </p>
+<div class="space-y-4 pt-2">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-[#875d00]">
+<span class="material-symbols-outlined text-[20px]">pin_drop</span>
+</div>
+<div>
+<p class="text-xs uppercase font-label font-bold text-on-surface">Dirección</p>
+<p class="text-sm text-on-surface-variant">Calle Guipúzcoa E14-88 y Coruña, Barrio La Floresta, Quito</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-[#875d00]">
+<span class="material-symbols-outlined text-[20px]">alarm</span>
+</div>
+<div>
+<p class="text-xs uppercase font-label font-bold text-on-surface">Horario de Atención</p>
+<p class="text-sm text-on-surface-variant">Lunes a Sábado: 09:00 – 20:00</p>
+<p class="text-xs text-on-surface-variant/80">Domingos: 10:00 – 17:00</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-[#875d00]">
+<span class="material-symbols-outlined text-[20px]">phone_iphone</span>
+</div>
+<div>
+<p class="text-xs uppercase font-label font-bold text-on-surface">Teléfono / WhatsApp</p>
+<a class="text-sm font-semibold text-[#875d00] hover:underline" href="https://wa.me/593991234567?text=Hola%20Wasi%20Granel%20Quito,%20quisiera%20consultar%20sobre..." rel="noopener noreferrer" target="_blank">
+                    +593 9 9123 4567
+                  </a>
+</div>
+</div>
+</div>
+<!-- Servicios especiales de la tienda -->
+<div class="mt-6 pt-6 border-t border-outline-variant/30 flex flex-wrap gap-2">
+<span class="text-xs px-2.5 py-1 rounded-md bg-white text-on-surface font-medium flex items-center gap-1 border border-outline-variant/20">
+<span class="material-symbols-outlined text-[15px] text-[#875d00]">check_circle</span> Despachos en Bicimensajería
+              </span>
+<span class="text-xs px-2.5 py-1 rounded-md bg-white text-on-surface font-medium flex items-center gap-1 border border-outline-variant/20">
+<span class="material-symbols-outlined text-[15px] text-[#875d00]">check_circle</span> Barra de Cremas de Frutos Secos
+              </span>
+<span class="text-xs px-2.5 py-1 rounded-md bg-white text-on-surface font-medium flex items-center gap-1 border border-outline-variant/20">
+<span class="material-symbols-outlined text-[15px] text-[#875d00]">check_circle</span> Punto de Retiro Online
+              </span>
+</div>
+<div class="mt-6">
+<a class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-surface-container-highest hover:bg-[#fcbf00] text-on-surface hover:text-[#241a0d] font-headline font-bold text-xs uppercase tracking-wider transition-colors" href="https://maps.google.com/?q=La+Floresta,Quito,Ecuador" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-[18px]">directions</span>
+                Cómo llegar (Google Maps / Waze)
+              </a>
+</div>
+</div>
+</div>
+<!-- Columna Derecha: Mapa Vectorial Realista Interactivo -->
+<div class="lg:col-span-7 flex flex-col gap-4">
+<div class="relative w-full h-[420px] lg:h-[510px] rounded-3xl overflow-hidden shadow-md bg-[#eef3f0] border border-outline-variant/30">
+<!-- Riobamba Map Canvas Simulation -->
+<div class="w-full h-full relative" id="map-view-riobamba">
+<!-- Stylized Vector Map Graphics -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 600 500">
+<rect fill="#edf3ec" height="100%" width="100%"></rect>
+<!-- Green Parks and Areas -->
+<path d="M 40 40 Q 90 20, 160 50 T 220 120 T 110 200 Z" fill="#d9ebd7"></path>
+<path d="M 420 80 Q 480 30, 560 60 T 580 200 T 450 250 Z" fill="#d9ebd7"></path>
+<path d="M 390 320 Q 470 290, 560 360 T 520 480 T 360 450 Z" fill="#e2eedf"></path>
+<path d="M 40 380 Q 120 330, 180 410 T 100 490 Z" fill="#d9ebd7"></path>
+<!-- Primary Roads -->
+<path d="M -20 150 C 150 160, 300 130, 620 170" fill="none" stroke="#ffffff" stroke-width="14"></path>
+<path d="M -20 150 C 150 160, 300 130, 620 170" fill="none" stroke="#fbd995" stroke-width="7"></path>
+<path d="M 280 -20 C 310 160, 290 320, 330 520" fill="none" stroke="#ffffff" stroke-width="16"></path>
+<path d="M 280 -20 C 310 160, 290 320, 330 520" fill="none" stroke="#fbd995" stroke-width="8"></path>
+<!-- Secondary Grid Roads -->
+<path d="M 50 -10 L 150 510 M 180 -10 L 220 510 M 420 -10 L 460 510 M 520 -10 L 550 510" fill="none" stroke="#ffffff" stroke-width="7"></path>
+<path d="M -10 60 L 610 80 M -10 260 L 610 240 M -10 360 L 610 390 M -10 440 L 610 430" fill="none" stroke="#ffffff" stroke-width="6"></path>
+<!-- Landmark Labels -->
+<text fill="#697669" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" x="180" y="70">San Andrés</text>
+<text fill="#697669" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" x="390" y="80">Guano</text>
+<text fill="#8d9b8d" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="600" x="220" y="170">Lican</text>
+<text fill="#8d9b8d" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="600" x="440" y="240">Parque Lineal Chibunga</text>
+<text fill="#8d9b8d" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="600" x="240" y="380">Cacha</text>
+<text fill="#697669" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" x="450" y="420">Chambo</text>
+</svg>
+<!-- Central Interactive Store Marker Riobamba -->
+<div class="absolute top-[48%] left-[48%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+<div class="px-3.5 py-1.5 bg-[#241a0d] text-white text-xs font-headline font-bold rounded-lg shadow-xl flex items-center gap-2 border border-white/20">
+<span class="w-2.5 h-2.5 rounded-full bg-[#fcbf00] animate-ping"></span>
+                  Wasi Matriz Riobamba
+                </div>
+<div class="w-3.5 h-3.5 bg-[#241a0d] rotate-45 -mt-1.5 shadow-md"></div>
+</div>
+</div>
+<!-- Quito Map Canvas Simulation -->
+<div class="hidden w-full h-full relative" id="map-view-quito">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 600 500">
+<rect fill="#edf3ec" height="100%" width="100%"></rect>
+<!-- Green Parks and Areas -->
+<path d="M 30 20 Q 120 10, 200 90 T 160 260 T 50 180 Z" fill="#d9ebd7"></path>
+<path d="M 360 40 Q 480 30, 550 140 T 490 320 T 320 220 Z" fill="#d9ebd7"></path>
+<path d="M 80 340 Q 180 290, 240 460 T 40 480 Z" fill="#e2eedf"></path>
+<!-- Primary Roads (Coruña / Av. 12 de Octubre / González Suárez) -->
+<path d="M 80 -10 C 140 180, 220 320, 260 520" fill="none" stroke="#ffffff" stroke-width="16"></path>
+<path d="M 80 -10 C 140 180, 220 320, 260 520" fill="none" stroke="#fbd995" stroke-width="8"></path>
+<path d="M -10 220 C 180 210, 360 240, 620 230" fill="none" stroke="#ffffff" stroke-width="14"></path>
+<path d="M -10 220 C 180 210, 360 240, 620 230" fill="none" stroke="#fbd995" stroke-width="7"></path>
+<path d="M 350 -10 C 370 190, 420 340, 480 520" fill="none" stroke="#ffffff" stroke-width="8"></path>
+<path d="M -10 120 L 610 140 M -10 380 L 610 360" fill="none" stroke="#ffffff" stroke-width="6"></path>
+<!-- Landmark Labels -->
+<text fill="#697669" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" x="160" y="60">Parque El Ejido</text>
+<text fill="#697669" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" x="350" y="80">González Suárez</text>
+<text fill="#8d9b8d" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="600" x="210" y="210">Redondel La Floresta</text>
+<text fill="#8d9b8d" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="600" x="370" y="320">Av. La Coruña</text>
+<text fill="#697669" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="700" x="140" y="440">PUCE / La Mariscal</text>
+</svg>
+<!-- Central Interactive Store Marker Quito -->
+<div class="absolute top-[46%] left-[50%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+<div class="px-3.5 py-1.5 bg-[#241a0d] text-white text-xs font-headline font-bold rounded-lg shadow-xl flex items-center gap-2 border border-white/20">
+<span class="w-2.5 h-2.5 rounded-full bg-[#fcbf00] animate-ping"></span>
+                  Wasi Casa Quito (La Floresta)
+                </div>
+<div class="w-3.5 h-3.5 bg-[#241a0d] rotate-45 -mt-1.5 shadow-md"></div>
+</div>
+</div>
+<!-- Controles y Leyenda del Mapa -->
+<div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-3.5 py-2 rounded-xl text-xs shadow-md flex items-center gap-2 border border-outline-variant/30">
+<span class="material-symbols-outlined text-[#875d00] text-base">pin_drop</span>
+<span class="font-headline font-semibold text-on-surface" id="map-legend-text">Sede Activa: Riobamba</span>
+</div>
+<div class="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm p-3 rounded-xl shadow-md text-xs flex items-center gap-3 border border-outline-variant/30">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-[#fcbf00]"></span>
+<span class="font-semibold text-on-surface">Abierto ahora</span>
+</div>
+<span class="text-outline-variant">•</span>
+<span class="text-on-surface-variant font-medium">Estación de Recarga Libre</span>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs text-on-surface-variant px-1 gap-2">
+<p>¿Planeas visitarnos en grupo o llevar compras mayores a 20 kg? Notifícanos con antelación.</p>
+<span class="font-mono text-[11px] text-outline">EC-GEO: ANDEAN_CORRIDOR</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Section: Canal Directo - Estamos para ayudarte -->
+<section class="w-full bg-[#faebd7]/40 py-16 lg:py-24 border-t border-outline-variant/20" id="contacto-directo">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+<!-- Columna Izquierda: Canales Rápidos & WhatsApp Card -->
+<div class="lg:col-span-5 flex flex-col space-y-6">
+<div class="space-y-2">
+<span class="text-xs font-label uppercase tracking-widest font-bold text-[#875d00]">Canal Directo</span>
+<h2 class="font-headline font-bold text-3xl sm:text-4xl text-on-surface tracking-tight">Estamos para ayudarte</h2>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                Ya sea para consultar existencias de productos específicos, gestionar compras al mayoreo para tu cafetería o coordinar pedidos a cualquier rincón de Ecuador.
+              </p>
+</div>
+<!-- Tarjeta de WhatsApp y Urgencias -->
+<div class="p-6 sm:p-7 rounded-3xl bg-[#241a0d] text-[#fff8f4] shadow-md space-y-4">
+<div class="flex items-center justify-between">
+<span class="text-[11px] uppercase tracking-widest font-label font-bold text-[#fcbf00]">Respuesta Rápida</span>
+<span class="material-symbols-outlined text-[#fcbf00] text-2xl">chat</span>
+</div>
+<h3 class="font-headline font-bold text-xl text-white">Atención Inmediata por WhatsApp</h3>
+<p class="text-xs text-[#d8c3b3] leading-relaxed">
+                Conéctate directamente con nuestro equipo de atención en tienda. Respondemos en minutos durante horario comercial.
+              </p>
+<a class="w-full flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-xl bg-[#fcbf00] text-[#241a0d] font-headline font-bold text-xs uppercase tracking-wider hover:brightness-95 shadow-sm transition-all" href="https://wa.me/593987654321?text=Hola%20Wasi%20Granel,%20quiero%20hacer%20un%20pedido%20o%20consulta%20sobre%20sus%20productos..." rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-base">call</span>
+                +593 9 8765 4321 — Chatear ahora
+              </a>
+</div>
+<!-- Otros Canales de Soporte -->
+<div class="p-6 rounded-3xl bg-surface-container-lowest shadow-sm space-y-4 border border-outline-variant/30">
+<h4 class="font-headline font-bold text-xs text-on-surface uppercase tracking-wider">Correos Electrónicos</h4>
+<div class="space-y-3 text-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+<span class="text-xs text-on-surface-variant">Atención general:</span>
+<a class="font-semibold text-xs text-on-surface hover:text-[#875d00] transition-colors" href="mailto:hola@wasigranel.com">hola@wasigranel.com</a>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+<span class="text-xs text-on-surface-variant">Ventas al por mayor &amp; HoReCa:</span>
+<a class="font-semibold text-xs text-on-surface hover:text-[#875d00] transition-colors" href="mailto:ventas@wasigranel.com">ventas@wasigranel.com</a>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+<span class="text-xs text-on-surface-variant">Talleres &amp; Cultura:</span>
+<a class="font-semibold text-xs text-on-surface hover:text-[#875d00] transition-colors" href="mailto:comunidad@wasigranel.com">comunidad@wasigranel.com</a>
+</div>
+</div>
+</div>
+<!-- Preguntas Frecuentes Rápidas -->
+<div class="p-6 rounded-3xl bg-surface-container-lowest shadow-sm border border-outline-variant/30">
+<div class="flex items-center gap-2 mb-2 text-[#875d00] font-headline font-bold text-xs uppercase tracking-wider">
+<span class="material-symbols-outlined text-[18px]">help</span>
+                Pregunta Frecuente
+              </div>
+<p class="font-headline font-bold text-xs text-on-surface">¿Hacen envíos a todo el Ecuador?</p>
+<p class="text-xs text-on-surface-variant mt-1.5 leading-relaxed">
+                Sí, despachamos encomiendas en empaques biodegradables con sellado térmico a cualquier provincia continental vía Servientrega o cooperativa de transporte.
+              </p>
+</div>
+</div>
+<!-- Columna Derecha: Formulario de Mensaje -->
+<div class="lg:col-span-7">
+<div class="p-8 lg:p-10 rounded-3xl bg-surface-container-lowest shadow-lg border border-outline-variant/30">
+<div class="mb-8">
+<span class="text-xs font-label uppercase tracking-widest font-bold text-[#875d00]">Escríbenos</span>
+<h3 class="font-headline font-bold text-2xl text-on-surface mt-1">Envíanos un mensaje</h3>
+<p class="text-xs sm:text-sm text-on-surface-variant mt-1">Completa el formulario y te responderemos en un lapso máximo de 24 horas laborables.</p>
+</div>
+<form class="space-y-5" id="contact-form" onsubmit="handleFormSubmit(event)">
+<!-- Nombre y Teléfono -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="space-y-1.5">
+<label class="block font-label text-xs uppercase tracking-wider font-bold text-on-surface" for="full-name">
+                      Nombre Completo <span class="text-error">*</span>
+</label>
+<input class="w-full px-4 py-3 rounded-xl bg-[#fff5ea] text-on-surface placeholder:text-outline/70 text-sm focus:outline-none focus:ring-2 focus:ring-[#fcbf00] border border-outline-variant/30 transition-all" id="full-name" placeholder="Ej. Camila Morales" required="" type="text"/>
+</div>
+<div class="space-y-1.5">
+<label class="block font-label text-xs uppercase tracking-wider font-bold text-on-surface" for="contact-phone">
+                      Teléfono / WhatsApp <span class="text-error">*</span>
+</label>
+<input class="w-full px-4 py-3 rounded-xl bg-[#fff5ea] text-on-surface placeholder:text-outline/70 text-sm focus:outline-none focus:ring-2 focus:ring-[#fcbf00] border border-outline-variant/30 transition-all" id="contact-phone" placeholder="Ej. +593 9 9999 9999" required="" type="tel"/>
+</div>
+</div>
+<!-- Correo Electrónico -->
+<div class="space-y-1.5">
+<label class="block font-label text-xs uppercase tracking-wider font-bold text-on-surface" for="contact-email">
+                    Correo Electrónico <span class="text-error">*</span>
+</label>
+<input class="w-full px-4 py-3 rounded-xl bg-[#fff5ea] text-on-surface placeholder:text-outline/70 text-sm focus:outline-none focus:ring-2 focus:ring-[#fcbf00] border border-outline-variant/30 transition-all" id="contact-email" placeholder="tu@correo.com" required="" type="email"/>
+</div>
+<!-- Sucursal de Interés o Motivo -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="space-y-1.5">
+<label class="block font-label text-xs uppercase tracking-wider font-bold text-on-surface" for="location-select">
+                      Sucursal de Interés
+                    </label>
+<select class="w-full px-4 py-3 rounded-xl bg-[#fff5ea] text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-[#fcbf00] border border-outline-variant/30 transition-all" id="location-select">
+<option value="riobamba">Riobamba (Casa Matriz)</option>
+<option value="quito">Quito (La Floresta)</option>
+<option value="ambas">Ambas sedes</option>
+<option value="nacional">Envíos Nacionales</option>
+</select>
+</div>
+<div class="space-y-1.5">
+<label class="block font-label text-xs uppercase tracking-wider font-bold text-on-surface" for="subject-select">
+                      Tipo de Consulta
+                    </label>
+<select class="w-full px-4 py-3 rounded-xl bg-[#fff5ea] text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-[#fcbf00] border border-outline-variant/30 transition-all" id="subject-select">
+<option value="general">Información General de Productos</option>
+<option value="mayor">Venta al por mayor / Negocios</option>
+<option value="proveedor">Soy Productor Agroecológico</option>
+<option value="talleres">Talleres y Charlas</option>
+</select>
+</div>
+</div>
+<!-- Mensaje -->
+<div class="space-y-1.5">
+<label class="block font-label text-xs uppercase tracking-wider font-bold text-on-surface" for="contact-message">
+                    Tu Mensaje <span class="text-error">*</span>
+</label>
+<textarea class="w-full px-4 py-3 rounded-xl bg-[#fff5ea] text-on-surface placeholder:text-outline/70 text-sm focus:outline-none focus:ring-2 focus:ring-[#fcbf00] border border-outline-variant/30 transition-all" id="contact-message" placeholder="Cuéntanos en qué podemos ayudarte o qué insumos estás buscando..." required="" rows="4"></textarea>
+</div>
+<!-- Checkbox Consentimiento -->
+<div class="flex items-start gap-2.5 pt-1">
+<input class="mt-1 w-4 h-4 rounded text-[#fcbf00] focus:ring-[#fcbf00] accent-[#fcbf00] cursor-pointer" id="privacy-policy" required="" type="checkbox"/>
+<label class="text-xs text-on-surface-variant leading-relaxed" for="privacy-policy">
+                    Acepto el tratamiento de mis datos de contacto para recibir una respuesta a mi requerimiento según las políticas de privacidad de Wasi Granel.
+                  </label>
+</div>
+<!-- Botón de Envío -->
+<button class="w-full py-3.5 px-6 rounded-xl bg-[#fcbf00] text-[#241a0d] font-headline font-bold text-xs uppercase tracking-wider hover:brightness-95 shadow-md transition-all flex items-center justify-center gap-2" type="submit">
+<span class="material-symbols-outlined text-[19px]">send</span>
+                  Enviar Mensaje
+                </button>
+</form>
+<!-- Notificación de envío exitoso -->
+<div class="hidden mt-6 p-4 rounded-xl bg-secondary-container text-on-secondary-container flex items-center gap-3 border border-outline-variant/30" id="form-success">
+<span class="material-symbols-outlined text-2xl text-[#875d00]">task_alt</span>
+<p class="text-xs font-semibold">¡Mensaje recibido con éxito! Un embajador de Wasi Granel se comunicará contigo pronto.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- 5. Footer -->
+<footer class="w-full bg-[#fcbf00] text-[#241a0d]">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 pt-16 pb-10">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-10 lg:gap-12 pb-12 border-b border-[#241a0d]/10">
+<!-- Brand Info -->
+<div class="space-y-4 md:col-span-1">
+<!-- Logo en blanco puro -->
+<div class="mb-4">
+<img alt="Wasi Granel" class="h-10 md:h-12 w-auto object-contain brightness-0 invert" src="https://lh3.googleusercontent.com/aida/AEtjO1WTny8DydRRmBOhn3sJ8VzRMLBkHMFFFOijOUNZ3WstqQbqgh1MbTITk6gpItAbMSxCqhlnM4Kq88QlDLoxoV8L6gA6MEMQrDbzYsA24YAKVsgrY1Mmha0rVmi2ZWiQSl8_utDcVFfQHXbnpk6ESZdTHuZ8cUDVweAhwrxcFW8HbLaiO7Br4kU23K1PkwFUKfD5-6Z_lM7OZqzS8CCWoyXrp5_Rw2Hu1j9YhFB3S00U_RLaLKa4U_DhEYvY12zOm4jNVOGFDV5UuFM"/>
+</div>
+<p class="text-sm leading-relaxed text-[#544738] mb-6 max-w-sm font-medium">
+            Alimentación contemporánea a granel. Dinamismo, orden y equilibrio cotidiano desde los Andes ecuatorianos hasta tu mesa.
+          </p>
+<div class="flex items-center gap-2.5 pt-2">
+<a aria-label="Instagram" class="w-9 h-9 rounded-full bg-white text-[#544738] hover:bg-[#544738] hover:text-white flex items-center justify-center shadow-sm hover:scale-105 transition-all duration-300" href="#">
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+</a>
+<a aria-label="Facebook" class="w-9 h-9 rounded-full bg-white text-[#544738] hover:bg-[#544738] hover:text-white flex items-center justify-center shadow-sm hover:scale-105 transition-all duration-300" href="#">
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.374 14.5 5 15.6 5H18V0h-3.808C10.597 0 9 1.583 9 4.615V8z"></path></svg>
+</a>
+<a aria-label="WhatsApp" class="w-9 h-9 rounded-full bg-white text-[#544738] hover:bg-[#544738] hover:text-white flex items-center justify-center shadow-sm hover:scale-105 transition-all duration-300" href="https://wa.me/593987654321" rel="noopener noreferrer" target="_blank">
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path></svg>
+</a>
+</div>
+</div>
+<!-- Columna Navegación -->
+<div class="space-y-3">
+<h3 class="text-xs font-label uppercase tracking-widest font-bold text-[#241a0d]">Navegación</h3>
+<ul class="space-y-2 text-sm font-medium">
+<li><a class="text-[#544738] hover:text-[#241a0d] transition-colors" data-path="inicio" href="#">Inicio</a></li>
+<li><a class="text-[#544738] hover:text-[#241a0d] transition-colors" data-path="tienda" href="#">Tienda a Granel</a></li>
+<li><a class="text-[#544738] hover:text-[#241a0d] transition-colors" data-path="contacto" href="#">Contacto y Soporte</a></li>
+<li><a class="text-[#544738] hover:text-[#241a0d] transition-colors" data-path="politicas-ambientales" href="#">Manifiesto Circular</a></li>
+</ul>
+</div>
+<!-- Columna Legal -->
+<div class="space-y-3">
+<h3 class="text-xs font-label uppercase tracking-widest font-bold text-[#241a0d]">Legal</h3>
+<ul class="space-y-2 text-sm font-medium">
+<li><a class="text-[#544738] hover:text-[#241a0d] transition-colors" data-path="terminos-condiciones" href="#">Términos y Condiciones</a></li>
+<li><a class="text-[#544738] hover:text-[#241a0d] transition-colors" data-path="politica-privacidad" href="#">Política de Privacidad</a></li>
+<li><a class="text-[#544738] hover:text-[#241a0d] transition-colors" data-path="preguntas-frecuentes" href="#">Preguntas Frecuentes</a></li>
+<li><a class="text-[#544738] hover:text-[#241a0d] transition-colors" data-path="devoluciones" href="#">Política de Devoluciones</a></li>
+</ul>
+</div>
+<!-- Columna Ubicación -->
+<div class="space-y-3">
+<h3 class="text-xs font-label uppercase tracking-widest font-bold text-[#241a0d]">Ubicación</h3>
+<ul class="space-y-2.5 text-sm font-medium text-[#544738]">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[18px] text-[#241a0d] flex-shrink-0 mt-0.5">location_on</span>
+<span>Calle de la Tierra 123, Riobamba / Coruña, La Floresta, Quito, Ecuador</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-[#241a0d] flex-shrink-0">mail</span>
+<a class="hover:underline text-[#544738] hover:text-[#241a0d]" href="mailto:hola@wasigranel.com">hola@wasigranel.com</a>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-[#241a0d] flex-shrink-0">phone</span>
+<span>+593 9 8765 4321 / +593 2 290 4480</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Copyright Bar -->
+<div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-[#241a0d]">
+<p>© 2024 Wasi Granel. Dinamismo, orden y equilibrio cotidiano.</p>
+<p class="font-mono text-[11px] text-[#544738]">Riobamba &amp; Quito • Ecuador</p>
+</div>
+</div>
+</footer>
+<!-- Script interactivo de conmutación de sucursales y formulario -->
+<script>
+    function switchLocation(city) {
+      const cardRio = document.getElementById('card-riobamba');
+      const cardQui = document.getElementById('card-quito');
+      const btnRio = document.getElementById('tab-btn-riobamba');
+      const btnQui = document.getElementById('tab-btn-quito');
+      const mapRio = document.getElementById('map-view-riobamba');
+      const mapQui = document.getElementById('map-view-quito');
+      const legendText = document.getElementById('map-legend-text');
+      const locSelect = document.getElementById('location-select');
+
+      if (city === 'riobamba') {
+        cardRio.classList.remove('hidden');
+        cardQui.classList.add('hidden');
+        mapRio.classList.remove('hidden');
+        mapQui.classList.add('hidden');
+
+        btnRio.className = 'px-5 py-2.5 rounded-lg font-headline font-bold text-xs uppercase tracking-wider transition-all bg-surface-container-lowest text-on-surface shadow-sm';
+        btnRio.setAttribute('aria-selected', 'true');
+        btnQui.className = 'px-5 py-2.5 rounded-lg font-headline font-bold text-xs uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface';
+        btnQui.setAttribute('aria-selected', 'false');
+
+        if (legendText) legendText.textContent = 'Sede Activa: Riobamba (Matriz)';
+        if (locSelect) locSelect.value = 'riobamba';
+      } else {
+        cardRio.classList.add('hidden');
+        cardQui.classList.remove('hidden');
+        mapRio.classList.add('hidden');
+        mapQui.classList.remove('hidden');
+
+        btnQui.className = 'px-5 py-2.5 rounded-lg font-headline font-bold text-xs uppercase tracking-wider transition-all bg-surface-container-lowest text-on-surface shadow-sm';
+        btnQui.setAttribute('aria-selected', 'true');
+        btnRio.className = 'px-5 py-2.5 rounded-lg font-headline font-bold text-xs uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface';
+        btnRio.setAttribute('aria-selected', 'false');
+
+        if (legendText) legendText.textContent = 'Sede Activa: Quito (La Floresta)';
+        if (locSelect) locSelect.value = 'quito';
+      }
+    }
+
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      const successBox = document.getElementById('form-success');
+      const form = document.getElementById('contact-form');
+      if (successBox) {
+        successBox.classList.remove('hidden');
+        form.reset();
+        setTimeout(() => {
+          successBox.classList.add('hidden');
+        }, 6000);
+      }
+    }
+  </script>
+</body></html>

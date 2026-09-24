@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: wasi-payload-db
+    restart: always
+    environment:
+      POSTGRES_USER: payload
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: payload
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U payload -d payload"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # Not exposed to the host; only reachable by the payload service on the internal network.
+
+  payload:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wasi-payload-app
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://payload:${POSTGRES_PASSWORD}@postgres:5432/payload
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+    ports:
+      - "3000:3000"
+    volumes:
+      # Persist uploaded media (product/logo images). Matches Payload's default
+      # `upload.staticDir` of `media/`, which resolves to /app/media in the container.
+      - media:/app/media
+
+volumes:
+  pgdata:
+  media:
