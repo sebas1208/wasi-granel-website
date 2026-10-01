@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 961 455" fill="none" style="width: 100%; height: 100%;">
+  <!-- Puruhá Spiral Symbol -->
+  <path d="M168 18C120 18 36 100 18 135C5 160 12 188 38 200C60 210 95 208 135 208H210C240 208 260 220 250 250C235 295 180 340 100 370C50 390 15 415 35 440C55 460 95 445 135 425C210 385 285 320 315 250C345 180 315 130 250 100C210 82 170 82 135 82H85C65 82 60 70 75 55C95 35 135 18 168 18Z" fill="#FFFFFF"/>
+  <path d="M140 180C110 180 75 165 65 145C55 125 75 105 105 95C140 85 180 95 205 120C225 140 215 165 190 175C175 180 155 180 140 180Z" fill="#FFFFFF"/>
+  <!-- WASI Text -->
+  <text x="400" y="240" font-family="'Fredoka', 'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="210" fill="#FFFFFF" letter-spacing="-2">WASI</text>
+  <!-- GRANEL Text -->
+  <text x="400" y="410" font-family="'Fredoka', 'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="190" fill="#FFFFFF" letter-spacing="-1">GRANEL</text>
+</svg>
