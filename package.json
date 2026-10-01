@@ -6,7 +6,8 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "dev:cms": "pnpm --filter @wasi-granel/cms dev:local"
   },
   "devDependencies": {
     "turbo": "^2"
