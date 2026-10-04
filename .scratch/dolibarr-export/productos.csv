@@ -1,0 +1,424 @@
+id,ref,nombre,descripcion,precio_neto,precio_iva,iva_pct,codigo_barras,tipo,peso,unidad_peso,en_venta,categorias
+424,ACE-001,Aceite de Aguacate - 500 cm3,"Aceite de aguacate de alta calidad, ideal para uso culinario o cuidado personal. Presentación: 500 cm3.",NULL,9.50000000,0.0000,,0,,-3,1,7. Aceites y Aceitunas
+425,ACE-002,Aceite de Ajonjolí - 250 cm3,"Aceite de ajonjolí de alta calidad, ideal para uso culinario o cuidado personal. Presentación: 250 cm3.",NULL,7.50000000,0.0000,,0,,-3,1,7. Aceites y Aceitunas
+426,ACE-003,Aceite de Coco Extra Virgen - 100 cm3,"Aceite de coco extra virgen de alta calidad, ideal para uso culinario o cuidado personal. Presentación: 100 cm3.",NULL,4.20000000,0.0000,,0,,-3,1,7. Aceites y Aceitunas
+427,ACE-004,Aceite de Coco Extra Virgen - 150 cm3,"Aceite de coco extra virgen de alta calidad, ideal para uso culinario o cuidado personal. Presentación: 150 cm3.",NULL,5.60000000,0.0000,,0,,-3,1,7. Aceites y Aceitunas
+428,ACE-005,Aceite de Coco Extra Virgen - 400 cm3,"Aceite de coco extra virgen de alta calidad, ideal para uso culinario o cuidado personal. Presentación: 400 cm3.",NULL,7.00000000,0.0000,,0,,-3,1,7. Aceites y Aceitunas
+429,ACE-006,Aceite de Oliva Pequeño - 250 cm3,"Aceite de oliva pequeño de alta calidad, ideal para uso culinario o cuidado personal. Presentación: 250 cm3.",NULL,8.50000000,0.0000,,0,,-3,1,7. Aceites y Aceitunas
+430,ACE-007,Aceite de Oliva Grande - 750 cm3,"Aceite de oliva grande de alta calidad, ideal para uso culinario o cuidado personal. Presentación: 750 cm3.",NULL,13.00000000,0.0000,,0,,-3,1,7. Aceites y Aceitunas
+431,ACE-008,Aceituna Negra - Libra,Aceitunas seleccionadas de gran sabor y calidad premium. Presentación: libra.,NULL,4.50000000,0.0000,,0,,3,1,7. Aceites y Aceitunas
+432,ACE-009,Aceituna Verde - Libra,Aceitunas seleccionadas de gran sabor y calidad premium. Presentación: libra.,NULL,4.00000000,0.0000,,0,,3,1,7. Aceites y Aceitunas
+433,ACH-001,Achiote en Grano - Porción,"Achiote en grano de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+434,ACH-002,Achiote en Polvo - Porción,"Achiote en polvo de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+435,AJI-001,Aji Panca Deshidratado - Libra,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: libra.",NULL,9.10000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+436,AJI-002,Aji Panca Deshidratado - Porción,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+437,AJI-003,Aji Peruano Polvo - Porción,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: porción.",NULL,1.65000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+438,AJI-004,Aji Picante en Polvo - Porción,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+439,AJI-005,Aji Escama Rojo - Libra,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: libra.",NULL,5.20000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+440,AJI-006,Aji Chile de Arbol Deshidratado - Porción,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+441,AJI-007,Aji Chipotle Deshidrtatado - Porción,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+442,AJI-008,Aji Ancho Deshidratado - Porción,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+443,AJI-009,Aji Habanero Deshidratado - Porción,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+444,AJI-010,Aji Guajillo - lb,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: lb.",NULL,8.00000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+445,AJI-011,Aji Guajillo - Porción,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+446,AJI-012,Ají Tajin - lb,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: lb.",NULL,6.50000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+447,AJI-013,Ají Escama Rojo - lb,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: lb.",NULL,1.20000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+448,AJI-014,Ají Escama Rojo - Porción,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+449,AJI-015,Aji Guajillo Deshidratado - lb,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: lb.",NULL,8.00000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+450,AJI-016,Aji Guajillo Deshidratado - Porción,"Ají seleccionado de sabor intenso y aromático, ideal para condimentar tus comidas. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+451,AJO-001,Ajo en Escama - Porción,"Ajo seleccionado de gran sabor y aroma, ideal para sazonar tus recetas culinarias. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+452,AJO-002,Ajo Molido - lb,"Ajo seleccionado de gran sabor y aroma, ideal para sazonar tus recetas culinarias. Presentación: lb.",NULL,5.50000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+453,AJO-003,Ajo Molido - Porción,"Ajo seleccionado de gran sabor y aroma, ideal para sazonar tus recetas culinarias. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,8. Ajíes y Ajos
+454,AJO-004,Ajonjoli Cáscara - Porción,"Semillas de ajonjolí seleccionadas, excelentes para panadería, repostería o consumo directo. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+455,AJO-005,Ajonjoli Cáscara - ½ Libra,"Semillas de ajonjolí seleccionadas, excelentes para panadería, repostería o consumo directo. Presentación: ½ libra.",NULL,1.60000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+456,AJO-006,Ajonjoli Cáscara - Libra,"Semillas de ajonjolí seleccionadas, excelentes para panadería, repostería o consumo directo. Presentación: libra.",NULL,3.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+457,AJO-007,Ajonjoli Negro - Porción,"Semillas de ajonjolí seleccionadas, excelentes para panadería, repostería o consumo directo. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+458,AJO-008,Ajonjoli Negro - ½ Libra,"Semillas de ajonjolí seleccionadas, excelentes para panadería, repostería o consumo directo. Presentación: ½ libra.",NULL,2.10000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+459,AJO-009,Ajonjoli Negro - Libra,"Semillas de ajonjolí seleccionadas, excelentes para panadería, repostería o consumo directo. Presentación: libra.",NULL,4.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+460,AJO-010,Ajonjoli Pelado - Porción,"Semillas de ajonjolí seleccionadas, excelentes para panadería, repostería o consumo directo. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+461,AJO-011,Ajonjoli Pelado - ½ Libra,"Semillas de ajonjolí seleccionadas, excelentes para panadería, repostería o consumo directo. Presentación: ½ libra.",NULL,1.60000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+462,AJO-012,Ajonjoli Pelado - Libra,"Semillas de ajonjolí seleccionadas, excelentes para panadería, repostería o consumo directo. Presentación: libra.",NULL,3.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+463,ALB-001,Albahaca - Porción,"Albahaca de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.25000000,0.0000,,0,,3,1,Otros
+464,ALM-001,Almendras - Libra,"Almendras seleccionadas de calidad premium, ideales como snack saludable o repostería. Presentación: libra.",NULL,6.00000000,0.0000,,0,,3,1,0. Favoritos || 1. Frutos Secos y Semillas || TPV
+465,ALM-002,Almendras - ½ Libra,"Almendras seleccionadas de calidad premium, ideales como snack saludable o repostería. Presentación: ½ libra.",NULL,3.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+466,ALM-003,Almendra Fileteada - Libra,"Almendras seleccionadas de calidad premium, ideales como snack saludable o repostería. Presentación: libra.",NULL,8.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+467,ALP-001,Alpiste - Libra,"Alpiste de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,1.50000000,0.0000,,0,,3,1,Otros
+468,AMA-001,Amaranto en Grano - Libra,"Amaranto en grano de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,2.40000000,0.0000,,0,,3,1,6. Harinas y Cereales
+469,AMA-002,Amaranto en Grano - Porción,"Amaranto en grano de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,6. Harinas y Cereales
+470,AMA-003,Amaranto Pop Natural - Porción,"Amaranto pop natural de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,6. Harinas y Cereales
+471,AMA-004,Amaranto Pop Natural - Libra,"Amaranto pop natural de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,4.55000000,0.0000,,0,,3,1,6. Harinas y Cereales
+472,AMA-005,Amaranto Harina - Porción,"Harina de amaranto de alta calidad, ideal para repostería y alimentación saludable. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,6. Harinas y Cereales
+473,AMA-006,Amaranto Harina - Libra,"Harina de amaranto de alta calidad, ideal para repostería y alimentación saludable. Presentación: libra.",NULL,2.60000000,0.0000,,0,,3,1,6. Harinas y Cereales
+474,ANI-001,Anis de Pan - Porción,"Anis de pan de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+475,ANI-002,Anis Estrellado - Libra,"Anis estrellado de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,8.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+476,ANI-003,Anis Estrellado - Porción,"Anis estrellado de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+477,AVE-001,Avena en Hojuela - Libra,"Avena en hojuela de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,1.00000000,0.0000,,0,,3,1,6. Harinas y Cereales
+478,AVE-002,Avena Tostada - Libra,"Avena tostada de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,2.00000000,0.0000,,0,,3,1,6. Harinas y Cereales
+479,ARA-001,Arandanos - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,5.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+480,AVE-003,Avellanas - Libra,"Avellanas de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,14.00000000,0.0000,,0,,3,1,Otros
+481,ALM-004,Almendra Fileteada - Libra,"Almendras seleccionadas de calidad premium, ideales como snack saludable o repostería. Presentación: libra.",NULL,8.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+482,ACE-010,Aceitunas - Porción,Aceitunas seleccionadas de gran sabor y calidad premium. Presentación: porción.,NULL,1.00000000,0.0000,,0,,3,1,7. Aceites y Aceitunas
+483,ALM-005,Almendra Harina - Libra,"Harina de almendra de alta calidad, ideal para repostería y alimentación saludable. Presentación: libra.",NULL,7.50000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+484,ALM-006,Almendra Harina - ½ Libra,"Harina de almendra de alta calidad, ideal para repostería y alimentación saludable. Presentación: ½ libra.",NULL,4.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+485,ALG-001,Alginato - 25 gr,"Alginato de excelente calidad, ideal para venta a granel. Presentación: 25 gr.",NULL,NULL,0.0000,,0,,3,1,Otros
+486,AGA-001,Agar Agar - 25 gr,"Agar agar de excelente calidad, ideal para venta a granel. Presentación: 25 gr.",NULL,NULL,0.0000,,0,,3,1,Otros
+487,BIC-001,Bicarbonato de Sodio - Libra,"Bicarbonato de sodio de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,3.50000000,0.0000,,0,,3,1,Otros
+488,BOL-001,Boldo Hoja Deshidratada - Porción,"Hojas de boldo deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+489,CAC-001,Cacahuate - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,8.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+490,CAF-001,Café Grano - 400 gr,"Café grano de excelente calidad, ideal para venta a granel. Presentación: 400 gr.",NULL,8.00000000,0.0000,,0,,3,1,9. Miel y Café
+491,CAF-002,Café Polvo - 400 gr,"Café polvo de excelente calidad, ideal para venta a granel. Presentación: 400 gr.",NULL,8.00000000,0.0000,,0,,3,1,9. Miel y Café
+492,CLO-001,Cloruro de Calcio - 25 gr,"Cloruro de calcio de excelente calidad, ideal para venta a granel. Presentación: 25 gr.",NULL,NULL,0.0000,,0,,3,1,Otros
+493,CAN-001,Canela Rama - Porción,"Canela rama de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+494,CAN-002,Canela Rama - Libra,"Canela rama de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,11.50000000,0.0000,,0,,3,1,4. Especias y Condimentos
+495,CAN-003,Canela en Polvo - Porción,"Canela en polvo de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+496,CAN-004,Canela en Polvo - Libra,"Canela en polvo de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,12.40000000,0.0000,,0,,3,1,4. Especias y Condimentos
+497,CAR-001,Caramelo Almendra - Libra,"Almendras seleccionadas de calidad premium, ideales como snack saludable o repostería. Presentación: libra.",NULL,5.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+498,CAR-002,Caramelo Almendra - Porción,"Almendras seleccionadas de calidad premium, ideales como snack saludable o repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+499,CAR-003,Cardamomo Cáscara - Libra,"Cardamomo cáscara de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,14.50000000,0.0000,,0,,3,1,Otros
+500,CAR-004,Cardamomo Cáscara - Porción,"Cardamomo cáscara de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+501,CAR-005,Cardomariano - Libra,"Cardomariano de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,10.50000000,0.0000,,0,,3,1,Otros
+502,CEB-001,Cebolla en Escama - Porción,"Cebolla en escama de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+503,CEB-002,Cebolla en Polvo - Porción,"Cebolla en polvo de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+504,CER-001,Cereal Arroz Blanco - Libra,"Cereal arroz blanco de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,2.80000000,0.0000,,0,,3,1,6. Harinas y Cereales
+505,CER-002,Cereal Arroz Blanco Colores - Libra,"Cereal arroz blanco colores de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,2.80000000,0.0000,,0,,3,1,6. Harinas y Cereales
+506,CER-003,Cereal Mote ( Mafaldas ) - Porción,"Cereal mote ( mafaldas ) de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,6. Harinas y Cereales
+507,CER-004,Cereal Trigo - Porción,"Cereal trigo de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,6. Harinas y Cereales
+508,CHA-001,Champiñón Seco de Bosque de Pino - Porción,"Champiñón seco de bosque de pino de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+509,CHI-001,Chia Semilla - Libra,"Semillas de chia seleccionadas, ricas en nutrientes, fibra y grasas saludables. Presentación: libra.",NULL,3.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+510,CHI-002,Chia Semilla - ½ lb,"Semillas de chia seleccionadas, ricas en nutrientes, fibra y grasas saludables. Presentación: ½ lb.",NULL,1.60000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+511,CHI-003,Chia Semilla - Porción,"Semillas de chia seleccionadas, ricas en nutrientes, fibra y grasas saludables. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+512,CHO-001,Choco Almendras Diabéticos - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,14.50000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+513,CHO-002,Choco Almendras - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,10.70000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+514,CHO-003,Choco Almendras - ½ Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: ½ libra.",NULL,5.40000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+515,CHO-004,Choco Almendras - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+516,CHO-005,Choco Uvilla - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,10.70000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+517,CHO-006,Choco Uvilla - ½ Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: ½ libra.",NULL,5.40000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+518,CHO-007,Choco Uvilla - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+519,CHO-008,Choco Avellanas - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,14.20000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+520,CHO-009,Choco Avellanas - ½ Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: ½ libra.",NULL,7.20000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+521,CHO-010,Choco Avellanas - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+522,CHO-011,Choco Café - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,10.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+523,CHO-012,Choco Café - ½ Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: ½ libra.",NULL,5.20000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+524,CHO-013,Choco Café - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+525,CHO-014,Choco Menta - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,9.50000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+526,CHO-015,Choco Menta - ½ Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: ½ libra.",NULL,4.80000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+527,CHO-016,Choco Menta - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+528,CHO-017,Choco Pasas - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,7.10000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+529,CHO-018,Choco Pasas - ½ Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: ½ libra.",NULL,3.60000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+530,CHO-019,Choco Pasas - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+531,CHO-020,Choco Arándanos - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,9.50000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+532,CHO-021,Choco Arándanos - ½ Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: ½ libra.",NULL,4.80000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+533,CHO-022,Choco Arándanos - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+534,CHO-023,Choco Nuez - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,10.70000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+535,CHO-024,Choco Nuez - ½ Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: ½ libra.",NULL,5.40000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+536,CHO-025,Choco Nuez - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+537,CHO-026,Choco Naranja - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,9.75000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+538,CHO-027,Choco Naranja - ½ Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: ½ libra.",NULL,4.90000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+539,CHO-028,Choco Naranja - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+540,CHO-029,Choco Maracuyá - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,9.20000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+541,CHO-030,Choco Maracuyá - ½ Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: ½ libra.",NULL,4.75000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+542,CHO-031,Choco Maracuyá - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+543,CHO-032,Choco Cereza - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,9.20000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+544,CHO-033,Choco Cereza - ½ Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: ½ libra.",NULL,4.75000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+545,CHO-034,Choco Cereza - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+546,CHO-035,Choco Maní - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,7.50000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+547,CHO-036,Choco Maní - ½ Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: ½ libra.",NULL,3.80000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+548,CHO-037,Choco Maní - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+549,CHO-038,Choco Guanábana - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,9.20000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+550,CHO-039,Choco Guanábana - ½ Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: ½ libra.",NULL,4.75000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+551,CHO-040,Choco Guanábana - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+552,CHO-041,Chocolate Tanager 100 % Cacao - 50 gr,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: 50 gr.",NULL,3.50000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+553,CHO-042,Chocolate Tanager 70 % Cacao con Arándanos - 50 gr,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: 50 gr.",NULL,3.50000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+554,CHO-043,Chocolate 60 % Cacao con Almendras - 50 gr,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: 50 gr.",NULL,3.50000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+555,CHO-044,Chocolate 50 % Cacao - 50 gr,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: 50 gr.",NULL,3.50000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+556,CHO-045,Chocolate 33 % Cacao Blanco - 50 gr,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: 50 gr.",NULL,3.50000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+557,CHO-046,Chocolate Amargo Polvo Tanager - 200 gr,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: 200 gr.",NULL,5.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+558,CHO-047,Chocolate Amargo en Polvo - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,5.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+559,CHO-048,Chocolate Chispitas Blanco - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,4.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+560,CHO-049,Chocolate Chispitas Blanco - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+561,CHO-050,Chocolate Chispitas Negro - lb,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: lb.",NULL,4.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+562,CHO-051,Chocolate Chispitas Negro - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+563,CHO-052,Chocolate Cobertura Blanco - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,4.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+564,CHO-053,Chocolate Cobertura Blanco - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,4.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+565,CHO-054,Chocolate Cobertura Negro Semiamargo - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,4.50000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+566,CHO-055,Chocolate Cobertura Negro Semiamargo - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+567,CHO-056,Chocolate Amargo Pastilla - lb,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: lb.",NULL,13.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+568,CHO-057,Chocolate Amargo Pastilla - Porción,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+569,CHO-058,Chocolate M&M - Libra,"Delicioso chocolate premium, ideal para consentir tu paladar o repostería gourmet. Presentación: libra.",NULL,5.90000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+570,CHA-002,Champiñonese Secos - Porción,"Champiñonese secos de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+571,CIR-001,Ciruelas Pasas - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,3.50000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+572,CIR-002,Ciruelas Pasas - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+573,CLA-001,Clavo de Olor Molido - Libra,"Clavo de olor molido de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,8.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+574,CLA-002,Clavo de Olor Pepa - Porción,"Clavo de olor pepa de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+575,CAS-001,Cashew Natural - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,9.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+576,CAS-002,Cashew Natural - ½ lb,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: ½ lb.",NULL,4.60000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+577,CAS-003,Cashew Natural - Porción,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+578,CAS-004,Cashew Tostado - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,9.20000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+579,CAS-005,Cashew Tostado - ½ Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: ½ libra.",NULL,4.60000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+580,CAS-006,Cashew Tostado - Porción,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+581,COC-001,Coco en Hojuelas - Libra,"Coco en hojuelas de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,5.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+582,COC-002,Coco en Hojuelas - ½ Libra,"Coco en hojuelas de excelente calidad, ideal para venta a granel. Presentación: ½ libra.",NULL,2.60000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+583,COC-003,Coco en Hojuelas - Porción,"Coco en hojuelas de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+584,COM-001,Comino en Grano - Libra,"Comino en grano de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,3.50000000,0.0000,,0,,3,1,4. Especias y Condimentos
+585,COM-002,Comino Molido - Libra,"Comino molido de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,3.70000000,0.0000,,0,,3,1,4. Especias y Condimentos
+586,CUR-001,Curcuma Molida - Libra,"Curcuma molida de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,3.70000000,0.0000,,0,,3,1,4. Especias y Condimentos
+587,CUR-002,Curcuma Molida - ½ Libra,"Curcuma molida de excelente calidad, ideal para venta a granel. Presentación: ½ libra.",NULL,1.90000000,0.0000,,0,,3,1,4. Especias y Condimentos
+588,CUR-003,Curcuma Molida - Porción,"Curcuma molida de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+589,CUS-001,Cuscus - Porción,"Cuscus de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,6. Harinas y Cereales
+590,CUR-004,Curry Molido - Porción,"Curry molido de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+591,CER-005,Cerezas en Almibar - Libra,"Cerezas en almibar de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,4.50000000,0.0000,,0,,3,1,Otros
+592,CAR-006,Caramelo Almendra - Libra,"Almendras seleccionadas de calidad premium, ideales como snack saludable o repostería. Presentación: libra.",NULL,5.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+593,CAR-007,Caramelo Almendra - Unidad,"Almendras seleccionadas de calidad premium, ideales como snack saludable o repostería. Presentación: unidad.",NULL,0.10000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+594,CAR-008,Cardamomo - Libra,"Cardamomo de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,14.35000000,0.0000,,0,,3,1,Otros
+595,CAR-009,Cardamomo - Porción,"Cardamomo de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,2.00000000,0.0000,,0,,3,1,Otros
+596,CAR-010,Cardomariano - Libra,"Cardomariano de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,10.40000000,0.0000,,0,,3,1,Otros
+597,CAR-011,Cardomariano - Porción,"Cardomariano de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.50000000,0.0000,,0,,3,1,Otros
+598,CAR-012,Caramelo Jengibre - Libra,"Caramelo jengibre de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,10.40000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+599,CAR-013,Caramelo Jengibre - Porción,"Caramelo jengibre de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+600,CAS-007,Cascara de Naranja Confitada - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,11.70000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+601,CAS-008,Cascara de Naranja Confitada - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+602,DAT-001,Datiles - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,3.50000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+603,DAT-002,Datiles - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+604,DAM-001,Damasco - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,17.50000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+605,DAM-002,Damasco - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,9.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+606,DAM-003,Damasco - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+607,EST-001,Estevia Hoja - lb,"Hojas de estevia deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: lb.",NULL,13.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+608,EST-002,Estevia Hoja - Porción,"Hojas de estevia deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+609,EST-003,Estevia Polvo - Libra,"Estevia polvo de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,10.40000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+610,EST-004,Estevia Polvo - Porción,"Estevia polvo de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,2.50000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+611,EST-005,Estragon - Porción,"Estragon de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+612,FIN-001,Finas Hierbas - Libra,"Finas hierbas de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,13.00000000,0.0000,,0,,3,1,Otros
+613,FIN-002,Finas Hierbas - Porción,"Finas hierbas de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+614,FEN-001,Fenogreco - lb,"Fenogreco de excelente calidad, ideal para venta a granel. Presentación: lb.",NULL,6.50000000,0.0000,,0,,3,1,Otros
+615,FEN-002,Fenogreco - Porción,"Fenogreco de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,2.00000000,0.0000,,0,,3,1,Otros
+616,FRU-001,Fruta Confitada - lb,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: lb.",NULL,3.25000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+617,FRU-002,Fruta Confitada - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+618,FLO-001,Flor de Calendula - Funda,"Flores de calendula deshidratadas, ideales para infusiones aromáticas y relajantes. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+619,FLO-002,Flor de Retama - Funda,"Flores de retama deshidratadas, ideales para infusiones aromáticas y relajantes. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+620,FLO-003,Flor de Lavanda 5 Gr - Porción,"Flores de lavanda 5 gr deshidratadas, ideales para infusiones aromáticas y relajantes. Presentación: porción.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+621,FLO-004,Flor de Jamaica - Libra,"Flores de jamaica deshidratadas, ideales para infusiones aromáticas y relajantes. Presentación: libra.",NULL,4.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+622,FLO-005,Flor de Jamaica - Porción,"Flores de jamaica deshidratadas, ideales para infusiones aromáticas y relajantes. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+623,FRU-003,Frutos Deshidratatados Fresa - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,10.00000000,0.0000,,0,,3,1,Otros
+624,FRU-004,Frutos Deshidratatados Fresa - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,5.20000000,0.0000,,0,,3,1,Otros
+625,FRU-005,Frutos Deshidratatados Fresa - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+626,FRU-006,Frutos Deshidratatados Manazana Roja - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,10.00000000,0.0000,,0,,3,1,Otros
+627,FRU-007,Frutos Deshidratatados Manazana Roja - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,5.20000000,0.0000,,0,,3,1,Otros
+628,FRU-008,Frutos Deshidratatados Manazana Roja - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+629,FRU-009,Frutos Deshidratatados Manzana Verde - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,10.00000000,0.0000,,0,,3,1,Otros
+630,FRU-010,Frutos Deshidratatados Manzana Verde - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,5.20000000,0.0000,,0,,3,1,Otros
+631,FRU-011,Frutos Deshidratatados Manzana Verde - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+632,FRU-012,Frutos Deshidratatados Mora - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,10.70000000,0.0000,,0,,3,1,Otros
+633,FRU-013,Frutos Deshidratatados Mora - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,5.50000000,0.0000,,0,,3,1,Otros
+634,FRU-014,Frutos Deshidratatados Mora - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+635,FRU-015,Frutos Deshidratatados Piña - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,10.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+636,FRU-016,Frutos Deshidratatados Piña - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,5.20000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+637,FRU-017,Frutos Deshidratatados Piña - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+638,FRU-018,Frutos Deshidratatados Mango - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,11.50000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+639,FRU-019,Frutos Deshidratatados Mango - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,5.80000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+640,FRU-020,Frutos Deshidratatados Mango - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+641,FRU-021,Frutos Deshidratatados Kiwi - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,11.50000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+642,FRU-022,Frutos Deshidratatados Kiwi - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,5.80000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+643,FRU-023,Frutos Deshidratatados Kiwi - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+644,FRU-024,Frutos Deshidratatados Pitahaya - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,10.70000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+645,FRU-025,Frutos Deshidratatados Pitahaya - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,5.50000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+646,FRU-026,Frutos Deshidratatados Pitahaya - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+647,FRU-027,Frutos Deshidratatados Uvilla - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,10.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+648,FRU-028,Frutos Deshidratatados Uvilla - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,5.20000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+649,FRU-029,Frutos Deshidratatados Uvilla - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+650,FRU-030,Frutos Deshidratatados Naranja - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,9.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+651,FRU-031,Frutos Deshidratatados Naranja - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,4.60000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+652,FRU-032,Frutos Deshidratatados Naranja - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+653,FRU-033,Frutos Deshidratatados Mandarina - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,10.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+654,FRU-034,Frutos Deshidratatados Mandarina - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,5.20000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+655,FRU-035,Frutos Deshidratatados Mandarina - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+656,FRU-036,Frutos Deshidratatados Limón - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,9.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+657,FRU-037,Frutos Deshidratatados Limón - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,4.60000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+658,FRU-038,Frutos Deshidratatados Limón - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+659,FRU-039,Frutos Deshidratatados Babano - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,9.00000000,0.0000,,0,,3,1,Otros
+660,FRU-040,Frutos Deshidratatados Babano - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,4.60000000,0.0000,,0,,3,1,Otros
+661,FRU-041,Frutos Deshidratatados Babano - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+662,FRU-042,Frutos Amarillos Deshidratados Mix - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,10.50000000,0.0000,,0,,3,1,Otros
+663,FRU-043,Frutos Amarillos Deshidratados Mix - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,5.30000000,0.0000,,0,,3,1,Otros
+664,FRU-044,Frutos Amarillos Deshidratados Mix - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+665,FRU-045,Frutos Rojos Deshidratados Mix - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,10.50000000,0.0000,,0,,3,1,Otros
+666,FRU-046,Frutos Rojos Deshidratados Mix - ½ Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: ½ libra.",NULL,5.30000000,0.0000,,0,,3,1,Otros
+667,FRU-047,Frutos Rojos Deshidratados Mix - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+668,GAR-001,Garbanzo Harina - Libra,"Harina de garbanzo de alta calidad, ideal para repostería y alimentación saludable. Presentación: libra.",NULL,2.60000000,0.0000,,0,,3,1,6. Harinas y Cereales
+669,GAR-002,Garbanzo Harina - Porción,"Harina de garbanzo de alta calidad, ideal para repostería y alimentación saludable. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,6. Harinas y Cereales
+670,GAR-003,Garbanzo de Dulce - Libra,"Garbanzo de dulce de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,5.00000000,0.0000,,0,,3,1,6. Harinas y Cereales
+671,GAR-004,Garbanzo de Dulce - Porción,"Garbanzo de dulce de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,6. Harinas y Cereales
+672,GEL-001,Gelatina Sin Sabor - Libra,"Gelatina sin sabor de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,8.00000000,0.0000,,0,,3,1,Otros
+673,GEL-002,Gelatina Sin Sabor - ½ Libra,"Gelatina sin sabor de excelente calidad, ideal para venta a granel. Presentación: ½ libra.",NULL,4.10000000,0.0000,,0,,3,1,Otros
+674,JEN-001,Jengibre Caramelo - Libra,"Jengibre caramelo de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,10.40000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+675,JEN-002,Jengibre Caramelo - Porción,"Jengibre caramelo de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+676,JEN-003,Jengibre Molido - Libra,"Jengibre molido de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,4.60000000,0.0000,,0,,3,1,Otros
+677,JEN-004,Jengibre Molido - Porción,"Jengibre molido de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+678,GIR-001,Girasol Semillas Pelada - Libra,"Semillas de girasol pelada seleccionadas, ricas en nutrientes, fibra y grasas saludables. Presentación: libra.",NULL,3.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+679,GIR-002,Girasol Semillas Pelada - ½ Libra,"Semillas de girasol pelada seleccionadas, ricas en nutrientes, fibra y grasas saludables. Presentación: ½ libra.",NULL,1.60000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+680,GIR-003,Girasol Semillas Pelada - Porción,"Semillas de girasol pelada seleccionadas, ricas en nutrientes, fibra y grasas saludables. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+681,GRA-001,Granola Normal - 400 gr,"Granola artesanal crujiente y nutritiva, ideal para desayunos o snacks saludables. Presentación: 400 gr.",NULL,2.50000000,0.0000,,0,,3,1,Otros
+682,GRA-002,Granola con Estevia - 400 gr,"Granola artesanal crujiente y nutritiva, ideal para desayunos o snacks saludables. Presentación: 400 gr.",NULL,3.80000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+683,GRA-003,Granola Artesanal - Libra,"Granola artesanal crujiente y nutritiva, ideal para desayunos o snacks saludables. Presentación: libra.",NULL,3.00000000,0.0000,,0,,3,1,Otros
+684,GUA-001,Guayuza - Porción,"Guayuza de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+685,HAR-001,Harina de Chocho 150 Gr - 150 gr,"Harina de chocho 150 gr de alta calidad, ideal para repostería y alimentación saludable. Presentación: 150 gr.",NULL,3.50000000,0.0000,,0,,3,1,6. Harinas y Cereales
+686,HON-001,Hondashi (concentrado de Pescado) - 120 gr,"Hondashi (concentrado de pescado) de excelente calidad, ideal para venta a granel. Presentación: 120 gr.",NULL,12.50000000,0.0000,,0,,3,1,Otros
+687,HON-002,Hondashi (concentrado de Pescado) - 50 gr,"Hondashi (concentrado de pescado) de excelente calidad, ideal para venta a granel. Presentación: 50 gr.",NULL,5.00000000,0.0000,,0,,3,1,Otros
+688,HAB-001,Habas de Sal - Libra,"Habas de sal de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,4.00000000,0.0000,,0,,3,1,Otros
+689,HAB-002,Habas Picantes - Libra,"Habas picantes de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,4.00000000,0.0000,,0,,3,1,Otros
+690,HAB-003,Habas de Dulce - Libra,"Habas de dulce de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,4.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+691,HAR-002,Harina de Almendra - Libra,"Harina de almendra de alta calidad, ideal para repostería y alimentación saludable. Presentación: libra.",NULL,8.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+692,HAR-003,Harina de Almendra - ½ lb,"Harina de almendra de alta calidad, ideal para repostería y alimentación saludable. Presentación: ½ lb.",NULL,4.10000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+693,HAR-004,Harina de Arroz - Libra,"Harina de arroz de alta calidad, ideal para repostería y alimentación saludable. Presentación: libra.",NULL,4.50000000,0.0000,,0,,3,1,6. Harinas y Cereales
+694,HIG-001,Higos Secos - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,9.10000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+695,HOJ-001,Hoja de Coca - Porción,"Hojas de coca deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+696,HAR-005,Harina de Garbanzo - lb,"Harina de garbanzo de alta calidad, ideal para repostería y alimentación saludable. Presentación: lb.",NULL,2.35000000,0.0000,,0,,3,1,6. Harinas y Cereales
+697,HAR-006,Harina de Garbanzo - Porción,"Harina de garbanzo de alta calidad, ideal para repostería y alimentación saludable. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,6. Harinas y Cereales
+698,HIE-001,Hierbas Finas - Porción,"Hierbas finas de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+699,LAU-001,Laurel Hoja - Libra,"Hojas de laurel deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: libra.",NULL,4.55000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+700,LAU-002,Laurel Hoja - Funda,"Hojas de laurel deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+701,LAU-003,Laurel Molido - Porción,"Laurel molido de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+702,LIN-001,Linaza Grano - Libra,"Linaza grano de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+703,LIN-002,Linaza Grano - Porción,"Linaza grano de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+704,LIN-003,Linaza Molida - Libra,"Linaza molida de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,1.63000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+705,LIN-004,Linaza Molida - Porción,"Linaza molida de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+706,MAC-001,Maca Negra - Libra,"Maca negra de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,6.50000000,0.0000,,0,,3,1,Otros
+707,MAC-002,Maca Roja - Libra,"Maca roja de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,5.50000000,0.0000,,0,,3,1,Otros
+708,MAC-003,Maca Amarilla - Libra,"Maca amarilla de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,4.50000000,0.0000,,0,,3,1,Otros
+709,MAC-004,Macadamia - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,14.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+710,MAC-005,Macadamia - ½ lb,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: ½ lb.",NULL,7.10000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+711,MAC-006,Macadamia - Porción,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+712,MAG-001,Magui Polvo - Libra,"Magui polvo de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,1.50000000,0.0000,,0,,3,1,Otros
+713,MAG-002,Magui Polvo - ½ Libra,"Magui polvo de excelente calidad, ideal para venta a granel. Presentación: ½ libra.",NULL,0.80000000,0.0000,,0,,3,1,Otros
+714,MAG-003,Magui Polvo - Porción,"Magui polvo de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+715,MAN-001,Mani Ajonjoli - Libra,"Semillas de ajonjolí seleccionadas, excelentes para panadería, repostería o consumo directo. Presentación: libra.",NULL,4.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+716,MAN-002,Mani Ajonjoli - Porción,"Semillas de ajonjolí seleccionadas, excelentes para panadería, repostería o consumo directo. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+717,MAN-003,Maní Confitado - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,4.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+718,MAN-004,Maní Confitado - Porción,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+719,MAN-005,Mani Tostado con Sal - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,4.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+720,MAN-006,Mani Tostado con Sal - ½ Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: ½ libra.",NULL,2.10000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+721,MAN-007,Mani Tostado Sin Sal - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,3.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+722,MAN-008,Mani Tostado Sin Sal - ½ Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: ½ libra.",NULL,1.60000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+723,MAN-009,Mani Japonés - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,5.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+724,MAN-010,Mani Japonés - Porción,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+725,MAN-011,Maní Criss - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,4.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+726,MAN-012,Maní Criss - Porción,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+727,MAN-013,Manzana Deshidratada,"Manzana deshidratada de excelente calidad, ideal para venta a granel.",NULL,NULL,0.0000,,0,,3,1,Otros
+728,MAT-001,Mate de Coca Delisse X 100 Unid - Paquete,"Mate de coca delisse  x 100 unid de excelente calidad, ideal para venta a granel. Presentación: paquete.",NULL,11.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+729,MIE-001,Miel de Abeja Natural Honey Grande - 645 gr,"Miel de abeja 100% natural y pura, recolectada de forma artesanal. Presentación: 645 gr.",NULL,7.00000000,0.0000,,0,,3,1,9. Miel y Café
+730,MIE-002,Miel de Abeja Natural Honey Pequeña,"Miel de abeja 100% natural y pura, recolectada de forma artesanal.",NULL,4.00000000,0.0000,,0,,3,1,9. Miel y Café
+731,MIE-003,Miel de Abeja Colmena de Milo - 380 gr,"Miel de abeja 100% natural y pura, recolectada de forma artesanal. Presentación: 380 gr.",NULL,6.00000000,0.0000,,0,,3,1,9. Miel y Café
+732,MIE-004,Miel de Abeja Colmena de Milo - 200 gr,"Miel de abeja 100% natural y pura, recolectada de forma artesanal. Presentación: 200 gr.",NULL,3.50000000,0.0000,,0,,3,1,9. Miel y Café
+733,MOR-001,Moringa Hoja - Porción,"Hojas de moringa deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+734,MOR-002,Moringa Polvo - Libra,"Moringa polvo de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+735,MOR-003,Moringa Pepa - Libra,"Moringa pepa de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+736,MOS-001,Mostaza Grano - Porción,"Mostaza grano de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+737,MOS-002,Mostaza Molida - Porción,"Mostaza molida de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+738,MIX-001,Mix Frutos Secos Sal - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,7.00000000,0.0000,,0,,3,1,Otros
+739,MIX-002,Mix Frutos Secos Dulce - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,6.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+740,NUE-001,Nuez con Cáscara - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,3.75000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+741,NUE-002,Nuez con Cáscara - 12 unid.,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: 12 unid..",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+742,NUE-003,Nuez Moscada Pepa - Unidad,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: unidad.",NULL,0.40000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+743,NUE-004,Nuez Mozcada en Polvo - Porción,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+744,NUE-005,Nuez Pecana Pelada - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,14.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+745,NUE-006,Nuez Pelada Tipo Cerebro - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,6.00000000,0.0000,,0,,3,1,0. Favoritos || 1. Frutos Secos y Semillas || TPV
+746,NUE-007,Nuez Pecana con Cascara - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,7.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+747,NUE-008,Nuez de Brasil - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,13.50000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+748,NUE-009,Nuez Macadamia Cuartos - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,14.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+749,NUE-010,Nuez Macadamia Cuartos - Porción,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+750,ORE-001,Oregano Normal - Porción,"Oregano normal de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+751,ORE-002,Oregano Pizza - Porción,"Oregano pizza de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+752,ORE-003,Oregano Molido - Porción,"Oregano molido de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+753,PAP-001,Papaya Deshidratada - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+754,PAN-001,Panco 110 Gr - Porción,"Panco 110 gr de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.50000000,0.0000,,0,,3,1,6. Harinas y Cereales
+755,PAP-002,Paprica Polvo - Porción,"Paprica polvo de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+756,PAS-001,Pasa - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,2.00000000,0.0000,,0,,3,1,Otros
+757,PAS-002,Pasas Rubias - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,4.00000000,0.0000,,0,,3,1,Otros
+758,PEP-001,Pepas de Girasol Pelado - Libra,"Pepas de girasol pelado de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,3.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+759,PEP-002,Pepas de Girasol Pelado - Porción,"Pepas de girasol pelado de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+760,PEP-003,Pepas de Sambo - Libra,"Pepas de sambo de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,7.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+761,PEP-004,Pepas de Sambo - Porción,"Pepas de sambo de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+762,PIM-001,Pimienta Cayena - Porción,"Pimienta cayena de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+763,PIM-002,Pimienta Negra en Grano - Porción,"Pimienta negra en grano de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+764,PIM-003,Pimienta Negra en Polvo - Porción,"Pimienta negra en polvo de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+765,PIM-004,Pimienta Dulce - Porción,"Pimienta dulce de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,3. Chocolates y Dulces
+766,PIN-001,Piña Deshidratada - Porción,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+767,PIS-001,Pistachos - Libra,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: libra.",NULL,10.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+768,PIS-002,Pistachos - Porción,"Frutos secos seleccionados, fuente natural de energía, fibra y grasas saludables. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+769,QUI-001,Quinoa Pop - Porción,"Quinoa pop de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+770,QUI-002,Quinoa Negra - Libra,"Quinoa negra de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,5.00000000,0.0000,,0,,3,1,Otros
+771,QUI-003,Quinoa Roja - Libra,"Quinoa roja de excelente calidad, ideal para venta a granel. Presentación: libra.",NULL,5.00000000,0.0000,,0,,3,1,Otros
+772,SAL-001,Sal Grano - Porción,"Sal grano de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,2.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+773,SAL-002,Sal Rosada del Himalaya Grano 125gr - Porción,"Sal rosada del himalaya grano 125gr de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,2.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+774,SAL-003,Sal Rosada del Himalaya Polvo 125gr - Porción,"Sal rosada del himalaya polvo 125gr de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,2.00000000,0.0000,,0,,3,1,4. Especias y Condimentos
+775,SOP-001,Sopa Ramen 120gr - Funda,"Sopa ramen 120gr de excelente calidad, ideal para venta a granel. Presentación: funda.",NULL,2.50000000,0.0000,,0,,3,1,Otros
+776,SAL-004,"Salvia 35,4 Gr - Funda","Salvia 35,4 gr de excelente calidad, ideal para venta a granel. Presentación: funda.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+777,SEM-001,Semillas de Amapola 25 Gr - 25 gr,"Semillas de amapola 25 gr seleccionadas, ricas en nutrientes, fibra y grasas saludables. Presentación: 25 gr.",NULL,NULL,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+778,SEM-002,Semilla de Apio 50 Gr - Porción,"Semillas de apio 50 gr seleccionadas, ricas en nutrientes, fibra y grasas saludables. Presentación: porción.",NULL,NULL,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+779,SAL-005,Salvado de Tigo - Porción,"Salvado de tigo de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+780,SOY-001,Soya en Polvo - Porción,"Soya en polvo de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,6. Harinas y Cereales
+781,THA-001,Thaini 300 Gr - Porción,"Thaini 300 gr de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+782,THA-002,Thaini 200 Gr Integral - Porción,"Thaini 200 gr integral de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+783,TER-001,Teriyaki 250 Ml - Porción,"Teriyaki 250 ml de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+784,TEN-001,Te Negro - Porción,"Té de excelente aroma y sabor, perfecto para una infusión reconfortante. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+785,TER-002,Te Rojo - Porción,"Té de excelente aroma y sabor, perfecto para una infusión reconfortante. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+786,TEV-001,Te Verde - Porción,"Té de excelente aroma y sabor, perfecto para una infusión reconfortante. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+787,TEM-001,Te Matcha 20 Gr - Porción,"Té de excelente aroma y sabor, perfecto para una infusión reconfortante. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+788,TEC-001,Te Chai 20 Gr - Porción,"Té de excelente aroma y sabor, perfecto para una infusión reconfortante. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+789,TOM-001,Tomillo - Porción,"Tomillo de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+790,TOM-002,Tomate Deshidratado - Porción,"Tomate deshidratado de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+791,TAP-001,Tapioca Perla - Porción,"Tapioca perla de excelente calidad, ideal para venta a granel. Presentación: porción.",NULL,1.00000000,0.0000,,0,,3,1,1. Frutos Secos y Semillas
+792,UVI-001,Uvilla Deshidratada - Libra,"Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",NULL,10.00000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+793,VAI-001,Vaina de Vainilla - Unidad,"Vaina de vainilla de excelente calidad, ideal para venta a granel. Presentación: unidad.",NULL,1.00000000,0.0000,,0,,3,1,Otros
+794,VIN-001,Vinagre de Manzana 250 Ml - 250 ml,"Vinagre de manzana 250 ml de excelente calidad, ideal para venta a granel. Presentación: 250 ml.",NULL,3.50000000,0.0000,,0,,3,1,Otros
+795,ZEN-001,Zen Hojas Deshidratadas - Funda,"Hojas de zen deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+796,MEN-001,Menta Hojas Deshidratadas - Funda,"Hojas de menta deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+797,HIG-002,Higo Hojas Deshidratadas - Funda,"Hojas de higo deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+798,GUA-002,Guayaba Hojas Deshidratadas - Funda,"Hojas de guayaba deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+799,MAL-001,Malva Blanca Hojas Deshidratadas - Funda,"Hojas de malva blanca deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+800,PAS-003,Pasiflora Hojas Deshidratadas - Funda,"Hojas de pasiflora deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+801,BOL-002,Boldo Hojas Deshidratadas - Funda,"Hojas de boldo deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+802,MOR-004,Moringa Hojas Deshidratadas - Funda,"Hojas de moringa deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+803,MOR-005,Moringa Semilla - Funda,"Semillas de moringa seleccionadas, ricas en nutrientes, fibra y grasas saludables. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+804,MOR-006,Moringa en Polvo - Funda,"Moringa en polvo de excelente calidad, ideal para venta a granel. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+805,EST-006,Estevia Hojas Deshidratadas - Funda,"Hojas de estevia deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+806,TRI-001,Trinitaria Hojas Deshidratadas - Funda,"Hojas de trinitaria deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+807,MAT-002,Mate Hojas Deshidratadas - Funda,"Hojas de mate deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+808,COC-004,Coca en Hoja - Funda,"Hojas de coca en deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.00000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+809,GUA-003,Guayaba Hojas Deshidratadas - Funda,"Hojas de guayaba deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+810,HIE-002,Hierba Luisa Hojas Deshidratadas - Funda,"Hojas de hierba luisa deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+811,NEE-001,Neem Hojas Deshidratadas - Funda,"Hojas de neem deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+812,SAL-006,Salvia Hojas Deshidratadas - Funda,"Hojas de salvia deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+813,COL-001,Cola de Caballo Hojas Deshidratadas - Funda,"Hojas de cola de caballo deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+814,CED-001,Cedrón Hojas Deshidratadas - Funda,"Hojas de cedrón deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+815,CHA-003,Chanca Piedra Hojas Deshidratadas - Funda,"Hojas de chanca piedra deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+816,TAR-001,Taraxaco Hojas Deshidratadas - Funda,"Hojas de taraxaco deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+817,TIL-001,Tilo Hojas Deshidratadas - Funda,"Hojas de tilo deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+818,RUD-001,Ruda Hojas Deshidratadas - Funda,"Hojas de ruda deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+819,HER-001,Hercampuri - Funda,"Hercampuri de excelente calidad, ideal para venta a granel. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+820,PAT-001,Pata de Vaca Hojas Deshidratadas - Funda,"Hojas de pata de vaca deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+821,RET-001,Retama Hojas Deshidratadas - Funda,"Hojas de retama deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+822,MEJ-001,Mejorana Hojas Deshidratadas - Funda,"Hojas de mejorana deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+823,PAR-001,Paraguay Hojas Deshidratadas - Funda,"Hojas de paraguay deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+824,CON-001,Consuelda Hojas Deshidratadas - Funda,"Hojas de consuelda deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+825,INS-001,Insulina Hojas Deshidratadas - Funda,"Hojas de insulina deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+826,AGU-001,Aguacate Hojas Deshidratadas - Funda,"Hojas de aguacate deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+827,GUA-004,Guanabana Hojas Deshidratadas - Funda,"Hojas de guanabana deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+828,MAN-014,Mango Hojas Deshidratadas - Funda,"Hojas de mango deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,2. Frutas Deshidratadas
+829,CAZ-001,Cazamarucha Hojas Deshidratadas - Funda,"Hojas de cazamarucha deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+830,SAL-007,Salvia Hojas Deshidratadas - Funda,"Hojas de salvia deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+831,MAT-003,Matico Hojas Deshidratadas - Funda,"Hojas de matico deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+832,FLO-006,Flor Blanca Deshidratada - Funda,"Flores de blanca deshidratadas, ideales para infusiones aromáticas y relajantes. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+833,LAV-001,Lavanda Hojas Deshidratadas - Funda,"Hojas de lavanda deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+834,NIS-001,Níspero Hojas Deshidratadas - Funda,"Hojas de níspero deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+835,LAU-004,Laurel Hojas Deshidratadas - Funda,"Hojas de laurel deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+836,ORE-004,Orégano Hojas Deshidratadas - Funda,"Hojas de orégano deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,4. Especias y Condimentos
+837,ALB-002,Albahaca Hojas Deshidratadas - Funda,"Hojas de albahaca deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+838,PAI-001,Paico Hojas Deshidratadas - Funda,"Hojas de paico deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+839,HOR-001,Horchata Hojas Deshidratadas - Funda,"Hojas de horchata deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+840,FLO-007,Flor de Jamaica - Funda,"Flores de jamaica deshidratadas, ideales para infusiones aromáticas y relajantes. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+841,ZEN-002,Zen Hojas Deshidratadas - Funda,"Hojas de zen deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+842,MAN-015,Manzanilla Hojas Deshidratadas - Funda,"Hojas de manzanilla deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+843,HIN-001,Hinojo Hojas Deshidratadas - Funda,"Hojas de hinojo deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+844,TEM-002,Te Muña - Funda,"Té de excelente aroma y sabor, perfecto para una infusión reconfortante. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+845,GAT-001,Uña de Gato - Funda,"Uña de gato de excelente calidad, ideal para venta a granel. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"
+846,VAL-001,Valeriana Hojas Deshidratadas - Funda,"Hojas de valeriana deshidratadas de excelente calidad, perfectas para infusiones aromáticas y bienestar. Presentación: funda.",NULL,1.25000000,0.0000,,0,,3,1,"5. Hojas, Flores e Infusiones"

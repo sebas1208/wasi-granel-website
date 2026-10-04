@@ -4,8 +4,8 @@
 
 **Blocked by:** 00 (monorepo — authored as the shared `packages/schema`).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] TypeScript types + Zod schemas exist for Product (bulk/packaged discriminator, weight tiers, price, image, origin, category), Category, Weight Tier, and Sucursal.
-- [ ] Mock fixtures supply at least the 9 Stitch-listed products and 8 categories under the agreed structure.
-- [ ] The shape is documented as the contract both the frontend data layer and the Payload collections (ticket 08) will implement.
+- [x] TypeScript types + Zod schemas exist for Product, Category, Purchase Option (Weight Tier + Unit), and Sucursal.
+- [x] Mock fixtures supply the 9 Stitch-listed products and 8 categories under the agreed structure.
+- [x] The shape is documented as the contract both the frontend data layer and the Payload collections (ticket 08) will implement.
