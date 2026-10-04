@@ -7,19 +7,23 @@ The core e-commerce and catalog context for Wasi Granel, an online storefront an
 ### Catalog & Products
 
 **Product**:
-An item available in the store catalog, categorized into bulk or packaged goods.
+An item available in the store catalog, sold through one or more Purchase Options — by weight and/or as a fixed-price unit.
 _Avoid_: Item, commodity
 
+**Purchase Option (Opción de Compra)**:
+A single way to buy a Product: a Weight Tier (by weight) or a fixed-price Unit (e.g. a "porción", bag, or jar). One Product can expose several options — the same almonds may be sold both by weight and as a fixed-price portion.
+_Avoid_: Variant, mode
+
 **Bulk Product (Producto a Granel)**:
-A product sold by weight rather than discreet packages, selected via predefined Weight Tiers.
+A product sold by weight, purchased through predefined Weight Tiers.
 _Avoid_: Loose food, raw product
 
 **Packaged Product (Producto Envasado)**:
-A product sold as a single packaged unit (e.g. jars, bottles, snack packs).
+A product sold as a fixed-price packaged unit (e.g. jars, bottles, snack packs).
 _Avoid_: Unit item
 
 **Weight Tier (Fracción de Peso)**:
-A fixed allowable weight option for purchasing a Bulk Product (100g, 250g, 500g, 1000g).
+A fixed allowable weight option for buying a Bulk Product by weight (100g, 250g, 500g, 1000g) — a Purchase Option of kind "weight".
 _Avoid_: Gram input, custom quantity
 
 ### Cart & Orders
