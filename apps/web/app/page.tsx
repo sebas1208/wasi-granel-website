@@ -92,7 +92,7 @@ export default function UnderConstructionPage() {
                   Suscríbete para recibir un <span className="font-bold text-secondary text-lg">15% de descuento</span> en tu primer pedido.
                 </p>
                 <div className="flex flex-col gap-4">
-                  <a href="#contacto" className="inline-flex items-center justify-center gap-2 bg-[#fcbf00] text-[#544738] font-black px-8 py-4 rounded-lg hover:bg-amber-400 transition-all active:scale-95 shadow-lg shadow-primary/20">
+                  <a href="#contacto" className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground font-black px-8 py-4 rounded-lg hover:bg-amber-400 transition-all active:scale-95 shadow-lg shadow-primary/20">
                     <span className="material-symbols-outlined">star</span>
                     Quiero mi descuento exclusivo
                   </a>
