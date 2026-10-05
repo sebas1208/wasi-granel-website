@@ -4,9 +4,9 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] `globals.css` exposes the five brand colors under clear token names mirroring the brand manual (primary / foreground / neutral-medium / neutral-light / background).
-- [ ] Background resolves to cream `#fff8f4` and foreground to café `#544738`; text on `#FCBF00` is brown, not white.
-- [ ] No hardcoded brand hex values remain in page/component code (they reference the tokens).
-- [ ] `next build` and `next lint` pass with no regressions on the existing pages.
+- [x] `globals.css` exposes the five brand colors under clear token names mirroring the brand manual (primary / foreground / neutral-medium / neutral-light / background).
+- [x] Background resolves to cream `#fff8f4` and foreground to café `#544738`; text on `#FCBF00` is brown, not white.
+- [x] No hardcoded brand hex values remain in page/component code (they reference the tokens).
+- [x] `next build` passes with no regressions on the existing pages (lint still shows the pre-existing `react-hooks/set-state-in-effect` warnings, unchanged).
