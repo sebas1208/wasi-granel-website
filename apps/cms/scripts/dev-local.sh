@@ -22,5 +22,5 @@ until podman exec wasi-payload-db pg_isready -U payload -d payload >/dev/null 2>
 done
 echo "✓ Postgres ready."
 
-echo "▶ Starting Payload dev server → http://localhost:3000/admin"
+echo "▶ Starting Payload dev server → http://localhost:3001/admin"
 exec pnpm dev
