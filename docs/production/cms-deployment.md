@@ -7,72 +7,71 @@ The storefront (root domain, landing page) runs on Vercel — no overlap.
 ## Architecture
 
 - Monorepo; `apps/cms` is the Payload app. Its `Dockerfile` builds from the
-  **workspace root** (it needs `pnpm-lock.yaml` + `pnpm-workspace.yaml`, which
-  live there, not in `apps/cms`).
+  **workspace root** (needs `pnpm-lock.yaml` + `pnpm-workspace.yaml`, which live
+  there, not in `apps/cms`).
 - `apps/cms/docker-compose.yml` runs two containers:
   - `wasi-payload-db` — `postgres:16-alpine`, data in the `pgdata` volume.
-  - `wasi-payload-app` — the Payload/Next server, port `3000:3000`, uploads in
-    the `media` volume.
-- The source lives on the VPS at `/opt/wasi-granel`, synced from your machine
-  with rsync. Secrets are in `/opt/wasi-granel/apps/cms/.env` — **never
-  committed to git and never rsync'd** (so updates can't wipe them).
+  - `wasi-payload-app` — the Payload/Next server, uploads in the `media` volume.
+- **Deployment is Coolify-managed** (Docker Compose resource built from the git
+  repo via a GitHub App source). The container runs `npx payload migrate && next
+  start` at boot, so DB migrations apply automatically on every build.
 
-## One-time setup (done; recorded for a fresh server)
+## How it's set up in Coolify
 
-1. Sync source: `rsync -az -e ssh ... <repo>/ wasi-vps:/opt/wasi-granel/`
-   (or just run the deploy script against an empty `/opt/wasi-granel`).
-2. Create `/opt/wasi-granel/apps/cms/.env` with two secrets:
-   - `POSTGRES_PASSWORD` — `openssl rand -base64 24 | tr -dc 'A-Za-z0-9' | head -c 32`
-   - `PAYLOAD_SECRET`   — `openssl rand -base64 32 | tr -dc 'A-Za-z0-9' | head -c 40`
-   Store a copy somewhere safe; regenerating them later resets the DB password / admin sessions.
-3. `cd /opt/wasi-granel && docker compose -f apps/cms/docker-compose.yml up -d --build`
+- **Source:** GitHub App (`wasi-granel-payload`) authorizing repo `wasi-granel-website`
+  (the git remote that was `sebas1208/jatunwasi-website`).
+- **Application resource:** Build Pack = **Docker Compose**, Base Directory = `apps/cms`,
+  Docker Compose Location = `docker-compose.yml`, branch `main`.
+- **Env vars (Coolify):** `POSTGRES_PASSWORD`, `PAYLOAD_SECRET` only — the compose's
+  `DATABASE_URL` interpolates `POSTGRES_PASSWORD`, and migrations run at boot.
+- **Domain:** `payload.wasigranel.com` via Coolify/Traefik (+ Let's Encrypt wildcard).
 
-## Update & redeploy (every time, no agent needed)
+## Update & redeploy (no agent needed)
 
-From your machine:
+Updates are **just `git push`**:
 
+```bash
+git push origin main        # Coolify auto-redeploys if auto-deploy is on, else click Deploy
 ```
-/apps/cms/scripts/deploy.sh    # (repo-root relative: ./apps/cms/scripts/deploy.sh)
+
+The rebuilt container runs **`payload migrate && next start`**, so pending
+migrations apply automatically. The `pgdata`/`media` volumes persist across
+redeploys.
+
+**Schema changes (e.g. ticket 08):** after editing collections, generate a new
+migration locally and commit it:
+
+```bash
+cd apps/cms && npx payload migrate:create -n <name>   # needs a reachable DATABASE_URL
+git add apps/cms/src/migrations && git commit          # then push
 ```
 
-That syncs new code and runs `docker compose up -d --build`, recreating the
-`payload` container. The `pgdata`/`media` volumes persist.
+First ever boot: open `https://payload.wasigranel.com/admin` and create the first
+admin user. Later boots reuse the created user.
 
-**Schema & migrations:** the container runs `payload migrate` at every start, so
-pending migrations apply automatically on deploy. When you add/change collections
-(e.g. ticket 08), generate a new migration (`npx payload migrate:create -n <name>`
-against a reachable `DATABASE_URL`) and commit it — deploy.sh will apply it.
+## Legacy: raw-SSH deploy (`deploy.sh`)
 
-First ever boot: open `https://payload.wasigranel.com/admin` and create the
-first admin user. Later boots reuse the created user.
-
-## Domain & SSL
-
-- DNS: `payload.wasigranel.com` is covered by the existing **`*.wasigranel.com`**
-  wildcard already on the VPS (same cert path as your other services). No new DNS record needed.
-- TLS: managed the same way your other `*.wasigranel.com` services are
-  (Coolify/Traefik + Let's Encrypt). Payload binds host port **3000** only —
-  it does not touch 80/443.
-- Vercel owns the **root** `wasigranel.com` (landing page). No conflict.
+`apps/cms/scripts/deploy.sh` (rsync → ensure secrets → `docker compose up --build`
+over SSH) still works, but it runs a **separate** docker-compose stack. **Do not run
+it while Coolify owns the app** — it would create a conflicting second stack and
+fight over port 3000 / the domain. It's only relevant if you ever take the CMS out
+of Coolify and go fully self-managed again.
 
 ## Backups
 
-From your machine:
+From your machine (verify the container names with `docker ps | grep wasi` —
+Coolify may rename them):
 
-```
-# Postgres → dump on the VPS
+```bash
 ssh wasi-vps 'docker exec wasi-payload-db pg_dump -U payload payload | gzip > /root/cms-db-$(date +%F).sql.gz'
-
-# Media (uploads) volume → tarball on the VPS
 ssh wasi-vps 'docker run --rm -v media:/mnt -w /mnt alpine tar czf /root/cms-media-$(date +%F).tar.gz .'
 ```
 
-Then pull both to your machine / offsite regularly.
+Pull both to your machine / offsite regularly.
 
 ## From-scratch rebuild (e.g. server wipe)
 
-1. `ssh wasi-vps 'mkdir -p /opt/wasi-granel'`
-2. Recreate `apps/cms/.env` with fresh secrets (above).
-3. `./apps/cms/scripts/deploy.sh`
-4. Re-apply the domain + SSL via Coolify (see "Domain & SSL").
-5. Restore from the latest backups if you have them.
+1. Recreate the GitHub App source + Application resource in Coolify (Base
+   Directory `apps/cms`, Build Pack Docker Compose, domain `payload.wasigranel.com`).
+2. Set the two env vars and click Deploy — migrations auto-apply on a fresh DB.
+3. Restore from the latest backups if you have them.
