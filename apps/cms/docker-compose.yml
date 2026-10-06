@@ -21,8 +21,8 @@ services:
 
   payload:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../..
+      dockerfile: apps/cms/Dockerfile
     container_name: wasi-payload-app
     restart: always
     depends_on:
