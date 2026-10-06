@@ -4,8 +4,8 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The Wasi Granel wordmark/vector/white-transparent logos from `.scratch/stitch-fetch/` are copied to `public/` under clear names (e.g. `logo.svg`, `logo-white.svg`, `isotipo.svg`).
-- [ ] `public/logo.svg` is verified to be the current Wasi Granel mark (not a stale/v0 placeholder) or replaced.
-- [ ] A short note documents which logo variant is used where (navbar / footer / favicon / dark surfaces) per the manual's contrast rules.
+- [x] `public/logo.svg` verified as the current official Wasi Granel mark (kept as the single source).
+- [x] A runtime-recolorable `.wasi-logo` utility (CSS mask + `currentColor`) replaces the planned static `logo-white.svg` / `isotipo.svg` copies — colour is set via Tailwind `text-*` at runtime (yellow / white / any future colour from one source).
+- [x] `docs/logo-usage.md` documents which rendering to use where, per the manual's contrast rules.
