@@ -23,13 +23,13 @@ COPY . .
 RUN pnpm --filter @wasi-granel/cms build
 
 FROM base AS runner
-WORKDIR /app
-ENV NODE_ENV=production
-RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
-COPY --from=builder --chown=nextjs:nodejs /repo/apps/cms/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /repo/apps/cms/.next/static ./.next/static
-COPY --from=builder --chown=nextjs:nodejs /repo/apps/cms/public ./public
-USER nextjs
+WORKDIR /repo/apps/cms
+ENV NODE_ENV=production PORT=3000 NEXT_TELEMETRY_DISABLED=1 PATH="/repo/apps/cms/node_modules/.bin:/repo/node_modules/.bin:$PATH"
+# Full node_modules (so the `payload` CLI + sharp are available), the built app,
+# and the workspace manifests the app resolves against.
+COPY --from=builder /repo/node_modules /repo/node_modules
+COPY --from=builder /repo/apps/cms /repo/apps/cms
+COPY --from=builder /repo/package.json /repo/pnpm-workspace.yaml /repo/pnpm-lock.yaml /repo/
 EXPOSE 3000
-ENV PORT=3000 HOSTNAME=0.0.0.0
-CMD ["node", "server.js"]
+# Apply pending DB migrations, then serve the production build.
+CMD ["sh", "-c", "npx payload migrate && next start -p 3000"]

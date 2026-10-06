@@ -35,9 +35,9 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      # Persist uploaded media (product/logo images). Matches Payload's default
-      # `upload.staticDir` of `media/`, which resolves to /app/media in the container.
-      - media:/app/media
+      # Persist uploaded media. Payload's default staticDir is `media` relative to
+      # cwd (= /repo/apps/cms in the container), so mount the volume there.
+      - media:/repo/apps/cms/media
 
 volumes:
   pgdata:
