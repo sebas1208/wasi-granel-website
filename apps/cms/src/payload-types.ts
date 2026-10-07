@@ -69,6 +69,8 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    categories: Category;
+    products: Product;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +80,8 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -164,6 +168,95 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  /**
+   * URL-stable identifier, e.g. "frutos-secos".
+   */
+  slug: string;
+  name: string;
+  /**
+   * Short category blurb (optional).
+   */
+  description?: string | null;
+  /**
+   * Manual display order (Dolibarr styled categories "1.", "2.", …).
+   */
+  sortOrder?: number | null;
+  /**
+   * Optional category cover image.
+   */
+  image?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  slug: string;
+  /**
+   * Clean name, no unit/presentation suffix.
+   */
+  name: string;
+  description?: string | null;
+  category: number | Category;
+  /**
+   * Ordered photos — first is the cover.
+   */
+  images?:
+    | {
+        image: number | Media;
+        /**
+         * Alt text (WCAG). Falls back to the media alt if empty.
+         */
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Where it is grown/sourced (region, country).
+   */
+  origin?: string | null;
+  inStock?: boolean | null;
+  /**
+   * Legacy ERP SKU (e.g. ACE-001).
+   */
+  ref?: string | null;
+  /**
+   * IVA as a decimal (0 = 0%, 0.12 = 12%). Empty = zero-rated.
+   */
+  taxRate?: number | null;
+  /**
+   * Ways this product can be bought (weight tiers and/or fixed units).
+   */
+  purchaseOptions?:
+    | {
+        kind: 'weight' | 'unit';
+        /**
+         * Weight in grams for this option (bulk).
+         */
+        weightGrams?: number | null;
+        /**
+         * Price in USD (decimal dollars).
+         */
+        price: number;
+        /**
+         * Unit label, e.g. "porción", "500 cm3".
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -193,6 +286,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: number | Product;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -276,6 +377,51 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  slug?: T;
+  name?: T;
+  description?: T;
+  sortOrder?: T;
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  slug?: T;
+  name?: T;
+  description?: T;
+  category?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
+  origin?: T;
+  inStock?: T;
+  ref?: T;
+  taxRate?: T;
+  purchaseOptions?:
+    | T
+    | {
+        kind?: T;
+        weightGrams?: T;
+        price?: T;
+        label?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
