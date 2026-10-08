@@ -1049,7 +1049,7 @@
     "slug": "alginato",
     "name": "Alginato",
     "description": "Alginato de excelente calidad, ideal para venta a granel. Presentación: 25 gr.",
-    "categorySlug": null,
+    "categorySlug": "otros",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -1064,7 +1064,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "defaulted to Otros (no confident category)"
+      ]
     }
   },
   {
@@ -1095,7 +1097,7 @@
     "slug": "bicarbonato-de-sodio",
     "name": "Bicarbonato de Sodio",
     "description": "Bicarbonato de sodio de excelente calidad, ideal para venta a granel. Presentación: libra.",
-    "categorySlug": null,
+    "categorySlug": "otros",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -1110,7 +1112,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "defaulted to Otros (no confident category)"
+      ]
     }
   },
   {
@@ -1205,7 +1209,7 @@
     "slug": "cloruro-de-calcio",
     "name": "Cloruro de Calcio",
     "description": "Cloruro de calcio de excelente calidad, ideal para venta a granel. Presentación: 25 gr.",
-    "categorySlug": null,
+    "categorySlug": "otros",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -1220,7 +1224,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "defaulted to Otros (no confident category)"
+      ]
     }
   },
   {
@@ -1521,7 +1527,7 @@
     "slug": "champinon-seco-de-bosque-de-pino",
     "name": "Champiñón Seco de Bosque de Pino",
     "description": "Champiñón seco de bosque de pino de excelente calidad, ideal para venta a granel. Presentación: porción.",
-    "categorySlug": null,
+    "categorySlug": "otros",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -1536,7 +1542,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "defaulted to Otros (no confident category)"
+      ]
     }
   },
   {
@@ -2340,7 +2348,7 @@
     "slug": "champinonese-secos",
     "name": "Champiñonese Secos",
     "description": "Champiñonese secos de excelente calidad, ideal para venta a granel. Presentación: porción.",
-    "categorySlug": null,
+    "categorySlug": "otros",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -2355,7 +2363,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "defaulted to Otros (no confident category)"
+      ]
     }
   },
   {
@@ -2894,7 +2904,7 @@
     "slug": "estragon",
     "name": "Estragon",
     "description": "Estragon de excelente calidad, ideal para venta a granel. Presentación: porción.",
-    "categorySlug": null,
+    "categorySlug": "especias-hierbas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -2909,14 +2919,16 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
     "slug": "finas-hierbas",
     "name": "Finas Hierbas",
     "description": "Finas hierbas de excelente calidad, ideal para venta a granel. Presentación: libra.",
-    "categorySlug": null,
+    "categorySlug": "especias-hierbas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -2936,7 +2948,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
@@ -3104,7 +3118,7 @@
     "slug": "frutos-deshidratatados-fresa",
     "name": "Frutos Deshidratatados Fresa",
     "description": "Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",
-    "categorySlug": null,
+    "categorySlug": "frutas-deshidratadas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -3129,14 +3143,16 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
     "slug": "frutos-deshidratatados-manazana-roja",
     "name": "Frutos Deshidratatados Manazana Roja",
     "description": "Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",
-    "categorySlug": null,
+    "categorySlug": "frutas-deshidratadas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -3161,14 +3177,16 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
     "slug": "frutos-deshidratatados-manzana-verde",
     "name": "Frutos Deshidratatados Manzana Verde",
     "description": "Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",
-    "categorySlug": null,
+    "categorySlug": "frutas-deshidratadas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -3193,14 +3211,16 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
     "slug": "frutos-deshidratatados-mora",
     "name": "Frutos Deshidratatados Mora",
     "description": "Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",
-    "categorySlug": null,
+    "categorySlug": "frutas-deshidratadas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -3225,7 +3245,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
@@ -3488,7 +3510,7 @@
     "slug": "frutos-deshidratatados-babano",
     "name": "Frutos Deshidratatados Babano",
     "description": "Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",
-    "categorySlug": null,
+    "categorySlug": "frutas-deshidratadas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -3513,14 +3535,16 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
     "slug": "frutos-amarillos-deshidratados-mix",
     "name": "Frutos Amarillos Deshidratados Mix",
     "description": "Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",
-    "categorySlug": null,
+    "categorySlug": "frutas-deshidratadas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -3545,14 +3569,16 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
     "slug": "frutos-rojos-deshidratados-mix",
     "name": "Frutos Rojos Deshidratados Mix",
     "description": "Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",
-    "categorySlug": null,
+    "categorySlug": "frutas-deshidratadas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -3577,7 +3603,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
@@ -3839,7 +3867,7 @@
     "slug": "guayuza",
     "name": "Guayuza",
     "description": "Guayuza de excelente calidad, ideal para venta a granel. Presentación: porción.",
-    "categorySlug": null,
+    "categorySlug": "especias-hierbas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -3854,7 +3882,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
@@ -3883,7 +3913,7 @@
     "slug": "hondashi-concentrado-de-pescado",
     "name": "Hondashi (concentrado de Pescado)",
     "description": "Hondashi (concentrado de pescado) de excelente calidad, ideal para venta a granel. Presentación: 120 gr.",
-    "categorySlug": null,
+    "categorySlug": "especias-hierbas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -3903,14 +3933,16 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
     "slug": "habas-de-sal",
     "name": "Habas de Sal",
     "description": "Habas de sal de excelente calidad, ideal para venta a granel. Presentación: libra.",
-    "categorySlug": null,
+    "categorySlug": "legumbres-menestras",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -3925,7 +3957,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
@@ -4098,7 +4132,7 @@
     "slug": "hierbas-finas",
     "name": "Hierbas Finas",
     "description": "Hierbas finas de excelente calidad, ideal para venta a granel. Presentación: porción.",
-    "categorySlug": null,
+    "categorySlug": "especias-hierbas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -4113,7 +4147,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
@@ -4341,7 +4377,7 @@
     "slug": "magui-polvo",
     "name": "Magui Polvo",
     "description": "Magui polvo de excelente calidad, ideal para venta a granel. Presentación: libra.",
-    "categorySlug": null,
+    "categorySlug": "especias-hierbas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -4366,7 +4402,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
@@ -4539,7 +4577,7 @@
     "slug": "manzana-deshidratada",
     "name": "Manzana Deshidratada",
     "description": "Manzana deshidratada de excelente calidad, ideal para venta a granel.",
-    "categorySlug": null,
+    "categorySlug": "frutas-deshidratadas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -4548,13 +4586,14 @@
     "purchaseOptions": [
       {
         "kind": "unit",
-        "price": null
+        "price": null,
+        "label": "unidad"
       }
     ],
     "_source": {
       "docxDoc": false,
       "notes": [
-        "no-suffix"
+        "category via manual extra-assign"
       ]
     }
   },
@@ -4619,14 +4658,13 @@
     "purchaseOptions": [
       {
         "kind": "unit",
-        "price": 4.0
+        "price": 4.0,
+        "label": "unidad"
       }
     ],
     "_source": {
       "docxDoc": true,
-      "notes": [
-        "no-suffix"
-      ]
+      "notes": []
     }
   },
   {
@@ -4782,7 +4820,7 @@
     "slug": "mix-frutos-secos-sal",
     "name": "Mix Frutos Secos Sal",
     "description": "Fruta deshidratada natural de excelente calidad, ideal como snack saludable o para repostería. Presentación: libra.",
-    "categorySlug": null,
+    "categorySlug": "frutos-secos",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -4797,7 +4835,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
@@ -5425,7 +5465,7 @@
     "slug": "quinoa-pop",
     "name": "Quinoa Pop",
     "description": "Quinoa pop de excelente calidad, ideal para venta a granel. Presentación: porción.",
-    "categorySlug": null,
+    "categorySlug": "semillas-granos",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -5440,14 +5480,16 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
     "slug": "quinoa-negra",
     "name": "Quinoa Negra",
     "description": "Quinoa negra de excelente calidad, ideal para venta a granel. Presentación: libra.",
-    "categorySlug": null,
+    "categorySlug": "semillas-granos",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -5462,14 +5504,16 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
     "slug": "quinoa-roja",
     "name": "Quinoa Roja",
     "description": "Quinoa roja de excelente calidad, ideal para venta a granel. Presentación: libra.",
-    "categorySlug": null,
+    "categorySlug": "semillas-granos",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -5484,7 +5528,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
@@ -5557,7 +5603,7 @@
     "slug": "sopa-ramen-120gr",
     "name": "Sopa Ramen 120gr",
     "description": "Sopa ramen 120gr de excelente calidad, ideal para venta a granel. Presentación: funda.",
-    "categorySlug": null,
+    "categorySlug": "harinas-cereales",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -5572,7 +5618,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
@@ -5647,7 +5695,7 @@
     "slug": "salvado-de-tigo",
     "name": "Salvado de Tigo",
     "description": "Salvado de tigo de excelente calidad, ideal para venta a granel. Presentación: porción.",
-    "categorySlug": null,
+    "categorySlug": "harinas-cereales",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -5662,7 +5710,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
@@ -5691,7 +5741,7 @@
     "slug": "thaini-300-gr",
     "name": "Thaini 300 Gr",
     "description": "Thaini 300 gr de excelente calidad, ideal para venta a granel. Presentación: porción.",
-    "categorySlug": null,
+    "categorySlug": "semillas-granos",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -5706,14 +5756,16 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
     "slug": "thaini-200-gr-integral",
     "name": "Thaini 200 Gr Integral",
     "description": "Thaini 200 gr integral de excelente calidad, ideal para venta a granel. Presentación: porción.",
-    "categorySlug": null,
+    "categorySlug": "semillas-granos",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -5728,14 +5780,16 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
     "slug": "teriyaki-250-ml",
     "name": "Teriyaki 250 Ml",
     "description": "Teriyaki 250 ml de excelente calidad, ideal para venta a granel. Presentación: porción.",
-    "categorySlug": null,
+    "categorySlug": "especias-hierbas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -5750,7 +5804,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
@@ -5958,7 +6014,7 @@
     "slug": "vaina-de-vainilla",
     "name": "Vaina de Vainilla",
     "description": "Vaina de vainilla de excelente calidad, ideal para venta a granel. Presentación: unidad.",
-    "categorySlug": null,
+    "categorySlug": "especias-hierbas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -5973,14 +6029,16 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {
     "slug": "vinagre-de-manzana-250-ml",
     "name": "Vinagre de Manzana 250 Ml",
     "description": "Vinagre de manzana 250 ml de excelente calidad, ideal para venta a granel. Presentación: 250 ml.",
-    "categorySlug": null,
+    "categorySlug": "especias-hierbas",
     "images": [],
     "origin": null,
     "inStock": true,
@@ -5995,7 +6053,9 @@
     ],
     "_source": {
       "docxDoc": false,
-      "notes": []
+      "notes": [
+        "category via manual extra-assign"
+      ]
     }
   },
   {

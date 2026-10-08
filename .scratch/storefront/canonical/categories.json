@@ -5,6 +5,11 @@
     "sortOrder": 1
   },
   {
+    "slug": "semillas-granos",
+    "name": "Semillas & Granos",
+    "sortOrder": 2
+  },
+  {
     "slug": "frutas-deshidratadas",
     "name": "Frutas Deshidratadas",
     "sortOrder": 3
@@ -25,6 +30,11 @@
     "sortOrder": 6
   },
   {
+    "slug": "legumbres-menestras",
+    "name": "Legumbres & Menestras",
+    "sortOrder": 7
+  },
+  {
     "slug": "aceites-aceitunas",
     "name": "Aceites & Aceitunas",
     "sortOrder": 9
@@ -43,5 +53,10 @@
     "slug": "endulzantes",
     "name": "Endulzantes",
     "sortOrder": 12
+  },
+  {
+    "slug": "otros",
+    "name": "Otros",
+    "sortOrder": 13
   }
 ]

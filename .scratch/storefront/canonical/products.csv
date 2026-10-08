@@ -40,14 +40,14 @@ arandanos,Arandanos,frutas-deshidratadas,ARA-001,1,0,,
 avellanas,Avellanas,frutos-secos,AVE-003,1,1,yes,category via docx section 'FRUTOS SECOS'
 aceitunas,Aceitunas,aceites-aceitunas,ACE-010,1,0,,
 almendra-harina,Almendra Harina,frutos-secos,ALM-005,2,0,,
-alginato,Alginato,,ALG-001,1,0,,
+alginato,Alginato,otros,ALG-001,1,0,,defaulted to Otros (no confident category)
 agar-agar,Agar Agar,cacao-chocolates,AGA-001,1,0,yes,category via docx section 'REPOSTERÍA'
-bicarbonato-de-sodio,Bicarbonato de Sodio,,BIC-001,1,0,,
+bicarbonato-de-sodio,Bicarbonato de Sodio,otros,BIC-001,1,0,,defaulted to Otros (no confident category)
 boldo-hoja-deshidratada,Boldo Hoja Deshidratada,infusiones-tes,BOL-001,1,0,yes,
 cacahuate,Cacahuate,frutos-secos,CAC-001,1,0,,
 cafe-grano,Café Grano,endulzantes,CAF-001,1,0,,
 cafe-polvo,Café Polvo,endulzantes,CAF-002,1,0,,
-cloruro-de-calcio,Cloruro de Calcio,,CLO-001,1,0,,
+cloruro-de-calcio,Cloruro de Calcio,otros,CLO-001,1,0,,defaulted to Otros (no confident category)
 canela-rama,Canela Rama,especias-hierbas,CAN-001,2,0,,
 canela-en-polvo,Canela en Polvo,especias-hierbas,CAN-003,2,1,yes,
 caramelo-almendra,Caramelo Almendra,frutos-secos,CAR-001,4,0,yes,
@@ -59,7 +59,7 @@ cereal-arroz-blanco,Cereal Arroz Blanco,harinas-cereales,CER-001,1,0,,
 cereal-arroz-blanco-colores,Cereal Arroz Blanco Colores,harinas-cereales,CER-002,1,0,,
 cereal-mote-mafaldas,Cereal Mote ( Mafaldas ),harinas-cereales,CER-003,1,0,,
 cereal-trigo,Cereal Trigo,harinas-cereales,CER-004,1,0,,
-champinon-seco-de-bosque-de-pino,Champiñón Seco de Bosque de Pino,,CHA-001,1,0,,
+champinon-seco-de-bosque-de-pino,Champiñón Seco de Bosque de Pino,otros,CHA-001,1,0,,defaulted to Otros (no confident category)
 chia-semilla,Chia Semilla,frutos-secos,CHI-001,3,0,,
 choco-almendras-diabeticos,Choco Almendras Diabéticos,frutos-secos,CHO-001,1,1,yes,docx name matched 2 products; used first
 choco-almendras,Choco Almendras,frutos-secos,CHO-002,3,1,yes,docx name matched 2 products; used first
@@ -88,7 +88,7 @@ chocolate-cobertura-blanco,Chocolate Cobertura Blanco,cacao-chocolates,CHO-052,2
 chocolate-cobertura-negro-semiamargo,Chocolate Cobertura Negro Semiamargo,cacao-chocolates,CHO-054,2,0,,
 chocolate-amargo-pastilla,Chocolate Amargo Pastilla,cacao-chocolates,CHO-056,2,0,,
 chocolate-m-m,Chocolate M&M,cacao-chocolates,CHO-058,1,0,,
-champinonese-secos,Champiñonese Secos,,CHA-002,1,0,,
+champinonese-secos,Champiñonese Secos,otros,CHA-002,1,0,,defaulted to Otros (no confident category)
 ciruelas-pasas,Ciruelas Pasas,frutas-deshidratadas,CIR-001,2,1,yes,docx name matched 2 products; used first
 clavo-de-olor-molido,Clavo de Olor Molido,especias-hierbas,CLA-001,1,2,yes,
 clavo-de-olor-pepa,Clavo de Olor Pepa,especias-hierbas,CLA-002,1,0,,
@@ -108,18 +108,18 @@ datiles,Datiles,frutas-deshidratadas,DAT-001,2,0,,
 damasco,Damasco,frutas-deshidratadas,DAM-001,3,1,yes,
 estevia-hoja,Estevia Hoja,infusiones-tes,EST-001,2,1,yes,
 estevia-polvo,Estevia Polvo,infusiones-tes,EST-003,2,1,yes,
-estragon,Estragon,,EST-005,1,0,,
-finas-hierbas,Finas Hierbas,,FIN-001,2,0,,
+estragon,Estragon,especias-hierbas,EST-005,1,0,,category via manual extra-assign
+finas-hierbas,Finas Hierbas,especias-hierbas,FIN-001,2,0,,category via manual extra-assign
 fenogreco,Fenogreco,semillas-granos,FEN-001,2,1,yes,category via docx section 'SEMILLAS'
 fruta-confitada,Fruta Confitada,frutas-deshidratadas,FRU-001,2,0,yes,
 flor-de-calendula,Flor de Calendula,infusiones-tes,FLO-001,1,0,,
 flor-de-retama,Flor de Retama,infusiones-tes,FLO-002,1,0,,
 flor-de-lavanda-5-gr,Flor de Lavanda 5 Gr,infusiones-tes,FLO-003,1,1,yes,
 flor-de-jamaica,Flor de Jamaica,infusiones-tes,FLO-004,3,2,yes,
-frutos-deshidratatados-fresa,Frutos Deshidratatados Fresa,,FRU-003,3,0,,
-frutos-deshidratatados-manazana-roja,Frutos Deshidratatados Manazana Roja,,FRU-006,3,0,,
-frutos-deshidratatados-manzana-verde,Frutos Deshidratatados Manzana Verde,,FRU-009,3,0,,
-frutos-deshidratatados-mora,Frutos Deshidratatados Mora,,FRU-012,3,0,,
+frutos-deshidratatados-fresa,Frutos Deshidratatados Fresa,frutas-deshidratadas,FRU-003,3,0,,category via manual extra-assign
+frutos-deshidratatados-manazana-roja,Frutos Deshidratatados Manazana Roja,frutas-deshidratadas,FRU-006,3,0,,category via manual extra-assign
+frutos-deshidratatados-manzana-verde,Frutos Deshidratatados Manzana Verde,frutas-deshidratadas,FRU-009,3,0,,category via manual extra-assign
+frutos-deshidratatados-mora,Frutos Deshidratatados Mora,frutas-deshidratadas,FRU-012,3,0,,category via manual extra-assign
 frutos-deshidratatados-pina,Frutos Deshidratatados Piña,frutas-deshidratadas,FRU-015,3,0,,
 frutos-deshidratatados-mango,Frutos Deshidratatados Mango,frutas-deshidratadas,FRU-018,3,0,,
 frutos-deshidratatados-kiwi,Frutos Deshidratatados Kiwi,frutas-deshidratadas,FRU-021,3,0,,
@@ -128,9 +128,9 @@ frutos-deshidratatados-uvilla,Frutos Deshidratatados Uvilla,frutas-deshidratadas
 frutos-deshidratatados-naranja,Frutos Deshidratatados Naranja,frutas-deshidratadas,FRU-030,3,0,,
 frutos-deshidratatados-mandarina,Frutos Deshidratatados Mandarina,frutas-deshidratadas,FRU-033,3,0,,
 frutos-deshidratatados-limon,Frutos Deshidratatados Limón,frutas-deshidratadas,FRU-036,3,0,,
-frutos-deshidratatados-babano,Frutos Deshidratatados Babano,,FRU-039,3,0,,
-frutos-amarillos-deshidratados-mix,Frutos Amarillos Deshidratados Mix,,FRU-042,3,0,,
-frutos-rojos-deshidratados-mix,Frutos Rojos Deshidratados Mix,,FRU-045,3,0,,
+frutos-deshidratatados-babano,Frutos Deshidratatados Babano,frutas-deshidratadas,FRU-039,3,0,,category via manual extra-assign
+frutos-amarillos-deshidratados-mix,Frutos Amarillos Deshidratados Mix,frutas-deshidratadas,FRU-042,3,0,,category via manual extra-assign
+frutos-rojos-deshidratados-mix,Frutos Rojos Deshidratados Mix,frutas-deshidratadas,FRU-045,3,0,,category via manual extra-assign
 garbanzo-harina,Garbanzo Harina,harinas-cereales,GAR-001,2,0,,
 garbanzo-de-dulce,Garbanzo de Dulce,harinas-cereales,GAR-003,2,0,,
 gelatina-sin-sabor,Gelatina Sin Sabor,harinas-cereales,GEL-001,2,0,yes,category via docx section 'HARINAS'
@@ -140,10 +140,10 @@ girasol-semillas-pelada,Girasol Semillas Pelada,frutos-secos,GIR-001,3,1,yes,
 granola-normal,Granola Normal,semillas-granos,GRA-001,1,1,yes,category via docx section 'SEMILLAS Y CEREALES'
 granola-con-estevia,Granola con Estevia,infusiones-tes,GRA-002,1,1,yes,docx name matched 2 products; used first
 granola-artesanal,Granola Artesanal,semillas-granos,GRA-003,1,1,yes,category via docx section 'SEMILLAS Y CEREALES'
-guayuza,Guayuza,,GUA-001,1,0,,
+guayuza,Guayuza,especias-hierbas,GUA-001,1,0,,category via manual extra-assign
 harina-de-chocho-150-gr,Harina de Chocho 150 Gr,harinas-cereales,HAR-001,1,0,,
-hondashi-concentrado-de-pescado,Hondashi (concentrado de Pescado),,HON-001,2,0,,
-habas-de-sal,Habas de Sal,,HAB-001,1,0,,
+hondashi-concentrado-de-pescado,Hondashi (concentrado de Pescado),especias-hierbas,HON-001,2,0,,category via manual extra-assign
+habas-de-sal,Habas de Sal,legumbres-menestras,HAB-001,1,0,,category via manual extra-assign
 habas-picantes,Habas Picantes,cacao-chocolates,HAB-002,1,0,yes,category via docx section 'CONFITES'
 habas-de-dulce,Habas de Dulce,cacao-chocolates,HAB-003,1,0,yes,
 harina-de-almendra,Harina de Almendra,frutos-secos,HAR-002,2,0,yes,
@@ -151,7 +151,7 @@ harina-de-arroz,Harina de Arroz,harinas-cereales,HAR-004,1,0,yes,
 higos-secos,Higos Secos,frutas-deshidratadas,HIG-001,1,0,,
 hoja-de-coca,Hoja de Coca,infusiones-tes,HOJ-001,1,0,,
 harina-de-garbanzo,Harina de Garbanzo,harinas-cereales,HAR-005,2,0,,
-hierbas-finas,Hierbas Finas,,HIE-001,1,0,,
+hierbas-finas,Hierbas Finas,especias-hierbas,HIE-001,1,0,,category via manual extra-assign
 laurel-hoja,Laurel Hoja,infusiones-tes,LAU-001,2,1,yes,docx name matched 2 products; used first
 laurel-molido,Laurel Molido,infusiones-tes,LAU-003,1,1,yes,docx name matched 2 products; used first
 linaza-grano,Linaza Grano,frutos-secos,LIN-001,2,1,yes,
@@ -160,24 +160,24 @@ maca-negra,Maca Negra,harinas-cereales,MAC-001,1,0,yes,category via docx section
 maca-roja,Maca Roja,harinas-cereales,MAC-002,1,0,yes,category via docx section 'HARINAS'
 maca-amarilla,Maca Amarilla,harinas-cereales,MAC-003,1,0,yes,category via docx section 'HARINAS'
 macadamia,Macadamia,frutos-secos,MAC-004,3,1,yes,
-magui-polvo,Magui Polvo,,MAG-001,3,0,,
+magui-polvo,Magui Polvo,especias-hierbas,MAG-001,3,0,,category via manual extra-assign
 mani-ajonjoli,Mani Ajonjoli,frutos-secos,MAN-001,2,1,yes,
 mani-confitado,Maní Confitado,frutos-secos,MAN-003,2,0,,
 mani-tostado-con-sal,Mani Tostado con Sal,frutos-secos,MAN-005,2,0,,
 mani-tostado-sin-sal,Mani Tostado Sin Sal,frutos-secos,MAN-007,2,0,,
 mani-japones,Mani Japonés,frutos-secos,MAN-009,2,0,,
 mani-criss,Maní Criss,frutos-secos,MAN-011,2,0,yes,docx name matched 2 products; used first
-manzana-deshidratada,Manzana Deshidratada,,MAN-013,1,0,,no-suffix
+manzana-deshidratada,Manzana Deshidratada,frutas-deshidratadas,MAN-013,1,0,,category via manual extra-assign
 mate-de-coca-delisse-x-100-unid,Mate de Coca Delisse X 100 Unid,infusiones-tes,MAT-001,1,0,,
 miel-de-abeja-natural-honey-grande,Miel de Abeja Natural Honey Grande,endulzantes,MIE-001,1,1,yes,
-miel-de-abeja-natural-honey-pequena,Miel de Abeja Natural Honey Pequeña,endulzantes,MIE-002,1,1,yes,no-suffix
+miel-de-abeja-natural-honey-pequena,Miel de Abeja Natural Honey Pequeña,endulzantes,MIE-002,1,1,yes,
 miel-de-abeja-colmena-de-milo,Miel de Abeja Colmena de Milo,endulzantes,MIE-003,2,1,yes,
 moringa-hoja,Moringa Hoja,infusiones-tes,MOR-001,1,1,yes,
 moringa-polvo,Moringa Polvo,infusiones-tes,MOR-002,1,1,yes,
 moringa-pepa,Moringa Pepa,infusiones-tes,MOR-003,1,1,yes,
 mostaza-grano,Mostaza Grano,especias-hierbas,MOS-001,1,1,yes,
 mostaza-molida,Mostaza Molida,especias-hierbas,MOS-002,1,1,yes,
-mix-frutos-secos-sal,Mix Frutos Secos Sal,,MIX-001,1,0,,
+mix-frutos-secos-sal,Mix Frutos Secos Sal,frutos-secos,MIX-001,1,0,,category via manual extra-assign
 mix-frutos-secos-dulce,Mix Frutos Secos Dulce,cacao-chocolates,MIX-002,1,0,,
 nuez-con-cascara,Nuez con Cáscara,frutos-secos,NUE-001,2,1,yes,
 nuez-moscada-pepa,Nuez Moscada Pepa,frutos-secos,NUE-003,1,1,yes,
@@ -203,21 +203,21 @@ pimienta-negra-en-polvo,Pimienta Negra en Polvo,especias-hierbas,PIM-003,1,1,yes
 pimienta-dulce,Pimienta Dulce,cacao-chocolates,PIM-004,1,1,yes,
 pina-deshidratada,Piña Deshidratada,frutas-deshidratadas,PIN-001,1,0,,
 pistachos,Pistachos,frutos-secos,PIS-001,2,1,yes,
-quinoa-pop,Quinoa Pop,,QUI-001,1,0,,
-quinoa-negra,Quinoa Negra,,QUI-002,1,0,,
-quinoa-roja,Quinoa Roja,,QUI-003,1,0,,
+quinoa-pop,Quinoa Pop,semillas-granos,QUI-001,1,0,,category via manual extra-assign
+quinoa-negra,Quinoa Negra,semillas-granos,QUI-002,1,0,,category via manual extra-assign
+quinoa-roja,Quinoa Roja,semillas-granos,QUI-003,1,0,,category via manual extra-assign
 sal-grano,Sal Grano,especias-hierbas,SAL-001,1,0,,
 sal-rosada-del-himalaya-grano-125gr,Sal Rosada del Himalaya Grano 125gr,especias-hierbas,SAL-002,1,0,yes,
 sal-rosada-del-himalaya-polvo-125gr,Sal Rosada del Himalaya Polvo 125gr,especias-hierbas,SAL-003,1,0,yes,
-sopa-ramen-120gr,Sopa Ramen 120gr,,SOP-001,1,0,,
+sopa-ramen-120gr,Sopa Ramen 120gr,harinas-cereales,SOP-001,1,0,,category via manual extra-assign
 salvia-35-4-gr,"Salvia 35,4 Gr",infusiones-tes,SAL-004,1,1,yes,
 semillas-de-amapola-25-gr,Semillas de Amapola 25 Gr,frutos-secos,SEM-001,1,0,,
 semilla-de-apio-50-gr,Semilla de Apio 50 Gr,frutos-secos,SEM-002,1,0,yes,
-salvado-de-tigo,Salvado de Tigo,,SAL-005,1,0,,
+salvado-de-tigo,Salvado de Tigo,harinas-cereales,SAL-005,1,0,,category via manual extra-assign
 soya-en-polvo,Soya en Polvo,harinas-cereales,SOY-001,1,0,,
-thaini-300-gr,Thaini 300 Gr,,THA-001,1,0,,
-thaini-200-gr-integral,Thaini 200 Gr Integral,,THA-002,1,0,,
-teriyaki-250-ml,Teriyaki 250 Ml,,TER-001,1,0,,
+thaini-300-gr,Thaini 300 Gr,semillas-granos,THA-001,1,0,,category via manual extra-assign
+thaini-200-gr-integral,Thaini 200 Gr Integral,semillas-granos,THA-002,1,0,,category via manual extra-assign
+teriyaki-250-ml,Teriyaki 250 Ml,especias-hierbas,TER-001,1,0,,category via manual extra-assign
 te-negro,Te Negro,infusiones-tes,TEN-001,1,0,,
 te-rojo,Te Rojo,infusiones-tes,TER-002,1,0,,
 te-verde,Te Verde,infusiones-tes,TEV-001,1,0,,
@@ -227,8 +227,8 @@ tomillo,Tomillo,especias-hierbas,TOM-001,1,0,yes,docx name matched 2 products; u
 tomate-deshidratado,Tomate Deshidratado,infusiones-tes,TOM-002,1,0,,
 tapioca-perla,Tapioca Perla,frutos-secos,TAP-001,1,0,yes,
 uvilla-deshidratada,Uvilla Deshidratada,frutas-deshidratadas,UVI-001,1,0,,
-vaina-de-vainilla,Vaina de Vainilla,,VAI-001,1,0,,
-vinagre-de-manzana-250-ml,Vinagre de Manzana 250 Ml,,VIN-001,1,0,,
+vaina-de-vainilla,Vaina de Vainilla,especias-hierbas,VAI-001,1,0,,category via manual extra-assign
+vinagre-de-manzana-250-ml,Vinagre de Manzana 250 Ml,especias-hierbas,VIN-001,1,0,,category via manual extra-assign
 zen-hojas-deshidratadas,Zen Hojas Deshidratadas,infusiones-tes,ZEN-001,2,0,,
 menta-hojas-deshidratadas,Menta Hojas Deshidratadas,infusiones-tes,MEN-001,1,0,yes,
 higo-hojas-deshidratadas,Higo Hojas Deshidratadas,frutas-deshidratadas,HIG-002,1,0,,

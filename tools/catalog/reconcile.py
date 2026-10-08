@@ -59,9 +59,8 @@ def purchase_option(suffix, price):
     Preserves each distinct way to buy; lbs and grams stay separate weight tiers."""
     s = suffix.strip()
     if not s:
-        # No presentation on the row — price is per something unspecified. Keep as a
-        # unit option with no label and flag it for review.
-        return ["no-suffix"], {"kind": "unit", "price": price}
+        # No presentation on the row — sold by unit (per owner decision).
+        return [], {"kind": "unit", "price": price, "label": "unidad"}
     if s.lower() in ("libra", "lb"):
         return [], {"kind": "weight", "weightGrams": 454, "price": price}
     m = GR.match(s)
@@ -85,6 +84,7 @@ STITCH = [
     {"slug": "infusiones-tes",          "name": "Infusiones & Tés",       "sortOrder": 10},
     {"slug": "ajies-ajos",              "name": "Ajíes & Ajos",           "sortOrder": 11},
     {"slug": "endulzantes",             "name": "Endulzantes",            "sortOrder": 12},
+    {"slug": "otros",                   "name": "Otros",                  "sortOrder": 13},
 ]
 
 # Dolibarr category -> canonical slug. First key match wins; '' = unassigned/flag.
@@ -121,6 +121,42 @@ DOCX_CAT_TO_CANON = {
     "CONFITES": "cacao-chocolates",
 }
 
+# Explicit assignments for products Dolibarr filed under "Otros" that clearly fit a
+# category (keyed by normalized clean name). Anything still unmatched defaults to "otros".
+EXTRA_ASSIGN = {
+    # dehydrated fruits
+    "frutos amarillos deshidratados mix": "frutas-deshidratadas",
+    "frutos deshidratatados babano": "frutas-deshidratadas",
+    "frutos deshidratatados fresa": "frutas-deshidratadas",
+    "frutos deshidratatados manazana roja": "frutas-deshidratadas",
+    "frutos deshidratatados manzana verde": "frutas-deshidratadas",
+    "frutos deshidratatados mora": "frutas-deshidratadas",
+    "frutos rojos deshidratados mix": "frutas-deshidratadas",
+    "manzana deshidratada": "frutas-deshidratadas",
+    # herbs / condiments / sauces / vanilla
+    "estragon": "especias-hierbas",
+    "finas hierbas": "especias-hierbas",
+    "hierbas finas": "especias-hierbas",
+    "guayuza": "especias-hierbas",
+    "hondashi concentrado de pescado": "especias-hierbas",
+    "magui polvo": "especias-hierbas",
+    "vaina de vainilla": "especias-hierbas",
+    "vinagre de manzana": "especias-hierbas",
+    "teriyaki": "especias-hierbas",
+    # grains / sesame pastes
+    "quinoa negra": "semillas-granos",
+    "quinoa pop": "semillas-granos",
+    "quinoa roja": "semillas-granos",
+    "thaini 200 gr integral": "semillas-granos",
+    "thaini 300 gr": "semillas-granos",
+    # nuts / cereals / legumes
+    "mix frutos secos sal": "frutos-secos",
+    "salvado de tigo": "harinas-cereales",
+    "sopa ramen 120gr": "harinas-cereales",
+    "habas de sal": "legumbres-menestras",
+    # NOTE: Alginato, Bicarbonato, Cloruro de Calcio, Champiñones -> Otros (no good fit)
+}
+
 def main():
     rows = list(csv.DictReader(open(DOL, encoding="utf-8")))
 
@@ -154,7 +190,7 @@ def main():
             # fall back to first row that has a mapping, else unassigned
             for c in cats:
                 if c and DOL_TO_CAT.get(c): chosen = DOL_TO_CAT[c]; break
-        cat_used[chosen or "_UNASSIGNED"] = cat_used.get(chosen or "_UNASSIGNED", 0) + 1
+        
 
         # purchase options: one per row (PRESERVE distinct ways to buy)
         opts, notes, exploded = [], [], []
@@ -198,6 +234,18 @@ def main():
             if fb:
                 chosen = fb
                 notes.append(f"category via docx section '{cand.get('category')}'")
+
+        # Explicit extra assignment, else the "Otros" catch-all (as last resort).
+        if not chosen:
+            ek = norm(clean)
+            hit = next((v for k, v in EXTRA_ASSIGN.items() if norm(k) in ek), None)
+            if hit:
+                chosen = hit
+                notes.append("category via manual extra-assign")
+            else:
+                chosen = "otros"
+                notes.append("defaulted to Otros (no confident category)")
+        cat_used[chosen] = cat_used.get(chosen, 0) + 1
 
         products.append({
             "slug": slugify(clean),
@@ -243,31 +291,35 @@ def main():
 
     # ----- report -----
     L = ["# Canonical catalog — reconcile report (ticket 06)", "",
-         f"Dolibarr rows: **{len(rows)}**  →  canonical products (grouped by clean name): **{len(products)}**",
-         f"docx enrichment: exact name match **{matched_exact}**, substring **{matched_sub}**, "
-         f"multi-hit **{multi_match}**, unmatched **{len(docx_unmatched)}**", ""]
-    L += ["## Category taxonomy (used)", ""]
-    for c in categories:
-        L.append(f"- `{c['slug']}` ({c['name']}) — {cat_used.get(c['slug'],0)} products")
-    if cat_used.get("_UNASSIGNED"):
-        L.append(f"- **unassigned** (Otros/Favoritos, no confident category) — {cat_used['_UNASSIGNED']} products")
-    L += ["", "## Review items", ""]
-    L.append(f"### No presentation suffix (price unit not specified) — {len(no_suffix_review)}")
-    for clean, suf, ref in no_suffix_review[:60]:
-        L.append(f"- `{clean}` (ref {ref})")
-    if len(no_suffix_review) > 60:
-        L.append(f"- …and {len(no_suffix_review)-60} more (see products.csv)")
+         f"Dolibarr rows: **{len(rows)}**  →  canonical products: **{len(products)}**",
+         f"docx enrichment: exact name **{matched_exact}**, substring **{matched_sub}**, "
+         f"multi-hit **{multi_match}**, unmatched **{len(docx_unmatched)}**", "",
+         "## Category taxonomy (used)", ""]
+    for c in STITCH:
+        n = cat_used.get(c["slug"], 0)
+        if n:
+            L.append(f"- `{c['slug']}` ({c['name']}) — {n} products")
+    L += ["", "## Needs owner review", ""]
+    others = [p for p in products if p["categorySlug"] == "otros"]
+    L.append(f"### In **Otros** (no confident fit, catch-all) — {len(others)}")
+    for p in sorted(others, key=lambda x: x["name"]):
+        L.append(f"- {p['name']} (ref {p['ref']})")
+    none_price = [p for p in products if any(o.get("price") is None for o in p["purchaseOptions"])]
+    if none_price:
+        L.append("")
+        L.append(f"### Products with a missing price — {len(none_price)}")
+        for p in none_price:
+            L.append(f"- {p['name']} (ref {p['ref']})")
     L.append("")
     L.append(f"### docx products not matched to any Dolibarr product — {len(docx_unmatched)}")
-    for n in sorted(set(docx_unmatched)):
-        L.append(f"- {n}")
+    L.append("(the docx is a ~198-product marketing subset; unmatched are docx-only — Dolibarr stays the structural source of truth)")
     with open(os.path.join(OUT, "report.md"), "w", encoding="utf-8") as f:
         f.write("\n".join(L) + "\n")
 
     print(f"RECONCILED {len(products)} products -> {OUT}")
-    print(f"  categories used: {len(categories)} | unassigned: {cat_used.get('_UNASSIGNED',0)}")
+    print(f"  categories used: {len(categories)} | Otros: {cat_used.get('otros', 0)}")
     print(f"  docx match: exact {matched_exact}, sub {matched_sub}, multi {multi_match}, unmatched {len(docx_unmatched)}")
-    print(f"  no-suffix review: {len(no_suffix_review)}")
+    print(f"  products missing a price: {len([p for p in products if any(o.get('price') is None for o in p['purchaseOptions'])])}")
 
 if __name__ == "__main__":
     main()
