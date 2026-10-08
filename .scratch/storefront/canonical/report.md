@@ -1,0 +1,172 @@
+# Canonical catalog — reconcile report (ticket 06)
+
+Dolibarr rows: **423**  →  canonical products (grouped by clean name): **278**
+docx enrichment: exact name match **40**, substring **74**, multi-hit **17**, unmatched **147**
+
+## Category taxonomy (used)
+
+- `frutos-secos` (Frutos Secos) — 40 products
+- `frutas-deshidratadas` (Frutas Deshidratadas) — 21 products
+- `cacao-chocolates` (Cacao & Chocolates) — 27 products
+- `harinas-cereales` (Harinas & Cereales) — 17 products
+- `especias-hierbas` (Especias & Hierbas) — 26 products
+- `aceites-aceitunas` (Aceites & Aceitunas) — 8 products
+- `infusiones-tes` (Infusiones & Tés) — 67 products
+- `ajies-ajos` (Ajíes & Ajos) — 14 products
+- `endulzantes` (Endulzantes) — 5 products
+- **unassigned** (Otros/Favoritos, no confident category) — 53 products
+
+## Review items
+
+### No presentation suffix (price unit not specified) — 2
+- `Manzana Deshidratada` (ref MAN-013)
+- `Miel de Abeja Natural Honey Pequeña` (ref MIE-002)
+
+### docx products not matched to any Dolibarr product — 147
+- Aceite de Aguacate
+- Aceite de Oliva Grande
+- Aceite de Oliva Pequeño
+- Aceituna Negra
+- Aceituna Verde
+- Aceitunas
+- Aguacate Hojas Deshidratadas
+- Aji Ancho Deshidratado
+- Aji Chile de Arbol Deshidratado
+- Aji Chipotle Deshidrtatado
+- Aji Escama Rojo
+- Aji Guajillo
+- Aji Guajillo Deshidratado
+- Aji Habanero Deshidratado
+- Aji Panca Deshidratado
+- Aji Peruano Polvo
+- Aji Picante en Polvo
+- Ajo Molido
+- Ají Escama Rojo
+- Ají Tajin
+- Alginato
+- Almendra Harina
+- Anis Estrellado
+- Anis de Pan
+- Arandanos
+- Bicarbonato de Sodio
+- Cacahuate
+- Café Grano
+- Café Polvo
+- Canela Rama
+- Cashew Natural
+- Cashew Tostado
+- Cazamarucha Hojas Deshidratadas
+- Cereal Arroz Blanco
+- Cereal Arroz Blanco Colores
+- Cereal Mote ( Mafaldas )
+- Cereal Trigo
+- Champiñonese Secos
+- Champiñón Seco de Bosque de Pino
+- Chanca Piedra Hojas Deshidratadas
+- Chia Semilla
+- Choco Guanábana
+- Choco Maní
+- Choco Uvilla
+- Chocolate 33 % Cacao Blanco
+- Chocolate 50 % Cacao
+- Chocolate Amargo Pastilla
+- Chocolate Amargo Polvo Tanager
+- Chocolate Amargo en Polvo
+- Chocolate Chispitas Blanco
+- Chocolate Chispitas Negro
+- Chocolate Cobertura Blanco
+- Chocolate Cobertura Negro Semiamargo
+- Chocolate M&M
+- Chocolate Tanager 100 % Cacao
+- Clavo de Olor Pepa
+- Cloruro de Calcio
+- Coca en Hoja
+- Consuelda Hojas Deshidratadas
+- Curcuma Molida
+- Cuscus
+- Datiles
+- Estragon
+- Finas Hierbas
+- Flor Blanca Deshidratada
+- Flor de Calendula
+- Flor de Retama
+- Frutos Amarillos Deshidratados Mix
+- Frutos Deshidratatados Babano
+- Frutos Deshidratatados Fresa
+- Frutos Deshidratatados Kiwi
+- Frutos Deshidratatados Limón
+- Frutos Deshidratatados Manazana Roja
+- Frutos Deshidratatados Mandarina
+- Frutos Deshidratatados Mango
+- Frutos Deshidratatados Manzana Verde
+- Frutos Deshidratatados Mora
+- Frutos Deshidratatados Naranja
+- Frutos Deshidratatados Pitahaya
+- Frutos Deshidratatados Piña
+- Frutos Deshidratatados Uvilla
+- Frutos Rojos Deshidratados Mix
+- Garbanzo Harina
+- Garbanzo de Dulce
+- Guanabana Hojas Deshidratadas
+- Guayaba Hojas Deshidratadas
+- Guayuza
+- Habas de Sal
+- Harina de Chocho 150 Gr
+- Harina de Garbanzo
+- Hierbas Finas
+- Higo Hojas Deshidratadas
+- Higos Secos
+- Hoja de Coca
+- Hondashi (concentrado de Pescado)
+- Horchata Hojas Deshidratadas
+- Insulina Hojas Deshidratadas
+- Magui Polvo
+- Malva Blanca Hojas Deshidratadas
+- Mango Hojas Deshidratadas
+- Mani Japonés
+- Mani Tostado Sin Sal
+- Mani Tostado con Sal
+- Manzana Deshidratada
+- Maní Confitado
+- Mate Hojas Deshidratadas
+- Mate de Coca Delisse X 100 Unid
+- Mix Frutos Secos Dulce
+- Mix Frutos Secos Sal
+- Neem Hojas Deshidratadas
+- Níspero Hojas Deshidratadas
+- Oregano Molido
+- Oregano Normal
+- Oregano Pizza
+- Orégano Hojas Deshidratadas
+- Panco 110 Gr
+- Papaya Deshidratada
+- Paprica Polvo
+- Paraguay Hojas Deshidratadas
+- Pata de Vaca Hojas Deshidratadas
+- Pepas de Sambo
+- Piña Deshidratada
+- Quinoa Negra
+- Quinoa Pop
+- Quinoa Roja
+- Retama Hojas Deshidratadas
+- Ruda Hojas Deshidratadas
+- Sal Grano
+- Salvado de Tigo
+- Semillas de Amapola 25 Gr
+- Sopa Ramen 120gr
+- Soya en Polvo
+- Taraxaco Hojas Deshidratadas
+- Te Chai 20 Gr
+- Te Muña
+- Te Negro
+- Te Rojo
+- Te Verde
+- Teriyaki 250 Ml
+- Thaini 200 Gr Integral
+- Thaini 300 Gr
+- Tomate Deshidratado
+- Trinitaria Hojas Deshidratadas
+- Uvilla Deshidratada
+- Vaina de Vainilla
+- Vinagre de Manzana 250 Ml
+- Zen Hojas Deshidratadas

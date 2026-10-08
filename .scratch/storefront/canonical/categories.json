@@ -1,0 +1,47 @@
+[
+  {
+    "slug": "frutos-secos",
+    "name": "Frutos Secos",
+    "sortOrder": 1
+  },
+  {
+    "slug": "frutas-deshidratadas",
+    "name": "Frutas Deshidratadas",
+    "sortOrder": 3
+  },
+  {
+    "slug": "cacao-chocolates",
+    "name": "Cacao & Chocolates",
+    "sortOrder": 4
+  },
+  {
+    "slug": "harinas-cereales",
+    "name": "Harinas & Cereales",
+    "sortOrder": 5
+  },
+  {
+    "slug": "especias-hierbas",
+    "name": "Especias & Hierbas",
+    "sortOrder": 6
+  },
+  {
+    "slug": "aceites-aceitunas",
+    "name": "Aceites & Aceitunas",
+    "sortOrder": 9
+  },
+  {
+    "slug": "infusiones-tes",
+    "name": "Infusiones & Tés",
+    "sortOrder": 10
+  },
+  {
+    "slug": "ajies-ajos",
+    "name": "Ajíes & Ajos",
+    "sortOrder": 11
+  },
+  {
+    "slug": "endulzantes",
+    "name": "Endulzantes",
+    "sortOrder": 12
+  }
+]
