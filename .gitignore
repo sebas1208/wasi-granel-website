@@ -31,3 +31,6 @@ next-env.d.ts
 
 # macos
 .DS_Store
+
+# catalog docx extraction — heavy, regenerable from the source .docx (ticket 04)
+.scratch/storefront/catalog-docx/images/

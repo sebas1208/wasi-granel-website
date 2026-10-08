@@ -6,7 +6,10 @@
 
 **Status:** ready-for-agent
 
-- [ ] A manifest lists every product detected in the document, with its inferred category and a source location (heading index).
-- [ ] Each product's description/benefits text is captured verbatim or clearly summarized into the contract shape (ticket 03).
-- [ ] Embedded images are exported to `images/` keyed by product where associate-able.
-- [ ] A coverage note states any products whose category or fields could not be confidently inferred (hand-off to the reconcile ticket 06).
+- [x] A manifest lists every product detected in the document, with its inferred category and a source location (heading index).
+- [x] Each product's description/benefits text is captured verbatim or clearly summarized into the contract shape (ticket 03).
+- [x] Embedded images are exported to `images/` keyed by product where associate-able.
+- [x] A coverage note states any products whose category or fields could not be confidently inferred (hand-off to the reconcile ticket 06).
+
+## Comments
+- Extraction done (best-effort, v1). Outputs in `.scratch/storefront/catalog-docx/`: `products.json` (198 products: name, category, sourceIndex, description, images[], note), `products.csv`, `coverage.md`, `images/` (121 photos; git-ignored, regenerable from the source docx via `python3 tools/catalog/extract_docx.py`). Residual noise (a few benefit-bullets) is flagged in `coverage.md` for ticket 06. The docx is a curated marketing subset (~198 products) vs Dolibarr's 423 — Dolibarr remains the source of truth for structure (names/prices/weights); docx enriches with descriptions + photos.
