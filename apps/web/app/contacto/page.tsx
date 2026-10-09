@@ -86,7 +86,7 @@ export default function ContactoPage() {
                       </div>
                       <div>
                         <h3 className="font-semibold mb-1 text-foreground">Email</h3>
-                        <p className="text-sm text-muted-foreground">jatunwasigranel@gmail.com</p>
+                        <p className="text-sm text-muted-foreground">hola@wasigranel.com</p>
                       </div>
                     </div>
 
@@ -189,7 +189,7 @@ export default function ContactoPage() {
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Ubicación de JatunWasi"
+                    title="Ubicación de Wasi Granel"
                   />
                 </div>
               </Card>

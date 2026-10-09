@@ -6,25 +6,23 @@ import { Menu, X } from "lucide-react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 
+const links = [
+  { href: "/", label: "Inicio" },
+  { href: "/tienda", label: "Tienda" },
+  { href: "/contacto", label: "Contacto" },
+]
+
 export function Navigation() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
-
-  const links = [
-    { href: "/", label: "Inicio" },
-    { href: "/tienda", label: "Tienda" },
-    { href: "/contacto", label: "Contacto" },
-  ]
 
   return (
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="text-2xl font-serif font-bold text-primary" style={{ fontFamily: "var(--font-playfair)" }}>
-              JatunWasi
-            </div>
+          {/* Brand (official mark — spiral + wordmark, tinted via .wasi-logo) */}
+          <Link href="/" className="flex items-center" aria-label="Wasi Granel — Inicio">
+            <span aria-hidden className="wasi-logo text-primary h-8" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -33,6 +31,7 @@ export function Navigation() {
               <Link
                 key={link.href}
                 href={link.href}
+                aria-current={pathname === link.href ? "page" : undefined}
                 className={`text-sm font-medium transition-colors hover:text-primary ${
                   pathname === link.href ? "text-primary" : "text-muted-foreground"
                 }`}
@@ -43,7 +42,14 @@ export function Navigation() {
           </div>
 
           {/* Mobile Menu Button */}
-          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={isOpen}
+          >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
@@ -57,6 +63,7 @@ export function Navigation() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
+                  aria-current={pathname === link.href ? "page" : undefined}
                   className={`text-sm font-medium transition-colors hover:text-primary ${
                     pathname === link.href ? "text-primary" : "text-muted-foreground"
                   }`}

@@ -6,7 +6,12 @@
 
 **Status:** ready-for-agent
 
-- [ ] Navigation shows the Wasi Granel brand (correct logo + wordmark) and Inicio/Tienda/Contacto links, active-state highlighted.
-- [ ] No "JatunWasi" or foreign brand string remains anywhere in the repo.
-- [ ] Footer renders the Navegación/Legal/Ubicación columns and correct copyright.
-- [ ] Responsive: mobile menu works; `next build`/`next lint` pass.
+- [x] Navigation shows the Wasi Granel brand (correct logo + wordmark) and Inicio/Tienda/Contacto links, active-state highlighted.
+- [x] No "JatunWasi" or foreign brand string remains anywhere in the repo.
+- [x] Footer renders the Navegación/Legal/Ubicación columns and correct copyright.
+- [x] Responsive: mobile menu works; `next build`/`next lint` pass.
+
+## Comments
+- Ship: rewrote `navigation.tsx` (brand via `.wasi-logo` + Inicio/Tienda/Contacto, active state, mobile menu) and `footer.tsx` (yellow ground, Navegación/Legal/Ubicación columns + brand tagline, dynamic © Wasi Granel). Fixed `contacto` email/title (removed `jatunwasigranel@gmail.com`, JatunWasi map title).
+- Also cleared the pre-existing v0 lint errors so `pnpm lint` passes: `use-mobile` (removed broken `window.matchMedia`, lazy initializer + resize listener), deleted unused `ui/use-mobile.tsx` duplicate, deferred carousel initial select, deterministic sidebar-skeleton width (React 19 purity rules).
+- Remaining non-displayed "jatun" strings (acceptable): `.vercel/project.json` (legacy Vercel CLI link), historical notes in runbook + tickets, and the old-store marker inside the contacto **maps embed URL** (query param, not rendered text — fix alongside ticket 15).
