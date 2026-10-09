@@ -11,8 +11,7 @@ const links = [
   { href: "/contacto", label: "Contacto" },
 ]
 
-// Note: the active-link accent is Stitch's #785a00 dark amber (distinct from the
-// brand yellow #fcbf00 used for the logo / cart badge).
+// Note: the active link uses the brand yellow (--primary #fcbf00) + underline.
 
 export function Navigation() {
   const pathname = usePathname()
@@ -47,8 +46,8 @@ export function Navigation() {
                   aria-current={active ? "page" : undefined}
                   className={`nav-link text-sm pb-1 transition-colors ${
                     active
-                      ? "font-bold border-b-2 text-[#785a00] border-[#785a00]"
-                      : "font-semibold text-foreground hover:text-[#785a00]"
+                      ? "font-bold border-b-2 text-primary border-primary"
+                      : "font-semibold text-foreground hover:text-primary"
                   }`}
                 >
                   {link.label}
@@ -123,7 +122,7 @@ export function Navigation() {
                 aria-current={active ? "page" : undefined}
                 className={`block px-3 py-2.5 rounded-xl text-sm ${
                   active
-                    ? "font-bold text-[#785a00] bg-[#785a00]/10"
+                    ? "font-bold text-primary bg-primary/10"
                     : "font-semibold text-foreground hover:bg-background"
                 }`}
               >
