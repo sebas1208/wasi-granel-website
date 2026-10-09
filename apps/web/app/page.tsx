@@ -6,7 +6,7 @@ import { PopularProducts } from "@/components/home/popular-products"
 import { CategoryGrid, type CategoryWithCount } from "@/components/home/category-grid"
 import { History } from "@/components/home/history"
 import { Newsletter } from "@/components/home/newsletter"
-import { getCategories, getProducts, priceDisplay, productImageUrl } from "@/lib/payload"
+import { getCategories, getPopularProducts, getProducts } from "@/lib/payload"
 
 export const metadata = {
   title: "Wasi Granel — Despensa urbana y consciente",
@@ -19,19 +19,12 @@ export default async function HomePage() {
   let popular: Awaited<ReturnType<typeof getProducts>> = []
 
   try {
-    const [rawCategories, products] = await Promise.all([getCategories(), getProducts()])
-
-    // "Productos Populares": products with a photo and real price, one per category for variety.
-    const seenCategories = new Set<string>()
-    popular = products
-      .filter((p) => productImageUrl(p) && priceDisplay(p).amount !== "")
-      .filter((p) => {
-        const slug = p.category?.slug ?? ""
-        if (!slug || seenCategories.has(slug)) return false
-        seenCategories.add(slug)
-        return true
-      })
-      .slice(0, 6)
+    const [rawCategories, popularResult, products] = await Promise.all([
+      getCategories(),
+      getPopularProducts(),
+      getProducts(),
+    ])
+    popular = popularResult
 
     // Per-category variety counts, derived from the catalog.
     const counts = new Map<string, number>()

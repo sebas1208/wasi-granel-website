@@ -1,5 +1,4 @@
 import Image from "next/image"
-import { Reveal } from "@/components/home/reveal"
 
 export function Hero() {
   return (
@@ -11,12 +10,12 @@ export function Hero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="object-cover animate-hero-bg will-change-transform"
           style={{ objectPosition: "left center" }}
         />
       </div>
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-12 w-full flex justify-end">
-        <Reveal className="w-full lg:max-w-xl">
+        <div className="animate-fade-up w-full lg:max-w-xl">
           <div className="bg-white border border-[#ead7c3] p-8 md:p-10 rounded-3xl shadow-2xl shadow-foreground/15 hover:shadow-2xl transition-shadow duration-300">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#ffebd6] border border-[#d3c5ab] text-deep-amber font-bold text-xs uppercase tracking-wider mb-4">
               <span className="material-symbols-outlined text-sm text-deep-amber">location_on</span>
@@ -49,7 +48,7 @@ export function Hero() {
               </a>
             </div>
           </div>
-        </Reveal>
+        </div>
       </div>
     </section>
   )

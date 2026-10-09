@@ -34,6 +34,7 @@ export type Product = {
   images?: ({ image?: PayloadImage | null } | null)[] | null
   purchaseOptions?: PurchaseOption[] | null
   inStock?: boolean | null
+  popular?: boolean | null
 }
 
 async function fetcher<T>(path: string): Promise<T> {
@@ -62,6 +63,13 @@ export async function getCategories(): Promise<Category[]> {
 
 export async function getProducts(): Promise<Product[]> {
   const d = await fetcher<{ docs: Product[] }>("/api/products?limit=300&depth=1")
+  return d.docs
+}
+
+export async function getPopularProducts(): Promise<Product[]> {
+  const d = await fetcher<{ docs: Product[] }>(
+    "/api/products?where[popular][equals]=true&limit=12&depth=1",
+  )
   return d.docs
 }
 

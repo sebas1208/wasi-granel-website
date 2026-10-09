@@ -25,7 +25,7 @@ export function Newsletter() {
             />
             <button
               type="submit"
-              className="btn-shimmer w-full sm:w-auto px-8 py-3.5 bg-primary hover:bg-[#fabd00] active:scale-95 text-foreground font-bold text-sm rounded-xl transition-all duration-200 shadow-md whitespace-nowrap"
+              className="w-full sm:w-auto px-8 py-3.5 bg-primary hover:bg-[#fabd00] active:scale-95 text-foreground font-bold text-sm rounded-xl transition-all duration-200 shadow-md whitespace-nowrap"
             >
               Unirme a la comunidad
             </button>

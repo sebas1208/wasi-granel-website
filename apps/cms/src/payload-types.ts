@@ -206,7 +206,7 @@ export interface Product {
   description?: string | null;
   category: number | Category;
   /**
-   * Ordered photos — first is the cover.
+   * Ordered photos — first is the cover. Photo-less products load without images (added later).
    */
   images?:
     | {
@@ -223,6 +223,10 @@ export interface Product {
    */
   origin?: string | null;
   inStock?: boolean | null;
+  /**
+   * Featured on the homepage "Productos Populares" carousel.
+   */
+  popular?: boolean | null;
   /**
    * Legacy ERP SKU (e.g. ACE-001).
    */
@@ -409,6 +413,7 @@ export interface ProductsSelect<T extends boolean = true> {
       };
   origin?: T;
   inStock?: T;
+  popular?: T;
   ref?: T;
   taxRate?: T;
   purchaseOptions?:

@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Search, ShoppingCart, User, Menu, X } from "lucide-react"
 import { useState } from "react"
 
 const links = [
@@ -11,8 +10,7 @@ const links = [
   { href: "/contacto", label: "Contacto" },
 ]
 
-// Note: the active link uses the brand yellow (--primary #fcbf00) + underline.
-
+// Active link = bold brand-yellow text (no underline).
 export function Navigation() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
@@ -44,10 +42,8 @@ export function Navigation() {
                   key={link.href}
                   href={link.href}
                   aria-current={active ? "page" : undefined}
-                  className={`nav-link text-sm pb-1 transition-colors ${
-                    active
-                      ? "font-bold border-b-2 text-primary border-primary"
-                      : "font-semibold text-foreground hover:text-primary"
+                  className={`nav-link text-sm transition-colors ${
+                    active ? "font-bold text-primary" : "font-semibold text-foreground hover:text-primary"
                   }`}
                 >
                   {link.label}
@@ -64,7 +60,7 @@ export function Navigation() {
             action="/tienda"
             className="hidden lg:flex items-center bg-[#fff8f4] rounded-full px-4 py-1.5 border border-[#d3c5ab]/60 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/30 transition-all duration-300"
           >
-            <Search className="text-foreground mr-2 h-5 w-5" aria-hidden />
+            <span className="material-symbols-outlined text-foreground mr-2 text-[20px]">search</span>
             <input
               aria-label="Buscar en la tienda"
               type="search"
@@ -80,7 +76,9 @@ export function Navigation() {
               aria-label={`Carrito de compras${cartCount ? ` con ${cartCount} productos` : ""}`}
               className="relative w-10 h-10 bg-[#fff8f4] hover:bg-[#f3dfcb] active:scale-90 rounded-full border border-[#d3c5ab]/50 transition-all duration-200 text-foreground flex items-center justify-center group"
             >
-              <ShoppingCart className="h-5 w-5" aria-hidden />
+              <span className="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:scale-110">
+                shopping_cart
+              </span>
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-primary text-foreground font-bold text-[11px] w-5 h-5 rounded-full flex items-center justify-center border border-white shadow-sm">
                   {cartCount}
@@ -93,7 +91,9 @@ export function Navigation() {
               aria-label="Mi Cuenta de usuario"
               className="w-10 h-10 bg-[#fff8f4] hover:bg-[#f3dfcb] active:scale-90 rounded-full border border-[#d3c5ab]/50 transition-all duration-200 text-foreground flex items-center justify-center group"
             >
-              <User className="h-5 w-5" aria-hidden />
+              <span className="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:scale-110">
+                person
+              </span>
             </Link>
 
             <button
@@ -103,7 +103,7 @@ export function Navigation() {
               onClick={() => setIsOpen((o) => !o)}
               className="md:hidden p-2 text-foreground active:scale-90 transition-transform flex items-center justify-center rounded-full hover:bg-[#f3dfcb]"
             >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              <span className="material-symbols-outlined text-[24px]">{isOpen ? "close" : "menu"}</span>
             </button>
           </div>
         </div>
@@ -121,9 +121,7 @@ export function Navigation() {
                 onClick={() => setIsOpen(false)}
                 aria-current={active ? "page" : undefined}
                 className={`block px-3 py-2.5 rounded-xl text-sm ${
-                  active
-                    ? "font-bold text-primary bg-primary/10"
-                    : "font-semibold text-foreground hover:bg-background"
+                  active ? "font-bold text-primary bg-primary/10" : "font-semibold text-foreground hover:bg-background"
                 }`}
               >
                 {link.label}
@@ -132,13 +130,13 @@ export function Navigation() {
           })}
           <div className="flex items-center gap-3 mt-2 pt-3 border-t border-[#ead7c3]">
             <Link href="/tienda" aria-label="Carrito de compras" className="w-10 h-10 bg-[#fff8f4] rounded-full border border-[#d3c5ab]/50 text-foreground flex items-center justify-center">
-              <ShoppingCart className="h-5 w-5" aria-hidden />
+              <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
             </Link>
             <Link href="/contacto" aria-label="Mi Cuenta de usuario" className="w-10 h-10 bg-[#fff8f4] rounded-full border border-[#d3c5ab]/50 text-foreground flex items-center justify-center">
-              <User className="h-5 w-5" aria-hidden />
+              <span className="material-symbols-outlined text-[20px]">person</span>
             </Link>
             <form role="search" action="/tienda" className="flex-1 flex items-center bg-[#fff8f4] rounded-full px-3 py-1.5 border border-[#d3c5ab]/60">
-              <Search className="text-foreground mr-2 h-4 w-4" aria-hidden />
+              <span className="material-symbols-outlined text-foreground mr-2 text-[18px]">search</span>
               <input aria-label="Buscar en la tienda" type="search" name="q" placeholder="Buscar..." className="bg-transparent border-none focus:ring-0 text-sm w-full text-foreground placeholder:text-muted-foreground outline-none" />
             </form>
           </div>
