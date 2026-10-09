@@ -2,61 +2,73 @@
   {
     "slug": "frutos-secos",
     "name": "Frutos Secos",
-    "sortOrder": 1
+    "sortOrder": 1,
+    "description": "Almendras, nueces, pistachos, mixes y frutos secos a granel: energía y snacks saludables."
   },
   {
     "slug": "semillas-granos",
     "name": "Semillas & Granos",
-    "sortOrder": 2
+    "sortOrder": 2,
+    "description": "Semillas nutritivas y granos andinos: chía, ajonjolí, quinoa, amaranto y linaza."
   },
   {
     "slug": "frutas-deshidratadas",
     "name": "Frutas Deshidratadas",
-    "sortOrder": 3
+    "sortOrder": 3,
+    "description": "Frutas deshidratadas naturales para snacks y repostería: pasas, damasco, piña, mango y más."
   },
   {
     "slug": "cacao-chocolates",
     "name": "Cacao & Chocolates",
-    "sortOrder": 4
+    "sortOrder": 4,
+    "description": "Chocolate artesanal, cacao, confites, coberturas y productos de repostería."
   },
   {
     "slug": "harinas-cereales",
     "name": "Harinas & Cereales",
-    "sortOrder": 5
+    "sortOrder": 5,
+    "description": "Harinas, cereales, avena y granos molidos — incluye opciones sin gluten."
   },
   {
     "slug": "especias-hierbas",
     "name": "Especias & Hierbas",
-    "sortOrder": 6
+    "sortOrder": 6,
+    "description": "Especias, condimentos, hierbas aromáticas, sales y sazonadores."
   },
   {
     "slug": "legumbres-menestras",
     "name": "Legumbres & Menestras",
-    "sortOrder": 7
+    "sortOrder": 7,
+    "description": "Legumbres y menestras a granel: garbanzo, habas, fréjol y más."
   },
   {
     "slug": "aceites-aceitunas",
     "name": "Aceites & Aceitunas",
-    "sortOrder": 9
+    "sortOrder": 9,
+    "description": "Aceites vegetales y aceitunas seleccionadas a granel."
   },
   {
     "slug": "infusiones-tes",
     "name": "Infusiones & Tés",
-    "sortOrder": 10
+    "sortOrder": 10,
+    "description": "Hojas secas e infusiones para té y remedios naturales."
   },
   {
     "slug": "ajies-ajos",
     "name": "Ajíes & Ajos",
-    "sortOrder": 11
+    "sortOrder": 11,
+    "description": "Ajíes secos, en polvo y ajos para condimentar."
   },
   {
     "slug": "endulzantes",
     "name": "Endulzantes",
-    "sortOrder": 12
+    "sortOrder": 12,
+    "description": "Miel de abeja, endulzantes naturales y café."
   },
   {
     "slug": "otros",
     "name": "Otros",
-    "sortOrder": 13
+    "sortOrder": 13,
+    "description": "Productos especiales que no encajan en las demás categorías."
   }
 ]

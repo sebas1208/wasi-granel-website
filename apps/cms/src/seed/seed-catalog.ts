@@ -43,11 +43,18 @@ async function main() {
 
   const payload = await getPayload({ config })
 
-  // ---- categories (idempotent by slug) ----
+  // ---- categories (idempotent by slug; also refresh descriptions) ----
   const catIds = new Map()
+  const catImgs = new Map()
   for (const c of cats) {
     const existing = await payload.find({ collection: 'categories', where: { slug: { equals: c.slug } }, limit: 1 })
-    if (existing.docs.length) { catIds.set(c.slug, existing.docs[0].id); continue }
+    if (existing.docs.length) {
+      catIds.set(c.slug, existing.docs[0].id)
+      if (existing.docs[0].description !== c.description) {
+        await payload.update({ collection: 'categories', id: existing.docs[0].id, data: { description: c.description } })
+      }
+      continue
+    }
     const doc = await payload.create({ collection: 'categories', data: c })
     catIds.set(c.slug, doc.id)
   }
@@ -105,7 +112,27 @@ async function main() {
         purchaseOptions,
       },
     })
+    // give the category a representative photo (first product image, one per category)
+    if (images.length && !catImgs.has(p.categorySlug)) catImgs.set(p.categorySlug, images[0].image)
     created++
+  }
+
+  // ---- assign category images ----
+  // Use the in-loop tracked image (fresh load) else the first image-bearing product in the category.
+  for (const c of cats) {
+    const id = catIds.get(c.slug); if (!id) continue
+    if (catImgs.has(c.slug)) {
+      await payload.update({ collection: 'categories', id, data: { image: catImgs.get(c.slug) } })
+      continue
+    }
+    const cat = await payload.findByID({ collection: 'categories', id })
+    if (cat.image) continue
+    const prodsC = await payload.find({ collection: 'products', where: { category: { equals: id } }, limit: 50, depth: 1 })
+    const first = prodsC.docs.find((dp) => (dp.images || []).some((im) => im && im.image))
+    if (first && first.images && first.images[0]) {
+      const ref = first.images[0].image
+      await payload.update({ collection: 'categories', id, data: { image: typeof ref === 'object' ? ref.id : ref } })
+    }
   }
 
   const total = await payload.count({ collection: 'products' })
