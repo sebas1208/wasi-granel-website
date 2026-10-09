@@ -67,10 +67,15 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 export async function getPopularProducts(): Promise<Product[]> {
-  const d = await fetcher<{ docs: Product[] }>(
-    "/api/products?where[popular][equals]=true&limit=12&depth=1",
-  )
-  return d.docs
+  try {
+    const d = await fetcher<{ docs: Product[] }>(
+      "/api/products?where[popular][equals]=true&limit=12&depth=1",
+    )
+    return d.docs
+  } catch {
+    // Defensive: a missing column / CMS hiccup shouldn't blank the homepage.
+    return []
+  }
 }
 
 /** Price shown on a card. Prefers a weight tier computed as per-100g; falls back to a unit option. */
