@@ -206,12 +206,13 @@
     animation: wasi-float 4s ease-in-out infinite;
   }
 
-  @keyframes wasi-soft-pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.035); }
+  /* Gentle pulsing + ripple ring for the newsletter email emblem (Stitch softPulse). */
+  @keyframes softPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(252, 191, 0, 0.4); }
+    50% { transform: scale(1.06); box-shadow: 0 0 0 12px rgba(252, 191, 0, 0); }
   }
   .animate-soft-pulse {
-    animation: wasi-soft-pulse 4s ease-in-out infinite;
+    animation: softPulse 3s ease-in-out infinite;
   }
 
   @keyframes wasi-fade-up {
@@ -219,15 +220,39 @@
     to { opacity: 1; transform: none; }
   }
   .animate-fade-up {
-    animation: wasi-fade-up 0.7s ease-out both;
+    animation: wasi-fade-up 0.7s ease-out backwards;
   }
 
-  @keyframes wasi-hero-bg {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.12); }
+  /* Nav links: animated underline pill (Stitch) — grows from centre on hover,
+     full-width when the link is active. */
+  .nav-link {
+    position: relative;
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2.5px;
+    background-color: var(--wasi-yellow);
+    border-radius: 9999px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  .nav-link-active::after {
+    width: 100%;
+  }
+
+  @keyframes heroBreath {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
   }
   .animate-hero-bg {
-    animation: wasi-hero-bg 18s ease-out forwards;
+    animation: heroBreath 24s ease-in-out infinite alternate;
   }
 
   .btn-shimmer {

@@ -10,7 +10,8 @@ const links = [
   { href: "/contacto", label: "Contacto" },
 ]
 
-// Active link = bold brand-yellow text (no underline).
+// Active link = bold brand-yellow + full underline (Stitch .nav-link::after pill);
+// hover grows the same underline in from the centre.
 export function Navigation() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
@@ -43,7 +44,7 @@ export function Navigation() {
                   href={link.href}
                   aria-current={active ? "page" : undefined}
                   className={`nav-link text-sm transition-colors ${
-                    active ? "font-bold text-primary" : "font-semibold text-foreground hover:text-primary"
+                    active ? "nav-link-active font-bold text-primary" : "font-semibold text-foreground hover:text-primary"
                   }`}
                 >
                   {link.label}
