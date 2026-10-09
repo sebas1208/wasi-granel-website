@@ -75,3 +75,23 @@ Pull both to your machine / offsite regularly.
    Directory `apps/cms`, Build Pack Docker Compose, domain `payload.wasigranel.com`).
 2. Set the two env vars and click Deploy — migrations auto-apply on a fresh DB.
 3. Restore from the latest backups if you have them.
+
+## Seeding the catalog (production)
+
+The 278-product catalog is already loaded, but these steps are reproducible for a
+fresh instance or after a data reset. The canonical data + product photos are
+**not** in the Docker image (`.scratch` and the `images/` dir are git-ignored), so
+ship them into the running app container, then run the loader from inside it:
+
+```bash
+# 1. canonical JSONs (products.json, categories.json) -> /opt/wasi-canonical on the VPS
+# 2. product photos -> /opt/wasi-images on the VPS
+CONT=$(docker ps --format '{{.Names}}' | grep -i '^payload-' | head -1)
+docker exec "$CONT" sh -c 'mkdir -p /repo/.scratch/storefront/canonical /repo/.scratch/storefront/catalog-docx/images'
+docker cp /opt/wasi-canonical/products.json   "$CONT":/repo/.scratch/storefront/canonical/
+docker cp /opt/wasi-canonical/categories.json "$CONT":/repo/.scratch/storefront/canonical/
+docker cp /opt/wasi-images/.                  "$CONT":/repo/.scratch/storefront/catalog-docx/images/
+docker exec "$CONT" sh -c 'cd /repo/apps/cms && npx tsx src/seed/seed-catalog.ts'
+```
+
+The loader is idempotent — re-running upserts descriptions and fills any gaps.
