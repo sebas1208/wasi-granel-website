@@ -17,3 +17,9 @@
 - "Productos Populares" = products w/ photo+price, one per category (variety).
 - Deferred (later ticket): horizontal carousel for Productos Populares (design shows scrollable) — current build uses a responsive grid; category hover uses brand yellow border.
 - Review on Vercel preview (feature branch) — then merge feature → develop → main.
+
+## Round 2 (review feedback)
+- **Payload `popular` field** added (checkbox, sidebar) so the homepage fetches real featured products — manual migration `20261009_120000`; seed marks a curated 10 (one/category). Storefront: `getPopularProducts()` → `?where[popular][equals]=true`, with a graceful photo+price fallback while the CMS field isn't deployed.
+- Icons → **Material Symbols** (navbar + homepage); nav **subline underline removed**; global **`cursor:pointer`** on buttons; hero uses a **CSS fade-up + slow bg zoom** (no scroll-hide); newsletter **btn-shimmer dropped** (clipped the label); subtler email pulse.
+- Bug: the `seed:catalog` script used `payload run` which **silently no-ops** — switched to `tsx`.
+- VPS: `popular` column + 10 flags applied directly to the Coolify Postgres; the CMS **app** picks up the field when this lands on `main` (Coolify redeploys only `main`).
