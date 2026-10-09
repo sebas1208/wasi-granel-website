@@ -23,7 +23,7 @@ export default function ContactoPage() {
 
       <main className="flex-1">
         {/* Header */}
-        <section className="bg-secondary py-12 md:py-16">
+        <section className="bg-secondary pt-28 pb-12 md:pt-32 md:pb-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <h1
