@@ -45,8 +45,7 @@ export const Products: CollectionConfig = {
     {
       name: 'images',
       type: 'array',
-      minRows: 1,
-      admin: { description: 'Ordered photos — first is the cover.' },
+      admin: { description: 'Ordered photos — first is the cover. Photo-less products load without images (added later).' },
       fields: [
         {
           name: 'image',
