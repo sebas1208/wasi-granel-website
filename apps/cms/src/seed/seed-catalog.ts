@@ -10,21 +10,21 @@
  * (DATABASE_URL / PAYLOAD_SECRET must point at the target instance — use the local
  *  podman Postgres for a preview, the CMS on the VPS when ready to land.)
  */
+import 'dotenv/config'               // load apps/cms/.env (DATABASE_URL, PAYLOAD_SECRET)
 import path from 'path'
 import fs from 'fs'
+import { fileURLToPath } from 'url'
 import { getPayload } from 'payload'
 import config from '../payload.config'
 
+const HERE = path.dirname(fileURLToPath(import.meta.url))   // apps/cms/src/seed
 function findRootDir() {
-  const candidates = [
-    path.resolve(process.cwd()),                 // run from repo root
-    path.resolve(process.cwd(), '..'),           // run from apps/cms
-  ]
-  for (const c of candidates) {
-    const d = path.join(c, '.scratch', 'storefront', 'canonical')
-    if (fs.existsSync(d)) return c
+  let d = HERE
+  for (let i = 0; i < 7; i++) {
+    if (fs.existsSync(path.join(d, '.scratch', 'storefront', 'canonical'))) return d
+    d = path.dirname(d)
   }
-  throw new Error("Could not locate repo root (.scratch/storefront/canonical) — run from wasi-granel or apps/cms")
+  throw new Error("Could not locate repo root (.scratch/storefront/canonical)")
 }
 
 const MIME = {
@@ -54,7 +54,7 @@ async function main() {
   console.log(`categories: ${cats.length} (${catIds.size} present/created)`)
 
   const memoMedia = new Map()
-  async function uploadImage(filename: string) {
+  async function uploadImage(filename: string, alt: string) {
     if (memoMedia.has(filename)) return memoMedia.get(filename)
     const fp = path.join(imagesDir, filename)
     if (!fs.existsSync(fp)) { memoMedia.set(filename, null); return null }
@@ -63,7 +63,7 @@ async function main() {
     const mime = (MIME as Record<string, string>)[ext] || 'application/octet-stream'
     const doc = await payload.create({
       collection: 'media',
-      data: { alt: '', url: '', filename },
+      data: { alt },
       file: { data, mimetype: mime, name: filename, size: data.length },
     })
     memoMedia.set(filename, doc.id)
@@ -78,7 +78,7 @@ async function main() {
 
     const images = []
     for (const fn of p.images || []) {
-      const mid = await uploadImage(fn)
+      const mid = await uploadImage(fn, p.name)
       if (mid) { images.push({ image: mid, alt: p.name }); withImg++ }
     }
 
