@@ -2,12 +2,12 @@
 
 **What to build:** Restore the storefront (`apps/web`) deployment to Vercel. Two independent problems block it:
 
-1. **Monorepo build** — Vercel must build `apps/web`, not the repo root. **Fixed**: added root `vercel.json` (`framework: nextjs`, `rootDirectory: apps/web`); also confirm "Root Directory = `apps/web`" in the Vercel dashboard.
+1. **Monorepo build** — Vercel must build `apps/web`, not the repo root. **Root Directory is a dashboard-only setting** — it is *not* a valid `vercel.json` property (confirmed against the official project-configuration schema). Fix: set Project → Settings → General → **Root Directory = `apps/web`**; `vercel.json` keeps only `framework: nextjs` (valid).
 2. **Deploy blocked by author access** — Vercel error: *"deployment was blocked because the commit author did not have contributing access to the project on Vercel. The Hobby Plan does not support collaboration for private repositories."* Commits are authored as `Sebastian Avalos <sebas1208.avalos@gmail.com>` (GitHub `sebas1208`, repo owner). On Hobby + private repo, the commit author must be the single Vercel-project owner.
 
 **Status:** needs-info (needs the Vercel-account answer below)
 
-- [x] Add `vercel.json` (rootDirectory `apps/web`) + confirm storefront builds (`pnpm --filter @wasi-granel/web build` → green).
+- [x] Root Directory set to `apps/web` (dashboard — NOT a vercel.json property) + storefront builds (`pnpm --filter @wasi-granel/web build` → green).
 - [ ] Confirm the Vercel project's connected GitHub account.
 - [ ] Resolve the author-access/plan issue (see options).
 - [ ] Storefront live on Vercel at the root domain (`wasigranel.com`) + wire DNS.
