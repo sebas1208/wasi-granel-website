@@ -5,10 +5,11 @@ export function Hero() {
     <section className="relative w-full min-h-[620px] lg:min-h-[720px] flex items-center pt-32 pb-16 overflow-hidden bg-background">
       <div className="absolute inset-0 z-0 overflow-hidden">
         <Image
-          src="/images/hero-chimborazo.jpg"
+          src="/images/hero-chimborazo-v4.jpg"
           alt="Volcán Chimborazo en alta resolución al amanecer"
           fill
           priority
+          fetchPriority="high"
           sizes="100vw"
           className="object-cover animate-hero-bg will-change-transform"
           style={{ objectPosition: "left center" }}
