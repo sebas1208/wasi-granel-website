@@ -46,14 +46,14 @@ export function CategoryGrid({ categories }: { categories: CategoryWithCount[] }
           </a>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5">
           {categories.map((cat) => {
             const icon = CATEGORY_ICONS[cat.slug] ?? "inventory_2"
             return (
               <Reveal key={cat.id} className="h-full">
                 <a
                   href={`/tienda?categoria=${cat.slug}`}
-                  className="bg-white rounded-2xl border border-[#ead7c3] p-5 flex flex-col justify-between shadow-sm hover:shadow-md hover:border-primary hover:-translate-y-1 transition-all duration-300 group h-full"
+                  className="bg-white rounded-2xl border border-[#ead7c3] p-4 lg:p-5 flex flex-col justify-between shadow-sm hover:shadow-md hover:border-primary hover:-translate-y-1 transition-all duration-300 group h-full"
                 >
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-4">

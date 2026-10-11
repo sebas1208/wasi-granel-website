@@ -19,9 +19,9 @@ export function Navigation() {
   const cartCount = 0
 
   return (
-    <header className="fixed top-4 inset-x-0 z-50 px-4 pointer-events-none">
-      {/* Solid pill bar */}
-      <div className="pointer-events-auto max-w-7xl mx-auto h-16 border border-[#ead7c3] rounded-full shadow-md hover:shadow-lg shadow-foreground/5 px-6 flex items-center justify-between bg-white/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 lg:fixed lg:top-4 lg:inset-x-0 lg:px-4 lg:pointer-events-none">
+      {/* Solid pill bar: full-width bar on mobile, floating rounded pill on lg+ */}
+      <div className="pointer-events-auto h-16 px-4 lg:px-6 flex items-center justify-between bg-white/95 backdrop-blur-sm border-b border-[#ead7c3] lg:max-w-7xl lg:mx-auto lg:border lg:rounded-full lg:shadow-md lg:shadow-foreground/5">
         {/* Left: brand + nav */}
         <div className="flex items-center gap-8">
           <Link
