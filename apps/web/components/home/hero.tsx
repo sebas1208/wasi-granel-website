@@ -21,7 +21,7 @@ export function Hero() {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        <div className="lg:min-h-[720px] lg:flex lg:items-center">
+        <div className="lg:min-h-[720px] lg:flex lg:items-center lg:pt-32 lg:pb-16">
           <div className="w-full lg:max-w-xl lg:ml-auto">
             <div className="relative -mt-36 lg:mt-0 mb-6 lg:mb-0 mx-4 md:mx-8 lg:mx-12 bg-white/95 lg:bg-white backdrop-blur-xl border border-[#ead7c3] p-5 md:p-8 lg:p-10 rounded-xl lg:rounded-3xl shadow-xl shadow-foreground/15">
               <div className="animate-fade-up inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#ffebd6] border border-[#d3c5ab] text-deep-amber font-bold text-xs uppercase tracking-wider mb-4 hover:scale-105 transition-transform duration-200 cursor-default shadow-xs">
