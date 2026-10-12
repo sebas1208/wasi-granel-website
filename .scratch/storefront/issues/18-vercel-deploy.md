@@ -8,9 +8,10 @@
 **Status:** needs-info (needs the Vercel-account answer below)
 
 - [x] Root Directory set to `apps/web` (dashboard — NOT a vercel.json property) + storefront builds (`pnpm --filter @wasi-granel/web build` → green).
-- [ ] Confirm the Vercel project's connected GitHub account.
-- [ ] Resolve the author-access/plan issue (see options).
-- [ ] Storefront live on Vercel at the root domain (`wasigranel.com`) + wire DNS.
+- [x] Confirm the Vercel project's connected GitHub account (`sebas1208` — was the rename-to-`wasi-granel-website` stale link; re-linked). 
+- [x] Resolve the author-access/plan issue (re-linked the correct repo; deploy now works).
+- [ ] Storefront domain + DNS (root `wasigranel.com` → Vercel; `*.wasigranel.com`/`payload.wasigranel.com` → VPS) — confirm wired.
+- [ ] (optional) Deploy hook / separate Vercel+Coolify branch to avoid triggering a CMS rebuild on every storefront push.
 
 ## Comments
 

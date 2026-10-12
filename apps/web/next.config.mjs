@@ -8,7 +8,15 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "picsum.photos",
-      }
+      },
+      {
+        protocol: "https",
+        hostname: "payload.wasigranel.com",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
     ]
   }
 }

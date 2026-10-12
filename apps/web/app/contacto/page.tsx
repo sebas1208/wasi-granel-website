@@ -23,7 +23,7 @@ export default function ContactoPage() {
 
       <main className="flex-1">
         {/* Header */}
-        <section className="bg-secondary py-12 md:py-16">
+        <section className="bg-secondary pt-28 pb-12 md:pt-32 md:pb-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <h1
@@ -86,7 +86,7 @@ export default function ContactoPage() {
                       </div>
                       <div>
                         <h3 className="font-semibold mb-1 text-foreground">Email</h3>
-                        <p className="text-sm text-muted-foreground">jatunwasigranel@gmail.com</p>
+                        <p className="text-sm text-muted-foreground">hola@wasigranel.com</p>
                       </div>
                     </div>
 
@@ -189,7 +189,7 @@ export default function ContactoPage() {
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Ubicación de JatunWasi"
+                    title="Ubicación de Wasi Granel"
                   />
                 </div>
               </Card>

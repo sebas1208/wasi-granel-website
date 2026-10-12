@@ -1,75 +1,87 @@
 import Link from "next/link"
-import { Facebook, Instagram, Mail, Phone } from "lucide-react"
 
 export function Footer() {
+  const year = new Date().getFullYear()
   return (
-    <footer className="bg-primary text-primary-foreground mt-20">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* About */}
+    <footer className="bg-primary text-primary-foreground pt-14 pb-8 mt-auto">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+          {/* Brand */}
           <div>
-            <h3 className="text-xl font-serif font-bold mb-4" style={{ fontFamily: "var(--font-playfair)" }}>
-              JatunWasi
-            </h3>
-            <p className="text-sm text-primary-foreground/90 leading-relaxed">
-              Tu tienda familiar de confianza para frutos secos, nueces y productos naturales de la más alta calidad.
+            <span aria-hidden className="wasi-logo text-primary-foreground h-9 block" />
+            <p className="text-sm text-primary-foreground leading-relaxed mt-3">
+              Frutos secos, semillas, especias y productos naturales a granel — dinamismo, orden y equilibrio cotidiano.
             </p>
           </div>
 
-          {/* Quick Links */}
+          {/* Navegación */}
           <div>
-            <h4 className="font-semibold mb-4">Enlaces Rápidos</h4>
-            <ul className="space-y-2 text-sm">
+            <h4 className="font-headline uppercase tracking-wider font-bold text-xs text-primary-foreground mb-4">
+              Navegación
+            </h4>
+            <ul className="flex flex-col gap-2.5">
               <li>
-                <Link href="/" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors">
+                <Link href="/" className="text-sm font-semibold text-primary-foreground hover:underline">
                   Inicio
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/tienda"
-                  className="text-primary-foreground/90 hover:text-primary-foreground transition-colors"
-                >
+                <Link href="/tienda" className="text-sm font-semibold text-primary-foreground hover:underline">
                   Tienda
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/contacto"
-                  className="text-primary-foreground/90 hover:text-primary-foreground transition-colors"
-                >
+                <Link href="/contacto" className="text-sm font-semibold text-primary-foreground hover:underline">
                   Contacto
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Legal */}
           <div>
-            <h4 className="font-semibold mb-4">Contacto</h4>
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-center gap-2 text-primary-foreground/90">
-                <Phone className="h-4 w-4" />
-                <span>0986016764</span>
+            <h4 className="font-headline uppercase tracking-wider font-bold text-xs text-primary-foreground mb-4">
+              Legal
+            </h4>
+            <ul className="flex flex-col gap-2.5">
+              <li>
+                <Link href="#" className="text-sm font-semibold text-primary-foreground hover:underline">
+                  Términos y Condiciones
+                </Link>
               </li>
-              <li className="flex items-center gap-2 text-primary-foreground/90">
-                <Mail className="h-4 w-4" />
-                <span>sebas1208.avalos@gmail.com</span>
+              <li>
+                <Link href="#" className="text-sm font-semibold text-primary-foreground hover:underline">
+                  Política de Privacidad
+                </Link>
               </li>
-              <li className="flex items-center gap-3 mt-4">
-                <a href="#" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors">
-                  <Facebook className="h-5 w-5" />
-                </a>
-                <a href="#" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors">
-                  <Instagram className="h-5 w-5" />
-                </a>
+              <li>
+                <Link href="#" className="text-sm font-semibold text-primary-foreground hover:underline">
+                  Devoluciones
+                </Link>
               </li>
             </ul>
           </div>
+
+          {/* Ubicación */}
+          <div>
+            <h4 className="font-headline uppercase tracking-wider font-bold text-xs text-primary-foreground mb-4">
+              Ubicación
+            </h4>
+            <p className="text-sm text-primary-foreground leading-relaxed mb-2">
+              Riobamba · Quito
+              <br />
+              Ecuador
+            </p>
+            <p className="text-sm text-primary-foreground leading-relaxed">
+              hola@wasigranel.com
+              <br />
+              +593 9 8765 4321
+            </p>
+          </div>
         </div>
 
-        <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center text-sm text-primary-foreground/80">
-          <p>&copy; {new Date().getFullYear()} JatunWasi. Todos los derechos reservados.</p>
+        <div className="border-t border-primary-foreground/20 pt-6 text-center text-xs text-primary-foreground">
+          <p>&copy; {year} Wasi Granel. Dinamismo, orden y equilibrio cotidiano.</p>
         </div>
       </div>
     </footer>

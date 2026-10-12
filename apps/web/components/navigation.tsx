@@ -2,72 +2,147 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X } from "lucide-react"
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
 
+const links = [
+  { href: "/", label: "Inicio" },
+  { href: "/tienda", label: "Tienda" },
+  { href: "/contacto", label: "Contacto" },
+]
+
+// Active link = bold brand-yellow + full underline (Stitch .nav-link::after pill);
+// hover grows the same underline in from the centre.
 export function Navigation() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
-
-  const links = [
-    { href: "/", label: "Inicio" },
-    { href: "/tienda", label: "Tienda" },
-    { href: "/contacto", label: "Contacto" },
-  ]
+  // Cart badge is wired to real state in ticket 12/13; 0 hides it for now.
+  const cartCount = 0
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="text-2xl font-serif font-bold text-primary" style={{ fontFamily: "var(--font-playfair)" }}>
-              JatunWasi
-            </div>
+    <header className="sticky top-0 z-50 lg:fixed lg:top-4 lg:inset-x-0 lg:px-4 lg:pointer-events-none">
+      {/* Solid pill bar: full-width bar on mobile, floating rounded pill on lg+ */}
+      <div className="pointer-events-auto h-16 px-4 lg:px-6 flex items-center justify-between bg-white/95 backdrop-blur-sm border-b border-[#ead7c3] lg:max-w-7xl lg:mx-auto lg:border lg:rounded-full lg:shadow-md lg:shadow-foreground/5" data-testid="nav-bar">
+        {/* Left: brand + nav */}
+        <div className="flex items-center gap-8">
+          <Link
+            href="/"
+            className="flex items-center group transition-transform duration-200 active:scale-95"
+            aria-label="Página de inicio Wasi Granel"
+          >
+            <span
+              aria-hidden
+              className="wasi-logo text-primary h-10 transition-transform duration-300 group-hover:scale-105"
+            />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            {links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  pathname === link.href ? "text-primary" : "text-muted-foreground"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden py-4 border-t border-border">
-            <div className="flex flex-col gap-4">
-              {links.map((link) => (
+          <nav className="hidden md:flex items-center gap-6">
+            {links.map((link) => {
+              const active = pathname === link.href
+              return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
-                    pathname === link.href ? "text-primary" : "text-muted-foreground"
+                  aria-current={active ? "page" : undefined}
+                  className={`nav-link text-sm transition-colors ${
+                    active ? "nav-link-active font-bold text-primary" : "font-semibold text-foreground hover:text-primary"
                   }`}
                 >
                   {link.label}
                 </Link>
-              ))}
-            </div>
+              )
+            })}
+          </nav>
+        </div>
+
+        {/* Right: search + cart + account + mobile toggle */}
+        <div className="flex items-center gap-4">
+          <form
+            role="search"
+            action="/tienda"
+            className="hidden lg:flex items-center bg-[#fff8f4] rounded-full px-4 py-1.5 border border-[#d3c5ab]/60 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/30 transition-all duration-300"
+          >
+            <span className="material-symbols-outlined text-foreground mr-2 text-[20px]">search</span>
+            <input
+              aria-label="Buscar en la tienda"
+              type="search"
+              name="q"
+              placeholder="Buscar en la tienda..."
+              className="bg-transparent border-none focus:ring-0 text-sm w-48 focus:w-64 text-foreground placeholder:text-muted-foreground p-0 outline-none transition-all duration-300"
+            />
+          </form>
+
+          <div className="flex items-center gap-3">
+            <Link
+              href="/tienda"
+              aria-label={`Carrito de compras${cartCount ? ` con ${cartCount} productos` : ""}`}
+              className="relative w-10 h-10 bg-[#fff8f4] hover:bg-[#f3dfcb] active:scale-90 rounded-full border border-[#d3c5ab]/50 transition-all duration-200 text-foreground flex items-center justify-center group"
+            >
+              <span className="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:scale-110">
+                shopping_cart
+              </span>
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary text-foreground font-bold text-[11px] w-5 h-5 rounded-full flex items-center justify-center border border-white shadow-sm">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+
+            <Link
+              href="/contacto"
+              aria-label="Mi Cuenta de usuario"
+              className="w-10 h-10 bg-[#fff8f4] hover:bg-[#f3dfcb] active:scale-90 rounded-full border border-[#d3c5ab]/50 transition-all duration-200 text-foreground flex items-center justify-center group"
+            >
+              <span className="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:scale-110">
+                person
+              </span>
+            </Link>
+
+            <button
+              type="button"
+              aria-label={isOpen ? "Cerrar menú principal" : "Abrir menú principal"}
+              aria-expanded={isOpen}
+              onClick={() => setIsOpen((o) => !o)}
+              className="md:hidden p-2 text-foreground active:scale-90 transition-transform flex items-center justify-center rounded-full hover:bg-[#f3dfcb]"
+            >
+              <span className="material-symbols-outlined text-[24px]">{isOpen ? "close" : "menu"}</span>
+            </button>
           </div>
-        )}
+        </div>
       </div>
-    </nav>
+
+      {/* Mobile nav — rounded panel under the pill */}
+      {isOpen && (
+        <div className="pointer-events-auto md:hidden max-w-7xl mx-auto mt-2 bg-white border border-[#ead7c3] rounded-2xl shadow-md shadow-foreground/5 p-3">
+          {links.map((link) => {
+            const active = pathname === link.href
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                aria-current={active ? "page" : undefined}
+                className={`block px-3 py-2.5 rounded-xl text-sm ${
+                  active ? "font-bold text-primary bg-primary/10" : "font-semibold text-foreground hover:bg-background"
+                }`}
+              >
+                {link.label}
+              </Link>
+            )
+          })}
+          <div className="flex items-center gap-3 mt-2 pt-3 border-t border-[#ead7c3]">
+            <Link href="/tienda" aria-label="Carrito de compras" className="w-10 h-10 bg-[#fff8f4] rounded-full border border-[#d3c5ab]/50 text-foreground flex items-center justify-center">
+              <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
+            </Link>
+            <Link href="/contacto" aria-label="Mi Cuenta de usuario" className="w-10 h-10 bg-[#fff8f4] rounded-full border border-[#d3c5ab]/50 text-foreground flex items-center justify-center">
+              <span className="material-symbols-outlined text-[20px]">person</span>
+            </Link>
+            <form role="search" action="/tienda" className="flex-1 flex items-center bg-[#fff8f4] rounded-full px-3 py-1.5 border border-[#d3c5ab]/60">
+              <span className="material-symbols-outlined text-foreground mr-2 text-[18px]">search</span>
+              <input aria-label="Buscar en la tienda" type="search" name="q" placeholder="Buscar..." className="bg-transparent border-none focus:ring-0 text-sm w-full text-foreground placeholder:text-muted-foreground outline-none" />
+            </form>
+          </div>
+        </div>
+      )}
+    </header>
   )
 }

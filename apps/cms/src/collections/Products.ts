@@ -72,6 +72,15 @@ export const Products: CollectionConfig = {
       admin: { position: 'sidebar' },
     },
     {
+      name: 'popular',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Featured on the homepage "Productos Populares" carousel.',
+      },
+    },
+    {
       name: 'ref',
       type: 'text',
       admin: { description: 'Legacy ERP SKU (e.g. ACE-001).' },
