@@ -37,6 +37,18 @@ async function metrics(page: import("@playwright/test").Page) {
       benMobDisplay: el("benefits-mobile") ? getComputedStyle(el("benefits-mobile")!).display : null,
       benDescDisplay: el("benefits-desktop") ? getComputedStyle(el("benefits-desktop")!).display : null,
       slides: document.querySelectorAll('[aria-roledescription="slide"]').length,
+      // carousel peek: % of the next card visible (must be partial on both viewports)
+      peek: (() => {
+        const cards = [...document.querySelectorAll('[class*="hover:-translate-y"]')]
+        const viewport = cards[0]?.closest('[class*="overflow-hidden"]')
+        if (!viewport || cards.length < 2) return null
+        const vr = viewport.getBoundingClientRect()
+        const full = cards.filter((c) => c.getBoundingClientRect().right <= vr.right).length
+        const next = cards[full]
+        if (!next) return null
+        const nr = next.getBoundingClientRect()
+        return Math.round(((vr.right - nr.left) / nr.width) * 100)
+      })(),
     }
   })
 }
