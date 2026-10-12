@@ -22,11 +22,17 @@ export function PopularProducts({ products }: { products: Product[] }) {
       setCanNext(api.canScrollNext())
     }
     update()
+    api.on("init", update)
     api.on("select", update)
     api.on("reInit", update)
+    // embla can report canScrollNext=false until it has measured the slides;
+    // re-check after layout so the arrows don't stay stuck disabled.
+    const t = window.setTimeout(update, 300)
     return () => {
+      api.off("init", update)
       api.off("select", update)
       api.off("reInit", update)
+      window.clearTimeout(t)
     }
   }, [api])
 
@@ -70,7 +76,7 @@ export function PopularProducts({ products }: { products: Product[] }) {
           </div>
         </div>
 
-        <Carousel setApi={setApi}>
+        <Carousel setApi={setApi} opts={{ align: "start" }}>
           <CarouselContent className="-ml-4">
             {products.map((p, i) => {
               const img = productImageUrl(p)

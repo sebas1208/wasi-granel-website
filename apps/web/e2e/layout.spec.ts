@@ -111,3 +111,22 @@ test("product cards: no translate on hover, image zooms only (Stitch)", async ({
   expect(after.imgScale, "image must zoom on hover").not.toBe("none")
   if (after.imgScale) expect(parseFloat(after.imgScale)).toBeGreaterThan(1)
 })
+
+test("carousel next snaps to a card boundary (no half card on the left)", async ({ page }) => {
+  await page.goto("/")
+  await page.getByTestId("hero-card").waitFor({ state: "attached", timeout: 20_000 })
+  await page.getByTestId("product-card").first().scrollIntoViewIfNeeded()
+  const nextBtn = page.getByRole("button", { name: "Producto siguiente" })
+  await nextBtn.click()
+  await page.waitForTimeout(800)
+  const aligned = await page.evaluate(() => {
+    const vp = document.querySelector('[data-slot="carousel-content"]')
+    const vr = vp!.getBoundingClientRect()
+    const cards = [...document.querySelectorAll('[data-testid="product-card"]')]
+    const leftmost = cards.find((c) => c.getBoundingClientRect().right > vr.left)
+    if (!leftmost) return false
+    const r = leftmost.getBoundingClientRect()
+    return Math.abs(r.left - vr.left) <= 2
+  })
+  expect(aligned, "leftmost card must align to the container left edge after next").toBe(true)
+})
