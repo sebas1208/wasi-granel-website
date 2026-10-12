@@ -8,28 +8,27 @@ export function History() {
         <Reveal className="order-2 lg:order-1">
           <div className="inline-flex items-center gap-2 text-deep-amber font-bold mb-4">
             <div className="h-0.5 w-8 bg-deep-amber" aria-hidden />
-            <span className="uppercase tracking-wider text-xs font-bold">Filosofía de Marca</span>
+            <span className="uppercase tracking-wider text-xs font-bold">Nuestra Esencia</span>
           </div>
           <h2 className="font-headline text-3xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
-            Estructura, origen y vida contemporánea
+            Calidad gourmet, desde Riobamba
           </h2>
           <div className="space-y-4 text-base md:text-lg text-[#6c5b4f] leading-relaxed">
             <p>
-              Wasi Granel redefine la experiencia del alimento a granel desde una mirada urbana y
-              ordenada. Inspirados en el ritmo y la continuidad de la matriz gráfica Puruhá,
-              transformamos el acto cotidiano de abastecerse en una experiencia limpia, eficiente y
-              en armonía con tu espacio.
+              En Wasi Granel reunimos frutos secos, semillas, granos, especias y productos gourmet
+              elegidos por calidad y sabor. Compras al peso exacto, sin desperdicio, con la frescura
+              que tu despensa merece.
             </p>
-            <p>Solo lo que necesitas, con la más alta calidad, frescura y trazabilidad de origen.</p>
+            <p>La cantidad exacta que necesitas, con la más alta calidad y frescura.</p>
           </div>
           <div className="mt-8 grid grid-cols-2 gap-4 md:gap-6">
             <div className="p-6 bg-white rounded-2xl border-2 border-[#ffebd6] shadow-sm hover:border-primary hover:shadow-md hover:-translate-y-1 transition-all duration-300">
               <div className="font-headline text-3xl md:text-4xl font-bold text-deep-amber mb-1">100%</div>
-              <div className="text-sm font-semibold text-foreground">Sin empaques innecesarios</div>
+              <div className="text-sm font-semibold text-foreground">Al peso exacto</div>
             </div>
             <div className="p-6 bg-white rounded-2xl border-2 border-[#ffebd6] shadow-sm hover:border-primary hover:shadow-md hover:-translate-y-1 transition-all duration-300">
               <div className="font-headline text-3xl md:text-4xl font-bold text-deep-amber mb-1">50+</div>
-              <div className="text-sm font-semibold text-foreground">Orígenes seleccionados</div>
+              <div className="text-sm font-semibold text-foreground">Productos gourmet</div>
             </div>
           </div>
         </Reveal>

@@ -1,13 +1,13 @@
 const MOBILE = [
-  { icon: "scale", label: "Al peso exacto", sub: "Cero desperdicio" },
-  { icon: "recycling", label: "100% Compostable", sub: "O reutilizable" },
-  { icon: "terrain", label: "Origen Andino", sub: "Trazable directo" },
+  { icon: "scale", label: "Al peso exacto", sub: "Solo lo que necesitas" },
+  { icon: "recycling", label: "Lleva tu envase", sub: "Compra a granel" },
+  { icon: "terrain", label: "Origen confiable", sub: "Selección cuidada" },
 ]
 
 const DESKTOP = [
-  { icon: "scale", label: "Compra al peso exacto" },
-  { icon: "recycling", label: "Empaque 100% compostable o reutilizable" },
-  { icon: "terrain", label: "Trazabilidad andina directa" },
+  { icon: "scale", label: "Al peso exacto" },
+  { icon: "recycling", label: "Lleva tu envase" },
+  { icon: "terrain", label: "Origen confiable" },
 ]
 
 export function Benefits() {

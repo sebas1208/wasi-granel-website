@@ -9,11 +9,10 @@ export function Newsletter() {
             <span className="material-symbols-outlined text-[24px]">mark_email_read</span>
           </div>
           <h2 className="font-headline text-2xl md:text-3xl font-bold text-white mb-2">
-            Sintoniza con nuestro ritmo
+            Novedades gourmet, directo a tu correo
           </h2>
           <p className="text-[#f5dece] text-sm md:text-base mb-6 max-w-lg mx-auto leading-relaxed">
-            Actualizaciones curadas sobre nuevos ingresos, proporciones ideales de nutrición diaria y
-            beneficios exclusivos para compras a granel.
+            Nuevos ingresos, productos gourmet y promociones exclusivas para compras a granel.
           </p>
           <form className="flex flex-col sm:flex-row items-center gap-3 max-w-lg mx-auto">
             <input
@@ -27,7 +26,7 @@ export function Newsletter() {
               type="submit"
               className="w-full sm:w-auto px-8 py-3.5 bg-primary hover:bg-[#fabd00] active:scale-95 text-foreground font-bold text-sm rounded-xl transition-all duration-200 shadow-md whitespace-nowrap"
             >
-              Unirme a la comunidad
+              Suscribirme
             </button>
           </form>
         </Reveal>

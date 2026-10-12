@@ -32,7 +32,7 @@ export function CategoryGrid({ categories }: { categories: CategoryWithCount[] }
               Categorías de Producto
             </h2>
             <p className="text-[#6c5b4f] text-sm md:text-base mt-2 max-w-2xl leading-relaxed">
-              Curaduría consciente clasificada para facilitar una despensa funcional, fresca y al peso exacto.
+              Frutos secos, semillas, granos, especias y más — todo al peso exacto, listo para tu despensa.
             </p>
           </div>
           <a

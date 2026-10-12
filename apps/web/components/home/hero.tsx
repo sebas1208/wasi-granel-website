@@ -29,14 +29,13 @@ export function Hero() {
                 <span>Riobamba, Ecuador</span>
               </div>
               <div className="animate-fade-up [animation-delay:90ms] text-deep-amber font-bold mb-2 block text-xs uppercase tracking-widest">
-                Despensa urbana y consciente
+                Frutos secos · Semillas · Granos · Gourmet
               </div>
               <h1 className="animate-fade-up [animation-delay:170ms] font-headline text-2xl sm:text-3xl md:text-5xl font-bold text-foreground mb-4 leading-tight">
-                Equilibrio en movimiento
+                Equilibrio para tu despensa
               </h1>
               <p className="animate-fade-up [animation-delay:250ms] text-sm md:text-base lg:text-lg text-[#6c5b4f] mb-6 md:mb-8 leading-relaxed">
-                Selección contemporánea de frutos secos, semillas y granos al peso exacto. Diseñado
-                para integrarse a tu rutina diaria con orden, frescura y sin excesos innecesarios.
+                Compra la cantidad exacta que necesitas — siempre fresco, con la mejor calidad.
               </p>
               <div className="animate-fade-up [animation-delay:330ms] flex flex-col sm:flex-row flex-wrap gap-2.5 lg:gap-4">
                 <a
@@ -47,11 +46,11 @@ export function Hero() {
                   Explorar Tienda
                 </a>
                 <a
-                  href="#nuestra-historia"
+                  href="/contacto"
                   className="w-full sm:w-auto shrink-0 whitespace-nowrap inline-flex items-center justify-center border-2 border-foreground/20 text-foreground bg-background hover:bg-[#f3dfcb] hover:border-foreground/40 active:scale-95 font-bold px-7 py-3.5 rounded-xl transition-all duration-200 gap-2"
                 >
-                  <span className="material-symbols-outlined text-[20px]">nature_people</span>
-                  Nuestra Filosofía
+                  <span className="material-symbols-outlined text-[20px]">storefront</span>
+                  Nuestra Historia
                 </a>
               </div>
             </div>
