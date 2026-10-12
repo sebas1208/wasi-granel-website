@@ -3,16 +3,16 @@ import Image from "next/image"
 export function Hero() {
   return (
     <section className="relative w-full overflow-hidden bg-background">
-      {/* Chimborazo: full-bleed behind on lg+, top block with a bottom scrim on mobile */}
+      {/* Store interior: full-bleed behind on lg+, top block with a bottom scrim on mobile */}
       <div className="relative w-full h-[460px] lg:absolute lg:inset-0 lg:h-full overflow-hidden">
         <Image
-          src="/images/hero-chimborazo-v4.jpg"
-          alt="Volcán Chimborazo en alta resolución al amanecer"
+          src="/images/hero-store-v1.jpg"
+          alt="Interior de la tienda a granel Wasi Granel: frutos secos, semillas y especias en frascos"
           fill
           priority
           fetchPriority="high"
           sizes="100vw"
-          className="object-cover object-left animate-hero-bg will-change-transform"
+          className="object-cover object-left"
         />
         <div
           aria-hidden
