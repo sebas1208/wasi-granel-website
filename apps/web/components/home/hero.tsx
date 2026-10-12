@@ -20,7 +20,7 @@ export function Hero() {
         />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto">
+      <div className="relative z-10 max-w-7xl mx-auto lg:px-12">
         <div className="lg:min-h-[720px] lg:flex lg:items-center lg:pt-32 lg:pb-16">
           <div className="w-full lg:max-w-xl lg:ml-auto">
             <div className="relative -mt-36 lg:mt-0 mb-6 lg:mb-0 mx-4 md:mx-8 lg:mx-0 bg-white/95 lg:bg-white backdrop-blur-xl border border-[#ead7c3] p-5 md:p-8 lg:p-10 rounded-xl lg:rounded-3xl shadow-2xl shadow-foreground/15" data-testid="hero-card">

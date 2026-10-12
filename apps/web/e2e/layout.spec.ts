@@ -31,6 +31,8 @@ async function metrics(page: import("@playwright/test").Page) {
       navRadius: el("nav-bar") ? parseFloat(getComputedStyle(el("nav-bar")!).borderRadius) : null,
       navBottom: el("nav-bar") ? Math.round(el("nav-bar")!.getBoundingClientRect().bottom) : null,
       heroCard: heroCard ? rect(heroCard) : null,
+      heroRight: heroCard ? Math.round(heroCard.getBoundingClientRect().right) : null,
+      catRight: catGrid ? Math.round(catGrid.getBoundingClientRect().right) : null,
       btns,
       imgH: imgWrap ? Math.round(imgWrap.getBoundingClientRect().height) : null,
       catCols: catGrid ? getComputedStyle(catGrid).gridTemplateColumns.split(" ").length : null,
@@ -56,6 +58,9 @@ async function metrics(page: import("@playwright/test").Page) {
 test("homepage layout matches Stitch (desktop + mobile)", async ({ page }) => {
   await page.goto("/")
   await page.getByTestId("hero-card").waitFor({ state: "attached", timeout: 20_000 })
+  // wait for webfonts so button widths are final (fallback fonts are wider and
+  // can momentarily wrap the CTA buttons, making this assertion flaky)
+  await page.evaluate(() => document.fonts.ready)
   const m = await metrics(page)
   const isDesktop = m.vw >= 1024
 
@@ -74,6 +79,10 @@ test("homepage layout matches Stitch (desktop + mobile)", async ({ page }) => {
     // Desktop variants
     expect(m.benDescDisplay).toBe("flex")
     expect(m.benMobDisplay).toBe("none")
+    // Hero card must share the content column's right edge (not the navbar's)
+    if (m.heroRight && m.catRight) {
+      expect(Math.abs(m.heroRight - m.catRight), "hero card must align with content, not the navbar").toBeLessThanOrEqual(4)
+    }
   } else {
     // Navbar = full-width sticky bar (radius 0), NOT the floating pill
     expect(m.headerPos).toBe("sticky")
