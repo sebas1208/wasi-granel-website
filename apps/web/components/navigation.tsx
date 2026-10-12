@@ -21,7 +21,7 @@ export function Navigation() {
   return (
     <header className="sticky top-0 z-50 lg:fixed lg:top-4 lg:inset-x-0 lg:px-4 lg:pointer-events-none">
       {/* Solid pill bar: full-width bar on mobile, floating rounded pill on lg+ */}
-      <div className="pointer-events-auto h-16 px-4 lg:px-6 flex items-center justify-between bg-white/95 backdrop-blur-sm border-b border-[#ead7c3] lg:max-w-7xl lg:mx-auto lg:border lg:rounded-full lg:shadow-md lg:shadow-foreground/5">
+      <div className="pointer-events-auto h-16 px-4 lg:px-6 flex items-center justify-between bg-white/95 backdrop-blur-sm border-b border-[#ead7c3] lg:max-w-7xl lg:mx-auto lg:border lg:rounded-full lg:shadow-md lg:shadow-foreground/5" data-testid="nav-bar">
         {/* Left: brand + nav */}
         <div className="flex items-center gap-8">
           <Link

@@ -46,7 +46,7 @@ export function CategoryGrid({ categories }: { categories: CategoryWithCount[] }
           </a>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5" data-testid="categories-grid">
           {categories.map((cat) => {
             const icon = CATEGORY_ICONS[cat.slug] ?? "inventory_2"
             return (
