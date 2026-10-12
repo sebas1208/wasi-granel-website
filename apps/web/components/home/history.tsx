@@ -35,13 +35,13 @@ export function History() {
         </Reveal>
 
         <Reveal className="order-1 lg:order-2 relative">
-          <div className="rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-white">
+          <div className="rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl border-4 border-white bg-white transition-transform duration-300 ease-out will-change-transform">
             <div className="w-full aspect-[4/3] lg:aspect-square overflow-hidden rounded-2xl group">
               <Image
                 src="/images/store/filosofia-matriz-9.jpg"
                 alt="Interior de la tienda a granel Wasi Granel en Riobamba, frutos secos y especias a granel"
                 fill
-                className="object-cover group-hover:scale-105 transition-transform duration-700"
+                className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                 sizes="(max-width:1024px) 100vw, 50vw"
               />
             </div>
