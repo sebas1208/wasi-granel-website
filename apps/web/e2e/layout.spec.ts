@@ -94,3 +94,20 @@ test("homepage layout matches Stitch (desktop + mobile)", async ({ page }) => {
   // Carousel must have 2+ slides when products are present
   if (m.slides > 0) expect(m.slides).toBeGreaterThanOrEqual(2)
 })
+
+test("product cards: no translate on hover, image zooms only (Stitch)", async ({ page }) => {
+  await page.goto("/")
+  await page.getByTestId("hero-card").waitFor({ state: "attached", timeout: 20_000 })
+  const card = page.getByTestId("product-card").first()
+  await card.scrollIntoViewIfNeeded()
+  await card.hover()
+  await page.waitForTimeout(700)
+  const after = await card.evaluate((el) => {
+    const img = el.querySelector("img")
+    return { translate: getComputedStyle(el).translate, imgScale: img ? getComputedStyle(img).scale : null }
+  })
+  // Stitch: the card must NOT lift/translate on hover — only the image zooms
+  expect(after.translate, "product card must not translate on hover").toBe("none")
+  expect(after.imgScale, "image must zoom on hover").not.toBe("none")
+  if (after.imgScale) expect(parseFloat(after.imgScale)).toBeGreaterThan(1)
+})

@@ -81,7 +81,7 @@ export function PopularProducts({ products }: { products: Product[] }) {
                   aria-label={`${p.name} — producto ${i + 1} de ${products.length}`}
                   className="basis-[85%] sm:basis-1/2 md:basis-1/3 lg:basis-[22%] pl-4"
                 >
-                  <div className="bg-white border border-[#ead7c3] rounded-2xl p-3.5 flex flex-col justify-between shadow-lg hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 group cursor-pointer h-full">
+                  <div className="bg-white border border-[#ead7c3] rounded-2xl p-3.5 flex flex-col justify-between shadow-lg hover:shadow-2xl transition-all duration-300 group cursor-pointer h-full" data-testid="product-card">
                     <div className="aspect-square rounded-xl overflow-hidden relative bg-[#fff1e5] mb-3">
                       {img ? (
                         <Image
