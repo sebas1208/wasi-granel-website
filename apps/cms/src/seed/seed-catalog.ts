@@ -6,9 +6,10 @@
  * as 0 (placeholder — real prices come later).
  *
  * Run with the Payload runtime, from the repo root or apps/cms:
- *   pnpm --filter @wasi-granel/cms run payload -- run src/seed/seed-catalog.ts
- * (DATABASE_URL / PAYLOAD_SECRET must point at the target instance — use the local
- *  podman Postgres for a preview, the CMS on the VPS when ready to land.)
+ *   pnpm --filter @wasi-granel/cms run seed:catalog
+ * (uses `tsx src/seed/seed-catalog.ts`; `payload run` silently no-ops — avoid it.)
+ * DATABASE_URL / PAYLOAD_SECRET must point at the target instance — use the local
+ *  podman Postgres for a preview, the CMS on the VPS when ready to land.
  */
 import 'dotenv/config'               // load apps/cms/.env (DATABASE_URL, PAYLOAD_SECRET)
 import path from 'path'
@@ -33,6 +34,20 @@ const MIME = {
   '.jpeg': 'image/jpeg',
   '.webp': 'image/webp',
 }
+
+// Curated "popular" products for the homepage carousel (one per category, all photo-bearing).
+const POPULAR = [
+  'ajonjoli-cascara', // frutos-secos
+  'alpiste', // semillas-granos
+  'ciruelas-pasas', // frutas-deshidratadas
+  'choco-avellanas', // cacao-chocolates
+  'amaranto-en-grano', // harinas-cereales
+  'achiote-en-grano', // especias-hierbas
+  'estevia-hoja', // infusiones-tes
+  'miel-de-abeja-natural-honey-grande', // endulzantes
+  'aceite-de-ajonjoli', // aceites-aceitunas
+  'ajo-en-escama', // ajies-ajos
+]
 
 async function main() {
   const root = findRootDir()
@@ -107,6 +122,7 @@ async function main() {
         category: catIds.get(p.categorySlug) ?? null,
         images,
         inStock: p.inStock ?? true,
+        popular: POPULAR.includes(p.slug) || undefined,
         ref: p.ref || undefined,
         taxRate: typeof p.taxRate === 'number' ? p.taxRate : undefined,
         purchaseOptions,
@@ -116,6 +132,18 @@ async function main() {
     if (images.length && !catImgs.has(p.categorySlug)) catImgs.set(p.categorySlug, images[0].image)
     created++
   }
+
+  // ---- mark existing "popular" products (homepage carousel) ----
+  let markedPopular = 0
+  for (const slug of POPULAR) {
+    const found = await payload.find({ collection: 'products', where: { slug: { equals: slug } }, limit: 1 })
+    if (!found.docs.length) continue
+    if (!found.docs[0].popular) {
+      await payload.update({ collection: 'products', id: found.docs[0].id, data: { popular: true } })
+      markedPopular++
+    }
+  }
+  console.log(`popular products marked: ${markedPopular}`)
 
   // ---- assign category images ----
   // Use the in-loop tracked image (fresh load) else the first image-bearing product in the category.
