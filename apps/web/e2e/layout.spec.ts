@@ -29,6 +29,7 @@ async function metrics(page: import("@playwright/test").Page) {
       vw: window.innerWidth,
       headerPos: header ? getComputedStyle(header).position : null,
       navRadius: el("nav-bar") ? parseFloat(getComputedStyle(el("nav-bar")!).borderRadius) : null,
+      navBottom: el("nav-bar") ? Math.round(el("nav-bar")!.getBoundingClientRect().bottom) : null,
       heroCard: heroCard ? rect(heroCard) : null,
       btns,
       imgH: imgWrap ? Math.round(imgWrap.getBoundingClientRect().height) : null,
@@ -53,8 +54,7 @@ test("homepage layout matches Stitch (desktop + mobile)", async ({ page }) => {
     expect(m.headerPos).toBe("fixed")
     expect(m.navRadius! > 15, "desktop navbar must be the floating rounded pill").toBe(true)
     // Hero card must clear the navbar by a comfortable margin (Stitch pt-32)
-    expect(m.heroCard!.top - m.navRadius!, "card must not touch the navbar").toBeGreaterThanOrEqual(0)
-    expect(m.heroCard!.top - (m.headerPos === "fixed" ? 80 : 0), "card clearance from navbar").toBeGreaterThanOrEqual(40)
+    expect(m.heroCard!.top - m.navBottom!, "card must not touch the navbar").toBeGreaterThanOrEqual(40)
     // CTA buttons: single-line, on one row (no internal text wrap)
     expect(m.btns.length).toBe(2)
     for (const b of m.btns) expect(b.h, "button label must not wrap").toBeLessThanOrEqual(60)

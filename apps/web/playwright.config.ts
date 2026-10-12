@@ -15,7 +15,9 @@ export default defineConfig({
     timeout: 120_000,
   },
   projects: [
-    { name: "desktop", use: { viewport: { width: 1280, height: 900 } } },
-    { name: "mobile", use: { viewport: { width: 390, height: 844 } } },
+    // Uses the installed Google Chrome (channel: "chrome") — no Playwright
+    // Chromium download needed. Requires Chrome on the machine.
+    { name: "desktop", use: { channel: "chrome", viewport: { width: 1280, height: 900 } } },
+    { name: "mobile", use: { channel: "chrome", viewport: { width: 390, height: 844 } } },
   ],
 })
