@@ -45,15 +45,15 @@ export function History() {
                 sizes="(max-width:1024px) 100vw, 50vw"
               />
             </div>
-            {/* Floating "visítanos" badge */}
-            <div className="animate-float absolute -bottom-6 -left-6 bg-primary text-foreground border-2 border-white shadow-xl p-5 rounded-2xl hidden md:flex items-center gap-3.5 hover:scale-105 transition-transform duration-200">
-              <div className="w-12 h-12 rounded-xl bg-foreground text-primary flex items-center justify-center flex-shrink-0">
-                <span className="material-symbols-outlined text-[26px]">store</span>
-              </div>
-              <div>
-                <div className="font-bold text-foreground text-sm font-headline">Visítanos en Riobamba</div>
-                <div className="text-xs text-foreground/80 font-medium">Experiencia a granel local</div>
-              </div>
+          </div>
+          {/* Floating "visítanos" badge — sibling of the framed image so it overhangs the corner without being clipped */}
+          <div className="animate-float absolute -bottom-6 -left-6 bg-primary text-foreground border-2 border-white shadow-xl p-5 rounded-2xl hidden md:flex items-center gap-3.5 hover:scale-105 transition-transform duration-200">
+            <div className="w-12 h-12 rounded-xl bg-foreground text-primary flex items-center justify-center flex-shrink-0">
+              <span className="material-symbols-outlined text-[26px]">store</span>
+            </div>
+            <div>
+              <div className="font-bold text-foreground text-sm font-headline">Visítanos en Riobamba</div>
+              <div className="text-xs text-foreground/80 font-medium">Experiencia a granel local</div>
             </div>
           </div>
         </Reveal>
