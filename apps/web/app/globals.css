@@ -187,6 +187,59 @@
     animation: shine 5s infinite;
   }
 
+  /* — Tienda list view (Stitch `#product-grid.is-list-view`) — */
+  #product-grid.is-list-view {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+  #product-grid.is-list-view .product-item {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    max-height: 200px !important;
+    overflow: hidden !important;
+    border-radius: 1.25rem !important;
+  }
+  #product-grid.is-list-view .product-item > div:first-child {
+    flex: 1 1 auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  #product-grid.is-list-view .product-item > div:first-child > div:first-child {
+    width: 190px !important;
+    min-width: 190px !important;
+    height: 100% !important;
+    aspect-ratio: auto !important;
+    position: relative !important;
+    flex-shrink: 0 !important;
+  }
+  #product-grid.is-list-view .product-item > div:first-child > div:first-child img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+  #product-grid.is-list-view .product-item > div:first-child > div:nth-child(2) {
+    flex: 1 1 auto !important;
+    padding: 1.25rem 1.5rem !important;
+    min-width: 0 !important;
+  }
+  #product-grid.is-list-view .product-item > div:last-child {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    gap: 0.75rem !important;
+    margin-top: 0 !important;
+    padding: 1.25rem 1.5rem !important;
+    border-top: none !important;
+    border-left: 1px solid rgba(243, 223, 203, 0.6) !important;
+    min-width: 170px !important;
+  }
+
   /* — Scroll-reveal + micro-animations (matches Stitch variants) — */
   .reveal-init {
     opacity: 0;

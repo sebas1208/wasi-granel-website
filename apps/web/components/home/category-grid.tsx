@@ -1,20 +1,8 @@
 import type { Category } from "@/lib/payload"
 import { Reveal } from "@/components/home/reveal"
+import { categoryIcon } from "@/lib/category-icons"
 
-const CATEGORY_ICONS: Record<string, string> = {
-  "frutos-secos": "nutrition",
-  "semillas-granos": "spa",
-  "frutas-deshidratadas": "local_florist",
-  "cacao-chocolates": "cookie",
-  "harinas-cereales": "grain",
-  "especias-hierbas": "energy_savings_leaf",
-  "legumbres-menestras": "potted_plant",
-  endulzantes: "hive",
-  "aceites-aceitunas": "oil_barrel",
-  "infusiones-tes": "local_cafe",
-  "ajies-ajos": "local_fire_department",
-  otros: "inventory_2",
-}
+
 
 export type CategoryWithCount = Category & { count: number }
 
@@ -48,7 +36,7 @@ export function CategoryGrid({ categories }: { categories: CategoryWithCount[] }
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5" data-testid="categories-grid">
           {categories.map((cat) => {
-            const icon = CATEGORY_ICONS[cat.slug] ?? "inventory_2"
+            const icon = categoryIcon(cat.slug)
             return (
               <Reveal key={cat.id} className="h-full">
                 <a
