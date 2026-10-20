@@ -49,6 +49,31 @@ git add apps/cms/src/migrations && git commit          # then push
 First ever boot: open `https://payload.wasigranel.com/admin` and create the first
 admin user. Later boots reuse the created user.
 
+## Migration hygiene — a bad migration is a prod outage
+
+The container boots with `payload migrate && next start`, so **if a migration
+throws, the CMS never starts**. `migrate:create` diffs against your *local* DB —
+which here is usually `push`-created — so the generated SQL can re-add columns
+production already has. That happened with `20261015_020120`, which re-added
+`products.popular` even though `20261009_120000` had already applied it on prod;
+shipped as-is it would have aborted the boot.
+
+Before pushing any migration:
+
+1. See what prod has: `docker exec <pg-container> psql -U payload -d payload -c 'select name, batch from payload_migrations order by id;'`
+2. Make the SQL **idempotent and additive**: `ADD COLUMN IF NOT EXISTS`,
+   `CREATE INDEX IF NOT EXISTS`, enum creation wrapped in
+   `DO $$ BEGIN ... EXCEPTION WHEN duplicate_object THEN NULL; END $$;`,
+   and `ALTER TYPE ... ADD VALUE IF NOT EXISTS`. Delete statements a
+   previously-applied migration already covers.
+3. Smoke-test it **twice** against a prod-shaped scratch DB — the second run must
+   emit only `already exists, skipping` notices. Never test against a
+   `push`-created local DB: `payload migrate` would try to replay every migration.
+
+Deploy is automatic: `git push origin main` → Coolify rebuilds (~4 min) → the new
+image tag (`payload:<sha>`) appears in `docker ps`. Verify after:
+`select name, batch from payload_migrations;` should list the new migration.
+
 ## Legacy: raw-SSH deploy (`deploy.sh`)
 
 `apps/cms/scripts/deploy.sh` (rsync → ensure secrets → `docker compose up --build`
@@ -95,3 +120,18 @@ docker exec "$CONT" sh -c 'cd /repo/apps/cms && npx tsx src/seed/seed-catalog.ts
 ```
 
 The loader is idempotent — re-running upserts descriptions and fills any gaps.
+
+### Backfilling the canonical price (ticket 12)
+
+`products.price` + `products.price_unit` (`lb | kg | gr | unidad`) is the canonical
+rate that purchase options derive from; the storefront sorts on it. After the
+schema migration lands, derive it from the existing tier prices:
+
+```bash
+docker exec "$CONT" sh -c 'cd /repo/apps/cms && npx tsx src/seed/backfill-price.ts'
+# -> backfill done: 278 updated, 0 skipped (no priced options)
+```
+
+Idempotent. Any product whose options are all unpriced stays at `0` (as of the
+last run: Semilla de Apio, Semillas de Amapola 25 Gr, Manzana Deshidratada,
+Cloruro de Calcio, Agar Agar, Alginato — waiting on real prices from the store).
