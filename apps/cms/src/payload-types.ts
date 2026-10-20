@@ -236,21 +236,33 @@ export interface Product {
    */
   taxRate?: number | null;
   /**
-   * Ways this product can be bought (weight tiers and/or fixed units).
+   * Canonical price (USD) — the rate the purchase options derive from, e.g. 6 for "$6 per pound". Drives price sorting.
+   */
+  price?: number | null;
+  /**
+   * What the canonical price is per (Ecuador mixes lb / kg / g).
+   */
+  priceUnit?: ('lb' | 'kg' | 'gr' | 'unidad') | null;
+  /**
+   * Ways this product can be bought (weight tiers, fixed units, or money amounts).
    */
   purchaseOptions?:
     | {
-        kind: 'weight' | 'unit';
+        kind: 'weight' | 'unit' | 'money';
         /**
-         * Weight in grams for this option (bulk).
+         * Weight in grams for this option (bulk). Price derives from the canonical price.
          */
         weightGrams?: number | null;
         /**
-         * Price in USD (decimal dollars).
+         * Money amount in USD for this option (e.g. 1 = "$1 de almendras").
          */
-        price: number;
+        amount?: number | null;
         /**
-         * Unit label, e.g. "porción", "500 cm3".
+         * Price in USD. Weight options derive this from the canonical price (auto in seed/backfill) — only set manually for unit/money overrides.
+         */
+        price?: number | null;
+        /**
+         * Option label, e.g. "Funda" (nuts), "Frasco" (jars), "porción".
          */
         label?: string | null;
         id?: string | null;
@@ -416,11 +428,14 @@ export interface ProductsSelect<T extends boolean = true> {
   popular?: T;
   ref?: T;
   taxRate?: T;
+  price?: T;
+  priceUnit?: T;
   purchaseOptions?:
     | T
     | {
         kind?: T;
         weightGrams?: T;
+        amount?: T;
         price?: T;
         label?: T;
         id?: T;

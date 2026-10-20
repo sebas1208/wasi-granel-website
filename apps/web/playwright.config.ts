@@ -3,7 +3,11 @@ import { defineConfig } from "@playwright/test"
 export default defineConfig({
   testDir: "./e2e",
   timeout: 60_000,
-  fullyParallel: true,
+  // Serialize the suite: these tests hit a single dev server, and running them
+  // in parallel caused resource contention (late image loads / embla
+  // initialization) that made the layout measurements flaky. One worker = deterministic.
+  fullyParallel: false,
+  workers: 1,
   reporter: "list",
   use: {
     baseURL: "http://localhost:3000",
