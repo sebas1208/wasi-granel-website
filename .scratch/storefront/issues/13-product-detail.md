@@ -4,7 +4,7 @@
 
 **Blocked by:** 12 (closed) — the Quick View this deep-links into is already built and shipped to `develop`.
 
-**Status:** ready-for-agent — re-scoped 2026-10-21 (was: "Product Detail + quick-view (weight tiers)").
+**Status:** **Done — closed 2026-10-21** (`develop` `77ab9b5`) — implemented, browser-verified, committed to `develop`. **Not in production**: this ships with the rest of the storefront when `develop` merges to `main`.
 
 ## Why the original ticket was rewritten
 
@@ -37,17 +37,25 @@ The modal is currently owned **per card**: every `CatalogCard` holds its own `mo
 - `WeightModal` is already a controlled component (`product`, `open`, `onOpenChange`) — no rewrite needed, just a different owner.
 - This also fixes an accessibility gap: the card currently opens on `<article onClick>` with no `role`, no `tabIndex` and no keyboard handler.
 
-## Acceptance
-- [ ] `/tienda?producto=<slug>` opens that product's Quick View on load, over the catalog.
-- [ ] Opening from a card writes the param to the URL; back/forward navigate between open and closed; closing restores the prior URL.
-- [ ] The link survives a hard refresh and a paste into a clean browser session.
-- [ ] Sharing the link produces a **product-specific preview** (title + image), not the generic "Tienda — Wasi Granel".
-- [ ] An unknown or removed slug degrades gracefully: catalog renders, no modal, no crash.
-- [ ] Existing filters / pagination / sort survive alongside the param.
-- [ ] Cards are keyboard-reachable (Enter/Space opens the Quick View) with an accessible name.
-- [ ] Delete the tracked dead file `apps/web/app/tienda/page-old.tsx` (235 lines, pre-rebuild leftover; not a route but still compiled and typechecked).
-- [ ] Browser-verified per `AGENTS.md`: `check:layout` green at desktop 1280 + mobile 390, with a new gate test covering the deep link.
+## Acceptance — all verified in a real browser (2026-10-21)
+- [x] `/tienda?producto=<slug>` opens that product's Quick View on load, over the catalog. (Modal shows the product's name; catalog renders behind it.)
+- [x] Opening from a card writes the param to the URL; back/forward navigate between open and closed; closing restores the prior URL. (Back closes, Forward reopens; a fresh deep-link visitor closing gets `router.replace`, never sent off-site.)
+- [x] The link survives a hard refresh and a paste into a clean browser session. (The gate test does a full `page.goto` to the URL.)
+- [x] Sharing the link produces a **product-specific preview**, not the generic catalog title. Measured on `/tienda?producto=pistachos`: `<title>` and `og:title` = "Pistachos — Wasi Granel", `og:image` = the product photo (absolute CMS URL), `canonical` = `https://www.wasigranel.com/tienda?producto=pistachos`.
+- [x] An unknown or removed slug degrades gracefully: catalog renders (12 cards), no modal, no crash.
+- [x] Existing filters / pagination / sort survive alongside the param. Verified: `/tienda?categoria=frutos-secos&sort=precio-asc&page=2` + open → `…&page=2&producto=ajonjoli-pelado`, close → `?categoria=frutos-secos&sort=precio-asc&page=2` exactly.
+- [x] Cards are keyboard-reachable with an accessible name — `role="button"`, `tabIndex=0`, `aria-label="Ver <name>"`, Enter/Space opens. (Previously mouse-only.)
+- [x] Deleted the tracked dead file `apps/web/app/tienda/page-old.tsx` (235 lines, pre-rebuild leftover).
+- [x] Browser-verified per `AGENTS.md`: `check:layout` **25 passed, 1 skipped** (desktop 1280 + mobile 390), including a new deep-link gate test that derives its slug from a real card rather than hardcoding catalog data. `tsc` clean, `lint` 0 errors.
 
-## Open questions
-- OG images resolve to absolute URLs on `payload.wasigranel.com` — confirm that host is acceptable in public link previews, or proxy product images through the web domain.
-- Add a canonical tag on `/tienda`? The same product is reachable via different filter combinations plus the param, which is duplicate-content-ish for crawlers.
+## What shipped
+- **`components/tienda/quick-view.tsx` (new)** — `QuickViewProvider` owns the ONE dialog for the page and exposes `open(slug)` via context; it also owns the URL contract (push on open, Back on close, replace for deep-link visitors).
+- **`catalog-card.tsx`** — no longer imports `WeightModal`; asks the provider to open the product. A 12-card page went from 12 mounted dialogs to 1 (measured: 0 `[role=dialog]` nodes in the DOM once closed).
+- **`weight-modal.tsx`** — `trigger` is now optional (the URL drives the dialog); the single instance is keyed by slug so per-product state (selected option, amount input) can't leak between products.
+- **`app/tienda/page.tsx`** — reads `producto`, resolves it server-side via `getProductBySlug` (works when the product is not on the current page), wraps the grid in the provider, and adds `generateMetadata` for the product-specific preview.
+- **`app/layout.tsx`** — `metadataBase` so canonical/OG URLs resolve absolutely.
+- **`lib/payload.ts`** — `getProductBySlug` (cached, returns null on unknown slug).
+
+## Open questions — resolved
+- **OG image host:** left pointing at `payload.wasigranel.com` (the CMS serves the files, and the host is already public). Revisit only if link previews ever fail to fetch from it.
+- **Canonical:** added — `/tienda?producto=<slug>` is declared canonical, so the same product reached through different filter combinations doesn't read as duplicate content.
