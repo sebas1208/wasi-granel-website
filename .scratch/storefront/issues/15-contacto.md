@@ -4,7 +4,7 @@
 
 **Blocked by:** 10 (app shell). The contact data is now supplied, so the page is unblocked.
 
-**Status:** ready-for-agent — scope agreed 2026-10-21.
+**Status:** **Done — closed 2026-10-21** (`develop` `14c9c5f`) — implemented and browser-verified. **Not in production**: ships with the rest of the storefront when `develop` merges to `main`.
 
 ## Design references (refetched 2026-10-21)
 - Desktop: `.scratch/stitch-fetch/screens/wasi-granel-contacto-y-sucursales__71ee0d81.html`
@@ -56,16 +56,29 @@ The user asked to "include coffee in the catalog". It is already there — but e
 
 Nobody browsing the store finds coffee: both products sit in a 5-product **Endulzantes** category, and the taxonomy has no Café category at all. Proposal: create a **Café** category, move `CAF-001`/`CAF-002` into it, and give it an icon in `lib/category-icons.ts` (the homepage grid and the tienda sidebar share that map). The 0-images gap is ticket 22.
 
-## Acceptance
-- [ ] `/contacto` renders the value props, the **two Riobamba sucursales** with real addresses and phones, and the contact channels.
-- [ ] WhatsApp and email links point at the real numbers / `hola@wasigranel.com`.
-- [ ] The Quito branch is gone; nationwide Servientrega shipping is stated instead.
-- [ ] The footer's invented phone and `Riobamba · Quito` are corrected.
-- [ ] Map / "Cómo llegar" links use the correct Places IDs; the "Jatunwasi" embed is gone.
-- [ ] The contact form has a real receiver or an honest WhatsApp path — **no fake success state**.
-- [ ] The privacy modal opens from the consent checkbox.
-- [ ] Browser-verified per `AGENTS.md` (desktop 1280 + mobile 390); `tsc`, `lint`, `check:layout` clean.
+## Acceptance — verified in a real browser (2026-10-21)
+- [x] `/contacto` renders the value props, the **two Riobamba sucursales** with real addresses, hours and per-store phones, and the contact channels.
+- [x] WhatsApp and email links point at the real numbers / `hola@wasigranel.com`. Verified: Matriz → `wa.me/593990876620`, Sucursal → `wa.me/593991475809`.
+- [x] The Quito branch is gone; nationwide Servientrega shipping is stated instead.
+- [x] The footer's invented phone and `Riobamba · Quito` are corrected — it now shows both real numbers as WhatsApp links plus `hola@wasigranel.com`.
+- [x] The "Jatunwasi" embed is gone. *Deviation:* the maps use **address-query URLs** (`google.com/maps/search/?api=1&query=…` and `…&output=embed`) rather than the stored Places IDs — no API key needed, and it resolves against the real addresses. Switch to the place IDs if exact pinning is ever wanted.
+- [x] The contact form has **no fake success state**: it validates, and a valid submit lands in an honest "todavía no está conectado" state pointing at the WhatsApp channel. The real receiver is ticket 25.
+- [x] The privacy modal opens from the consent checkbox.
+- [x] Browser-verified per `AGENTS.md`: `check:layout` **31 passed, 1 skipped** (desktop 1280 + mobile 390), including a test that asserts the real data is present **and** that every invented value is absent (the mockup's two phones, the stub's phone, Jatunwasi, the Quito branch, `Riobamba · Quito`, the invented features and the "200+ references" claim). `tsc` clean, `lint` 0 errors.
 
-## Open questions
-1. **Real opening hours for each store** — this is the last data gap. Three candidate sets exist and none is verified: the stub's "Lunes - Viernes: 9:00 - 19:00", and the mockup's two ("Lunes a Sábado: 08:30 – 19:30 / Domingos: 09:30 – 15:00" and "Lunes a Sábado: 09:00 – 20:00 / Domingos: 10:00 – 17:00").
-2. Café category → ticket 24. Form receiver → ticket 25.
+## What shipped
+- **`lib/store-info.ts`** (new) — the single source of truth for everything the page says about the store, so there is exactly one place to correct and no invented value can leak in.
+- **`app/contacto/page.tsx`** — rebuilt from both mockups (hero, value props, two store cards with maps, help section, form, FAQ).
+- **`components/contacto/contact-form.tsx`** (new) — full client-side validation (name, phone, email, message, consent) with `aria-invalid`/`role="alert"` on every error; deliberately unwired.
+- **`components/contacto/privacy-modal.tsx`** (new) — plain-language data statement in a modal.
+- **`components/footer.tsx`** — real numbers, real email, no fake city.
+
+## Notes
+- The value props band and the per-store feature chips were **drafted by me** to replace the mockup's invented ones and are **awaiting the user's review**: "Pesaje exacto a granel", "Servicio de molienda en tienda", "Atención personalizada". The coffee-grinding claim is confirmed true (they have a molino); the wording is mine.
+- The privacy wording is a **plain-language draft, not legal advice** — worth a review before relying on it.
+- The mobile mockup's FAQ card was kept (user decision) and is rendered on both viewports, since the content is useful on desktop too.
+
+## Open questions — all resolved
+1. ~~Opening hours~~ → **Lunes a Sábado 9:00 – 19:00, Domingos cerrado** (owner, 2026-10-21). Note the stub claimed "Sábados: 9:00 - 18:00" and the mockup two other sets — all three were wrong.
+2. ~~Café category~~ → ticket 24. ~~Form receiver~~ → ticket 25.
+3. **For review (not blocking):** the marketing lines I drafted to replace the invented feature chips, and the plain-language privacy wording.
