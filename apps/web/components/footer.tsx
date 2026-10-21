@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { STORE, whatsappLink } from "@/lib/store-info"
 
 export function Footer() {
   const year = new Date().getFullYear()
@@ -68,14 +69,33 @@ export function Footer() {
               Ubicación
             </h4>
             <p className="text-sm text-primary-foreground leading-relaxed mb-2">
-              Riobamba · Quito
+              Riobamba, Ecuador
               <br />
-              Ecuador
+              Matriz · Sucursal
             </p>
             <p className="text-sm text-primary-foreground leading-relaxed">
-              hola@wasigranel.com
+              <a data-testid="footer-email" href={`mailto:${STORE.email}`} className="hover:underline">
+                {STORE.email}
+              </a>
               <br />
-              +593 9 8765 4321
+              <a
+                data-testid="footer-phone"
+                href={whatsappLink(STORE.sucursales[0].whatsapp)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                {STORE.sucursales[0].phoneDisplay}
+              </a>
+              {" · "}
+              <a
+                href={whatsappLink(STORE.sucursales[1].whatsapp)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                {STORE.sucursales[1].phoneDisplay}
+              </a>
             </p>
           </div>
         </div>

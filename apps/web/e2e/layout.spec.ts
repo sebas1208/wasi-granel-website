@@ -612,6 +612,80 @@ test("cart: navbar drawer, live lines, and the agreed exclusions", async ({ page
   await expect(page.getByTestId("cart-drawer")).toBeVisible({ timeout: 5_000 })
 })
 
+test("contacto: renders the real store data and none of the mockup's inventions", async ({ page }) => {
+  await page.goto("/contacto")
+  await page.getByTestId("sucursales").waitFor({ timeout: 20_000 })
+  const body = (await page.textContent("body")) || ""
+
+  // The Stitch mockup invented every customer-facing fact on this page — both phone numbers, both
+  // street addresses, the hours, a Quito branch that does not exist, the store features and the
+  // "200+ references" claim. One of those invented numbers was also live in the footer. None may
+  // appear. See lib/store-info.ts and ticket 15.
+  const forbidden: [string, RegExp][] = [
+    ["the mockup's invented phone", /9\s?8765\s?4321/],
+    ["the mockup's second invented phone", /9\s?9123\s?4567/],
+    ["the old stub's phone", /986\s?016\s?764/],
+    ["the old brand (Jatunwasi)", /Jatunwasi/i],
+    ["a Quito branch that does not exist", /Wasi Granel Quito|La Floresta|Guipúzcoa/i],
+    ["the footer's old 'Riobamba · Quito'", /Riobamba · Quito/],
+    ["invented store features", /Taras automáticas|Bicimensajería|Barra de Cremas/i],
+    ["the invented scale claim", /200 referencias/i],
+  ]
+  for (const [what, re] of forbidden) {
+    expect(body, `${what} must not appear`).not.toMatch(re)
+  }
+
+  // ...and the real data must be there
+  expect(body, "Matriz address").toMatch(/Guayaquil y Benalcázar 1815/i)
+  expect(body, "Sucursal address").toMatch(/Juan Montalvo y Av\. José Veloz/i)
+  expect(body, "the real opening hours").toMatch(/Lunes a Sábado: 9:00 – 19:00/i)
+  expect(body, "the store email").toMatch(/hola@wasigranel\.com/)
+  expect(body, "nationwide courier").toMatch(/Servientrega/)
+
+  // each store carries its OWN number, linked to WhatsApp
+  const matriz = page.locator('[data-sucursal="matriz"]')
+  await expect(matriz.getByTestId("sucursal-phone")).toHaveText("099 087 6620")
+  await expect(matriz.getByTestId("sucursal-phone")).toHaveAttribute("href", /wa\.me\/593990876620/)
+  const sucursal = page.locator('[data-sucursal="sucursal"]')
+  await expect(sucursal.getByTestId("sucursal-phone")).toHaveText("099 147 5809")
+  await expect(sucursal.getByTestId("sucursal-phone")).toHaveAttribute("href", /wa\.me\/593991475809/)
+
+  // the footer, which was wrong on every page of the site until now
+  await expect(page.getByTestId("footer-phone")).toHaveText("099 087 6620")
+  await expect(page.getByTestId("footer-email")).toHaveText("hola@wasigranel.com")
+})
+
+test("contacto: the form validates and never fakes a successful send", async ({ page }) => {
+  await page.goto("/contacto")
+  await page.getByTestId("contact-form").waitFor({ timeout: 20_000 })
+
+  // an empty submit surfaces every validation error...
+  await page.getByTestId("contact-submit").click()
+  await expect(page.getByTestId("error-name")).toBeVisible()
+  await expect(page.getByTestId("error-phone")).toBeVisible()
+  await expect(page.getByTestId("error-email")).toBeVisible()
+  await expect(page.getByTestId("error-message")).toBeVisible()
+  await expect(page.getByTestId("error-consent")).toBeVisible()
+  // ...and must NOT claim the message arrived (the mockup shows "¡Mensaje recibido con éxito!")
+  expect((await page.textContent("body")) || "", "must not claim the message was received").not.toMatch(
+    /recibido con éxito/i,
+  )
+
+  // a valid submit lands in the honest "not connected yet" state — the receiver is ticket 25
+  await page.fill("#c-name", "Camila Morales")
+  await page.fill("#c-phone", "0999999999")
+  await page.fill("#c-email", "camila@example.com")
+  await page.fill("#c-message", "Quisiera consultar por almendras al por mayor.")
+  await page.check("#c-consent")
+  await page.getByTestId("contact-submit").click()
+  await expect(page.getByTestId("contact-not-wired")).toBeVisible()
+  await expect(page.getByTestId("contact-not-wired")).toContainText("todavía no está conectado")
+
+  // the consent checkbox opens the privacy statement (a modal, not a page — user decision)
+  await page.getByTestId("privacy-trigger").click()
+  await expect(page.getByTestId("privacy-modal")).toBeVisible()
+})
+
 test("unit-priced product: plain numeric quantity, no weight pills", async ({ page }) => {
   await page.goto("/tienda?q=Manzanilla")
   await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })
