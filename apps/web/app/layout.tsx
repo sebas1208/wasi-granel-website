@@ -4,6 +4,7 @@ import { Fredoka } from "next/font/google"
 import localFont from "next/font/local"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
+import { CartProvider } from "@/components/tienda/cart-provider"
 import "./globals.css"
 
 const fredoka = Fredoka({
@@ -52,7 +53,10 @@ export default function RootLayout({
         />
       </head>
       <body className={`${zalandoSans.variable} ${fredoka.variable} antialiased font-body tracking-tight`}>
-        <Suspense fallback={null}>{children}</Suspense>
+        {/* Cart lives at the root so the drawer is available on every page, not just /tienda */}
+        <CartProvider>
+          <Suspense fallback={null}>{children}</Suspense>
+        </CartProvider>
         <Analytics />
       </body>
     </html>

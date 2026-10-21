@@ -86,6 +86,33 @@ export function addToCart(line: Omit<CartLine, "id">): void {
   addListeners.forEach((cb) => cb(added))
 }
 
+/**
+ * Set a line's quantity. Below 1 the line is removed — a zero-quantity line is not a thing, and
+ * this is what the drawer's stepper does when you press minus at 1.
+ */
+export function updateQty(id: string, qty: number): void {
+  const cart = load()
+  const line = cart.find((l) => l.id === id)
+  if (!line) return
+  if (qty < 1) {
+    removeLine(id)
+    return
+  }
+  line.qty = qty
+  persist()
+  listeners.forEach((l) => l())
+}
+
+/** Remove a line outright (the drawer's delete button). */
+export function removeLine(id: string): void {
+  const cart = load()
+  const i = cart.findIndex((l) => l.id === id)
+  if (i === -1) return
+  cart.splice(i, 1)
+  persist()
+  listeners.forEach((l) => l())
+}
+
 export function clearCart(): void {
   cache = []
   persist()

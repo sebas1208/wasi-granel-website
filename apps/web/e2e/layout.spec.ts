@@ -549,6 +549,69 @@ test("card Agregar adds to the cart and does NOT open the Quick View", async ({ 
   expect(Math.abs(box!.y - chipBox!.y), "customise must sit on the chips' line").toBeLessThanOrEqual(2)
 })
 
+test("cart: navbar drawer, live lines, and the agreed exclusions", async ({ page }) => {
+  await page.goto("/tienda?categoria=frutos-secos")
+  await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })
+
+  const card = page.getByTestId("catalog-card").first()
+  const name = (await card.getByRole("heading").first().textContent())?.trim()
+  expect(name).toBeTruthy()
+
+  // nothing in the cart yet -> no badge
+  await expect(page.getByTestId("cart-counter")).toHaveCount(0)
+
+  // the REAL add-to-cart path from ticket 12 populates the cart (not seeded data)
+  await card.getByRole("button", { name: new RegExp(`Agregar ${name}`) }).click()
+  await expect(page.getByTestId("cart-toast")).toBeVisible({ timeout: 5_000 })
+  await expect(page.getByTestId("cart-counter")).toHaveText("1")
+
+  // open from the navbar
+  await page.getByTestId("nav-cart-btn").click()
+  const drawer = page.getByTestId("cart-drawer")
+  await drawer.waitFor({ state: "visible", timeout: 5_000 })
+
+  await expect(drawer.getByTestId("cart-line")).toHaveCount(1)
+  await expect(drawer.getByTestId("cart-line").first().getByRole("heading")).toHaveText(name!)
+  await expect(drawer.getByTestId("cart-line-option").first()).toHaveText("1 lb")
+  await expect(drawer.getByTestId("cart-line-qty").first()).toHaveText("1")
+  await expect(drawer.getByTestId("cart-count-text")).toHaveText("1 producto seleccionado")
+
+  // AGREED EXCLUSIONS (user decisions, ticket 14): no packaging, no tax line, no free-shipping bar
+  const text = (await drawer.textContent()) || ""
+  expect(text, "packaging must not appear").not.toMatch(/Envases Retornables|Frasco de Vidrio|dep[óo]sito/i)
+  expect(text, "no tax line").not.toMatch(/Impuestos/i)
+  expect(text, "free-shipping bar is gated off").not.toMatch(/Env[íi]o Gratis/i)
+  // checkout belongs to ticket 23 — present in the mockup's shape, but not functional
+  await expect(drawer.getByTestId("cart-checkout")).toBeDisabled()
+
+  // stepper is live, and so is the navbar badge
+  await drawer.getByRole("button", { name: new RegExp(`Añadir una unidad de ${name}`) }).click()
+  await expect(drawer.getByTestId("cart-line-qty").first()).toHaveText("2")
+  await expect(page.getByTestId("cart-counter")).toHaveText("2")
+  await drawer.getByRole("button", { name: new RegExp(`Quitar una unidad de ${name}`) }).click()
+  await expect(drawer.getByTestId("cart-line-qty").first()).toHaveText("1")
+
+  // Escape closes; reopening keeps the state
+  await page.keyboard.press("Escape")
+  await drawer.waitFor({ state: "hidden", timeout: 5_000 })
+  await page.getByTestId("nav-cart-btn").click()
+  await drawer.waitFor({ state: "visible", timeout: 5_000 })
+  await expect(drawer.getByTestId("cart-line")).toHaveCount(1)
+
+  // removing the last line shows the empty state and clears the badge
+  await drawer.getByRole("button", { name: new RegExp(`Eliminar ${name}`) }).click()
+  await expect(drawer.getByTestId("cart-empty")).toBeVisible({ timeout: 5_000 })
+  await expect(page.getByTestId("cart-counter")).toHaveCount(0)
+
+  // the cart is mounted at the root, so it is available off the catalog too
+  await page.keyboard.press("Escape")
+  await drawer.waitFor({ state: "hidden", timeout: 5_000 })
+  await page.goto("/")
+  await page.waitForTimeout(500)
+  await page.getByTestId("nav-cart-btn").click()
+  await expect(page.getByTestId("cart-drawer")).toBeVisible({ timeout: 5_000 })
+})
+
 test("unit-priced product: plain numeric quantity, no weight pills", async ({ page }) => {
   await page.goto("/tienda?q=Manzanilla")
   await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })

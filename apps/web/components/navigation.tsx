@@ -3,6 +3,8 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
+import { useCartCount } from "@/lib/cart"
+import { useCartDrawer } from "./tienda/cart-provider"
 
 const links = [
   { href: "/", label: "Inicio" },
@@ -15,8 +17,9 @@ const links = [
 export function Navigation() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
-  // Cart badge is wired to real state in ticket 12/13; 0 hides it for now.
-  const cartCount = 0
+  // Real cart state (ticket 14) — the badge and the drawer trigger.
+  const cartCount = useCartCount()
+  const { openCart } = useCartDrawer()
 
   return (
     <header className="sticky top-0 z-50 lg:fixed lg:top-4 lg:inset-x-0 lg:px-4 lg:pointer-events-none">
@@ -72,20 +75,25 @@ export function Navigation() {
           </form>
 
           <div className="flex items-center gap-3">
-            <Link
-              href="/tienda"
-              aria-label={`Carrito de compras${cartCount ? ` con ${cartCount} productos` : ""}`}
+            <button
+              type="button"
+              onClick={openCart}
+              data-testid="nav-cart-btn"
+              aria-label={`Abrir carrito de compras${cartCount ? `, ${cartCount} productos` : ""}`}
               className="relative w-10 h-10 bg-[#fff8f4] hover:bg-[#f3dfcb] active:scale-90 rounded-full border border-[#d3c5ab]/50 transition-all duration-200 text-foreground flex items-center justify-center group"
             >
               <span className="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:scale-110">
                 shopping_cart
               </span>
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary text-foreground font-bold text-[11px] w-5 h-5 rounded-full flex items-center justify-center border border-white shadow-sm">
+                <span
+                  data-testid="cart-counter"
+                  className="absolute -top-1 -right-1 bg-primary text-foreground font-bold text-[11px] w-5 h-5 rounded-full flex items-center justify-center border border-white shadow-sm"
+                >
                   {cartCount}
                 </span>
               )}
-            </Link>
+            </button>
 
             <Link
               href="/contacto"
@@ -130,9 +138,22 @@ export function Navigation() {
             )
           })}
           <div className="flex items-center gap-3 mt-2 pt-3 border-t border-[#ead7c3]">
-            <Link href="/tienda" aria-label="Carrito de compras" className="w-10 h-10 bg-[#fff8f4] rounded-full border border-[#d3c5ab]/50 text-foreground flex items-center justify-center">
+            <button
+              type="button"
+              aria-label="Abrir carrito de compras"
+              onClick={() => {
+                setIsOpen(false)
+                openCart()
+              }}
+              className="relative w-10 h-10 bg-[#fff8f4] rounded-full border border-[#d3c5ab]/50 text-foreground flex items-center justify-center"
+            >
               <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
-            </Link>
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary text-foreground font-bold text-[10px] w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-sm">
+                  {cartCount}
+                </span>
+              )}
+            </button>
             <Link href="/contacto" aria-label="Mi Cuenta de usuario" className="w-10 h-10 bg-[#fff8f4] rounded-full border border-[#d3c5ab]/50 text-foreground flex items-center justify-center">
               <span className="material-symbols-outlined text-[20px]">person</span>
             </Link>

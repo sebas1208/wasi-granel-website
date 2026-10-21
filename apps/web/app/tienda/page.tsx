@@ -6,7 +6,6 @@ import { FilterSidebar } from "@/components/tienda/filter-sidebar"
 import { ShopBanner } from "@/components/tienda/shop-banner"
 import { Toolbar } from "@/components/tienda/toolbar"
 import { ActiveChips } from "@/components/tienda/active-chips"
-import { CartToast } from "@/components/tienda/cart-toast"
 import type { Metadata } from "next"
 import {
   getCategoryCounts,
@@ -161,7 +160,6 @@ export default async function TiendaPage({ searchParams }: { searchParams: Promi
       </div>
 
       <Footer />
-      <CartToast />
     </>
   )
 }
