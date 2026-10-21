@@ -89,6 +89,21 @@ export function productImageUrl(p: Product): string | null {
   return absoluteImage((first as { image?: PayloadImage | null }).image ?? null)
 }
 
+/** All photo URLs for a product, in order (the Quick View shows them as a carousel). */
+export function productImageUrls(p: Product): string[] {
+  return (p.images ?? [])
+    .map((i) => absoluteImage((i as { image?: PayloadImage | null })?.image ?? null))
+    .filter((u): u is string => !!u)
+}
+
+/** Grams expressed in a customer-friendly unit — "1.67 lb", "0.76 kg", "757 g". */
+export function formatInUnit(grams: number, unit: PriceUnit | null | undefined): string {
+  if (unit === "kg") return `${(grams / 1000).toFixed(2)} kg`
+  if (unit === "gr") return `${Math.round(grams)} g`
+  if (unit === "unidad") return `${Math.round(grams)} g`
+  return `${(grams / 453.592).toFixed(2)} lb`
+}
+
 export async function getCategories(): Promise<Category[]> {
   const d = await fetcher<{ docs: Category[] }>("/api/categories?limit=50&depth=1")
   return [...d.docs].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))

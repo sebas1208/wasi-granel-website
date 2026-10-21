@@ -11,6 +11,7 @@ import {
   canonicalRateLabel,
   fmtPrice,
   formatGrams,
+  formatInUnit,
   gramsForMoney,
   hasWeightPricing,
   minMoney,
@@ -18,6 +19,7 @@ import {
   optionLabel,
   optionPrice,
   productImageUrl,
+  productImageUrls,
   ratePerGram,
   unitGrams,
   weightOptions,
@@ -57,10 +59,13 @@ export function WeightModal({
   const rate = ratePerGram(product)
   const canonical = canonicalRateLabel(product)
   const floorMoney = minMoney(product)
-  const img = productImageUrl(product)
+  const gallery = productImageUrls(product)
+  const img = gallery[0] ?? productImageUrl(product)
 
+  const [photo, setPhoto] = useState(0)
   const [picked, setPicked] = useState<PurchaseOption | null>(weights[0] ?? moneys[0] ?? null)
   const [customGrams, setCustomGrams] = useState<number | null>(null)
+  const [customLabel, setCustomLabel] = useState<string>("")
   const [amount, setAmount] = useState("")
   const [amountUnit, setAmountUnit] = useState<AmountUnit>("gr")
   const [error, setError] = useState<string | null>(null)
@@ -78,12 +83,13 @@ export function WeightModal({
   })()
   const total = unitPrice != null ? unitPrice * qty : null
 
-  /** "/ 500 g", " (76 g)", " / unidad" — what the shown price refers to. */
+  /** "/ 500 g", " / 2 lb", " (≈ 1.67 lb)" — what the shown price refers to, in the unit the
+   *  customer chose (never a bare gram conversion of what they typed). */
   const suffix = (() => {
-    if (customGrams != null) return ` / ${formatGrams(customGrams)}`
+    if (customGrams != null) return ` / ${customLabel}`
     if (isMoney && picked?.amount != null) {
       const g = gramsForMoney(product, picked.amount)
-      return g ? ` (${formatGrams(g)})` : ""
+      return g ? ` (≈ ${formatInUnit(g, product.priceUnit)})` : ""
     }
     if (picked?.kind === "weight") return ` / ${optionLabel(picked)}`
     if (!weightPriced) return ` / ${optionLabel(picked ?? { kind: "unit" })}`
@@ -99,6 +105,22 @@ export function WeightModal({
   const shortDuplicatesDesc =
     short.length > 0 && norm(desc).startsWith(norm(short).slice(0, 40))
 
+  /** Closing the Quick View resets it, so reopening starts from the default option again. */
+  function handleOpenChange(next: boolean) {
+    if (!next) {
+      setPicked(weights[0] ?? moneys[0] ?? null)
+      setCustomGrams(null)
+      setCustomLabel("")
+      setAmount("")
+      setAmountUnit("gr")
+      setError(null)
+      setQty(1)
+      setDescOpen(false)
+      setPhoto(0)
+    }
+    onOpenChange(next)
+  }
+
   function applyAmount() {
     const value = parseFloat(amount.replace(",", "."))
     if (!Number.isFinite(value) || value <= 0) {
@@ -113,6 +135,7 @@ export function WeightModal({
       }
       setPicked({ kind: "money", amount: value })
       setCustomGrams(null)
+      setCustomLabel("")
       setError(null)
       return
     }
@@ -122,6 +145,8 @@ export function WeightModal({
       return
     }
     setCustomGrams(g)
+    // Echo the customer's own input ("2 lb"), not its gram conversion.
+    setCustomLabel(`${value} ${UNIT_GLYPH[amountUnit]}`)
     setPicked(null)
     setError(null)
   }
@@ -134,12 +159,12 @@ export function WeightModal({
     }`
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent
         data-testid="product-modal"
         showCloseButton={false}
-        className="sm:max-w-3xl w-[calc(100vw-1.5rem)] max-h-[92vh] overflow-y-auto rounded-3xl border border-outline-variant p-0 gap-0"
+        className="sm:max-w-3xl w-[calc(100vw-1.5rem)] max-h-[95vh] overflow-y-auto rounded-3xl border border-outline-variant p-0 gap-0"
       >
         <div className="flex flex-col md:flex-row">
           {/* Left: image showcase */}
@@ -158,17 +183,57 @@ export function WeightModal({
             >
               <span className="material-symbols-outlined text-[20px]">{fav ? "favorite" : "favorite_border"}</span>
             </button>
-            <div className="relative w-full max-w-[340px] aspect-square rounded-2xl overflow-hidden shadow-sm bg-white p-2 flex items-center justify-center">
-              {img ? (
-                <Image
-                  src={img}
-                  alt={product.name}
-                  width={680}
-                  height={680}
-                  className="w-full h-full object-cover object-bottom rounded-xl"
-                />
-              ) : (
-                <span className="text-xs text-muted-foreground">Sin foto</span>
+            <div className="relative w-full max-w-[340px]">
+              <div className="relative w-full aspect-square rounded-2xl overflow-hidden shadow-sm bg-white p-2 flex items-center justify-center">
+                {gallery.length ? (
+                  <Image
+                    src={gallery[photo] ?? gallery[0]}
+                    alt={product.name}
+                    width={680}
+                    height={680}
+                    data-testid="modal-image"
+                    className="w-full h-full object-cover object-bottom rounded-xl"
+                  />
+                ) : (
+                  <span className="text-xs text-muted-foreground">Sin foto</span>
+                )}
+              </div>
+
+              {/* All product photos as a carousel (arrows + dots) when there is more than one. */}
+              {gallery.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    aria-label="Foto anterior"
+                    onClick={() => setPhoto((i) => (i - 1 + gallery.length) % gallery.length)}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur shadow-xs flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-90 transition-all"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Foto siguiente"
+                    onClick={() => setPhoto((i) => (i + 1) % gallery.length)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur shadow-xs flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-90 transition-all"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+                  </button>
+                  <div
+                    data-testid="modal-gallery-dots"
+                    className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-surface-container-lowest/85 backdrop-blur px-2 py-1 rounded-full"
+                  >
+                    {gallery.map((url, i) => (
+                      <button
+                        key={url}
+                        type="button"
+                        aria-label={`Foto ${i + 1}`}
+                        aria-current={i === photo}
+                        onClick={() => setPhoto(i)}
+                        className={`h-1.5 rounded-full transition-all ${i === photo ? "w-4 bg-deep-amber" : "w-1.5 bg-outline-variant"}`}
+                      />
+                    ))}
+                  </div>
+                </>
               )}
             </div>
           </div>
@@ -221,7 +286,7 @@ export function WeightModal({
                   <div
                     className={`text-xs sm:text-sm text-secondary leading-relaxed [&_p]:mb-1.5 [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-0.5 ${
                       descLong && !descOpen ? "line-clamp-3" : ""
-                    }`}
+                    } ${descOpen ? "max-h-[240px] overflow-y-auto pr-1" : ""}`}
                   >
                     <Markdown>{desc}</Markdown>
                   </div>
@@ -350,8 +415,8 @@ export function WeightModal({
               )}
             </div>
 
-            <div>
-              <div className="flex items-center gap-3 mb-4">
+            <div className="sticky bottom-0 bg-surface-container-lowest pt-3 pb-1 -mx-6 sm:-mx-8 px-6 sm:px-8 border-t border-[#f3dfcb]/60">
+              <div className="flex items-center gap-3 mb-4 mt-1">
                 <div className="flex items-center border border-[#d3c5ab] rounded-2xl bg-surface p-1 shadow-2xs">
                   <button
                     type="button"
@@ -395,7 +460,7 @@ export function WeightModal({
                       unitPrice: unitPrice ?? 0,
                       qty,
                     })
-                    onOpenChange(false)
+                    handleOpenChange(false)
                   }}
                   className="flex-1 py-3 px-5 rounded-2xl bg-foreground hover:bg-[#3a2e21] text-white text-xs font-bold flex items-center justify-center gap-2 active:scale-[0.98] transition-all shadow-md"
                 >

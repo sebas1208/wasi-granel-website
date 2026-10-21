@@ -64,7 +64,7 @@ export function CatalogCard({ product }: { product: Product }) {
       : ""
 
   const chip = (active: boolean) =>
-    `h-7 px-2 inline-flex items-center rounded-lg border text-[11px] transition-all duration-200 active:scale-95 ${
+    `h-7 px-1.5 inline-flex items-center rounded-lg border text-[11px] transition-all duration-200 active:scale-95 ${
       active
         ? "font-bold bg-primary border-[#e5ac00] text-on-primary shadow-xs"
         : "font-medium bg-background border-outline-variant/60 text-secondary hover:bg-surface-container-low hover:text-on-surface"
@@ -119,22 +119,30 @@ export function CatalogCard({ product }: { product: Product }) {
             </h3>
             {copy && <p className="text-xs text-secondary mb-3 line-clamp-2">{copy}</p>}
 
-            <div role="group" aria-label="Opciones de compra" className="flex flex-wrap items-center gap-1.5 mb-1">
-              {options.map((o) => (
-                <button
-                  key={o.id ?? `${o.kind}-${o.weightGrams ?? o.amount}`}
-                  type="button"
-                  aria-pressed={picked === o}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setPicked(picked === o ? null : o)
-                  }}
-                  className={chip(picked === o)}
-                >
-                  {optionLabel(o)}
-                </button>
-              ))}
-              {/* Customise — same row as the options, styled as one of them */}
+            {/* Options row: the chips wrap inside their own area so the customise button always
+                stays on the row's first line (it must never wrap out of view). */}
+            <div className="flex items-start gap-1.5 mb-1">
+              <div
+                role="group"
+                aria-label="Opciones de compra"
+                className="flex flex-wrap items-center gap-1 flex-1 min-w-0"
+              >
+                {options.map((o) => (
+                  <button
+                    key={o.id ?? `${o.kind}-${o.weightGrams ?? o.amount}`}
+                    type="button"
+                    aria-pressed={picked === o}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setPicked(picked === o ? null : o)
+                    }}
+                    className={chip(picked === o)}
+                  >
+                    {optionLabel(o)}
+                  </button>
+                ))}
+              </div>
+              {/* Customise — pencil, icon-only so it fits beside the chips */}
               <button
                 type="button"
                 aria-label={`Personalizar ${product.name}`}
@@ -142,10 +150,9 @@ export function CatalogCard({ product }: { product: Product }) {
                   e.stopPropagation()
                   setModalOpen(true)
                 }}
-                className="ml-auto h-7 shrink-0 inline-flex items-center gap-1 rounded-lg border border-outline-variant/60 bg-background px-2 text-[11px] font-semibold text-deep-amber hover:bg-surface-container active:scale-95 transition-all"
+                className="shrink-0 w-7 h-7 rounded-lg border border-outline-variant/60 bg-background text-deep-amber hover:bg-surface-container active:scale-90 transition-all flex items-center justify-center"
               >
-                <span className="material-symbols-outlined text-[15px]">tune</span>
-                <span className="hidden sm:inline">Personalizar</span>
+                <span className="material-symbols-outlined text-[15px]">edit</span>
               </button>
             </div>
           </div>

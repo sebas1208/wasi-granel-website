@@ -331,6 +331,21 @@ test("quick view: canonical rate, refreshed design blocks, and exact-amount math
   // Reopen and close with the design's X (regression: the card's onClick used to re-open it)
   await card.click()
   await dialog.waitFor({ state: "visible", timeout: 3_000 })
+
+  // An exact amount in lb must echo the customer's own unit ("2 lb"), never its gram conversion
+  await dialog.locator('select[aria-label="Unidad del gramaje exacto"]').selectOption("lb")
+  await dialog.locator("#custom-amount").fill("2")
+  await dialog.getByRole("button", { name: "Aplicar" }).click()
+  await expect(dialog.getByTestId("modal-price")).toHaveText("$11.98")
+  await expect(dialog.getByText("/ 2 lb")).toBeVisible()
+
+  // "Leer más" must not push the add-to-cart button out of view
+  const leer = dialog.getByRole("button", { name: "Leer más" })
+  if (await leer.isVisible()) {
+    await leer.click()
+    await expect(dialog.getByTestId("modal-add-to-cart"), "the CTA must stay in view").toBeInViewport()
+  }
+
   await page.locator('[data-slot="dialog-close"]').first().click()
   await dialog.waitFor({ state: "hidden", timeout: 3_000 })
 })
@@ -342,6 +357,7 @@ test("card Agregar adds to the cart and does NOT open the Quick View", async ({ 
     .locator('[data-testid="catalog-card"]')
     .filter({ has: page.getByRole("heading", { name: "Almendras", exact: true }) })
     .first()
+  const chips = card.getByRole("group", { name: "Opciones de compra" }).getByRole("button")
 
   await card.getByRole("button", { name: "Agregar Almendras" }).click()
 
@@ -358,6 +374,14 @@ test("card Agregar adds to the cart and does NOT open the Quick View", async ({ 
   const cart = await page.evaluate(() => JSON.parse(localStorage.getItem("wg-cart") || "[]"))
   expect(cart.length, "one cart line").toBe(1)
   expect(cart[0]).toMatchObject({ name: "Almendras", label: "1 lb", kind: "weight", qty: 1, unitPrice: 5.99 })
+
+  // The customise control must be icon-only and sit on the SAME line as the chips
+  const customize = card.getByRole("button", { name: "Personalizar Almendras" })
+  const box = await customize.boundingBox()
+  const chipBox = await chips.first().boundingBox()
+  expect(box!.width, "customise button must be icon-only (fits the row)").toBeLessThanOrEqual(30)
+  expect(Math.abs(box!.height - chipBox!.height), "same height as the chips").toBeLessThanOrEqual(2)
+  expect(Math.abs(box!.y - chipBox!.y), "customise must sit on the chips' line").toBeLessThanOrEqual(2)
 })
 
 test("unit-priced product: plain numeric quantity, no weight pills", async ({ page }) => {
