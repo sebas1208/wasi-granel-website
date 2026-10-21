@@ -37,10 +37,12 @@ function cardCopy(p: Product): string {
 export function CatalogCard({ product }: { product: Product }) {
   const [modalOpen, setModalOpen] = useState(false)
   const [fav, toggleFav] = useFavorite(product.id)
-  const [picked, setPicked] = useState<PurchaseOption | null>(null)
   const img = productImageUrl(product)
   const weightPriced = hasWeightPricing(product)
   const options = productOptions(product).filter((o) => o.kind !== "unit")
+  // An option is ALWAYS selected — the first one (the canonical unit, e.g. 1 lb), matching the
+  // Stitch card where the first portion chip is active on load.
+  const [picked, setPicked] = useState<PurchaseOption | null>(() => options[0] ?? null)
   const canonical = canonicalRateLabel(product)
   const copy = cardCopy(product)
 

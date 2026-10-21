@@ -265,7 +265,9 @@ export function optionLabel(o: PurchaseOption): string {
   return "unidad"
 }
 
-/** Options for display: deduped (legacy data has genuine duplicate tiers) and ordered. */
+/** Options for display: deduped (legacy data has genuine duplicate tiers), in CMS order.
+ *  Order is meaningful — the seed puts the canonical unit first (1 lb for a lb-priced product) and
+ *  that first option is what the card and the Quick View select by default. */
 export function productOptions(p: Product): PurchaseOption[] {
   const seen = new Set<string>()
   const out: PurchaseOption[] = []
@@ -275,9 +277,7 @@ export function productOptions(p: Product): PurchaseOption[] {
     seen.add(key)
     out.push(o)
   }
-  return out.sort(
-    (a, b) => (a.weightGrams ?? 0) - (b.weightGrams ?? 0) || (a.amount ?? 0) - (b.amount ?? 0),
-  )
+  return out
 }
 
 export const weightOptions = (p: Product) =>

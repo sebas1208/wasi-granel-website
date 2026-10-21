@@ -265,15 +265,19 @@ test("quick view: canonical rate, refreshed design blocks, and exact-amount math
     .first()
   await expect(card, "the Almendras card must render").toBeVisible()
 
-  // The canonical price AND its unit are visible on the store, not just in the CMS.
+  // The FIRST sell option (the canonical unit) is selected by default, so a card never shows a
+  // price without a chosen option — and the option label carries the unit.
+  const chips = card.getByRole("group", { name: "Opciones de compra" }).getByRole("button")
+  await expect(chips.first(), "the first option must be 1 lb (canonical unit)").toHaveText("1 lb")
+  await expect(chips.first(), "the first option must be selected by default").toHaveAttribute("aria-pressed", "true")
   await expect(card.getByTestId("card-price")).toContainText("$5.99")
-  await expect(card.getByTestId("card-price")).toContainText("/ lb")
 
   await card.click()
   const dialog = page.getByRole("dialog")
   await dialog.waitFor({ state: "visible", timeout: 5_000 })
 
-  // Blocks the refreshed Quick View must carry
+  // The modal opens on the same first option (1 lb = the canonical unit) => $5.99
+  await expect(dialog.getByTestId("modal-price")).toHaveText("$5.99")
   await expect(dialog.getByTestId("modal-canonical-rate")).toContainText("/ lb")
   await expect(dialog.getByText("Beneficios Clave")).toBeVisible()
   await expect(dialog.getByText("Envíos 24h")).toBeVisible()
