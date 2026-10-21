@@ -78,8 +78,9 @@ export function Toolbar({
         data-testid="tienda-toolbar"
         className="bg-surface-container-lowest/90 backdrop-blur-sm border border-[#ead7c3] rounded-2xl lg:rounded-full px-5 py-3 shadow-md hover:shadow-lg shadow-deep-amber/5 flex flex-col lg:flex-row items-center justify-between gap-3 lg:gap-4 mb-5 transition-all duration-300"
       >
-        {/* Search + count */}
-        <div className="flex items-center gap-3 w-full max-w-md md:max-w-none lg:w-auto lg:flex-1 lg:max-w-md">
+        {/* Search + count — full width while the toolbar is stacked (below lg) so its left edge
+            lines up with the filter row below it; capped at max-w-md only in the desktop pill row. */}
+        <div className="flex items-center gap-3 w-full lg:w-auto lg:flex-1 lg:max-w-md">
           <div className="relative w-full group">
             <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary text-[20px] transition-transform duration-200 group-focus-within:text-deep-amber group-focus-within:scale-110">
               search

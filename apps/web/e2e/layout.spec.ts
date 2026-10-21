@@ -237,16 +237,17 @@ test("tienda layout: desktop sidebar + 3-col grid, mobile drawer + 2-col", async
   }
 })
 
-test("tablet toolbar: search not crushed, filter row aligned to the toolbar edges", async ({ page }) => {
-  // Tablet (768–1023) had no coverage, and it silently broke: the single-row toolbar crushed the
-  // search input to 173px at 768 (placeholder truncated) while a 264px void opened near 1023.
-  // Tablet now uses the stacked layout, so assert the invariants that were violated.
+test("stacked toolbar (below lg): search and filter rows share the same edges", async ({ page }) => {
+  // Two regressions lived here. (1) Tablet (768–1023) got the single-row layout, crushing the
+  // search to 173px at 768 while a 264px void opened near 1023. (2) Below 768 the search group
+  // kept max-w-md inside an items-center toolbar, so the search row was CENTRED while the filter
+  // row spanned full width — at 762px that is a 112px left-edge mismatch. Both are covered here.
   test.skip((page.viewportSize()?.width ?? 0) < 1024, "runs once, from the desktop project")
 
   await page.goto("/tienda")
   await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })
 
-  for (const w of [768, 834, 1023]) {
+  for (const w of [390, 640, 762, 768, 834, 1023]) {
     await page.setViewportSize({ width: w, height: 900 })
     await page.waitForTimeout(500)
     const m = await page.evaluate(() => {
@@ -263,6 +264,7 @@ test("tablet toolbar: search not crushed, filter row aligned to the toolbar edge
       return {
         vw: window.innerWidth,
         searchW: Math.round(r(input).width),
+        searchLeft: Math.round(r(input).left),
         searchTop: Math.round(r(input).top),
         filtrosLeft: Math.round(r(filtros).left),
         filtrosTop: Math.round(r(filtros).top),
@@ -276,11 +278,12 @@ test("tablet toolbar: search not crushed, filter row aligned to the toolbar edge
     const at = `${m.vw}px`
     expect(m.searchW, `search must not be crushed at ${at}`).toBeGreaterThanOrEqual(240)
     expect(m.overflow, `no horizontal overflow at ${at}`).toBeLessThanOrEqual(1)
+    // THE invariant: the search row and the filter row must start at the same x
+    expect(Math.abs(m.searchLeft - m.filtrosLeft), `search must align with the filter row at ${at}`).toBeLessThanOrEqual(1)
+    expect(Math.abs(m.filtrosLeft - m.innerLeft), `Filtros must sit on the toolbar's left edge at ${at}`).toBeLessThanOrEqual(2)
     // the filter controls share one row, stacked BELOW the search row
     expect(Math.abs(m.filtrosTop - m.sortTop), `Filtros and sort share a row at ${at}`).toBeLessThanOrEqual(4)
     expect(m.filtrosTop, `the filter row sits below the search at ${at}`).toBeGreaterThan(m.searchTop + 10)
-    // ...and both rows are flush with the same toolbar edges (this is what "aligned" means here)
-    expect(Math.abs(m.filtrosLeft - m.innerLeft), `Filtros aligns to the left edge at ${at}`).toBeLessThanOrEqual(2)
     expect(Math.abs(m.sortRight - m.innerRight), `sort aligns to the right edge at ${at}`).toBeLessThanOrEqual(2)
   }
 })
