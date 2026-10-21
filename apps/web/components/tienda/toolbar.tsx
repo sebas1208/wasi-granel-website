@@ -70,13 +70,16 @@ export function Toolbar({
 
   return (
     <>
-      {/* ============ TOP BAR (Stitch pill container) ============ */}
+      {/* ============ TOP BAR (Stitch pill container) ============
+          Layout: stacked (search row / filter row) below lg, single pill row from lg.
+          Tablet gets the stacked form too — in one row the search was crushed to 173px at 768
+          while a 264px void opened near 1023, so the row never sat right at tablet widths. */}
       <div
         data-testid="tienda-toolbar"
-        className="bg-surface-container-lowest/90 backdrop-blur-sm border border-[#ead7c3] rounded-2xl md:rounded-full px-5 py-3 shadow-md hover:shadow-lg shadow-deep-amber/5 flex flex-col md:flex-row items-center justify-between gap-4 mb-5 transition-all duration-300"
+        className="bg-surface-container-lowest/90 backdrop-blur-sm border border-[#ead7c3] rounded-2xl lg:rounded-full px-5 py-3 shadow-md hover:shadow-lg shadow-deep-amber/5 flex flex-col lg:flex-row items-center justify-between gap-3 lg:gap-4 mb-5 transition-all duration-300"
       >
         {/* Search + count */}
-        <div className="flex items-center gap-3 w-full md:w-auto flex-1 max-w-md">
+        <div className="flex items-center gap-3 w-full max-w-md md:max-w-none lg:w-auto lg:flex-1 lg:max-w-md">
           <div className="relative w-full group">
             <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary text-[20px] transition-transform duration-200 group-focus-within:text-deep-amber group-focus-within:scale-110">
               search
@@ -96,8 +99,8 @@ export function Toolbar({
           </span>
         </div>
 
-        {/* Mobile Filtros + sort + view toggle */}
-        <div className="flex items-center justify-between md:justify-end gap-3 w-full md:w-auto">
+        {/* Mobile + tablet Filtros, sort, view toggle (view toggle is desktop-only) */}
+        <div className="flex items-center justify-between lg:justify-end gap-3 w-full lg:w-auto">
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}

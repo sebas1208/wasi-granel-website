@@ -237,6 +237,54 @@ test("tienda layout: desktop sidebar + 3-col grid, mobile drawer + 2-col", async
   }
 })
 
+test("tablet toolbar: search not crushed, filter row aligned to the toolbar edges", async ({ page }) => {
+  // Tablet (768–1023) had no coverage, and it silently broke: the single-row toolbar crushed the
+  // search input to 173px at 768 (placeholder truncated) while a 264px void opened near 1023.
+  // Tablet now uses the stacked layout, so assert the invariants that were violated.
+  test.skip((page.viewportSize()?.width ?? 0) < 1024, "runs once, from the desktop project")
+
+  await page.goto("/tienda")
+  await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })
+
+  for (const w of [768, 834, 1023]) {
+    await page.setViewportSize({ width: w, height: 900 })
+    await page.waitForTimeout(500)
+    const m = await page.evaluate(() => {
+      const tb = document.querySelector('[data-testid="tienda-toolbar"]') as HTMLElement
+      const input = document.querySelector(
+        'input[aria-label="Buscar productos en el catálogo"]',
+      ) as HTMLElement
+      const filtros = [...tb.querySelectorAll("button")].find((b) =>
+        /Filtros/.test(b.textContent || ""),
+      ) as HTMLElement
+      const sort = tb.querySelector("#sort-select") as HTMLElement
+      const r = (e: HTMLElement) => e.getBoundingClientRect()
+      const cs = getComputedStyle(tb)
+      return {
+        vw: window.innerWidth,
+        searchW: Math.round(r(input).width),
+        searchTop: Math.round(r(input).top),
+        filtrosLeft: Math.round(r(filtros).left),
+        filtrosTop: Math.round(r(filtros).top),
+        sortRight: Math.round(r(sort).right),
+        sortTop: Math.round(r(sort).top),
+        innerLeft: Math.round(r(tb).left + parseFloat(cs.paddingLeft)),
+        innerRight: Math.round(r(tb).right - parseFloat(cs.paddingRight)),
+        overflow: tb.scrollWidth - tb.clientWidth,
+      }
+    })
+    const at = `${m.vw}px`
+    expect(m.searchW, `search must not be crushed at ${at}`).toBeGreaterThanOrEqual(240)
+    expect(m.overflow, `no horizontal overflow at ${at}`).toBeLessThanOrEqual(1)
+    // the filter controls share one row, stacked BELOW the search row
+    expect(Math.abs(m.filtrosTop - m.sortTop), `Filtros and sort share a row at ${at}`).toBeLessThanOrEqual(4)
+    expect(m.filtrosTop, `the filter row sits below the search at ${at}`).toBeGreaterThan(m.searchTop + 10)
+    // ...and both rows are flush with the same toolbar edges (this is what "aligned" means here)
+    expect(Math.abs(m.filtrosLeft - m.innerLeft), `Filtros aligns to the left edge at ${at}`).toBeLessThanOrEqual(2)
+    expect(Math.abs(m.sortRight - m.innerRight), `sort aligns to the right edge at ${at}`).toBeLessThanOrEqual(2)
+  }
+})
+
 test("list view: desktop-only, card laid out horizontally", async ({ page }) => {
   await page.goto("/tienda?categoria=frutos-secos")
   await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })
