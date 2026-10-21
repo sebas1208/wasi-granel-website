@@ -446,6 +446,75 @@ test("quick view: canonical rate, refreshed design blocks, and exact-amount math
   await dialog.waitFor({ state: "hidden", timeout: 3_000 })
 })
 
+test("product deep link: ?producto= opens the Quick View and stays shareable", async ({ page }) => {
+  // The Quick View is reachable by URL so a product can be shared — but it is NOT a product detail
+  // page: the catalog renders behind it and the modal is one page-level dialog, not one per card.
+  await page.goto("/tienda")
+  await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })
+
+  // Derive the slug and name from a real card so this test does not depend on catalog data.
+  const first = page.getByTestId("catalog-card").first()
+  const slug = await first.getAttribute("data-slug")
+  const name = (await first.getByRole("heading").first().textContent())?.trim()
+  expect(slug, "cards must expose data-slug for deep linking").toBeTruthy()
+  expect(name).toBeTruthy()
+
+  // 1. a shared URL opens that product's Quick View on load
+  await page.goto(`/tienda?producto=${slug}`)
+  const dialog = page.getByRole("dialog")
+  await dialog.waitFor({ state: "visible", timeout: 20_000 })
+  await expect(dialog.getByRole("heading").first()).toHaveText(name!)
+
+  // 2. the link previews as the PRODUCT, not the generic catalog title
+  await expect(page).toHaveTitle(`${name} — Wasi Granel`)
+  const meta = await page.evaluate(() => ({
+    ogTitle: document.querySelector('meta[property="og:title"]')?.getAttribute("content") ?? null,
+    ogImage: document.querySelector('meta[property="og:image"]')?.getAttribute("content") ?? null,
+    canonical: document.querySelector('link[rel="canonical"]')?.getAttribute("href") ?? null,
+  }))
+  expect(meta.ogTitle, "shared link must carry the product name").toBe(`${name} — Wasi Granel`)
+  expect(meta.canonical, "canonical must be the clean product URL").toContain(`/tienda?producto=${slug}`)
+  // og:image only when the product actually has a photo (ticket 22 fills the remaining gaps)
+  if (meta.ogImage) expect(meta.ogImage).toMatch(/^https?:\/\//)
+
+  // 3. an unknown slug degrades to the plain catalog — no modal, no crash
+  await page.goto("/tienda?producto=slug-que-no-existe")
+  await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })
+  await expect(page.getByRole("dialog")).toHaveCount(0)
+
+  // 4. opening from a card writes the param and keeps the active filters
+  await page.goto("/tienda?categoria=frutos-secos")
+  await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })
+  const clickedSlug = await page.getByTestId("catalog-card").first().getAttribute("data-slug")
+  await page.getByTestId("catalog-card").first().click()
+  await dialog.waitFor({ state: "visible", timeout: 5_000 })
+  await expect(page).toHaveURL(/categoria=frutos-secos/)
+  await expect(page).toHaveURL(new RegExp(`producto=${clickedSlug}`))
+
+  // 5. Back closes it (we pushed the entry ourselves), Forward reopens it
+  await page.goBack()
+  await dialog.waitFor({ state: "hidden", timeout: 5_000 })
+  await expect(page).not.toHaveURL(/producto=/)
+  await page.goForward()
+  await dialog.waitFor({ state: "visible", timeout: 5_000 })
+
+  // 6. keyboard parity: Enter on a focused card opens the Quick View
+  await page.keyboard.press("Escape")
+  await dialog.waitFor({ state: "hidden", timeout: 5_000 })
+  await page.waitForTimeout(500)
+  const second = page.getByTestId("catalog-card").nth(1)
+  const secondSlug = await second.getAttribute("data-slug")
+  await second.focus()
+  await page.keyboard.press("Enter")
+  await dialog.waitFor({ state: "visible", timeout: 5_000 })
+  await expect(page).toHaveURL(new RegExp(`producto=${secondSlug}`))
+
+  // 7. ONE dialog serves the whole grid — a 12-card page used to mount 12 of them
+  await page.keyboard.press("Escape")
+  await dialog.waitFor({ state: "hidden", timeout: 5_000 })
+  await expect(page.locator('[role="dialog"]')).toHaveCount(0)
+})
+
 test("card Agregar adds to the cart and does NOT open the Quick View", async ({ page }) => {
   await page.goto("/tienda?categoria=frutos-secos")
   await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })

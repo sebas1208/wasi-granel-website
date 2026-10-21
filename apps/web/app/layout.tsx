@@ -27,7 +27,13 @@ const zalandoSans = localFont({
   variable: "--font-zalando",
 })
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://www.wasigranel.com")
+
 export const metadata: Metadata = {
+  // Absolute base for canonical + OpenGraph image URLs (product images are served by the CMS).
+  metadataBase: new URL(SITE_URL),
   title: "Wasi Granel - Espéranos Pronto!",
   description: "Tu tienda favorita, ¡ahora online!",
 }

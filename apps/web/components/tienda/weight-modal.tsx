@@ -50,7 +50,8 @@ export function WeightModal({
   product: Product
   open: boolean
   onOpenChange: (v: boolean) => void
-  trigger: React.ReactNode
+  /** Optional: in the catalog the dialog is driven by the URL (see QuickViewProvider), not a trigger. */
+  trigger?: React.ReactNode
 }) {
   const [fav, toggleFav] = useFavorite(product.id)
   const weightPriced = hasWeightPricing(product)
@@ -185,7 +186,7 @@ export function WeightModal({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      {trigger ? <DialogTrigger asChild>{trigger}</DialogTrigger> : null}
       <DialogContent
         data-testid="product-modal"
         showCloseButton={false}

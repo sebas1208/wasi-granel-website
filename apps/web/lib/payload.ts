@@ -161,6 +161,24 @@ export async function getTiendaProducts(q: TiendaQuery, categoryId?: number | nu
   return { docs: d.docs, totalDocs: d.totalDocs ?? d.docs.length, page: d.page ?? 1, totalPages: d.totalPages ?? 1, limit: d.limit ?? 12 }
 }
 
+/**
+ * A single product by slug — used by the /tienda deep link (`?producto=<slug>`) to open a
+ * product's Quick View from a shared URL. Returns null when the slug is unknown so the caller
+ * can degrade to the plain catalog. Cached like the catalog read.
+ */
+export async function getProductBySlug(slug: string): Promise<Product | null> {
+  if (!slug) return null
+  try {
+    const d = await fetcher<{ docs: Product[] }>(
+      `/api/products?where[slug][equals]=${encodeURIComponent(slug)}&limit=1&depth=1`,
+      { next: { revalidate: 60 } },
+    )
+    return d.docs[0] ?? null
+  } catch {
+    return null
+  }
+}
+
 /** Per-category product counts for the sidebar badges (limit=1 + totalDocs = cheap). Cached. */
 export async function getCategoryCounts(): Promise<Record<string, number>> {
   try {

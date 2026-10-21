@@ -7,10 +7,21 @@ import { ShopBanner } from "@/components/tienda/shop-banner"
 import { Toolbar } from "@/components/tienda/toolbar"
 import { ActiveChips } from "@/components/tienda/active-chips"
 import { CartToast } from "@/components/tienda/cart-toast"
-import { getCategoryCounts, getCategories, getTiendaProducts, type Product } from "@/lib/payload"
+import type { Metadata } from "next"
+import {
+  getCategoryCounts,
+  getCategories,
+  getProductBySlug,
+  getTiendaProducts,
+  productImageUrls,
+  type Product,
+} from "@/lib/payload"
+import { QuickViewProvider } from "@/components/tienda/quick-view"
 import { Pagination } from "./pagination"
 
-export const metadata = { title: "Tienda — Wasi Granel" }
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://www.wasigranel.com")
 
 type SP = Record<string, string | string[] | undefined>
 function num(v: string | string[] | undefined): number | null {
@@ -23,6 +34,41 @@ function str(v: string | string[] | undefined): string {
   return Array.isArray(v) ? (v[0] ?? "") : (v ?? "")
 }
 
+/**
+ * A shared link (`?producto=<slug>`) gets a product-specific title and preview image, so the link
+ * is worth sharing — WhatsApp shows the photo and the product name instead of a generic catalog
+ * title — while still being the catalog route, not a product detail page.
+ */
+export async function generateMetadata({ searchParams }: { searchParams: Promise<SP> }): Promise<Metadata> {
+  const sp = await searchParams
+  const fallback: Metadata = { title: "Tienda — Wasi Granel" }
+  const slug = str(sp.producto)
+  if (!slug) return fallback
+
+  const product = await getProductBySlug(slug)
+  if (!product) return fallback
+
+  const title = `${product.name} — Wasi Granel`
+  const description = product.shortDescription?.trim() || `${product.name} a granel en Wasi Granel.`
+  const image = productImageUrls(product)[0] ?? null
+  const url = `${SITE_URL}/tienda?producto=${encodeURIComponent(slug)}`
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url,
+      images: image ? [{ url: image, alt: product.name }] : undefined,
+    },
+    // The same product is reachable via any filter combination plus the param — point crawlers
+    // at the clean, canonical product URL.
+    alternates: { canonical: `/tienda?producto=${encodeURIComponent(slug)}` },
+  }
+}
+
 export default async function TiendaPage({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams
 
@@ -33,6 +79,8 @@ export default async function TiendaPage({ searchParams }: { searchParams: Promi
   const q = str(sp.q) || null
   const sort = str(sp.sort) || null
   const page = Math.max(1, num(sp.page) ?? 1)
+  // Deep link: the product whose Quick View should be open on load.
+  const producto = str(sp.producto) || null
 
   const [categories, counts] = await Promise.all([getCategories(), getCategoryCounts()])
   const categoryId = categoria ? categories.find((c) => c.slug === categoria)?.id ?? null : null
@@ -42,6 +90,10 @@ export default async function TiendaPage({ searchParams }: { searchParams: Promi
     { categoria, modalidad, precioMin: null, precioMax, q, sort, page, limit: 12 },
     categoryId,
   )
+
+  // A shared link may name a product that is not on this page (different filters or pagination),
+  // so resolve it server-side and hand it to the Quick View.
+  const deepLinked = producto ? await getProductBySlug(producto) : null
 
   const activeCats = categoria ? categories.filter((c) => c.slug === categoria) : []
 
@@ -83,15 +135,23 @@ export default async function TiendaPage({ searchParams }: { searchParams: Promi
           ) : (
             <>
               {/* PRODUCT CATALOG GRID — Stitch grid view: 1 col below 450px / 2 / 3(lg) */}
-              <div
-                data-testid="tienda-grid"
-                id="product-grid"
-                className="grid gap-6 grid-cols-1 min-[450px]:grid-cols-2 lg:grid-cols-3"
+              {/* One Quick View for the whole grid, driven by `?producto=` (see QuickViewProvider) */}
+              <QuickViewProvider
+                products={docs}
+                deepLinked={deepLinked}
+                initialSlug={producto}
+                query={{ categoria, modalidad, precioMax, q, sort, page }}
               >
-                {docs.map((p: Product) => (
-                  <CatalogCard key={p.id} product={p} />
-                ))}
-              </div>
+                <div
+                  data-testid="tienda-grid"
+                  id="product-grid"
+                  className="grid gap-6 grid-cols-1 min-[450px]:grid-cols-2 lg:grid-cols-3"
+                >
+                  {docs.map((p: Product) => (
+                    <CatalogCard key={p.id} product={p} />
+                  ))}
+                </div>
+              </QuickViewProvider>
               <Suspense fallback={null}>
                 <Pagination page={page} totalPages={totalPages} totalDocs={totalDocs} limit={limit} />
               </Suspense>
