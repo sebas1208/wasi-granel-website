@@ -4,6 +4,7 @@ import { useState } from "react"
 import Image from "next/image"
 import { WeightModal } from "./weight-modal"
 import { useFavorite } from "@/lib/favorites"
+import { addToCart } from "@/lib/cart"
 import {
   canonicalRateLabel,
   fmtPrice,
@@ -63,7 +64,7 @@ export function CatalogCard({ product }: { product: Product }) {
       : ""
 
   const chip = (active: boolean) =>
-    `text-[11px] px-2 py-1 rounded-lg border transition-all duration-200 active:scale-95 ${
+    `h-7 px-2 inline-flex items-center rounded-lg border text-[11px] transition-all duration-200 active:scale-95 ${
       active
         ? "font-bold bg-primary border-[#e5ac00] text-on-primary shadow-xs"
         : "font-medium bg-background border-outline-variant/60 text-secondary hover:bg-surface-container-low hover:text-on-surface"
@@ -133,7 +134,7 @@ export function CatalogCard({ product }: { product: Product }) {
                   {optionLabel(o)}
                 </button>
               ))}
-              {/* Customise — same row as the options, opens the Quick View */}
+              {/* Customise — same row as the options, styled as one of them */}
               <button
                 type="button"
                 aria-label={`Personalizar ${product.name}`}
@@ -141,9 +142,10 @@ export function CatalogCard({ product }: { product: Product }) {
                   e.stopPropagation()
                   setModalOpen(true)
                 }}
-                className="ml-auto w-7 h-7 shrink-0 rounded-lg border border-outline-variant/60 bg-background text-deep-amber hover:bg-surface-container active:scale-90 transition-all flex items-center justify-center"
+                className="ml-auto h-7 shrink-0 inline-flex items-center gap-1 rounded-lg border border-outline-variant/60 bg-background px-2 text-[11px] font-semibold text-deep-amber hover:bg-surface-container active:scale-95 transition-all"
               >
                 <span className="material-symbols-outlined text-[15px]">tune</span>
+                <span className="hidden sm:inline">Personalizar</span>
               </button>
             </div>
           </div>
@@ -167,7 +169,19 @@ export function CatalogCard({ product }: { product: Product }) {
             disabled={product.inStock === false}
             onClick={(e) => {
               e.stopPropagation()
-              setModalOpen(true)
+              // Adds the SELECTED option to the cart (it must not open the Quick View).
+              addToCart({
+                productId: product.id,
+                slug: product.slug,
+                name: product.name,
+                image: img,
+                kind: picked?.kind ?? "unit",
+                grams: picked?.kind === "weight" ? (picked.weightGrams ?? null) : null,
+                amount: picked?.kind === "money" ? (picked.amount ?? null) : null,
+                label: picked ? optionLabel(picked) : (canonical ?? "unidad"),
+                unitPrice: (picked ? optionPrice(product, picked) : product.price) ?? 0,
+                qty: 1,
+              })
             }}
             className="cart-add-btn bg-foreground hover:bg-[#3a2e21] text-white p-2.5 rounded-2xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center gap-1.5 text-xs font-bold group/btn disabled:opacity-40 disabled:cursor-not-allowed"
           >

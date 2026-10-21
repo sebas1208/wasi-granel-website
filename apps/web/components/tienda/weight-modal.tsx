@@ -5,6 +5,7 @@ import Image from "next/image"
 import Markdown from "react-markdown"
 import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { useFavorite } from "@/lib/favorites"
+import { addToCart } from "@/lib/cart"
 import {
   MIN_GRAMS,
   canonicalRateLabel,
@@ -93,6 +94,10 @@ export function WeightModal({
   const short = product.shortDescription?.trim() ?? ""
   const desc = product.description ?? ""
   const descLong = desc.length > 220
+  // The drafted line usually OPENS the long description — showing both reads as duplicated text.
+  const norm = (s: string) => s.replace(/\s+/g, " ").trim().toLowerCase()
+  const shortDuplicatesDesc =
+    short.length > 0 && norm(desc).startsWith(norm(short).slice(0, 40))
 
   function applyAmount() {
     const value = parseFloat(amount.replace(",", "."))
@@ -138,7 +143,7 @@ export function WeightModal({
       >
         <div className="flex flex-col md:flex-row">
           {/* Left: image showcase */}
-          <div className="md:w-1/2 relative bg-surface-container-low flex flex-col items-center justify-center p-6 sm:p-8 min-h-[240px] md:min-h-[520px]">
+          <div className="md:w-1/2 relative bg-surface-container-low flex flex-col items-center justify-center p-5 sm:p-6 min-h-[240px] md:min-h-[520px]">
             <span className="absolute top-4 left-4 z-10 bg-surface-container-lowest/95 backdrop-blur text-[11px] font-bold text-deep-amber px-3 py-1 rounded-full shadow-xs uppercase tracking-wider">
               {product.category?.name ?? ""}
             </span>
@@ -153,13 +158,13 @@ export function WeightModal({
             >
               <span className="material-symbols-outlined text-[20px]">{fav ? "favorite" : "favorite_border"}</span>
             </button>
-            <div className="relative w-full max-w-[260px] aspect-square rounded-2xl overflow-hidden shadow-sm bg-white p-2 flex items-center justify-center">
+            <div className="relative w-full max-w-[340px] aspect-square rounded-2xl overflow-hidden shadow-sm bg-white p-2 flex items-center justify-center">
               {img ? (
                 <Image
                   src={img}
                   alt={product.name}
-                  width={520}
-                  height={520}
+                  width={680}
+                  height={680}
                   className="w-full h-full object-cover object-bottom rounded-xl"
                 />
               ) : (
@@ -207,7 +212,9 @@ export function WeightModal({
                 )}
               </div>
 
-              {short && <p className="text-xs sm:text-sm text-secondary leading-relaxed mb-3">{short}</p>}
+              {short && !shortDuplicatesDesc && (
+                <p className="text-xs sm:text-sm text-secondary leading-relaxed mb-3">{short}</p>
+              )}
 
               {desc && (
                 <div className="mb-4">
@@ -274,12 +281,12 @@ export function WeightModal({
                   </div>
 
                   {/* Exact amount: weight (g/lb/kg) OR money ("$10 de almendras") */}
-                  <div className="flex items-center justify-between gap-2 mt-2.5 pt-2.5 border-t border-[#ead7c3]/60">
-                    <label htmlFor="custom-amount" className="text-[11px] font-bold text-secondary shrink-0">
+                  <div className="mt-3 pt-3 border-t border-[#ead7c3]/60">
+                    <label htmlFor="custom-amount" className="block text-[11px] font-bold text-secondary mb-1.5">
                       Gramaje exacto:
                     </label>
-                    <div className="flex items-center gap-1.5 flex-1 max-w-[240px]">
-                      <div className="relative flex-1">
+                    <div className="flex items-center gap-2">
+                      <div className="relative flex-1 min-w-0">
                         <input
                           id="custom-amount"
                           type="number"
@@ -290,9 +297,9 @@ export function WeightModal({
                           onChange={(e) => setAmount(e.target.value)}
                           onKeyDown={(e) => e.key === "Enter" && applyAmount()}
                           placeholder={amountUnit === "gr" ? "220" : amountUnit === "$" ? "10" : "0.5"}
-                          className="w-full py-1.5 pl-2.5 pr-8 text-xs font-bold text-on-surface bg-surface border border-[#d3c5ab] rounded-xl outline-none focus:border-deep-amber focus:ring-1 focus:ring-deep-amber/30 transition-all"
+                          className="w-full h-9 pl-3 pr-10 text-xs font-bold text-on-surface bg-surface border border-[#d3c5ab] rounded-xl outline-none focus:border-deep-amber focus:ring-1 focus:ring-deep-amber/30 transition-all"
                         />
-                        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-muted-foreground pointer-events-none">
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-muted-foreground pointer-events-none">
                           {UNIT_GLYPH[amountUnit]}
                         </span>
                       </div>
@@ -304,7 +311,7 @@ export function WeightModal({
                           setAmount("")
                           setError(null)
                         }}
-                        className="py-1.5 text-xs font-bold text-on-surface bg-surface border border-[#d3c5ab] rounded-xl focus:border-deep-amber"
+                        className="h-9 px-2 text-xs font-bold text-on-surface bg-surface border border-[#d3c5ab] rounded-xl focus:border-deep-amber outline-none"
                       >
                         <option value="gr">g</option>
                         <option value="lb">lb</option>
@@ -314,17 +321,17 @@ export function WeightModal({
                       <button
                         type="button"
                         onClick={applyAmount}
-                        className="px-2.5 py-1 rounded-xl bg-surface-container hover:bg-primary hover:text-on-primary border border-[#ead7c3] text-xs font-bold active:scale-95 transition-all"
+                        className="h-9 px-3 rounded-xl bg-surface-container hover:bg-primary hover:text-on-primary border border-[#ead7c3] text-xs font-bold active:scale-95 transition-all whitespace-nowrap"
                       >
                         Aplicar
                       </button>
                     </div>
+                    {error && (
+                      <p role="alert" data-testid="modal-amount-error" className="mt-1.5 text-[11px] font-semibold text-destructive">
+                        {error}
+                      </p>
+                    )}
                   </div>
-                  {error && (
-                    <p role="alert" data-testid="modal-amount-error" className="mt-1.5 text-[11px] font-semibold text-destructive">
-                      {error}
-                    </p>
-                  )}
                 </div>
               ) : (
                 <div className="mb-5">
@@ -369,7 +376,27 @@ export function WeightModal({
                 <button
                   type="button"
                   data-testid="modal-add-to-cart"
-                  onClick={() => onOpenChange(false)}
+                  onClick={() => {
+                    // Adds the current selection (option, or the exact amount, × quantity).
+                    addToCart({
+                      productId: product.id,
+                      slug: product.slug,
+                      name: product.name,
+                      image: img,
+                      kind: customGrams != null ? "weight" : (picked?.kind ?? "unit"),
+                      grams: customGrams ?? (picked?.kind === "weight" ? (picked.weightGrams ?? null) : null),
+                      amount: picked?.kind === "money" && customGrams == null ? (picked.amount ?? null) : null,
+                      label:
+                        customGrams != null
+                          ? formatGrams(customGrams)
+                          : picked
+                            ? optionLabel(picked)
+                            : (canonical ?? "unidad"),
+                      unitPrice: unitPrice ?? 0,
+                      qty,
+                    })
+                    onOpenChange(false)
+                  }}
                   className="flex-1 py-3 px-5 rounded-2xl bg-foreground hover:bg-[#3a2e21] text-white text-xs font-bold flex items-center justify-center gap-2 active:scale-[0.98] transition-all shadow-md"
                 >
                   <span className="material-symbols-outlined text-[20px]">shopping_bag</span>

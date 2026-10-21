@@ -315,13 +315,49 @@ test("quick view: canonical rate, refreshed design blocks, and exact-amount math
   await expect(dialog.getByTestId("modal-qty")).toHaveText("2")
   await expect(dialog.getByTestId("modal-price")).toHaveText("$20.00")
 
-  // Closeable: Escape, then the design's X (regression: the card's onClick used to re-open it)
-  await page.keyboard.press("Escape")
+  // The CTA really adds the selection (exact $10 × 2) to the cart and closes the modal
+  await dialog.getByTestId("modal-add-to-cart").click()
   await dialog.waitFor({ state: "hidden", timeout: 3_000 })
+  await expect(page.getByTestId("cart-toast")).toContainText("Almendras")
+  const cart = await page.evaluate(() => JSON.parse(localStorage.getItem("wg-cart") || "[]"))
+  expect(cart.at(-1), "the $10 × 2 selection must be in the cart").toMatchObject({
+    name: "Almendras",
+    kind: "money",
+    amount: 10,
+    qty: 2,
+    unitPrice: 10,
+  })
+
+  // Reopen and close with the design's X (regression: the card's onClick used to re-open it)
   await card.click()
   await dialog.waitFor({ state: "visible", timeout: 3_000 })
   await page.locator('[data-slot="dialog-close"]').first().click()
   await dialog.waitFor({ state: "hidden", timeout: 3_000 })
+})
+
+test("card Agregar adds to the cart and does NOT open the Quick View", async ({ page }) => {
+  await page.goto("/tienda?categoria=frutos-secos")
+  await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })
+  const card = page
+    .locator('[data-testid="catalog-card"]')
+    .filter({ has: page.getByRole("heading", { name: "Almendras", exact: true }) })
+    .first()
+
+  await card.getByRole("button", { name: "Agregar Almendras" }).click()
+
+  // Toast confirms the add, with the selected option
+  const toast = page.getByTestId("cart-toast")
+  await expect(toast).toBeVisible({ timeout: 3_000 })
+  await expect(toast).toContainText("Almendras")
+  await expect(toast).toContainText("1 lb")
+
+  // The Quick View must NOT have opened
+  await expect(page.getByRole("dialog")).toHaveCount(0)
+
+  // ...and the line is really in the cart (the selected option, qty 1)
+  const cart = await page.evaluate(() => JSON.parse(localStorage.getItem("wg-cart") || "[]"))
+  expect(cart.length, "one cart line").toBe(1)
+  expect(cart[0]).toMatchObject({ name: "Almendras", label: "1 lb", kind: "weight", qty: 1, unitPrice: 5.99 })
 })
 
 test("unit-priced product: plain numeric quantity, no weight pills", async ({ page }) => {
