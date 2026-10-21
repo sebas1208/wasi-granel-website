@@ -36,6 +36,25 @@ export const Products: CollectionConfig = {
       type: 'textarea',
     },
     {
+      name: 'shortDescription',
+      type: 'text',
+      maxLength: 140,
+      admin: {
+        description:
+          'Marketing one-liner for the catalog card (<=110 chars, no price, no trailing period). AI-drafted, editable.',
+      },
+    },
+    {
+      name: 'benefits',
+      type: 'array',
+      maxRows: 3,
+      admin: {
+        description:
+          'Up to 3 short benefits (<=80 chars) shown in the Quick View. Factual nutrition/wellbeing only — never disease, treatment or dosing claims.',
+      },
+      fields: [{ name: 'text', type: 'text', required: true }],
+    },
+    {
       name: 'category',
       type: 'relationship',
       relationTo: 'categories',
@@ -123,7 +142,7 @@ export const Products: CollectionConfig = {
       name: 'purchaseOptions',
       type: 'array',
       minRows: 1,
-      admin: { description: 'Ways this product can be bought (weight tiers, fixed units, or money amounts).' },
+      admin: { description: 'Ways this product can be bought (weight tiers, fixed units, or money amounts). Seeded with sensible defaults derived from the canonical price (1 lb / ½ lb / 500 g / 1 kg / $1) — add or remove freely.' },
       fields: [
         {
           name: 'kind',

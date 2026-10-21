@@ -204,6 +204,19 @@ export interface Product {
    */
   name: string;
   description?: string | null;
+  /**
+   * Marketing one-liner for the catalog card (<=110 chars, no price, no trailing period). AI-drafted, editable.
+   */
+  shortDescription?: string | null;
+  /**
+   * Up to 3 short benefits (<=80 chars) shown in the Quick View. Factual nutrition/wellbeing only — never disease, treatment or dosing claims.
+   */
+  benefits?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
   category: number | Category;
   /**
    * Ordered photos — first is the cover. Photo-less products load without images (added later).
@@ -244,7 +257,7 @@ export interface Product {
    */
   priceUnit?: ('lb' | 'kg' | 'gr' | 'unidad') | null;
   /**
-   * Ways this product can be bought (weight tiers, fixed units, or money amounts).
+   * Ways this product can be bought (weight tiers, fixed units, or money amounts). Seeded with sensible defaults derived from the canonical price (1 lb / ½ lb / 500 g / 1 kg / $1) — add or remove freely.
    */
   purchaseOptions?:
     | {
@@ -415,6 +428,13 @@ export interface ProductsSelect<T extends boolean = true> {
   slug?: T;
   name?: T;
   description?: T;
+  shortDescription?: T;
+  benefits?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
   category?: T;
   images?:
     | T
