@@ -4,7 +4,7 @@
 
 **Blocked by:** 10 (app shell), 03 (data contract/fixtures).
 
-**Status:** **REOPENED — Tienda v2** (2026-10-20). First pass was merged to `develop` (`0432588` / merge `65af527`, pushed; CMS canonical price on `main` @ `3d9a80d`, prod backfilled 278/278), but the user's review found the price/option model and the Quick View still wrong. Scope below. Follow `check:layout` + desktop 1280 / mobile 390 browser pass as usual.
+**Status:** **v2 complete on `develop`** (`8605e76`) — CMS fields + AI copy + option seeding are live on production (`main` `a1e3455`, migration batch 5; 278/278 products with shortDescription, 834 benefit rows, 278 with options). UI rebuilt and browser-verified. Pending: the user's merge of `develop` → `main` to ship the storefront.
 
 ## Plan deviations agreed with the user
 - **Data:** live Payload API (NOT mock fixtures) — server component reads `searchParams`, queries Payload with `where` + `limit`/`page`, uses Next.js data cache (`next: { revalidate: 60 }`). No client-side load-all.
@@ -74,6 +74,15 @@ Stitch project was **refreshed 2026-10-20T22:58Z** — the copies ported in the 
 6. **Tests** — canonical rate visible; option math (600 g = 600 × rate; $10 → grams); 50 g floor; money-below-floor rejected; chips deduped; no empaque/origen/rating; numeric qty for unit products; both viewports.
 
 **Resolved:** origen → dropped (no data). Rating → dropped (no data). Units → `lb`/`kg`/`g`/`unidad`, never "libra". Options → CMS-editable defaults. Unit products → numeric quantity. Copy → AI-drafted, reviewed.
+
+**v2 acceptance (browser-verified)**
+- [x] Canonical `price` + `priceUnit` visible on the store: card footer `$5.99 / lb`, Quick View badge `$5.99 / lb` (measured in a real browser, both viewports).
+- [x] Quick View carries the refreshed design's blocks: image + favourite, category strip + close, price with its unit, short + long description, **Beneficios Clave** (real data), "Selecciona el peso" pills from the product's options, exact-amount row, quantity stepper, "Agregar a mi canasta", trust strip — and **no** empaque / origen / rating (asserted absent).
+- [x] **The reported bug is fixed and regression-tested:** Almendras (no weight-kind option) is buyable at any weight — `600 g → $7.92` (= 600 × 5.99/453.592), asserted in the gate on both viewports.
+- [x] 50 g floor enforced (20 g → "Mínimo 50 g"); exact **money** works (`$10 de almendras` → $10.00); quantity multiplies (×2 → $20.00).
+- [x] Unit-priced products: numeric "¿Cuántas unidades?" and no weight pills (Manzanilla: $1.25 → ×3 = $3.75).
+- [x] Measured geometry: desktop dialog 768×803, `flex-direction: row`, columns 383/383; mobile 358×776 stacked.
+- [x] `check:layout` **18/18** (desktop 1280 + mobile 390), `tsc` clean, `lint` 0 errors.
 
 ## Notes / follow-ups
 - **Rebuilt to match the REAL Stitch mockups** (user: "use the real stitch mockups, not invented UI"). Re-fetched fresh (project `updateTime` 2026-10-14) and ported the actual HTML classes. Now matches: banner (badge + "Despensa Consciente a Granel" + packaging card + watermark), 12-col layout, sidebar (cat-pills **with count badges**, **price slider**, Modalidad radios, Limpiar/Restablecer), toolbar (mobile filter drawer trigger + sort dropdown + grid/list view toggle), **active filter chips** row, **3-col** grid (desktop) / **2-col** (mobile, per Catálogo Móvil), card (image + **overlay category chip** + **favorite heart** + portion chips + "Porción/price" + dark **Agregar** button), and a **mobile filter drawer**.
