@@ -82,11 +82,11 @@ export default async function TiendaPage({ searchParams }: { searchParams: Promi
             </div>
           ) : (
             <>
-              {/* PRODUCT CATALOG GRID — Stitch grid view: 1 / 2(sm) / 3(lg) */}
+              {/* PRODUCT CATALOG GRID — Stitch grid view: 1 col below 450px / 2 / 3(lg) */}
               <div
                 data-testid="tienda-grid"
                 id="product-grid"
-                className="grid gap-6 grid-cols-2 lg:grid-cols-3"
+                className="grid gap-6 grid-cols-1 min-[450px]:grid-cols-2 lg:grid-cols-3"
               >
                 {docs.map((p: Product) => (
                   <CatalogCard key={p.id} product={p} />

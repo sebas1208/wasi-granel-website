@@ -219,10 +219,11 @@ test("tienda layout: desktop sidebar + 3-col grid, mobile drawer + 2-col", async
     }
   })
   const desktop = m.vw >= 1024
+  const cols = m.vw >= 1024 ? 3 : m.vw >= 450 ? 2 : 1
   expect(m.cards, "tienda must render product cards").toBeGreaterThan(0)
   expect(m.pag, "pagination must render").toBe(true)
   expect(m.pagText).toContain("de")
-  expect(m.cols, "tienda grid column count").toBe(desktop ? 3 : 2)
+  expect(m.cols, "tienda grid column count").toBe(cols)
   if (desktop) {
     // Desktop: sidebar (lg:col-span-3) sits beside the 3-col grid, to its LEFT
     expect(m.sidebarW, "desktop filter sidebar must render").toBeGreaterThanOrEqual(200)
@@ -315,9 +316,11 @@ test("quick view: canonical rate, refreshed design blocks, and exact-amount math
   const dialog = page.getByRole("dialog")
   await dialog.waitFor({ state: "visible", timeout: 5_000 })
 
-  // The modal opens on the same first option (1 lb = the canonical unit) => $5.99
+  // The modal opens on the same first option (1 lb = the canonical unit) => $5.99, and the TOP
+  // price is the canonical rate (never changes); the current selection price sits under it.
+  await expect(dialog.getByTestId("modal-canonical-price")).toHaveText("$5.99")
+  await expect(dialog.getByTestId("modal-selection-label")).toHaveText("1 lb")
   await expect(dialog.getByTestId("modal-price")).toHaveText("$5.99")
-  await expect(dialog.getByText("/ 1 lb")).toBeVisible()
   await expect(dialog.getByText("Beneficios Clave")).toBeVisible()
   await expect(dialog.getByText("Envíos 24h")).toBeVisible()
   await expect(dialog.getByTestId("modal-gram-selector")).toBeVisible()
@@ -377,7 +380,9 @@ test("quick view: canonical rate, refreshed design blocks, and exact-amount math
   await dialog.locator("#custom-amount").fill("2")
   await dialog.getByRole("button", { name: "Aplicar" }).click()
   await expect(dialog.getByTestId("modal-price")).toHaveText("$11.98")
-  await expect(dialog.getByText("/ 2 lb")).toBeVisible()
+  await expect(dialog.getByTestId("modal-selection-label")).toHaveText("2 lb")
+  // ...and the canonical price at the top is untouched by the selection
+  await expect(dialog.getByTestId("modal-canonical-price")).toHaveText("$5.99")
 
   // "Leer más" must not push the add-to-cart button out of view
   const leer = dialog.getByRole("button", { name: "Leer más" })

@@ -96,6 +96,18 @@ export function WeightModal({
     return ""
   })()
 
+  /** Label for the CURRENT selection line ("1 lb", "600 g", "0.17 lb"). */
+  const selectionLabel = (() => {
+    if (customGrams != null) return customLabel
+    if (picked?.kind === "money" && picked.amount != null) {
+      const g = gramsForMoney(product, picked.amount)
+      return g ? formatInUnit(g, product.priceUnit) : fmtPrice(picked.amount)
+    }
+    if (picked?.kind === "weight") return optionLabel(picked)
+    return qty > 1 ? `${qty} unidades` : "unidad"
+  })()
+  const selectionQty = weightPriced && qty > 1 ? ` × ${qty}` : ""
+
   /** Live price for the amount being typed, shown right under the input ("600 g = $7.92"). */
   const liveAmount = useMemo(() => {
     const v = parseFloat(amount.replace(",", "."))
@@ -274,12 +286,29 @@ export function WeightModal({
                 {product.name}
               </DialogTitle>
 
-              {/* Price + what it refers to (the canonical unit shows through the option label) */}
-              <div className="flex items-baseline gap-2 mb-3 flex-wrap">
-                <span data-testid="modal-price" className="font-headline text-2xl sm:text-3xl font-bold text-foreground">
+              {/* CANONICAL price — the fixed rate everything derives from, never changes */}
+              <div className="flex items-baseline gap-2 mb-1 flex-wrap">
+                <span
+                  data-testid="modal-canonical-price"
+                  className="font-headline text-2xl sm:text-3xl font-bold text-foreground"
+                >
+                  {canonical ? canonical.split(" / ")[0] : "—"}
+                </span>
+                {canonical && (
+                  <span className="text-xs font-semibold text-muted-foreground">/ {canonical.split(" / ")[1]}</span>
+                )}
+              </div>
+
+              {/* CURRENT price for the chosen option (what the customer is actually buying) */}
+              <div className="flex items-baseline gap-1.5 mb-3 flex-wrap">
+                <span data-testid="modal-selection-label" className="text-xs font-semibold text-secondary">
+                  {selectionLabel}
+                  {selectionQty}
+                </span>
+                <span className="text-xs text-secondary">·</span>
+                <span data-testid="modal-price" className="font-headline text-lg font-bold text-deep-amber">
                   {total != null ? fmtPrice(total) : "—"}
                 </span>
-                {suffix && <span className="text-xs font-semibold text-muted-foreground">{suffix}</span>}
               </div>
 
               {short && !shortDuplicatesDesc && (

@@ -184,7 +184,13 @@ export function Toolbar({
                   <span className="material-symbols-outlined text-[18px]">close</span>
                 </button>
               </div>
-              <FilterSidebar variant="drawer" categories={categories} counts={counts} onApplied={() => setDrawerOpen(false)} />
+              <FilterSidebar
+                variant="drawer"
+                categories={categories}
+                counts={counts}
+                resultCount={count}
+                onApplied={() => setDrawerOpen(false)}
+              />
             </div>
           </div>
         </div>

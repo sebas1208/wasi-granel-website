@@ -17,11 +17,13 @@ export function FilterSidebar({
   categories,
   counts,
   variant = "desktop",
+  resultCount,
   onApplied,
 }: {
   categories: Category[]
   counts: Record<string, number>
   variant?: "desktop" | "drawer"
+  resultCount?: number
   onApplied?: () => void
 }) {
   const router = useRouter()
@@ -52,8 +54,11 @@ export function FilterSidebar({
     onApplied?.()
   }
 
+  // The drawer is a phone screen: tighter rows so the whole filter list stays scannable.
   const pill = (active: boolean) =>
-    `cat-pill w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all duration-200 active:scale-[0.98] ${
+    `cat-pill w-full flex items-center justify-between px-3 ${
+      variant === "drawer" ? "py-1.5" : "py-2"
+    } rounded-xl text-xs transition-all duration-200 active:scale-[0.98] ${
       active
         ? "bg-surface-container text-on-surface font-bold"
         : "font-semibold text-on-surface-variant hover:bg-surface-container-low"
@@ -70,25 +75,27 @@ export function FilterSidebar({
 
   return (
     <aside data-testid="filter-sidebar" id="filter-sidebar" className={aside}>
-      {/* Sidebar header */}
-      <div className="flex items-center justify-between pb-4 border-b border-[#ead7c3]">
-        <div className="flex items-center gap-2 text-on-surface font-headline font-bold text-lg">
-          <span className="material-symbols-outlined text-deep-amber text-[22px]">tune</span>
-          <span>Filtros</span>
+      {/* Sidebar header — hidden in the drawer, whose own header already says "Filtros" */}
+      {variant === "desktop" && (
+        <div className="flex items-center justify-between pb-4 border-b border-[#ead7c3]">
+          <div className="flex items-center gap-2 text-on-surface font-headline font-bold text-lg">
+            <span className="material-symbols-outlined text-deep-amber text-[22px]">tune</span>
+            <span>Filtros</span>
+          </div>
+          <button
+            type="button"
+            onClick={clearAll}
+            className="text-xs font-semibold text-deep-amber hover:underline transition-colors active:scale-95"
+          >
+            Limpiar todo
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={clearAll}
-          className="text-xs font-semibold text-deep-amber hover:underline transition-colors active:scale-95"
-        >
-          Limpiar todo
-        </button>
-      </div>
+      )}
 
       {/* Categorías */}
       <div>
         <h3 className="text-xs font-bold uppercase tracking-wider text-secondary mb-3">Categorías</h3>
-        <div role="group" aria-label="Filtro de categorías" className="flex flex-col gap-1.5">
+        <div role="group" aria-label="Filtro de categorías" className={`flex flex-col ${variant === "drawer" ? "gap-1" : "gap-1.5"}`}>
           <button type="button" onClick={() => setParam("categoria", null)} className={pill(!activeCat)}>
             <span className="flex items-center gap-2 min-w-0">
               <span className="material-symbols-outlined text-[16px] leading-none shrink-0">{ALL_CATEGORIES_ICON}</span>
@@ -179,14 +186,36 @@ export function FilterSidebar({
         </div>
       </div>
 
-      {/* Reset */}
-      <button
-        type="button"
-        onClick={clearAll}
-        className="w-full py-2.5 mt-2 rounded-full border border-outline-variant text-xs font-bold text-foreground hover:bg-surface-container-low active:scale-95 transition-all"
-      >
-        Restablecer Filtros
-      </button>
+      {/* Reset — desktop only; the drawer gets a sticky action bar instead */}
+      {variant === "desktop" && (
+        <button
+          type="button"
+          onClick={clearAll}
+          className="w-full py-2.5 mt-2 rounded-full border border-outline-variant text-xs font-bold text-foreground hover:bg-surface-container-low active:scale-95 transition-all"
+        >
+          Restablecer Filtros
+        </button>
+      )}
+
+      {/* Drawer action bar — always reachable (the filter list is long on a phone) */}
+      {variant === "drawer" && (
+        <div className="sticky bottom-0 -mx-4 mt-2 px-4 py-3 bg-background border-t border-[#ead7c3] flex items-center gap-2">
+          <button
+            type="button"
+            onClick={clearAll}
+            className="flex-1 py-2.5 rounded-full border border-outline-variant text-xs font-bold text-foreground active:scale-95 transition-all"
+          >
+            Limpiar
+          </button>
+          <button
+            type="button"
+            onClick={() => onApplied?.()}
+            className="flex-[1.4] py-2.5 rounded-full bg-foreground text-white text-xs font-bold active:scale-95 transition-all"
+          >
+            Ver {resultCount != null ? `${resultCount} ` : ""}resultados
+          </button>
+        </div>
+      )}
     </aside>
   )
 }
