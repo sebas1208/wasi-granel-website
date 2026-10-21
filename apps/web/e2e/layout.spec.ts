@@ -236,6 +236,45 @@ test("tienda layout: desktop sidebar + 3-col grid, mobile drawer + 2-col", async
   }
 })
 
+test("list view: desktop-only, card laid out horizontally", async ({ page }) => {
+  await page.goto("/tienda?categoria=frutos-secos")
+  await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })
+  const vw = page.viewportSize()?.width ?? 0
+  const toggle = page.getByRole("button", { name: "Ver en lista" })
+
+  if (vw < 1024) {
+    // The list layout needs ~190px image + ~170px actions side by side, which cannot fit a mobile
+    // card (it crushed the body to ~48px and pushed the row off-screen).
+    await expect(toggle, "no list view on mobile (Catálogo Móvil has none)").toBeHidden()
+    return
+  }
+
+  await toggle.click()
+  const m = await page.evaluate(() => {
+    const grid = document.querySelector("#product-grid") as HTMLElement
+    const card = document.querySelector('[data-testid="catalog-card"]') as HTMLElement
+    const img = card.firstElementChild?.firstElementChild as HTMLElement
+    const footer = card.lastElementChild as HTMLElement
+    const b = card.getBoundingClientRect()
+    const i = img.getBoundingClientRect()
+    const f = footer.getBoundingClientRect()
+    return {
+      listClass: grid.classList.contains("is-list-view"),
+      imageW: Math.round(i.width),
+      horizontal: i.width < b.width / 2,
+      footerOnRight: f.left >= i.right - 1,
+      overflow: card.scrollWidth - card.clientWidth,
+      bodyW: Math.round((card.firstElementChild?.children[1] as HTMLElement).getBoundingClientRect().width),
+    }
+  })
+  expect(m.listClass, "the grid must switch to the list class").toBe(true)
+  expect(m.imageW, "list view uses the 190px image").toBeGreaterThanOrEqual(180)
+  expect(m.horizontal, "the card must be laid out horizontally").toBe(true)
+  expect(m.footerOnRight, "the price/actions column must sit to the right").toBe(true)
+  expect(m.bodyW, "the body must keep real width (not crushed)").toBeGreaterThan(200)
+  expect(m.overflow, "no horizontal overflow").toBeLessThanOrEqual(1)
+})
+
 test("tienda filter: clicking a category updates the URL (client interactivity)", async ({ page }) => {
   await page.goto("/tienda")
   const vp = page.viewportSize()
@@ -278,7 +317,7 @@ test("quick view: canonical rate, refreshed design blocks, and exact-amount math
 
   // The modal opens on the same first option (1 lb = the canonical unit) => $5.99
   await expect(dialog.getByTestId("modal-price")).toHaveText("$5.99")
-  await expect(dialog.getByTestId("modal-canonical-rate")).toContainText("/ lb")
+  await expect(dialog.getByText("/ 1 lb")).toBeVisible()
   await expect(dialog.getByText("Beneficios Clave")).toBeVisible()
   await expect(dialog.getByText("Envíos 24h")).toBeVisible()
   await expect(dialog.getByTestId("modal-gram-selector")).toBeVisible()
@@ -294,8 +333,9 @@ test("quick view: canonical rate, refreshed design blocks, and exact-amount math
   await expect(input, "weight-priced products must offer the exact-amount row").toBeVisible()
   expect(await input.getAttribute("step"), "gr step = 50").toBe("50")
 
-  // 600 g of almendra = 600 × (5.99 / 453.592) = $7.92
+  // 600 g of almendra = 600 × (5.99 / 453.592) = $7.92 — and the price is shown NEXT TO the input
   await input.fill("600")
+  await expect(dialog.getByTestId("modal-live-amount")).toHaveText("600 g = $7.92")
   await dialog.getByRole("button", { name: "Aplicar" }).click()
   await expect(dialog.getByTestId("modal-price")).toHaveText("$7.92")
 

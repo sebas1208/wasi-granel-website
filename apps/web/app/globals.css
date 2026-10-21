@@ -187,7 +187,11 @@
     animation: shine 5s infinite;
   }
 
-  /* — Tienda list view (Stitch `#product-grid.is-list-view`) — */
+  /* — Tienda list view (Stitch `#product-grid.is-list-view`) —
+     DESKTOP ONLY: the list layout needs ~190px image + ~170px actions side by side, which cannot
+     fit a mobile card (it crushed the body to ~48px and pushed the row off-screen). Stitch's
+     Catálogo Móvil has no list view either — the toggle is hidden below lg. */
+  @media (min-width: 1024px) {
   #product-grid.is-list-view {
     display: flex !important;
     flex-direction: column !important;
@@ -238,6 +242,7 @@
     border-top: none !important;
     border-left: 1px solid rgba(243, 223, 203, 0.6) !important;
     min-width: 170px !important;
+  }
   }
 
   /* — Scroll-reveal + micro-animations (matches Stitch variants) — */

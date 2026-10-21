@@ -136,7 +136,9 @@ export function Toolbar({
             </div>
           </div>
 
-          <div className="flex items-center bg-background border border-outline-variant/50 p-1 rounded-full gap-1">
+          {/* View toggle — desktop only: the list layout doesn't fit a mobile card (and Stitch's
+              Catálogo Móvil has no list view). */}
+          <div className="hidden lg:flex items-center bg-background border border-outline-variant/50 p-1 rounded-full gap-1">
             <button
               type="button"
               aria-label="Ver en cuadrícula"

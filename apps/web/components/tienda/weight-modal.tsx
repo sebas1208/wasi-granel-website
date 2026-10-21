@@ -96,6 +96,19 @@ export function WeightModal({
     return ""
   })()
 
+  /** Live price for the amount being typed, shown right under the input ("600 g = $7.92"). */
+  const liveAmount = useMemo(() => {
+    const v = parseFloat(amount.replace(",", "."))
+    if (!Number.isFinite(v) || v <= 0) return null
+    if (amountUnit === "$") {
+      const g = gramsForMoney(product, v)
+      return g ? `${fmtPrice(v)} = ${formatInUnit(g, product.priceUnit)}` : null
+    }
+    const g = v * (unitGrams(amountUnit) ?? 1)
+    if (g < MIN_GRAMS || rate == null) return null
+    return `${v} ${UNIT_GLYPH[amountUnit]} = ${fmtPrice(rate * g)}`
+  }, [amount, amountUnit, product, rate])
+
   const benefits = (product.benefits ?? []).map((b) => b?.text?.trim()).filter(Boolean) as string[]
   const short = product.shortDescription?.trim() ?? ""
   const desc = product.description ?? ""
@@ -261,20 +274,12 @@ export function WeightModal({
                 {product.name}
               </DialogTitle>
 
-              {/* Price + what it refers to + the canonical rate */}
+              {/* Price + what it refers to (the canonical unit shows through the option label) */}
               <div className="flex items-baseline gap-2 mb-3 flex-wrap">
                 <span data-testid="modal-price" className="font-headline text-2xl sm:text-3xl font-bold text-foreground">
                   {total != null ? fmtPrice(total) : "—"}
                 </span>
                 {suffix && <span className="text-xs font-semibold text-muted-foreground">{suffix}</span>}
-                {canonical && (
-                  <span
-                    data-testid="modal-canonical-rate"
-                    className="text-[11px] font-bold text-deep-amber bg-deep-amber/10 px-2 py-0.5 rounded-md ml-1"
-                  >
-                    {canonical}
-                  </span>
-                )}
               </div>
 
               {short && !shortDuplicatesDesc && (
@@ -394,6 +399,12 @@ export function WeightModal({
                     {error && (
                       <p role="alert" data-testid="modal-amount-error" className="mt-1.5 text-[11px] font-semibold text-destructive">
                         {error}
+                      </p>
+                    )}
+                    {/* The price the typed amount computes to — shown right here, next to the input */}
+                    {liveAmount && !error && (
+                      <p data-testid="modal-live-amount" className="mt-1.5 text-right text-[11px] font-bold text-deep-amber">
+                        {liveAmount}
                       </p>
                     )}
                   </div>
