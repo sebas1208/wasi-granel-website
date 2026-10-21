@@ -4,7 +4,7 @@
 
 **Blocked by:** 13 (closed — add-to-cart already produces real cart lines).
 
-**Status:** in progress — scope agreed with the user 2026-10-21.
+**Status:** **Done — closed 2026-10-21** (`develop` `258eccf`) — implemented and browser-verified. **Not in production**: ships with the rest of the storefront when `develop` merges to `main`.
 
 ## Design references (refetched 2026-10-21, `updateTime` current)
 - Desktop: `.scratch/stitch-fetch/screens/wasi-granel-con-carrito-lateral-interactivo__5b04fb21.html`
@@ -37,12 +37,23 @@ Both are the source of truth. Where the mockups show something we have no data f
 
 **Not URL-driven, deliberately.** The `url-driven-overlays` skill applies to overlays that must be *shareable*; nobody shares their cart. Local state is the right call here.
 
-## Acceptance
-- [ ] The cart opens from the navbar and lists lines with product, chosen option, quantity and line subtotal.
-- [ ] Quantities can be adjusted and lines removed; totals and the navbar badge update live.
-- [ ] Cart state survives navigation within the session (and a reload).
-- [ ] The cart is demonstrably populated by the real add-to-cart actions of tickets 12/13 — not seeded data.
-- [ ] No packaging, no tax line, no free-shipping bar anywhere in the rendered cart.
-- [ ] Empty state renders correctly.
-- [ ] Browser-verified per `AGENTS.md`: `check:layout` green at desktop 1280 + mobile 390, with new gate tests.
-- [ ] `tsc` and `lint` clean.
+## Acceptance — all verified in a real browser (2026-10-21)
+- [x] The cart opens from the navbar and lists lines with product, chosen option, quantity and line subtotal. (Measured: line "Ajonjoli Cáscara", option "1 lb", qty 1, line total $3.00, subtotal $3.00.)
+- [x] Quantities can be adjusted and lines removed; totals and the navbar badge update live. (Stepper + → qty 2, line $6.00, badge 2; stepper − → back to 1; delete → line gone.)
+- [x] Cart state survives navigation within the session **and a full reload**. (Reload with 1 line: badge still 1, line still present with its option. Navigation off the catalog also keeps it — the drawer is mounted at the root.)
+- [x] The cart is demonstrably populated by the real add-to-cart actions of tickets 12/13 — the test clicks the card's own `Agregar`, no seeded data.
+- [x] No packaging, no tax line, no free-shipping bar anywhere in the rendered cart — asserted against the drawer's text, not eyeballed.
+- [x] Empty state renders correctly (icon, copy, "Ir a la tienda"); the badge disappears with the last line.
+- [x] Browser-verified per `AGENTS.md`: `check:layout` **27 passed, 1 skipped** (desktop 1280 + mobile 390), including a new cart test that drives the real add path and asserts the live stepper, badge, empty state, availability off the catalog, and the three exclusions.
+- [x] `tsc` clean; `lint` 0 errors (6 pre-existing warnings).
+
+## What shipped
+- **`lib/cart.ts`** — `updateQty(id, qty)` (below 1 removes the line) and `removeLine(id)`.
+- **`components/tienda/cart-provider.tsx`** (new) — mounted once in the root layout; owns the open state and renders the drawer + toast. The per-page `<CartToast />` in `/tienda` is gone.
+- **`components/tienda/cart-drawer.tsx`** (new) — the Stitch drawer/page on Radix `Sheet` (`side="right"`), full-bleed on mobile, with the empty state.
+- **`components/tienda/free-shipping-bar.tsx`** (new) — built to the mockup, `FREE_SHIPPING_ENABLED = false`, renders nothing.
+- **`components/navigation.tsx`** — the cart button is a real button with the live badge that opens the drawer (desktop + mobile panel). It was `const cartCount = 0` and a `<Link href="/tienda">`.
+- **`components/ui/sheet.tsx`** — gained `showCloseButton`, mirroring `dialog.tsx`, since the cart header supplies its own close control.
+
+## Known trade-off to revisit
+With packaging and shipping excluded, "Subtotal de granos y despensa" and "Total estimado" show the **same number** — the mockup's breakdown only exists to explain the extras. Kept faithful to the mockup so the structure is ready when shipping lands; collapse it if the redundancy reads badly.
