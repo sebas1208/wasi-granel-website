@@ -4,7 +4,7 @@
 
 **Blocked by:** 00 (monorepo — lives in `apps/web`), 01 (tokens), 02 (brand assets).
 
-**Status:** ready-for-agent
+**Status:** **Done — closed 2026-10-21.** App shell shipped (`apps/web/app/layout.tsx`, `page.tsx`, `/tienda`), browser-verified.
 
 - [x] Navigation shows the Wasi Granel brand (correct logo + wordmark) and Inicio/Tienda/Contacto links, active-state highlighted.
 - [x] No "JatunWasi" or foreign brand string remains anywhere in the repo.

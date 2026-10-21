@@ -4,8 +4,8 @@
 
 **Blocked by:** None (can start immediately) — but needs Dolibarr credentials from the owner.
 
-**Status:** ready-for-agent
+**Status:** **Done — closed 2026-10-21.** Export in `.scratch/dolibarr-export/` — `productos.csv` (423 rows) + `productos.raw.tsv` + `categorias.csv`/`.raw.tsv`, normalized into the contract shape (ref, nombre, descripcion, precio, iva, categorias, peso). Source and mapping gaps recorded in `.scratch/storefront/canonical/report.md` (423 Dolibarr rows → 278 canonical).
 
-- [ ] Dolibarr products are exported (API or DB dump) with name, category, price, and any variant/weight fields.
-- [ ] The export is normalized into the shared contract shape.
-- [ ] A note records the Dolibarr endpoint/version used and any products or fields that failed to map.
+- [x] Dolibarr products are exported (API or DB dump) with name, category, price, and any variant/weight fields.
+- [x] The export is normalized into the shared contract shape.
+- [x] A note records the Dolibarr endpoint/version used and any products or fields that failed to map.

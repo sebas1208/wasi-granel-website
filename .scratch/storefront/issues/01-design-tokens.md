@@ -4,7 +4,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** done
+**Status:** **Done — closed 2026-10-21.** Design tokens live in `apps/web/app/globals.css`.
 
 - [x] `globals.css` exposes the five brand colors under clear token names mirroring the brand manual (primary / foreground / neutral-medium / neutral-light / background).
 - [x] Background resolves to cream `#fff8f4` and foreground to café `#544738`; text on `#FCBF00` is brown, not white.

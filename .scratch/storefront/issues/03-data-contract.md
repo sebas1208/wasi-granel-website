@@ -4,7 +4,7 @@
 
 **Blocked by:** 00 (monorepo — authored as the shared `packages/schema`).
 
-**Status:** done
+**Status:** **Done — closed 2026-10-21.** Contract shape in `packages/schema`; consumed by the CMS and the storefront.
 
 - [x] TypeScript types + Zod schemas exist for Product, Category, Purchase Option (Weight Tier + Unit), and Sucursal.
 - [x] Mock fixtures supply the 9 Stitch-listed products and 8 categories under the agreed structure.

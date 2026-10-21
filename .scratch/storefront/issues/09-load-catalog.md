@@ -4,7 +4,7 @@
 
 **Blocked by:** 06 (canonical catalog), 08 (Payload collections).
 
-**Status:** ready-for-agent
+**Status:** **Done — closed 2026-10-21.** Production holds 278 products + 53 media files, served by the live API.
 
 - [x] All categories are created in Payload.
 - [x] All products are created, linked to their categories and (for bulk) weight tiers, with images uploaded.

@@ -4,8 +4,8 @@
 
 **Blocked by:** 00 (monorepo — lives in `apps/cms`), 07 (Payload provisioned), 03 (data contract).
 
-**Status:** ready-for-agent
+**Status:** **Done — closed 2026-10-21.** `Products`, `Categories`, `Media`, `Users` in `apps/cms/src/collections/`, live on production.
 
-- [ ] `categories` and `products` collections exist with the contract's fields and relations (product → category, product → media, category → media).
-- [ ] A product can carry multiple purchase options: weight tiers (grams + price) and/or fixed units (price + label); weight options require grams.
-- [ ] The admin can create/read a product end-to-end (with a category + image) and re-read it back unchanged.
+- [x] `categories` and `products` collections exist with the contract's fields and relations (product → category, product → media, category → media).
+- [x] A product can carry multiple purchase options: weight tiers (grams + price) and/or fixed units (price + label); weight options require grams.
+- [x] The admin can create/read a product end-to-end (with a category + image) and re-read it back unchanged.

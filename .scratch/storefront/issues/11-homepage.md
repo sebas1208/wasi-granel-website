@@ -4,7 +4,7 @@
 
 **Blocked by:** 10 (app shell), 03 (data contract/fixtures).
 
-**Status:** implemented (feature/ticket-11-homepage, latest `7721e7b`) — **browser-verified desktop + mobile** (see acceptance below); awaiting user merge feature → develop → main.
+**Status:** **Done — closed 2026-10-21.** Merged to `main` (`1778b35`, PR #2) — homepage live in production.
 
 - [x] `/` renders the category grid hero rather than the launch/newsletter page (8 sections: hero, benefits ribbon, Productos Populares, Categorías grid, Nuestra Historia, Newsletter, footer).
 - [x] Each category card links toward its catalog filter (`/tienda?categoria=slug`) and uses the brand tokens/typography + Stitch classes (icon chip, "N variedades" badge, "Explorar categoría").

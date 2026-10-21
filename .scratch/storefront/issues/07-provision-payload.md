@@ -4,9 +4,9 @@
 
 **Blocked by:** None (can start immediately) — but blocked on the owner choosing Coolify vs. credentials.
 
-**Status:** ready-for-agent
+**Status:** **Done — closed 2026-10-21.** Live at https://payload.wasigranel.com/admin (HTTP 200, SSL), Postgres `wasi-payload-db`, Coolify-managed. Credentials outside the repo (`~/.env.vps` + VPS `/opt/wasi-granel/apps/cms/.env`).
 
-- [ ] Payload is running and the admin UI answers at its URL.
-- [ ] PostgreSQL is configured and Payload persists to it.
-- [ ] SSL is configured for the API/admin host.
-- [ ] Access credentials are stored securely and documented for the owner (not committed).
+- [x] Payload is running and the admin UI answers at its URL.
+- [x] PostgreSQL is configured and Payload persists to it.
+- [x] SSL is configured for the API/admin host.
+- [x] Access credentials are stored securely and documented for the owner (not committed).

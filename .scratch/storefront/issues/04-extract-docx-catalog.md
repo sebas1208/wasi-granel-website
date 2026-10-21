@@ -4,7 +4,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** **Done — closed 2026-10-21.** Output in `.scratch/storefront/catalog-docx/` — `products.csv`, `products.json`, `rows.tsv`, `coverage.md`.
 
 - [x] A manifest lists every product detected in the document, with its inferred category and a source location (heading index).
 - [x] Each product's description/benefits text is captured verbatim or clearly summarized into the contract shape (ticket 03).

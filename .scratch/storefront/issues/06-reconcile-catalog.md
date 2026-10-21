@@ -4,7 +4,7 @@
 
 **Blocked by:** 04 (docx extraction), 05 (Dolibarr export).
 
-**Status:** ready-for-agent
+**Status:** **Done — closed 2026-10-21.** Canonical catalog in `.scratch/storefront/canonical/` — `products.json`/`.csv`, `categories.json`, `report.md` (423 → 278 across a 12-category taxonomy, with the owner-review list).
 
 - [x] A single canonical product set is produced with no duplicates and one category per product.
 - [x] The final category list is authored (starting from the 8 Stitch categories, extended as the data requires).
