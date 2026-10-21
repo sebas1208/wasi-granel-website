@@ -1,60 +1,72 @@
 # 15: Contacto — sucursales, WhatsApp, and contact form
 
-**What to build:** Build the Contacto page from the two Stitch screens — **"Contacto y Sucursales"** (desktop) and **"Contacto Móvil"**: value props (Cero Plásticos, Pesaje Exacto, Comercio Justo), "Nuestras Casas Wasi" with the sucursales, contact channels (WhatsApp, email), a contact form, and (mobile only) an FAQ.
+**What to build:** Build the Contacto page from the two Stitch screens — **"Contacto y Sucursales"** (desktop) and **"Contacto Móvil"** — using the store's **real** data (below): value props, the two sucursales, contact channels, a contact form, and a mobile FAQ.
 
-**Blocked by:** 10 (app shell) — and **on the real store contact data** (see below). The page cannot ship with the mockup's values.
+**Blocked by:** 10 (app shell). The contact data is now supplied, so the page is unblocked.
 
-**Status:** needs-triage — blocked on the contact-data questions at the bottom.
+**Status:** ready-for-agent — scope agreed 2026-10-21.
 
 ## Design references (refetched 2026-10-21)
 - Desktop: `.scratch/stitch-fetch/screens/wasi-granel-contacto-y-sucursales__71ee0d81.html`
 - Mobile: `.scratch/stitch-fetch/screens/wasi-granel-contacto-m-vil__1bbe83e0.html`
 
-## Audit — what the mockup INVENTS (must not ship)
+## REAL store data (from the user, 2026-10-21) — overrides the mockup everywhere
 
-Unlike a layout decision, these are customer-facing facts. Stitch invented all of them:
+Both stores are in **Riobamba**. **There is no Quito store** — Stitch invented it.
 
-| element | value in the mockup | verdict |
+| | Matriz | Sucursal |
 | --- | --- | --- |
-| Riobamba phone / WhatsApp | `+593 9 8765 4321` | **invented** — and this same number is **already live in the site footer** on every page |
-| Quito phone / WhatsApp | `+593 9 9123 4567` | invented |
-| Third number (desktop) | `+593 2 290 4480` | invented |
-| Riobamba address | "Calle de la Tierra 123 y Av. Chimborazo, Barrio Bellavista, Riobamba" | invented |
-| Quito address | "Calle Guipúzcoa E14-88 y Coruña, Barrio La Floresta, Quito" | invented |
-| Riobamba hours | "Lunes a Sábado: 08:30 – 19:30 / Domingos: 09:30 – 15:00" | invented |
-| Quito hours | "Lunes a Sábado: 09:00 – 20:00 / Domingos: 10:00 – 17:00" | invented |
-| Emails | `comunidad@`, `ventas@`, `hola@wasigranel.com` | unverified |
-| Store features | "Molienda de Café en vivo", "Taras automáticas", "Parqueadero de bicicletas", "Despachos en Bicimensajería", "Barra de Cremas de Frutos Secos", "Punto de Retiro Online" | invented |
-| Scale claim | "más de 200 referencias a granel" | invented |
-| Badge | "Nueva Casa Cultural" | invented |
+| address | **Guayaquil y Benalcázar 1815, 060111 Riobamba** | **Juan Montalvo y Av. José Veloz, esquina, Riobamba** |
+| phone | **0991475809** and **0990876620** (assignment per store still unconfirmed — see questions) | same two numbers |
 
-The desktop mockup also mentions **"San Andrés"** near the locations — possibly a third site, unclear.
+- **Shipping**: nationwide via **Servientrega**; the owner lives in Quito and wants delivery there — so Quito appears as a *destination we ship to*, never as a branch.
+- **Email**: `hola@wasigranel.com` (already in the footer).
+- **Coffee is sold** — see the finding below.
 
-## What is actually real / available
+## Corrections this forces elsewhere
+- **The site footer is wrong today**: it prints `Riobamba · Quito` and the invented phone **`+593 9 8765 4321`**. Both must be fixed in this ticket — the fake number is live on every page right now.
+- The old stub's map embed points at **"Jatunwasi Granel Gourmet Matriz"** (old brand). Replace with the correct Places IDs (`ChIJgQa96SKp05ER7EWO65CJ_DU` matriz, `ChIJlxlN2oCp05ERmSUnnDu58Gk` sucursal).
+- The stub's hours ("Lunes - Viernes: 9:00 - 19:00") and the mockup's two hour-sets are **all unverified** — real opening hours still needed.
 
-- **`hola@wasigranel.com`** — present in the shipped footer and the old stub; the only contact detail with a plausible basis.
-- **Two cities: Riobamba and Quito** — the footer already says "Riobamba · Quito".
-- **Real Google Places IDs** exist for both sites (`ChIJgQa96SKp05ER7EWO65CJ_DU` matriz, `ChIJlxlN2oCp05ERmSUnnDu58Gk` sucursal) — usable for the "Cómo llegar" links and the map embeds, and they are the *correct* places, unlike the stub's embed.
-- **An existing form receiver**: `apps/web/app/api/signup/route.ts` already POSTs to a Google Apps Script (Google Sheets). That is a real, working pattern the contact form could reuse or extend — better than a stubbed "success" that lies to the customer.
-- The old stub's number `+593 986 016 764` — **unverified**, possibly a real family number.
+## Decisions (user)
+- **Store features**: the mockup's chips ("Molienda de Café en vivo", "Taras automáticas", "Parqueadero de bicicletas", "Bicimensajería", "Barra de Cremas") are invented. Replace with **generic marketing lines, drafted for the user to review** (draft below).
+- **FAQ**: keep the card. The shipping answer is true — **Servientrega**, nationwide. Improve the wording.
+- **Privacy**: a **modal** with generated privacy wording — **no new page**.
+- **Contact form receiver**: undecided. The user has a Resend account and asked what email sending needs; the alternative is WhatsApp pre-filled. See questions.
 
-## Known conflicts to resolve
-- **Hours**: the stub says "Lunes - Viernes: 9:00 - 19:00"; the mockup says "Lunes a Sábado … / Domingos …". Different, both unverified.
-- **Map embed**: the stub's iframe points at **"Jatunwasi Granel Gourmet Matriz"** — the old brand and the wrong place. Must be replaced with the real Places IDs above.
-- **The form's success state**: the mockup shows "¡Mensaje recibido con éxito!" with no backend behind it. Shipping that as-is tells customers their message was received when it wasn't.
+## Draft marketing lines (for review — replace the invented chips)
+Generic, safe, and true-by-default; swap or drop any that aren't accurate:
+- "Atención personalizada en tienda"
+- "Venta al por mayor y menor"
+- "Envíos a todo el Ecuador con Servientrega"
+- "Pesaje exacto a granel"
+- "Productos naturales seleccionados"
+- Candidate, **needs confirmation**: "Molienda de café en vivo" (plausible — they sell Café Grano and Café Polvo)
 
-## Acceptance (draft — depends on the answers)
-- [ ] `/contacto` renders the value props, the sucursales with **real** addresses/hours/phones, and the contact channels.
-- [ ] WhatsApp and email links point at the **real** store channels.
-- [ ] The contact form has a **real** receiver (or an honest "opens WhatsApp instead" path) — no fake success state.
-- [ ] Map/"Cómo llegar" links use the correct Places IDs; the "Jatunwasi" embed is gone.
-- [ ] Matches the Stitch desktop + mobile references; browser-verified per `AGENTS.md` (desktop 1280 + mobile 390).
-- [ ] `tsc`, `lint` and `check:layout` clean.
+## Finding: coffee is in the catalog but filed under "Endulzantes"
+The user asked to "include coffee in the catalog". It is already there — but effectively invisible:
+
+| ref | name | category | price | images |
+| --- | --- | --- | --- | --- |
+| `CAF-001` | Café Grano | **Endulzantes** ✗ | $9.07 / lb | 0 |
+| `CAF-002` | Café Polvo | **Endulzantes** ✗ | $9.07 / lb | 0 |
+| `CHO-011` | Choco Café | Cacao & Chocolates ✓ | $9.99 / lb | 0 |
+
+Nobody browsing the store finds coffee: both products sit in a 5-product **Endulzantes** category, and the taxonomy has no Café category at all. Proposal: create a **Café** category, move `CAF-001`/`CAF-002` into it, and give it an icon in `lib/category-icons.ts` (the homepage grid and the tienda sidebar share that map). The 0-images gap is ticket 22.
+
+## Acceptance
+- [ ] `/contacto` renders the value props, the **two Riobamba sucursales** with real addresses and phones, and the contact channels.
+- [ ] WhatsApp and email links point at the real numbers / `hola@wasigranel.com`.
+- [ ] The Quito branch is gone; nationwide Servientrega shipping is stated instead.
+- [ ] The footer's invented phone and `Riobamba · Quito` are corrected.
+- [ ] Map / "Cómo llegar" links use the correct Places IDs; the "Jatunwasi" embed is gone.
+- [ ] The contact form has a real receiver or an honest WhatsApp path — **no fake success state**.
+- [ ] The privacy modal opens from the consent checkbox.
+- [ ] Browser-verified per `AGENTS.md` (desktop 1280 + mobile 390); `tsc`, `lint`, `check:layout` clean.
 
 ## Open questions
-1. **Real contact data** for each sucursal: WhatsApp/phone, email, street address, and opening hours. Nothing on this page can ship without it — and the footer's fake `+593 9 8765 4321` should be corrected in the same pass.
-2. **How many sites?** Riobamba (matriz) + Quito (La Floresta)? And what is "San Andrés"?
-3. **Which store facts are true** — live coffee grinding, returnable containers, bike parking, bike-messenger delivery, nut-butter bar, online pickup point, "200+ bulk references"? Only the true ones ship.
-4. **The form's receiver**: extend the existing Google Apps Script (Sheets), send an email, or make the button open WhatsApp with the message pre-filled? (Recommendation: reuse the Apps Script, since it already works for the newsletter.)
-5. **FAQ (mobile only)**: the mockup shows "¿Hacen envíos a todo el Ecuador?" — what are the rest, or should the FAQ be dropped?
-6. **Privacy**: the form has a consent checkbox referencing "las políticas de privacidad de Wasi Granel", and the footer has a "Legal" column — but no privacy page exists. Do we need one for that checkbox to be honest?
+1. **Which cellphone belongs to which store**, or should both be shown on both cards?
+2. **Real opening hours** for each store (all three candidate sets are unverified).
+3. **Form receiver**: Resend (needs a verified sending domain + an API key stored as a secret) or WhatsApp pre-filled? See the analysis in the conversation.
+4. **Café category**: create one and move the two coffee products (proposal above)?
+5. Is **"Molienda de café en vivo"** true? (They sell coffee, so it's plausible.)
