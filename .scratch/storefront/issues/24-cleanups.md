@@ -46,8 +46,14 @@ Both are leftovers from the ticket-12 price rework (the big price stopped using 
 
 The `use-toast` files are shadcn scaffolding; if nothing uses them, deleting them is cleaner than silencing the warning.
 
+### 5. Coffee is filed under "Endulzantes" (user-approved move)
+`CAF-001 Café Grano` and `CAF-002 Café Polvo` are live but effectively invisible: both sit in the 5-product **Endulzantes** category, and the taxonomy has no Café category at all, so nobody browsing the store can find the coffee.
+
+Do: create a **Café** category, move both products into it, and add an entry to `lib/category-icons.ts` (the homepage grid and the tienda sidebar share that map, so the new category needs an icon or it renders blank in both). The 0-images gap for these two is ticket 22.
+
 ## Acceptance
 - [ ] "Borrar filtros" clears every filter and the active-chips row disappears; covered by a gate test.
 - [ ] The dead `grams` / `suffix` code is gone and `lint` reports 0 warnings from our own files.
 - [ ] Ticket 16 is either re-scoped to real remaining work or closed with evidence.
+- [ ] Coffee has a Café category, both products moved, icon added.
 - [ ] `check:layout` stays green (27 passed, 1 skipped at time of writing).

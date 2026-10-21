@@ -17,7 +17,7 @@ Both stores are in **Riobamba**. **There is no Quito store** — Stitch invented
 | | Matriz | Sucursal |
 | --- | --- | --- |
 | address | **Guayaquil y Benalcázar 1815, 060111 Riobamba** | **Juan Montalvo y Av. José Veloz, esquina, Riobamba** |
-| phone | **0991475809** and **0990876620** (assignment per store still unconfirmed — see questions) | same two numbers |
+| phone | **0990876620** | **0991475809** |
 
 - **Shipping**: nationwide via **Servientrega**; the owner lives in Quito and wants delivery there — so Quito appears as a *destination we ship to*, never as a branch.
 - **Email**: `hola@wasigranel.com` (already in the footer).
@@ -32,7 +32,9 @@ Both stores are in **Riobamba**. **There is no Quito store** — Stitch invented
 - **Store features**: the mockup's chips ("Molienda de Café en vivo", "Taras automáticas", "Parqueadero de bicicletas", "Bicimensajería", "Barra de Cremas") are invented. Replace with **generic marketing lines, drafted for the user to review** (draft below).
 - **FAQ**: keep the card. The shipping answer is true — **Servientrega**, nationwide. Improve the wording.
 - **Privacy**: a **modal** with generated privacy wording — **no new page**.
-- **Contact form receiver**: undecided. The user has a Resend account and asked what email sending needs; the alternative is WhatsApp pre-filled. See questions.
+- **Contact form**: build the **UI only, left unconnected** (user decision — a multi-field form is a poor fit for a `wa.me` link, and the page already has a dedicated WhatsApp button). Wiring it is **ticket 25**. Until then the form must NOT claim success: it validates, then says it isn't live yet and points at the WhatsApp button.
+- **Phones**: 0990876620 → Matriz, 0991475809 → Sucursal.
+- **Coffee / Café category**: moved to ticket 24.
 
 ## Draft marketing lines (for review — replace the invented chips)
 Generic, safe, and true-by-default; swap or drop any that aren't accurate:
@@ -41,7 +43,7 @@ Generic, safe, and true-by-default; swap or drop any that aren't accurate:
 - "Envíos a todo el Ecuador con Servientrega"
 - "Pesaje exacto a granel"
 - "Productos naturales seleccionados"
-- Candidate, **needs confirmation**: "Molienda de café en vivo" (plausible — they sell Café Grano and Café Polvo)
+- **Confirmed true, needs rewording**: in-store coffee grinding — *"we have a molino and we tell people to come to grind it if you want"*. The user's note: *"molienda de café en vivo sounds weird"*. Draft alternatives: "Muele tu café en tienda" or "Servicio de molienda en tienda".
 
 ## Finding: coffee is in the catalog but filed under "Endulzantes"
 The user asked to "include coffee in the catalog". It is already there — but effectively invisible:
@@ -65,8 +67,5 @@ Nobody browsing the store finds coffee: both products sit in a 5-product **Endul
 - [ ] Browser-verified per `AGENTS.md` (desktop 1280 + mobile 390); `tsc`, `lint`, `check:layout` clean.
 
 ## Open questions
-1. **Which cellphone belongs to which store**, or should both be shown on both cards?
-2. **Real opening hours** for each store (all three candidate sets are unverified).
-3. **Form receiver**: Resend (needs a verified sending domain + an API key stored as a secret) or WhatsApp pre-filled? See the analysis in the conversation.
-4. **Café category**: create one and move the two coffee products (proposal above)?
-5. Is **"Molienda de café en vivo"** true? (They sell coffee, so it's plausible.)
+1. **Real opening hours for each store** — this is the last data gap. Three candidate sets exist and none is verified: the stub's "Lunes - Viernes: 9:00 - 19:00", and the mockup's two ("Lunes a Sábado: 08:30 – 19:30 / Domingos: 09:30 – 15:00" and "Lunes a Sábado: 09:00 – 20:00 / Domingos: 10:00 – 17:00").
+2. Café category → ticket 24. Form receiver → ticket 25.
