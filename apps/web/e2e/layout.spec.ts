@@ -255,34 +255,92 @@ test("tienda filter: clicking a category updates the URL (client interactivity)"
   await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })
 })
 
-test("weight modal: opens with custom step gr=50, kg/lb=0.5", async ({ page }) => {
-  await page.goto("/tienda?categoria=frutas-deshidratadas")
+test("quick view: canonical rate, refreshed design blocks, and exact-amount maths", async ({ page }) => {
+  await page.goto("/tienda?categoria=frutos-secos")
   await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })
-  // find a weight product (a card showing tier chips like '454g')
-  const weightCard = page
-    .locator('[data-testid="catalog-card"]')
-    .filter({ hasText: /\d+(g|kg)/ })
-    .first()
-  await expect(weightCard, "a weight product must show tier chips").toBeVisible()
-  await weightCard.getByRole("button", { name: /Personalizar/ }).click()
-  await page.getByRole("dialog").waitFor({ state: "visible", timeout: 5_000 })
-  const inp = page.locator("#custom-weight")
-  await expect(inp).toBeVisible()
-  expect(await inp.getAttribute("step"), "gr step = 50").toBe("50")
-  await page.selectOption('select[aria-label="Unidad"]', "kg")
-  expect(await inp.getAttribute("step"), "kg step = 0.5").toBe("0.5")
-  await page.selectOption('select[aria-label="Unidad"]', "lb")
-  expect(await inp.getAttribute("step"), "lb step = 0.5").toBe("0.5")
 
-  // modal must be closeable (regression: card onClick used to re-open it via portal bubbling)
+  const card = page
+    .locator('[data-testid="catalog-card"]')
+    .filter({ has: page.getByRole("heading", { name: "Almendras", exact: true }) })
+    .first()
+  await expect(card, "the Almendras card must render").toBeVisible()
+
+  // The canonical price AND its unit are visible on the store, not just in the CMS.
+  await expect(card.getByTestId("card-price")).toContainText("$5.99")
+  await expect(card.getByTestId("card-price")).toContainText("/ lb")
+
+  await card.click()
+  const dialog = page.getByRole("dialog")
+  await dialog.waitFor({ state: "visible", timeout: 5_000 })
+
+  // Blocks the refreshed Quick View must carry
+  await expect(dialog.getByTestId("modal-canonical-rate")).toContainText("/ lb")
+  await expect(dialog.getByText("Beneficios Clave")).toBeVisible()
+  await expect(dialog.getByText("Envíos 24h")).toBeVisible()
+  await expect(dialog.getByTestId("modal-gram-selector")).toBeVisible()
+  await expect(dialog.getByTestId("modal-add-to-cart")).toBeVisible()
+
+  // ... and the blocks the user dropped
+  await expect(dialog.getByText(/Empaque/i)).toHaveCount(0)
+  await expect(dialog.getByText(/Origen/i)).toHaveCount(0)
+  await expect(dialog.getByText(/4\.9/)).toHaveCount(0)
+
+  // REGRESSION: Almendras carries no weight-kind option, yet it must be buyable at ANY weight.
+  const input = dialog.locator("#custom-amount")
+  await expect(input, "weight-priced products must offer the exact-amount row").toBeVisible()
+  expect(await input.getAttribute("step"), "gr step = 50").toBe("50")
+
+  // 600 g of almendra = 600 × (5.99 / 453.592) = $7.92
+  await input.fill("600")
+  await dialog.getByRole("button", { name: "Aplicar" }).click()
+  await expect(dialog.getByTestId("modal-price")).toHaveText("$7.92")
+
+  // 50 g floor: we never sell 1 g
+  await input.fill("20")
+  await dialog.getByRole("button", { name: "Aplicar" }).click()
+  await expect(dialog.getByTestId("modal-amount-error")).toContainText("Mínimo 50 g")
+
+  // Exact MONEY is allowed too: "$10 de almendras"
+  await dialog.locator('select[aria-label="Unidad del gramaje exacto"]').selectOption("$")
+  await input.fill("10")
+  await dialog.getByRole("button", { name: "Aplicar" }).click()
+  await expect(dialog.getByTestId("modal-price")).toHaveText("$10.00")
+
+  // Quantity multiplies the selection
+  await dialog.getByRole("button", { name: "Añadir una unidad" }).click()
+  await expect(dialog.getByTestId("modal-qty")).toHaveText("2")
+  await expect(dialog.getByTestId("modal-price")).toHaveText("$20.00")
+
+  // Closeable: Escape, then the design's X (regression: the card's onClick used to re-open it)
   await page.keyboard.press("Escape")
-  await page.getByRole("dialog").waitFor({ state: "hidden", timeout: 3_000 })
-  expect(await page.getByRole("dialog").isVisible()).toBe(false)
-  // reopen via card click, then close with the X button
-  await weightCard.click()
-  await page.getByRole("dialog").waitFor({ state: "visible", timeout: 3_000 })
+  await dialog.waitFor({ state: "hidden", timeout: 3_000 })
+  await card.click()
+  await dialog.waitFor({ state: "visible", timeout: 3_000 })
   await page.locator('[data-slot="dialog-close"]').first().click()
-  await page.getByRole("dialog").waitFor({ state: "hidden", timeout: 3_000 })
+  await dialog.waitFor({ state: "hidden", timeout: 3_000 })
+})
+
+test("unit-priced product: plain numeric quantity, no weight pills", async ({ page }) => {
+  await page.goto("/tienda?q=Manzanilla")
+  await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })
+  const card = page
+    .locator('[data-testid="catalog-card"]')
+    .filter({ has: page.getByRole("heading", { name: /Manzanilla/ }) })
+    .first()
+  await card.click()
+  const dialog = page.getByRole("dialog")
+  await dialog.waitFor({ state: "visible", timeout: 5_000 })
+
+  await expect(dialog.locator("#unit-qty"), "unit products ask for a quantity").toBeVisible()
+  await expect(dialog.getByTestId("modal-gram-selector"), "unit products get no weight pills").toHaveCount(0)
+
+  const price = dialog.getByTestId("modal-price")
+  await expect(price).toHaveText("$1.25")
+  await dialog.locator("#unit-qty").fill("3")
+  await expect(price).toHaveText("$3.75")
+
+  await page.keyboard.press("Escape")
+  await dialog.waitFor({ state: "hidden", timeout: 3_000 })
 })
 
 test("price sort applies (canonical price field)", async ({ page }) => {

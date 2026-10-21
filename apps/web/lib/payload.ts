@@ -35,6 +35,8 @@ export type Product = {
   slug: string
   name: string
   description?: string | null
+  shortDescription?: string | null
+  benefits?: ({ text?: string | null } | null)[] | null
   category?: { id: number; slug?: string; name?: string } | null
   origin?: string | null
   price?: number | null
@@ -223,4 +225,88 @@ export function priceDisplay(p: Product): { amount: string; suffix: string } {
     return { amount: `$${Number(unit.price).toFixed(2)}`, suffix: unit.label ? `/${unit.label}` : "" }
   }
   return { amount: "", suffix: "" }
+}
+
+/* ——— Purchase-option model (ticket 12 v2) ————————————————————————————————————————
+ * The canonical `price` + `priceUnit` is the single source of truth; every option price derives
+ * from it. The options themselves are CMS data — seeded defaults, freely editable by hand.
+ */
+
+/** Minimum purchasable weight: we never sell 1 g. */
+export const MIN_GRAMS = 50
+
+export const fmtPrice = (n: number) => `$${n.toFixed(2)}`
+
+/** Unit label as shown to customers — always `lb`, never "libra". */
+export function unitLabel(u: PriceUnit | null | undefined): string {
+  if (u === "kg") return "kg"
+  if (u === "gr") return "100 g"
+  if (u === "unidad") return "unidad"
+  return "lb"
+}
+
+/** "500 g" / "1 kg" — used when an option carries no explicit label. */
+export function formatGrams(g: number): string {
+  const r = Math.round(g * 1000) / 1000
+  if (r >= 1000) return `${Number((r / 1000).toFixed(2))} kg`
+  return `${Number(r.toFixed(r < 10 ? 2 : 0))} g`
+}
+
+/** True when the canonical price is per weight (lb/kg/gr) — i.e. the product can be customised. */
+export function hasWeightPricing(p: Product): boolean {
+  return unitGrams(p.priceUnit) != null && typeof p.price === "number"
+}
+
+export function optionLabel(o: PurchaseOption): string {
+  const l = o.label?.trim()
+  if (l) return l
+  if (o.kind === "weight" && o.weightGrams) return formatGrams(o.weightGrams)
+  if (o.kind === "money" && o.amount != null) return fmtPrice(o.amount)
+  return "unidad"
+}
+
+/** Options for display: deduped (legacy data has genuine duplicate tiers) and ordered. */
+export function productOptions(p: Product): PurchaseOption[] {
+  const seen = new Set<string>()
+  const out: PurchaseOption[] = []
+  for (const o of p.purchaseOptions ?? []) {
+    const key = `${o.kind}:${o.weightGrams ?? ""}:${o.amount ?? ""}:${o.label ?? ""}`
+    if (seen.has(key)) continue
+    seen.add(key)
+    out.push(o)
+  }
+  return out.sort(
+    (a, b) => (a.weightGrams ?? 0) - (b.weightGrams ?? 0) || (a.amount ?? 0) - (b.amount ?? 0),
+  )
+}
+
+export const weightOptions = (p: Product) =>
+  productOptions(p).filter((o) => o.kind === "weight" && !!o.weightGrams)
+export const moneyOptions = (p: Product) =>
+  productOptions(p).filter((o) => o.kind === "money" && o.amount != null)
+export const unitOptions = (p: Product) => productOptions(p).filter((o) => o.kind === "unit")
+
+/** Grams a money amount buys at the canonical rate (null when not weight-priced). */
+export function gramsForMoney(p: Product, amount: number): number | null {
+  const rate = ratePerGram(p)
+  return rate ? amount / rate : null
+}
+
+/** Cheapest purchasable money amount — the 50 g floor at the canonical rate. */
+export function minMoney(p: Product): number | null {
+  const rate = ratePerGram(p)
+  return rate ? Number((rate * MIN_GRAMS).toFixed(2)) : null
+}
+
+/** Equivalent rates for the Quick View badge. */
+export function equivalentRates(p: Product): { per100g: number; perKg: number } | null {
+  const rate = ratePerGram(p)
+  if (!rate) return null
+  return { per100g: Number((rate * 100).toFixed(2)), perKg: Number((rate * 1000).toFixed(2)) }
+}
+
+/** Canonical rate as a display string, e.g. "$5.99 / lb". */
+export function canonicalRateLabel(p: Product): string | null {
+  if (typeof p.price !== "number") return null
+  return `${fmtPrice(p.price)} / ${unitLabel(p.priceUnit)}`
 }

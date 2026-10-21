@@ -3,24 +3,40 @@
 import { useMemo, useState } from "react"
 import Image from "next/image"
 import Markdown from "react-markdown"
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { optionPrice, priceDisplay, productImageUrl, ratePerGram, type Product, type PurchaseOption } from "@/lib/payload"
+import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { useFavorite } from "@/lib/favorites"
+import {
+  MIN_GRAMS,
+  canonicalRateLabel,
+  fmtPrice,
+  formatGrams,
+  gramsForMoney,
+  hasWeightPricing,
+  minMoney,
+  moneyOptions,
+  optionLabel,
+  optionPrice,
+  productImageUrl,
+  ratePerGram,
+  unitGrams,
+  weightOptions,
+  type Product,
+  type PurchaseOption,
+} from "@/lib/payload"
 
-const LB_G = 453.592
-const EMPTY: PurchaseOption[] = []
-type Unit = "gr" | "kg" | "lb"
-
-/** gr steps 50g; kg/lb step 0.5 (halves) per spec. */
-const stepFor = (u: Unit) => (u === "gr" ? 50 : 0.5)
-const minFor = (u: Unit) => (u === "gr" ? 50 : 0.5)
-const toGrams = (v: number, u: Unit) => (u === "gr" ? v : u === "kg" ? v * 1000 : v * LB_G)
-const fmtW = (g: number) => (g >= 1000 ? `${g / 1000}kg` : `${g}g`)
+/** Exact-amount units: weight in g / lb / kg, or a money amount ("$10 de almendras"). */
+type AmountUnit = "gr" | "lb" | "kg" | "$"
+const UNIT_GLYPH: Record<AmountUnit, string> = { gr: "g", lb: "lb", kg: "kg", "$": "$" }
 
 /**
- * Stitch Quick View modal: image showcase left, content right (title, canonical price,
- * markdown description clamped behind "Leer más", gram pills + money options + custom
- * weight input, add-to-cart). Renders OUTSIDE the card (portal) so the card's onClick
- * can't re-open it on close.
+ * Stitch "Modal Detalle de Producto (Quick View)": image showcase left; on the right the category
+ * strip + close, title, price with the unit it refers to plus the canonical-rate badge, short + long
+ * description, "Beneficios Clave", the weight pills, an EXACT amount row (weight or money) and the
+ * quantity stepper + CTA, with the trust strip underneath.
+ *
+ * Deliberately absent (user decisions): origen, rating, and the "Empaque Eco" block (packaging
+ * belongs to the cart, ticket 14). Customisation is driven by the canonical price/unit, so every
+ * weight-priced product can be bought at ANY amount — not only those that happen to carry tiers.
  */
 export function WeightModal({
   product,
@@ -33,69 +49,83 @@ export function WeightModal({
   onOpenChange: (v: boolean) => void
   trigger: React.ReactNode
 }) {
-  const opts = product.purchaseOptions ?? EMPTY
-  const weightTiers = useMemo(
-    () =>
-      opts
-        .filter((o) => o.kind === "weight" && o.weightGrams)
-        .sort((a, b) => (a.weightGrams ?? 0) - (b.weightGrams ?? 0)),
-    [opts],
-  )
-  const moneyOpts = useMemo(() => opts.filter((o) => o.kind === "money" && o.amount != null), [opts])
-  const unitOpts = useMemo(() => opts.filter((o) => o.kind === "unit"), [opts])
-  const isWeight = weightTiers.length > 0
+  const [fav, toggleFav] = useFavorite(product.id)
+  const weightPriced = hasWeightPricing(product)
+  const weights = useMemo(() => weightOptions(product), [product])
+  const moneys = useMemo(() => moneyOptions(product), [product])
   const rate = ratePerGram(product)
+  const canonical = canonicalRateLabel(product)
+  const floorMoney = minMoney(product)
   const img = productImageUrl(product)
-  const base = priceDisplay(product)
 
-  const [tier, setTier] = useState<PurchaseOption | null>(weightTiers[0] ?? null)
-  const [picked, setPicked] = useState<PurchaseOption | null>(null)
-  const [unit, setUnit] = useState<Unit>("gr")
-  const [custom, setCustom] = useState<string>("")
-  const [unitChoice, setUnitChoice] = useState<PurchaseOption | null>(unitOpts[0] ?? null)
+  const [picked, setPicked] = useState<PurchaseOption | null>(weights[0] ?? moneys[0] ?? null)
+  const [customGrams, setCustomGrams] = useState<number | null>(null)
+  const [amount, setAmount] = useState("")
+  const [amountUnit, setAmountUnit] = useState<AmountUnit>("gr")
+  const [error, setError] = useState<string | null>(null)
   const [qty, setQty] = useState(1)
   const [descOpen, setDescOpen] = useState(false)
 
-  // custom input overrides the picked tier when entered
-  const grams = useMemo(() => {
-    const n = parseFloat(custom)
-    if (!isNaN(n) && n > 0) return toGrams(n, unit)
-    return tier?.weightGrams ?? null
-  }, [custom, unit, tier])
+  // Selected grams (a custom amount wins over a pill) — null for unit-priced products.
+  const grams = customGrams ?? (picked?.kind === "weight" ? (picked.weightGrams ?? null) : null)
+  const isMoney = picked?.kind === "money" && customGrams == null
 
-  const price = useMemo(() => {
-    if (isWeight) {
-      if (grams != null && rate != null) return `$${(rate * grams).toFixed(2)}`
-      if (tier) {
-        const tp = optionPrice(product, tier)
-        if (tp != null) return `$${tp.toFixed(2)}`
-      }
-      return base.amount
+  const unitPrice = (() => {
+    if (customGrams != null && rate != null) return rate * customGrams
+    if (picked) return optionPrice(product, picked)
+    return product.price ?? null
+  })()
+  const total = unitPrice != null ? unitPrice * qty : null
+
+  /** "/ 500 g", " (76 g)", " / unidad" — what the shown price refers to. */
+  const suffix = (() => {
+    if (customGrams != null) return ` / ${formatGrams(customGrams)}`
+    if (isMoney && picked?.amount != null) {
+      const g = gramsForMoney(product, picked.amount)
+      return g ? ` (${formatGrams(g)})` : ""
     }
-    if (picked) {
-      const p = optionPrice(product, picked)
-      if (p != null) return `$${(picked.kind === "unit" ? p * qty : p).toFixed(2)}`
-    }
-    if (unitChoice) return `$${((unitChoice.price ?? 0) * qty).toFixed(2)}`
-    return base.amount
-  }, [isWeight, grams, rate, tier, picked, product, unitChoice, qty, base.amount])
+    if (picked?.kind === "weight") return ` / ${optionLabel(picked)}`
+    if (!weightPriced) return ` / ${optionLabel(picked ?? { kind: "unit" })}`
+    return ""
+  })()
 
-  const suffix = isWeight
-    ? grams != null
-      ? fmtW(grams)
-      : base.suffix.replace(/^\s*\//, "")
-    : picked?.kind === "unit"
-      ? picked.label ?? ""
-      : unitChoice?.label ?? ""
-
+  const benefits = (product.benefits ?? []).map((b) => b?.text?.trim()).filter(Boolean) as string[]
+  const short = product.shortDescription?.trim() ?? ""
   const desc = product.description ?? ""
-  const descLong = desc.length > 170
+  const descLong = desc.length > 220
+
+  function applyAmount() {
+    const value = parseFloat(amount.replace(",", "."))
+    if (!Number.isFinite(value) || value <= 0) {
+      setError("Ingresa una cantidad válida.")
+      return
+    }
+    if (amountUnit === "$") {
+      const g = gramsForMoney(product, value)
+      if (g != null && g < MIN_GRAMS) {
+        setError(`Mínimo ${floorMoney != null ? fmtPrice(floorMoney) : `${MIN_GRAMS} g`} por pedido.`)
+        return
+      }
+      setPicked({ kind: "money", amount: value })
+      setCustomGrams(null)
+      setError(null)
+      return
+    }
+    const g = value * (unitGrams(amountUnit) ?? 1)
+    if (g < MIN_GRAMS) {
+      setError(`Mínimo ${MIN_GRAMS} g por pedido.`)
+      return
+    }
+    setCustomGrams(g)
+    setPicked(null)
+    setError(null)
+  }
 
   const pill = (active: boolean) =>
-    `py-2 rounded-xl text-xs transition-all active:scale-95 text-center ${
+    `py-2 rounded-xl text-xs border transition-all active:scale-95 text-center ${
       active
-        ? "bg-primary border border-[#e5ac00] text-foreground font-bold shadow-xs"
-        : "font-semibold bg-surface-container-low text-secondary border border-[#ead7c3] hover:bg-surface-container hover:text-on-surface"
+        ? "font-bold bg-primary border-[#e5ac00] text-on-primary shadow-xs"
+        : "font-semibold bg-surface-container-low text-secondary border-[#ead7c3] hover:bg-surface-container hover:text-on-surface"
     }`
 
   return (
@@ -103,183 +133,264 @@ export function WeightModal({
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent
         data-testid="product-modal"
+        showCloseButton={false}
         className="sm:max-w-3xl w-[calc(100vw-1.5rem)] max-h-[92vh] overflow-y-auto rounded-3xl border border-outline-variant p-0 gap-0"
       >
         <div className="flex flex-col md:flex-row">
-          {/* Left: image showcase + badges */}
-          <div className="md:w-1/2 relative bg-surface-container-low flex flex-col items-center justify-center p-6 sm:p-8 min-h-[240px] md:min-h-[420px] overflow-hidden">
+          {/* Left: image showcase */}
+          <div className="md:w-1/2 relative bg-surface-container-low flex flex-col items-center justify-center p-6 sm:p-8 min-h-[240px] md:min-h-[520px]">
             <span className="absolute top-4 left-4 z-10 bg-surface-container-lowest/95 backdrop-blur text-[11px] font-bold text-deep-amber px-3 py-1 rounded-full shadow-xs uppercase tracking-wider">
               {product.category?.name ?? ""}
             </span>
-            {img ? (
-              <Image
-                src={img}
-                alt={product.name}
-                width={420}
-                height={420}
-                className="w-full max-w-[320px] aspect-square object-cover rounded-2xl transition-transform duration-500"
-              />
-            ) : (
-              <div className="w-full max-w-[320px] aspect-square rounded-2xl bg-surface-container flex items-center justify-center text-sm text-muted-foreground">
-                Sin foto
-              </div>
-            )}
-            <span className="absolute bottom-4 left-4 text-[11px] font-semibold text-secondary bg-surface-container-lowest/90 px-2.5 py-1 rounded-full backdrop-blur">
-              {product.inStock === false ? "Agotado" : "En stock"}
-            </span>
-          </div>
-
-          {/* Right: content */}
-          <div className="md:w-1/2 flex flex-col p-5 sm:p-6">
-            <DialogTitle className="font-headline text-xl sm:text-2xl text-on-surface font-bold leading-tight mb-2 pr-9">
-              {product.name}
-            </DialogTitle>
-
-            {/* Canonical price */}
-            <div className="flex items-baseline flex-wrap gap-2 mb-3">
-              <span className="font-headline text-2xl font-bold text-foreground">{price}</span>
-              {suffix && <span className="text-xs font-semibold text-muted-foreground">/ {suffix}</span>}
-              {isWeight && rate != null && (
-                <span className="text-[11px] font-bold text-deep-amber bg-deep-amber/10 px-2 py-0.5 rounded-md">
-                  ${(rate * 100).toFixed(2)} / 100g
-                </span>
+            <button
+              type="button"
+              aria-label={`Añadir ${product.name} a favoritos`}
+              aria-pressed={fav}
+              onClick={toggleFav}
+              className={`fav-toggle absolute bottom-4 left-4 z-10 w-9 h-9 rounded-full bg-surface-container-lowest/90 backdrop-blur flex items-center justify-center shadow-xs active:scale-90 transition-all ${
+                fav ? "text-destructive" : "text-secondary hover:text-destructive"
+              }`}
+            >
+              <span className="material-symbols-outlined text-[20px]">{fav ? "favorite" : "favorite_border"}</span>
+            </button>
+            <div className="relative w-full max-w-[260px] aspect-square rounded-2xl overflow-hidden shadow-sm bg-white p-2 flex items-center justify-center">
+              {img ? (
+                <Image
+                  src={img}
+                  alt={product.name}
+                  width={520}
+                  height={520}
+                  className="w-full h-full object-cover object-bottom rounded-xl"
+                />
+              ) : (
+                <span className="text-xs text-muted-foreground">Sin foto</span>
               )}
             </div>
+          </div>
 
-            {/* Description (markdown, clamped) */}
-            {desc && (
-              <div className="mb-4">
-                <div
-                  className={`text-xs sm:text-sm text-secondary leading-relaxed [&_p]:mb-1.5 [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-0.5 ${
-                    descLong && !descOpen ? "line-clamp-3" : ""
-                  }`}
-                >
-                  <Markdown>{desc}</Markdown>
-                </div>
-                {descLong && (
+          {/* Right: details, amount selector, add to cart */}
+          <div className="md:w-1/2 p-6 sm:p-8 flex flex-col justify-between bg-surface-container-lowest">
+            <div>
+              <div className="flex items-center justify-between gap-4 mb-3">
+                <span className="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-primary" />
+                  {product.category?.name ?? ""}
+                </span>
+                <DialogClose asChild>
                   <button
                     type="button"
-                    onClick={() => setDescOpen((v) => !v)}
-                    className="mt-1 text-xs font-bold text-deep-amber hover:underline"
+                    aria-label="Cerrar"
+                    className="shrink-0 w-9 h-9 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface flex items-center justify-center active:scale-90 transition-all"
                   >
-                    {descOpen ? "Ver menos" : "Leer más"}
+                    <span className="material-symbols-outlined text-[20px]">close</span>
                   </button>
+                </DialogClose>
+              </div>
+
+              <DialogTitle className="font-headline text-2xl sm:text-3xl text-on-surface font-bold leading-tight mb-2">
+                {product.name}
+              </DialogTitle>
+
+              {/* Price + what it refers to + the canonical rate */}
+              <div className="flex items-baseline gap-2 mb-3 flex-wrap">
+                <span data-testid="modal-price" className="font-headline text-2xl sm:text-3xl font-bold text-foreground">
+                  {total != null ? fmtPrice(total) : "—"}
+                </span>
+                {suffix && <span className="text-xs font-semibold text-muted-foreground">{suffix}</span>}
+                {canonical && (
+                  <span
+                    data-testid="modal-canonical-rate"
+                    className="text-[11px] font-bold text-deep-amber bg-deep-amber/10 px-2 py-0.5 rounded-md ml-1"
+                  >
+                    {canonical}
+                  </span>
                 )}
               </div>
-            )}
 
-            {/* Selectors */}
-            {isWeight ? (
-              <div className="mb-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-secondary">Selecciona el peso:</span>
-                  <span className="text-[11px] font-semibold text-deep-amber">Pesa exacta</span>
-                </div>
-                <div className="grid grid-cols-4 gap-1.5 mb-3" id="modal-gram-selector">
-                  {weightTiers.map((t, ti) => (
+              {short && <p className="text-xs sm:text-sm text-secondary leading-relaxed mb-3">{short}</p>}
+
+              {desc && (
+                <div className="mb-4">
+                  <div
+                    className={`text-xs sm:text-sm text-secondary leading-relaxed [&_p]:mb-1.5 [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-0.5 ${
+                      descLong && !descOpen ? "line-clamp-3" : ""
+                    }`}
+                  >
+                    <Markdown>{desc}</Markdown>
+                  </div>
+                  {descLong && (
                     <button
-                      key={t.id ?? `t${ti}`}
                       type="button"
-                      onClick={() => {
-                        setTier(t)
-                        setPicked(null)
-                        setCustom("")
-                      }}
-                      className={pill(!custom && !picked && tier?.id === t.id)}
+                      onClick={() => setDescOpen((v) => !v)}
+                      className="mt-1 text-xs font-bold text-deep-amber hover:underline"
                     >
-                      {t.label ?? fmtW(t.weightGrams!)}
+                      {descOpen ? "Ver menos" : "Leer más"}
                     </button>
-                  ))}
+                  )}
                 </div>
+              )}
 
-                {/* Money options (e.g. $1 de almendras) */}
-                {moneyOpts.length > 0 && (
-                  <div className="grid grid-cols-4 gap-1.5 mb-3">
-                    {moneyOpts.map((m, i) => (
-                      <button
-                        key={m.id ?? i}
-                        type="button"
-                        onClick={() => {
-                          setPicked(picked === m ? null : m)
-                          setTier(null)
-                          setCustom("")
-                        }}
-                        className={pill(picked === m)}
-                      >
-                        ${m.amount}
-                      </button>
+              {benefits.length > 0 && (
+                <div className="bg-surface-container-low/80 border border-[#ead7c3] rounded-2xl p-3 mb-4">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-on-surface mb-2">
+                    <span className="material-symbols-outlined text-[16px] text-deep-amber">verified</span>
+                    Beneficios Clave
+                  </div>
+                  <ul className="flex flex-col gap-1.5 text-[11px] text-secondary font-medium">
+                    {benefits.map((b, i) => (
+                      <li key={b} className="flex items-center gap-2">
+                        <span className="text-xs shrink-0">{["⚡", "❤️", "🛡️"][i] ?? "•"}</span>
+                        <span>{b}</span>
+                      </li>
                     ))}
-                  </div>
-                )}
+                  </ul>
+                </div>
+              )}
 
-                {/* Custom weight: gr steps 50 / kg-lb halves */}
-                <div className="flex items-center justify-between gap-2 pt-3 border-t border-[#ead7c3]/60">
-                  <label htmlFor="custom-weight" className="text-[11px] font-bold text-secondary shrink-0">
-                    Gramaje exacto:
-                  </label>
-                  <div className="flex items-center gap-1.5 flex-1 max-w-[210px]">
-                    <input
-                      id="custom-weight"
-                      type="number"
-                      value={custom}
-                      min={minFor(unit)}
-                      step={stepFor(unit)}
-                      onChange={(e) => setCustom(e.target.value)}
-                      placeholder={unit === "gr" ? "220" : "0.5"}
-                      className="w-full py-1.5 pl-2.5 pr-6 text-xs font-bold text-on-surface bg-surface border border-[#d3c5ab] rounded-xl outline-none focus:border-deep-amber focus:ring-1 focus:ring-deep-amber/30 transition-all"
-                    />
-                    <select
-                      aria-label="Unidad"
-                      value={unit}
-                      onChange={(e) => {
-                        setUnit(e.target.value as Unit)
-                        setCustom("")
-                      }}
-                      className="py-1.5 text-xs font-bold text-on-surface bg-surface border border-[#d3c5ab] rounded-xl focus:border-deep-amber"
-                    >
-                      <option value="gr">g</option>
-                      <option value="kg">kg</option>
-                      <option value="lb">lb</option>
-                    </select>
+              {weightPriced ? (
+                <div className="mb-5">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-bold uppercase tracking-wider text-secondary">Selecciona el peso:</span>
+                    <span className="text-[11px] font-semibold text-deep-amber">Pesa exacta</span>
                   </div>
+                  <div id="modal-gram-selector" data-testid="modal-gram-selector" className="grid grid-cols-4 gap-1.5">
+                    {[...weights, ...moneys].map((o) => {
+                      const active = customGrams == null && picked === o
+                      return (
+                        <button
+                          key={o.id ?? `${o.kind}-${o.weightGrams ?? o.amount}`}
+                          type="button"
+                          onClick={() => {
+                            setPicked(o)
+                            setCustomGrams(null)
+                            setError(null)
+                          }}
+                          className={pill(active)}
+                        >
+                          {optionLabel(o)}
+                        </button>
+                      )
+                    })}
+                  </div>
+
+                  {/* Exact amount: weight (g/lb/kg) OR money ("$10 de almendras") */}
+                  <div className="flex items-center justify-between gap-2 mt-2.5 pt-2.5 border-t border-[#ead7c3]/60">
+                    <label htmlFor="custom-amount" className="text-[11px] font-bold text-secondary shrink-0">
+                      Gramaje exacto:
+                    </label>
+                    <div className="flex items-center gap-1.5 flex-1 max-w-[240px]">
+                      <div className="relative flex-1">
+                        <input
+                          id="custom-amount"
+                          type="number"
+                          inputMode="decimal"
+                          min={amountUnit === "$" ? (floorMoney ?? 1) : amountUnit === "gr" ? MIN_GRAMS : 0.1}
+                          step={amountUnit === "gr" ? 50 : amountUnit === "$" ? 1 : 0.5}
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
+                          onKeyDown={(e) => e.key === "Enter" && applyAmount()}
+                          placeholder={amountUnit === "gr" ? "220" : amountUnit === "$" ? "10" : "0.5"}
+                          className="w-full py-1.5 pl-2.5 pr-8 text-xs font-bold text-on-surface bg-surface border border-[#d3c5ab] rounded-xl outline-none focus:border-deep-amber focus:ring-1 focus:ring-deep-amber/30 transition-all"
+                        />
+                        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-muted-foreground pointer-events-none">
+                          {UNIT_GLYPH[amountUnit]}
+                        </span>
+                      </div>
+                      <select
+                        aria-label="Unidad del gramaje exacto"
+                        value={amountUnit}
+                        onChange={(e) => {
+                          setAmountUnit(e.target.value as AmountUnit)
+                          setAmount("")
+                          setError(null)
+                        }}
+                        className="py-1.5 text-xs font-bold text-on-surface bg-surface border border-[#d3c5ab] rounded-xl focus:border-deep-amber"
+                      >
+                        <option value="gr">g</option>
+                        <option value="lb">lb</option>
+                        <option value="kg">kg</option>
+                        <option value="$">$</option>
+                      </select>
+                      <button
+                        type="button"
+                        onClick={applyAmount}
+                        className="px-2.5 py-1 rounded-xl bg-surface-container hover:bg-primary hover:text-on-primary border border-[#ead7c3] text-xs font-bold active:scale-95 transition-all"
+                      >
+                        Aplicar
+                      </button>
+                    </div>
+                  </div>
+                  {error && (
+                    <p role="alert" data-testid="modal-amount-error" className="mt-1.5 text-[11px] font-semibold text-destructive">
+                      {error}
+                    </p>
+                  )}
                 </div>
-              </div>
-            ) : unitOpts.length > 0 ? (
-              <div className="mb-4">
-                <div className="text-xs font-bold uppercase tracking-wider text-secondary mb-2">Unidad</div>
-                <div className="grid grid-cols-3 gap-1.5 mb-3">
-                  {unitOpts.map((o, i) => (
-                    <button
-                      key={o.id ?? i}
-                      type="button"
-                      onClick={() => setUnitChoice(o)}
-                      className={pill(unitChoice?.id === o.id)}
-                    >
-                      {o.label ?? "unidad"}
-                    </button>
-                  ))}
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-bold text-secondary">Cantidad:</span>
+              ) : (
+                <div className="mb-5">
+                  <label htmlFor="unit-qty" className="text-xs font-bold uppercase tracking-wider text-secondary block mb-2">
+                    ¿Cuántas unidades?
+                  </label>
                   <input
+                    id="unit-qty"
                     type="number"
                     min={1}
                     value={qty}
                     onChange={(e) => setQty(Math.max(1, parseInt(e.target.value) || 1))}
-                    className="w-20 py-1.5 px-2 text-xs font-bold text-on-surface bg-surface border border-[#d3c5ab] rounded-xl"
+                    className="w-28 py-1.5 px-2.5 text-xs font-bold text-on-surface bg-surface border border-[#d3c5ab] rounded-xl focus:border-deep-amber outline-none"
                   />
                 </div>
-              </div>
-            ) : null}
+              )}
+            </div>
 
-            <button
-              type="button"
-              onClick={() => onOpenChange(false)}
-              className="mt-auto w-full py-3 rounded-2xl bg-foreground hover:bg-[#3a2e21] text-white font-bold text-sm active:scale-[0.98] transition-all shadow-md flex items-center justify-center gap-2"
-            >
-              <span className="material-symbols-outlined text-[18px]">shopping_bag</span>
-              Añadir al carrito
-            </button>
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center border border-[#d3c5ab] rounded-2xl bg-surface p-1 shadow-2xs">
+                  <button
+                    type="button"
+                    aria-label="Quitar una unidad"
+                    onClick={() => setQty((q) => Math.max(1, q - 1))}
+                    className="w-8 h-8 rounded-xl flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-90 transition-all"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">remove</span>
+                  </button>
+                  <span data-testid="modal-qty" className="w-9 text-center text-xs font-bold text-on-surface select-none">
+                    {qty}
+                  </span>
+                  <button
+                    type="button"
+                    aria-label="Añadir una unidad"
+                    onClick={() => setQty((q) => q + 1)}
+                    className="w-8 h-8 rounded-xl flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-90 transition-all"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">add</span>
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  data-testid="modal-add-to-cart"
+                  onClick={() => onOpenChange(false)}
+                  className="flex-1 py-3 px-5 rounded-2xl bg-foreground hover:bg-[#3a2e21] text-white text-xs font-bold flex items-center justify-center gap-2 active:scale-[0.98] transition-all shadow-md"
+                >
+                  <span className="material-symbols-outlined text-[20px]">shopping_bag</span>
+                  Agregar a mi canasta
+                </button>
+              </div>
+              <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[#ead7c3]/60 text-center text-[10px] text-secondary font-medium">
+                <span className="flex items-center justify-center gap-1">
+                  <span className="material-symbols-outlined text-[14px] text-deep-amber">local_shipping</span>
+                  Envíos 24h
+                </span>
+                <span className="flex items-center justify-center gap-1">
+                  <span className="material-symbols-outlined text-[14px] text-deep-amber">eco</span>
+                  Cero Plástico
+                </span>
+                <span className="flex items-center justify-center gap-1">
+                  <span className="material-symbols-outlined text-[14px] text-deep-amber">handshake</span>
+                  Trato Justo
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </DialogContent>
