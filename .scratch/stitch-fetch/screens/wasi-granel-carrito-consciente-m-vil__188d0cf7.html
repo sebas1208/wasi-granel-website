@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-container-lowest": "#ffffff", "on-secondary": "#ffffff", "surface-bright": "#fff8f4", "secondary-fixed-dim": "#d8c3b3", "tertiary-fixed": "#f1dfd0", "surface": "#fff8f4", "error": "#ba1a1a", "on-secondary-fixed-variant": "#534438", "surface-container-high": "#f9e5d0", "inverse-primary": "#fabd00", "primary-fixed-dim": "#fabd00", "surface-variant": "#f3dfcb", "on-surface-variant": "#4f4632", "on-surface": "#241a0d", "on-error-container": "#93000a", "inverse-surface": "#3a2e21", "on-secondary-container": "#726155", "primary": "#785a00", "on-background": "#241a0d", "tertiary": "#695c50", "on-primary-fixed": "#251a00", "on-secondary-fixed": "#251910", "outline": "#817660", "inverse-on-surface": "#ffeedd", "on-primary-container": "#6b4f00", "error-container": "#ffdad6", "surface-tint": "#785a00", "background": "#fff8f4", "secondary-container": "#f5dece", "secondary": "#6c5b4f", "primary-fixed": "#ffdf9d", "on-primary": "#ffffff", "surface-container-highest": "#f3dfcb", "primary-container": "#fcbf00", "tertiary-container": "#d7c6b7", "on-tertiary-fixed-variant": "#50453a", "on-tertiary-container": "#5e5246", "secondary-fixed": "#f5dece", "on-tertiary": "#ffffff", "surface-container-low": "#fff1e5", "tertiary-fixed-dim": "#d4c4b5", "on-primary-fixed-variant": "#5b4300", "on-tertiary-fixed": "#231a11", "surface-dim": "#ead7c3", "outline-variant": "#d3c5ab", "surface-container": "#ffebd6", "on-error": "#ffffff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: {}, fontFamily: { "headline": ["Plus Jakarta Sans"], "display": ["Plus Jakarta Sans"], "body": ["Plus Jakarta Sans"], "label": ["Plus Jakarta Sans"] }, fontSize: {} } } }</script><style>@layer base { html, body { width: 100vw; margin: 0; padding: 0; } body { overscroll-behavior: none; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style></head><body class="bg-surface font-body text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-4 flex items-center justify-between"><div class="flex items-center gap-3"><img alt="logo.png" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WgENj9DkRrUppwaLsVAjtwYUMyR0NUG4jm-47VLkukvJGUcDFLYD82eXoch7dy9KnhRFWPe_11WAO35zVqT9iNHmDBclYFUrtFQES2Ob3ceth5ez-VBiagROnwZc3W4wEVFcj3ej6qnWaXmzDuseDeEHB-NLmhj80ds-NefT7p8cLVVvBUiIezO2eGAjUwM4Fj81cHl4p63upZA2j666PdYnjShzS_RUgtB0s9EqH1jths16VlcRMaL1ustZPl8ANX4-v7nBsY624"/><div class="flex flex-col"><span class="text-xs font-label uppercase tracking-wider text-on-surface-variant font-bold">Wasi Granel</span><span class="text-sm font-headline font-semibold text-on-surface leading-tight">Carrito</span></div></div><div class="flex items-center gap-2"><button aria-label="Buscar" class="w-11 h-11 flex items-center justify-center rounded-full hover:bg-surface-variant transition-colors text-on-surface"><span class="material-symbols-outlined text-[22px]">search</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full pb-8">
+<!-- Header Bar -->
+<div class="px-4 py-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button aria-label="Volver a la tienda" class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-high transition-colors text-on-surface" type="button">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<h1 class="text-lg font-headline font-bold text-on-surface leading-tight tracking-tight">Tu Carrito Consciente</h1>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="inline-block w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="text-xs font-label text-on-surface-variant font-medium">3 productos seleccionados</span>
+</div>
+</div>
+</div>
+<span class="text-xs font-label uppercase tracking-widest font-bold px-2.5 py-1 rounded-full bg-surface-container text-on-secondary-container">
+      Zero Waste
+    </span>
+</div>
+<!-- Envío Gratis Progress Bar Banner -->
+<div class="mx-4 mt-2 mb-4 p-4 rounded-xl bg-surface-container-low shadow-sm">
+<div class="flex items-center justify-between gap-2 mb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">local_shipping</span>
+<span class="text-xs font-label font-bold text-on-surface">¡Te faltan $8.50 para Envío Gratis!</span>
+</div>
+<span class="text-xs font-label font-bold text-primary">72%</span>
+</div>
+<!-- Progress Track & Bar -->
+<div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 72%;"></div>
+</div>
+<div class="flex items-center gap-1 mt-2 text-[11px] text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px] text-primary">pin_drop</span>
+<span>Válido para Riobamba, Guano y valles aledaños.</span>
+</div>
+</div>
+<!-- Items List -->
+<div class="px-4 flex flex-col gap-3">
+<!-- Item 1: Mix de Frutos Secos -->
+<div class="p-3 rounded-xl bg-surface-container-lowest shadow-sm flex gap-3 relative">
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container relative">
+<img alt="Mix de Frutos Secos" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1WkQ8yYlMHyBlFD1XHPpp5Heyd-pFczthgSDaRf4Rc0l3qBe5j64PZCLSK-PCHabngc28zvQ-abWqOLEoLEfhKygBHtWAf2wspf6js9Q7HWz4Q5rBm3iz_2QSuKHlHQWK7VLSc1Wyetjz8-sAWsinsF1ERhTXy6qjQYfBXVRobWKy7hJXGLzyNtTMKRLG4FSLhuR3UXWUyzdfXwwOF35wDLkmnS9RD6oDUqr3G6uNjcR9a7iH2j_QMqjoyg"/>
+<span class="absolute bottom-1 left-1 px-1.5 py-0.5 rounded text-[9px] font-bold bg-primary-container text-on-primary-container leading-none">
+          Retornable
+        </span>
+</div>
+<div class="flex-1 flex flex-col justify-between min-w-0">
+<div class="pr-6">
+<span class="text-[10px] font-label font-bold uppercase tracking-wider text-on-surface-variant">Mezclas</span>
+<h2 class="text-sm font-headline font-bold text-on-surface truncate">Mix de Frutos Secos</h2>
+<p class="text-xs text-on-surface-variant truncate mt-0.5">Frasco de Vidrio Retornable (500g)</p>
+</div>
+<button aria-label="Eliminar producto" class="absolute top-3 right-3 text-on-surface-variant hover:text-error transition-colors p-1" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+<div class="flex items-center justify-between mt-2 pt-1">
+<div class="flex items-center rounded-lg bg-surface-container-low px-1 py-0.5">
+<button aria-label="Disminuir cantidad" class="w-7 h-7 flex items-center justify-center text-on-surface active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[15px]">remove</span>
+</button>
+<span class="w-7 text-center text-xs font-headline font-bold text-on-surface">1</span>
+<button aria-label="Aumentar cantidad" class="w-7 h-7 flex items-center justify-center text-on-surface active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[15px]">add</span>
+</button>
+</div>
+<span class="text-sm font-headline font-bold text-on-surface">$9.00</span>
+</div>
+</div>
+</div>
+<!-- Item 2: Almendras Naturales -->
+<div class="p-3 rounded-xl bg-surface-container-lowest shadow-sm flex gap-3 relative">
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container">
+<img alt="Almendras Naturales Seleccionadas" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1UUq0YwodvB4YTa_edrXcIQMX8A06lfvV68pC0bpYij4-MhPv_jAN9BurwbLE1OaKmGj0WEqDCBjSE0RwD-2wG29Ekl0vaMNM1sJsu_vWnUfYliPh_FjHnO-HTBRoTNwHpqR2jSw2naxS_nlSu10mWhmEkDT_LTmtDsL1JjYoA0CB_ebGFoE-wEJTBJo3Rja2c3fUiTOSP7ZVbAOkk710YK9JUdVhaZHTVLc3vBirekYGrHe0-WOhRFqvU"/>
+</div>
+<div class="flex-1 flex flex-col justify-between min-w-0">
+<div class="pr-6">
+<span class="text-[10px] font-label font-bold uppercase tracking-wider text-on-surface-variant">Frutos Secos</span>
+<h2 class="text-sm font-headline font-bold text-on-surface truncate">Almendras Naturales</h2>
+<p class="text-xs text-on-surface-variant truncate mt-0.5">Bolsa Kraft Compostable (250g)</p>
+</div>
+<button aria-label="Eliminar producto" class="absolute top-3 right-3 text-on-surface-variant hover:text-error transition-colors p-1" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+<div class="flex items-center justify-between mt-2 pt-1">
+<div class="flex items-center rounded-lg bg-surface-container-low px-1 py-0.5">
+<button aria-label="Disminuir cantidad" class="w-7 h-7 flex items-center justify-center text-on-surface active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[15px]">remove</span>
+</button>
+<span class="w-7 text-center text-xs font-headline font-bold text-on-surface">1</span>
+<button aria-label="Aumentar cantidad" class="w-7 h-7 flex items-center justify-center text-on-surface active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[15px]">add</span>
+</button>
+</div>
+<span class="text-sm font-headline font-bold text-on-surface">$7.60</span>
+</div>
+</div>
+</div>
+<!-- Item 3: Trufas de Cacao Puro -->
+<div class="p-3 rounded-xl bg-surface-container-lowest shadow-sm flex gap-3 relative">
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container">
+<img alt="Trufas de Cacao Puro 70%" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1Xj3NOrDIsuB0VNj72BVOm0cKqJx3-w6_Qe-WFVAf5oxNobTiZI55qE_LHVgNDYbGV0DPRq7nXYwZ1Fo_2V1Gm5n6yxrwYpXfFyaa7_v9aZhnkR3BDwb1Nzy45155hCvJJU6WjoOO5GleAW-ZWXJFGeaCO6iBfEC0ZqDA-m3M6BNJfAlimHq5AQbtNI50M-_ml2ICgZk_jygSIstm3VPY4mVKBZJm_X4yrZOo4o9G2Yz5aop4-Yk0kYfxD-"/>
+</div>
+<div class="flex-1 flex flex-col justify-between min-w-0">
+<div class="pr-6">
+<span class="text-[10px] font-label font-bold uppercase tracking-wider text-on-surface-variant">Dulces Conscientes</span>
+<h2 class="text-sm font-headline font-bold text-on-surface truncate">Trufas de Cacao Puro 70%</h2>
+<p class="text-xs text-on-surface-variant truncate mt-0.5">Caja Reutilizable (150g)</p>
+</div>
+<button aria-label="Eliminar producto" class="absolute top-3 right-3 text-on-surface-variant hover:text-error transition-colors p-1" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+<div class="flex items-center justify-between mt-2 pt-1">
+<div class="flex items-center rounded-lg bg-surface-container-low px-1 py-0.5">
+<button aria-label="Disminuir cantidad" class="w-7 h-7 flex items-center justify-center text-on-surface active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[15px]">remove</span>
+</button>
+<span class="w-7 text-center text-xs font-headline font-bold text-on-surface">1</span>
+<button aria-label="Aumentar cantidad" class="w-7 h-7 flex items-center justify-center text-on-surface active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[15px]">add</span>
+</button>
+</div>
+<span class="text-sm font-headline font-bold text-on-surface">$5.20</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sección de Impacto & Envases Conscientes -->
+<div class="mx-4 mt-5 p-4 rounded-xl bg-surface-container-high shadow-sm">
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-on-primary-container text-[18px]">recycling</span>
+</div>
+<div>
+<h3 class="text-xs font-headline font-bold text-on-surface leading-snug">Envases Retornables Wasi</h3>
+<p class="text-[11px] text-on-secondary-container mt-0.5">+ $1.00 depósito (100% reembolsable al devolver tu frasco)</p>
+</div>
+</div>
+<!-- Conscious Switch (Checked) -->
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+<input checked="" class="sr-only peer" id="returnable-toggle" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface peer-checked:bg-primary-container after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary-container after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+</label>
+</div>
+<!-- Andean Conscious Badge note -->
+<div class="mt-3 pt-3 flex items-center gap-2 text-[11px] text-on-surface-variant bg-surface-container-lowest/60 rounded-lg p-2.5">
+<span class="material-symbols-outlined text-primary text-[16px] shrink-0">spa</span>
+<span class="leading-relaxed">Gracias por apoyar la compra al peso exacto y sin plásticos de un solo uso en Chimborazo.</span>
+</div>
+</div>
+<!-- Desglose y Resumen de Totales -->
+<div class="mx-4 mt-5 p-4 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-2.5">
+<div class="flex items-center justify-between text-xs text-on-surface-variant font-medium">
+<span>Subtotal granos y despensa</span>
+<span class="font-headline font-semibold text-on-surface">$21.80</span>
+</div>
+<div class="flex items-center justify-between text-xs text-on-surface-variant font-medium">
+<span class="flex items-center gap-1">
+        Gestión retornable / envases
+        <span class="material-symbols-outlined text-[13px] text-primary" title="Reembolsable">info</span>
+</span>
+<span class="font-headline font-semibold text-on-surface">$1.00</span>
+</div>
+<div class="flex items-center justify-between text-xs text-on-surface-variant font-medium">
+<span>Envío local estimado</span>
+<span class="text-xs font-label text-primary font-bold">Calculado en checkout</span>
+</div>
+<div class="h-px bg-surface-container-high my-1"></div>
+<div class="flex items-baseline justify-between pt-1">
+<div>
+<span class="text-xs font-label font-bold uppercase tracking-wider text-on-surface-variant">Total estimado</span>
+<p class="text-[10px] text-on-surface-variant">Impuestos locales incluidos</p>
+</div>
+<span class="text-2xl font-headline font-bold text-on-surface tracking-tight">$22.80</span>
+</div>
+</div>
+<!-- Acciones Principales -->
+<div class="px-4 mt-6 flex flex-col gap-2.5">
+<button class="w-full h-13 py-3.5 px-6 rounded-xl bg-primary-container text-on-primary-container font-headline font-bold text-sm tracking-wide shadow-md flex items-center justify-center gap-2 hover:opacity-95 active:scale-[0.99] transition-all" type="button">
+<span>Continuar a Checkout</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+<a class="w-full py-2.5 text-center text-xs font-label font-bold text-on-secondary-container hover:text-on-surface transition-colors flex items-center justify-center gap-1.5" href="#">
+<span class="material-symbols-outlined text-[16px]">storefront</span>
+<span>Continuar explorando la despensa</span>
+</a>
+</div>
+</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/80 backdrop-blur-xl shadow-[0_-2px_12px_rgba(36,26,13,0.04)]" data-active-classes="text-primary font-bold"><div class="h-16 px-4 flex items-center justify-around"><a class="flex flex-col items-center justify-center w-14 h-11 text-on-surface-variant hover:text-on-surface transition-colors" data-path="inicio" href="#"><span class="material-symbols-outlined text-[24px]">home</span><span class="text-[11px] font-label font-medium mt-0.5">Inicio</span></a><a class="flex flex-col items-center justify-center w-14 h-11 text-on-surface-variant hover:text-on-surface transition-colors" data-path="tienda" href="#"><span class="material-symbols-outlined text-[24px]">storefront</span><span class="text-[11px] font-label font-medium mt-0.5">Tienda</span></a><a aria-current="page" class="relative flex flex-col items-center justify-center w-14 h-11 transition-colors text-primary font-bold" data-path="carrito" href="#"><span class="material-symbols-outlined text-[24px]">shopping_bag</span><span class="absolute top-0.5 right-2 min-w-[18px] h-[18px] px-1 bg-primary-container text-on-primary-container text-[10px] font-bold rounded-full flex items-center justify-center leading-none shadow-[0_1px_4px_rgba(36,26,13,0.12)]">3</span><span class="text-[11px] font-label font-medium mt-0.5">Carrito</span></a><a class="flex flex-col items-center justify-center w-14 h-11 text-on-surface-variant hover:text-on-surface transition-colors" data-path="perfil" href="#"><span class="material-symbols-outlined text-[24px]">account_circle</span><span class="text-[11px] font-label font-medium mt-0.5">Perfil</span></a></div></nav></body></html>

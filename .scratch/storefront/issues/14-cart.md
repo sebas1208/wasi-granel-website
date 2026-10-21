@@ -1,13 +1,48 @@
-# 14: Side cart with weight-tier lines
+# 14: Side cart — drawer on desktop, full-screen on mobile
 
-**What to build:** Build the cart as a client-side side cart (from "Con Carrito Lateral Interactivo"), holding cart lines of product + weight tier + quantity, with line totals and an order total. Persist cart state client-side; the Order persistence + "Enviar por WhatsApp" handoff is out of scope (later feature, needs Payload).
+**What to build:** The cart, from the two Stitch screens: **"Con Carrito Lateral Interactivo"** (desktop, a side drawer) and **"Carrito Consciente Móvil"** (mobile, a full page). Real lines produced by the add-to-cart actions of tickets 12/13, quantity steppers, line removal, live totals, and the navbar badge wired to real state.
 
-**Blocked by:** 13 (product detail / add-to-cart produces cart lines).
+**Blocked by:** 13 (closed — add-to-cart already produces real cart lines).
 
-**Status:** ready-for-agent
+**Status:** in progress — scope agreed with the user 2026-10-21.
 
-- [ ] The side cart opens from the navbar/catalog and lists lines with product, tier, quantity, and line subtotal.
-- [ ] Quantities can be adjusted and lines removed; total updates live.
-- [ ] Cart state survives navigation within the session (client-side).
-- [ ] The cart is demonstrably populated from the add-to-cart actions of tickets 12/13.
-- [ ] `next build`/`next lint` pass.
+## Design references (refetched 2026-10-21, `updateTime` current)
+- Desktop: `.scratch/stitch-fetch/screens/wasi-granel-con-carrito-lateral-interactivo__5b04fb21.html`
+- Mobile: `.scratch/stitch-fetch/screens/wasi-granel-carrito-consciente-m-vil__188d0cf7.html` (generated later, at the user's request)
+
+Both are the source of truth. Where the mockups show something we have no data for, the adaptation is recorded below.
+
+## Agreed scope
+
+| mockup element | decision |
+| --- | --- |
+| Drawer (desktop) / full page (mobile) | **Build both, responsively**: side drawer `max-w-[460px]` from lg; full-screen on mobile using the mobile mockup's card styling. |
+| Lines: image, category, name, delete, stepper, line price | **Build** — this is the core. |
+| Navbar cart badge + counter | **Build** — wire the real count (today it is `const cartCount = 0`, hardcoded, and the cart button links to `/tienda`). |
+| Packaging — per-line label ("Frasco de Vidrio Retornable (500g)") **and** the cart-level "Envases Retornables Wasi" toggle + $1.00 fee | **Removed** (user decision, consistent with ticket 12). No packaging data exists in the CMS anyway (0/278 products carry a packaging field). |
+| Tax — "Impuestos locales incluidos" | **Removed.** `taxRate` is null on all 278 products, so there is nothing to show. |
+| Free-shipping progress bar ("¡Te faltan $8.50 para Envío Gratis!", 72%, zone note) | **Built but gated OFF and left unconnected** (user decision — not shipping with it). The component exists behind a flag, takes the threshold as a prop, and renders nothing. The threshold is still an unset business number — see ticket 23. |
+| "Continuar a Checkout" CTA | **Not functional in this ticket.** Checkout is **ticket 23** (orders + WhatsApp handoff + payment method), built after this one. |
+| "Continuar explorando la despensa" | Build — closes the drawer / returns to the catalog. |
+| Mobile bottom nav (Inicio / Tienda / Carrito / Perfil) | **Not built** — the app uses the top nav everywhere (deviation already flagged in ticket 12). Revisit with ticket 23. |
+
+## Change list
+1. **`lib/cart.ts`** — add `updateQty(id, qty)` and `removeLine(id)`. The store already has `CartLine`, `addToCart` (dedupes by product + option), `clearCart`, `cartTotal`, `cartCount`, `useCartLines`, `useCartCount`, `onCartAdd` and localStorage persistence.
+2. **`CartProvider`** (new, client) — mounted **once in the root layout** so the drawer is global; owns the open state and renders `<CartDrawer>` + `<CartToast>`. Removes the current per-page `<CartToast />`. The drawer renders as a **portal sibling**, never inside the navbar button — an overlay nested in a clickable parent re-opens on close (portal events bubble through the React tree).
+3. **`CartDrawer`** (new) — on the existing Radix `components/ui/sheet.tsx` (`side="right"`), which brings the focus trap, Escape handling, overlay and portal for free. Styled to the mockups; full-screen on mobile.
+4. **`FreeShippingBar`** (new) — built to the mockup, gated off (see table).
+5. **`components/navigation.tsx`** — real badge count, cart button opens the drawer (desktop and the mobile panel).
+6. **Empty state** — not in either mockup; design one (icon + "Tu carrito está vacío" + a link back to `/tienda`).
+7. **Tests** — extend `e2e/layout.spec.ts`: drawer opens/closes (Escape and the X), a card add produces a line, stepper and remove update it, totals and the badge update live, state survives navigation, empty state renders; desktop 1280 + mobile 390.
+
+**Not URL-driven, deliberately.** The `url-driven-overlays` skill applies to overlays that must be *shareable*; nobody shares their cart. Local state is the right call here.
+
+## Acceptance
+- [ ] The cart opens from the navbar and lists lines with product, chosen option, quantity and line subtotal.
+- [ ] Quantities can be adjusted and lines removed; totals and the navbar badge update live.
+- [ ] Cart state survives navigation within the session (and a reload).
+- [ ] The cart is demonstrably populated by the real add-to-cart actions of tickets 12/13 — not seeded data.
+- [ ] No packaging, no tax line, no free-shipping bar anywhere in the rendered cart.
+- [ ] Empty state renders correctly.
+- [ ] Browser-verified per `AGENTS.md`: `check:layout` green at desktop 1280 + mobile 390, with new gate tests.
+- [ ] `tsc` and `lint` clean.
