@@ -34,3 +34,8 @@ next-env.d.ts
 
 # catalog docx extraction — heavy, regenerable from the source .docx (ticket 04)
 .scratch/storefront/catalog-docx/images/
+
+# playwright artifacts — test output, never committed (one file had been committed by accident,
+# which made every `check:layout` run dirty the working tree)
+test-results/
+playwright-report/

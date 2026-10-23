@@ -5,32 +5,35 @@ import { PrivacyModal } from "./privacy-modal"
 import { STORE, whatsappLink } from "@/lib/store-info"
 
 /**
- * Contact form from the "Contacto y Sucursales" mockup.
+ * The contact form from the "Contacto y Sucursales" mockup — its field ids, labels, spacing and input
+ * styling are ported as-is.
  *
  * The receiver is NOT wired yet — that is ticket 25 (the owner has a Resend account; the sending
- * domain needs verifying first). Until then this form must never claim the message was received:
- * it validates properly, and a valid submit lands in an honest "not connected yet" state that points
- * at the store's real WhatsApp channel. No "¡Mensaje recibido con éxito!" over nothing.
+ * domain needs verifying first). The mockup reveals a hidden "¡Mensaje recibido con éxito!" block on
+ * submit, but nothing is behind it, so this form must never claim the message was received: it
+ * validates properly, and a valid submit lands in an honest "not connected yet" state that points at
+ * the store's real WhatsApp channel.
  */
-const CONSULTAS = [
-  "Información general de productos",
-  "Venta al por mayor / Negocios",
-  "Soy productor agroecológico",
-  "Talleres y charlas",
+const SUBJECTS = [
+  { v: "general", l: "Información General de Productos" },
+  { v: "mayor", l: "Venta al por mayor / Negocios" },
+  { v: "proveedor", l: "Soy Productor Agroecológico" },
+  { v: "talleres", l: "Talleres y Charlas" },
 ]
 
 type Errors = Partial<Record<"name" | "phone" | "email" | "message" | "consent", string>>
 
-const inputCls =
-  "w-full py-2.5 px-3.5 text-sm text-on-surface bg-surface border border-[#d3c5ab] rounded-xl outline-none focus:border-deep-amber focus:ring-1 focus:ring-deep-amber/30 transition-all placeholder:text-muted-foreground"
+const field =
+  "w-full px-4 py-3 rounded-xl bg-[#fff5ea] text-on-surface placeholder:text-outline/70 text-sm focus:outline-none focus:ring-2 focus:ring-[#fcbf00] border border-outline-variant/30 transition-all"
+const labelCls = "block font-label text-xs uppercase tracking-wider font-bold text-on-surface"
 
 export function ContactForm() {
   const [form, setForm] = useState({
     name: "",
     phone: "",
     email: "",
-    sucursal: STORE.sucursales[0].short,
-    consulta: CONSULTAS[0],
+    sucursal: STORE.sucursales[0].id,
+    subject: SUBJECTS[0].v,
     message: "",
     consent: false,
   })
@@ -61,177 +64,183 @@ export function ContactForm() {
     setSubmitted(true)
   }
 
+  const err = (k: keyof Errors, id: string) =>
+    errors[k] ? (
+      <p id={id} role="alert" data-testid={`error-${k}`} className="text-[11px] font-semibold text-error">
+        {errors[k]}
+      </p>
+    ) : null
+
   return (
-    <form data-testid="contact-form" onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
+    <form id="contact-form" data-testid="contact-form" onSubmit={onSubmit} noValidate className="space-y-5">
+      {/* Nombre y Teléfono */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="c-name" className="block text-xs font-bold text-secondary mb-1.5">
-            Nombre completo *
+        <div className="space-y-1.5">
+          <label className={labelCls} htmlFor="full-name">
+            Nombre Completo <span className="text-error">*</span>
           </label>
           <input
-            id="c-name"
+            className={field}
+            id="full-name"
             value={form.name}
             onChange={(e) => set("name", e.target.value)}
             aria-invalid={!!errors.name}
             aria-describedby={errors.name ? "err-name" : undefined}
             placeholder="Ej. Camila Morales"
-            className={inputCls}
+            type="text"
           />
-          {errors.name && (
-            <p id="err-name" role="alert" data-testid="error-name" className="mt-1 text-[11px] font-semibold text-destructive">
-              {errors.name}
-            </p>
-          )}
+          {err("name", "err-name")}
         </div>
 
-        <div>
-          <label htmlFor="c-phone" className="block text-xs font-bold text-secondary mb-1.5">
-            Teléfono / WhatsApp *
+        <div className="space-y-1.5">
+          <label className={labelCls} htmlFor="contact-phone">
+            Teléfono / WhatsApp <span className="text-error">*</span>
           </label>
           <input
-            id="c-phone"
-            type="tel"
+            className={field}
+            id="contact-phone"
             value={form.phone}
             onChange={(e) => set("phone", e.target.value)}
             aria-invalid={!!errors.phone}
             aria-describedby={errors.phone ? "err-phone" : undefined}
-            placeholder="Ej. 099 999 9999"
-            className={inputCls}
+            placeholder="Ej. +593 9 9999 9999"
+            type="tel"
           />
-          {errors.phone && (
-            <p id="err-phone" role="alert" data-testid="error-phone" className="mt-1 text-[11px] font-semibold text-destructive">
-              {errors.phone}
-            </p>
-          )}
+          {err("phone", "err-phone")}
         </div>
       </div>
 
-      <div>
-        <label htmlFor="c-email" className="block text-xs font-bold text-secondary mb-1.5">
-          Correo electrónico *
+      {/* Correo */}
+      <div className="space-y-1.5">
+        <label className={labelCls} htmlFor="contact-email">
+          Correo Electrónico <span className="text-error">*</span>
         </label>
         <input
-          id="c-email"
-          type="email"
+          className={field}
+          id="contact-email"
           value={form.email}
           onChange={(e) => set("email", e.target.value)}
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? "err-email" : undefined}
           placeholder="tu@correo.com"
-          className={inputCls}
+          type="email"
         />
-        {errors.email && (
-          <p id="err-email" role="alert" data-testid="error-email" className="mt-1 text-[11px] font-semibold text-destructive">
-            {errors.email}
-          </p>
-        )}
+        {err("email", "err-email")}
       </div>
 
+      {/* Sucursal + motivo. The mockup's options were Riobamba / Quito / Ambas / Nacionales;
+          Quito does not exist, so both real stores are listed. */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="c-sucursal" className="block text-xs font-bold text-secondary mb-1.5">
-            Sucursal de interés
+        <div className="space-y-1.5">
+          <label className={labelCls} htmlFor="location-select">
+            Sucursal de Interés
           </label>
-          <select id="c-sucursal" value={form.sucursal} onChange={(e) => set("sucursal", e.target.value)} className={inputCls}>
+          <select
+            className={field}
+            id="location-select"
+            value={form.sucursal}
+            onChange={(e) => set("sucursal", e.target.value)}
+          >
             {STORE.sucursales.map((s) => (
-              <option key={s.id} value={s.short}>
+              <option key={s.id} value={s.id}>
                 {s.short}
               </option>
             ))}
-            <option value="Ambas sedes">Ambas sedes</option>
-            <option value="Envíos nacionales">Envíos nacionales</option>
+            <option value="ambas">Ambas sedes</option>
+            <option value="nacional">Envíos Nacionales</option>
           </select>
         </div>
 
-        <div>
-          <label htmlFor="c-consulta" className="block text-xs font-bold text-secondary mb-1.5">
-            Tipo de consulta
+        <div className="space-y-1.5">
+          <label className={labelCls} htmlFor="subject-select">
+            Tipo de Consulta
           </label>
-          <select id="c-consulta" value={form.consulta} onChange={(e) => set("consulta", e.target.value)} className={inputCls}>
-            {CONSULTAS.map((c) => (
-              <option key={c} value={c}>
-                {c}
+          <select
+            className={field}
+            id="subject-select"
+            value={form.subject}
+            onChange={(e) => set("subject", e.target.value)}
+          >
+            {SUBJECTS.map((s) => (
+              <option key={s.v} value={s.v}>
+                {s.l}
               </option>
             ))}
           </select>
         </div>
       </div>
 
-      <div>
-        <label htmlFor="c-message" className="block text-xs font-bold text-secondary mb-1.5">
-          Tu mensaje *
+      {/* Mensaje */}
+      <div className="space-y-1.5">
+        <label className={labelCls} htmlFor="contact-message">
+          Tu Mensaje <span className="text-error">*</span>
         </label>
         <textarea
-          id="c-message"
+          className={field}
+          id="contact-message"
           rows={4}
           value={form.message}
           onChange={(e) => set("message", e.target.value)}
           aria-invalid={!!errors.message}
           aria-describedby={errors.message ? "err-message" : undefined}
           placeholder="Cuéntanos en qué podemos ayudarte o qué insumos estás buscando..."
-          className={`${inputCls} resize-y`}
         />
-        {errors.message && (
-          <p id="err-message" role="alert" data-testid="error-message" className="mt-1 text-[11px] font-semibold text-destructive">
-            {errors.message}
-          </p>
-        )}
+        {err("message", "err-message")}
       </div>
 
-      <div>
-        <label className="flex items-start gap-2.5 cursor-pointer">
-          <input
-            id="c-consent"
-            type="checkbox"
-            checked={form.consent}
-            onChange={(e) => set("consent", e.target.checked)}
-            aria-invalid={!!errors.consent}
-            className="mt-0.5 w-4 h-4 shrink-0 accent-[#785a00]"
-          />
-          <span className="text-[11px] text-secondary leading-relaxed">
-            Acepto el tratamiento de mis datos de contacto para recibir una respuesta a mi requerimiento, según el{" "}
-            <PrivacyModal>
-              <button type="button" data-testid="privacy-trigger" className="font-bold text-deep-amber underline hover:no-underline">
-                tratamiento de datos
-              </button>
-            </PrivacyModal>{" "}
-            de Wasi Granel.
-          </span>
+      {/* Consentimiento */}
+      <div className="flex items-start gap-2.5 pt-1">
+        <input
+          className="mt-1 w-4 h-4 rounded text-[#fcbf00] focus:ring-[#fcbf00] accent-[#fcbf00] cursor-pointer"
+          id="privacy-policy"
+          type="checkbox"
+          checked={form.consent}
+          onChange={(e) => set("consent", e.target.checked)}
+          aria-invalid={!!errors.consent}
+        />
+        <label className="text-xs text-on-surface-variant leading-relaxed" htmlFor="privacy-policy">
+          Acepto el tratamiento de mis datos de contacto para recibir una respuesta a mi requerimiento, según el{" "}
+          <PrivacyModal>
+            <button
+              type="button"
+              data-testid="privacy-trigger"
+              className="font-bold text-[#875d00] underline hover:no-underline"
+            >
+              tratamiento de datos
+            </button>
+          </PrivacyModal>{" "}
+          de Wasi Granel.
         </label>
-        {errors.consent && (
-          <p role="alert" data-testid="error-consent" className="mt-1 text-[11px] font-semibold text-destructive">
-            {errors.consent}
-          </p>
-        )}
       </div>
+      {err("consent", "err-consent")}
 
+      {/* Botón de envío */}
       <button
+        className="w-full py-3.5 px-6 rounded-xl bg-[#fcbf00] text-[#241a0d] font-headline font-bold text-xs uppercase tracking-wider hover:brightness-95 shadow-md transition-all flex items-center justify-center gap-2"
         type="submit"
         data-testid="contact-submit"
-        className="w-full sm:w-auto sm:self-start py-3 px-6 rounded-xl bg-[#fcbf00] hover:bg-[#fabd00] text-[#544738] font-bold text-sm flex items-center justify-center gap-2 shadow-md active:scale-[0.98] transition-all"
       >
-        <span className="material-symbols-outlined text-[18px]">send</span>
-        Enviar mensaje
+        <span className="material-symbols-outlined text-[19px]">send</span>
+        Enviar Mensaje
       </button>
 
-      {/* Honest interim state: the receiver is ticket 25. Never claim the message was received. */}
+      {/* The mockup reveals a hidden "¡Mensaje recibido con éxito!" block here. Nothing is behind it,
+          so this honest interim state replaces it until ticket 25 wires a real receiver. */}
       {submitted && (
         <div
           data-testid="contact-not-wired"
           role="status"
-          className="bg-surface-container-low border border-[#ead7c3] rounded-2xl p-4 flex items-start gap-3"
+          className="p-4 rounded-xl bg-secondary-container text-on-secondary-container flex items-start gap-3 border border-outline-variant/30"
         >
-          <span className="material-symbols-outlined text-[20px] text-deep-amber shrink-0">info</span>
-          <div className="text-xs text-secondary leading-relaxed">
-            <p className="font-bold text-on-surface mb-1">Este formulario todavía no está conectado.</p>
-            <p>
-              Mientras lo terminamos, escríbenos directamente por WhatsApp y te respondemos al toque.
-            </p>
+          <span className="material-symbols-outlined text-2xl text-[#875d00] shrink-0">info</span>
+          <div className="text-xs leading-relaxed">
+            <p className="font-bold">Este formulario todavía no está conectado.</p>
+            <p className="mt-0.5">Mientras lo terminamos, escríbenos directamente por WhatsApp.</p>
             <a
               href={whatsappLink(STORE.sucursales[0].whatsapp, "Hola Wasi Granel, quisiera hacer una consulta")}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-2 inline-flex items-center gap-1.5 font-bold text-deep-amber hover:underline"
+              className="mt-1.5 inline-flex items-center gap-1.5 font-bold text-[#875d00] hover:underline"
             >
               <span className="material-symbols-outlined text-[16px]">chat</span>
               Escribir por WhatsApp

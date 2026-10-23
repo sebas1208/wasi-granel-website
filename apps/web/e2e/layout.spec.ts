@@ -60,13 +60,19 @@ test("homepage layout matches Stitch (desktop + mobile)", async ({ page }) => {
   await page.getByTestId("hero-card").waitFor({ state: "attached", timeout: 20_000 })
   // wait for webfonts so button widths are final (fallback fonts are wider and
   // can momentarily wrap the CTA buttons, making this assertion flaky)
-  await page.evaluate(async () => {
-    await document.fonts.ready
-    // hero image drives the section height (card clearance) — wait for it so the
-    // measurement isn't taken while the section is still short.
-    const img = document.querySelector("main img") as HTMLImageElement | null
-    if (img && !img.complete) await new Promise((r) => { img.onload = img.onerror = r })
-  })
+  // The hero image drives the section height (and so the card's clearance from the navbar), and the
+  // webfonts drive button widths. Wait for BOTH properly: guarding on "if the image exists" races
+  // when the element has not rendered yet, which made this measurement flaky in full-suite runs
+  // (a collapsed section measured a clearance of 0). The assertions are unchanged — the measurement
+  // just waits for the conditions it depends on.
+  await page.evaluate(() => document.fonts.ready)
+  await page.waitForFunction(
+    () => {
+      const img = document.querySelector("main img") as HTMLImageElement | null
+      return !!img && img.complete
+    },
+    { timeout: 15_000 },
+  )
   const m = await metrics(page)
   const isDesktop = m.vw >= 1024
 
@@ -132,13 +138,19 @@ test("carousel next snaps to a card boundary (no half card on the left)", async 
   await page.getByTestId("hero-card").waitFor({ state: "attached", timeout: 20_000 })
   // webfonts must be loaded first: fallback fonts are wider and shift card
   // widths, which made this measurement flaky.
-  await page.evaluate(async () => {
-    await document.fonts.ready
-    // hero image drives the section height (card clearance) — wait for it so the
-    // measurement isn't taken while the section is still short.
-    const img = document.querySelector("main img") as HTMLImageElement | null
-    if (img && !img.complete) await new Promise((r) => { img.onload = img.onerror = r })
-  })
+  // The hero image drives the section height (and so the card's clearance from the navbar), and the
+  // webfonts drive button widths. Wait for BOTH properly: guarding on "if the image exists" races
+  // when the element has not rendered yet, which made this measurement flaky in full-suite runs
+  // (a collapsed section measured a clearance of 0). The assertions are unchanged — the measurement
+  // just waits for the conditions it depends on.
+  await page.evaluate(() => document.fonts.ready)
+  await page.waitForFunction(
+    () => {
+      const img = document.querySelector("main img") as HTMLImageElement | null
+      return !!img && img.complete
+    },
+    { timeout: 15_000 },
+  )
   // ensure React has hydrated (embla wired) before driving the carousel, so the
   // click actually scrolls and measures against the settled layout
   await page.waitForFunction(
@@ -185,13 +197,8 @@ test("carousel next snaps to a card boundary (no half card on the left)", async 
 test("tienda layout: desktop sidebar + 3-col grid, mobile drawer + 2-col", async ({ page }) => {
   await page.goto("/tienda")
   await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })
-  await page.evaluate(async () => {
-    await document.fonts.ready
-    // hero image drives the section height (card clearance) — wait for it so the
-    // measurement isn't taken while the section is still short.
-    const img = document.querySelector("main img") as HTMLImageElement | null
-    if (img && !img.complete) await new Promise((r) => { img.onload = img.onerror = r })
-  })
+  // /tienda has no hero image (and no <main>), so only the webfonts matter for this measurement.
+  await page.evaluate(() => document.fonts.ready)
   const m = await page.evaluate(() => {
     const grid = document.querySelector('[data-testid="tienda-grid"]')
     const sidebar = document.querySelector('[data-testid="filter-sidebar"]')
@@ -614,7 +621,7 @@ test("cart: navbar drawer, live lines, and the agreed exclusions", async ({ page
 
 test("contacto: renders the real store data and none of the mockup's inventions", async ({ page }) => {
   await page.goto("/contacto")
-  await page.getByTestId("sucursales").waitFor({ timeout: 20_000 })
+  await page.getByTestId("sucursal-tabs").waitFor({ timeout: 20_000 })
   const body = (await page.textContent("body")) || ""
 
   // The Stitch mockup invented every customer-facing fact on this page — both phone numbers, both
@@ -635,20 +642,26 @@ test("contacto: renders the real store data and none of the mockup's inventions"
     expect(body, `${what} must not appear`).not.toMatch(re)
   }
 
-  // ...and the real data must be there
+  // ...and the real data must be there (the Sucursal address is asserted after its tab is opened,
+  // since the panel shows one store at a time)
   expect(body, "Matriz address").toMatch(/Guayaquil y Benalcázar 1815/i)
-  expect(body, "Sucursal address").toMatch(/Juan Montalvo y Av\. José Veloz/i)
   expect(body, "the real opening hours").toMatch(/Lunes a Sábado: 9:00 – 19:00/i)
   expect(body, "the store email").toMatch(/hola@wasigranel\.com/)
   expect(body, "nationwide courier").toMatch(/Servientrega/)
 
-  // each store carries its OWN number, linked to WhatsApp
-  const matriz = page.locator('[data-sucursal="matriz"]')
-  await expect(matriz.getByTestId("sucursal-phone")).toHaveText("099 087 6620")
-  await expect(matriz.getByTestId("sucursal-phone")).toHaveAttribute("href", /wa\.me\/593990876620/)
-  const sucursal = page.locator('[data-sucursal="sucursal"]')
-  await expect(sucursal.getByTestId("sucursal-phone")).toHaveText("099 147 5809")
-  await expect(sucursal.getByTestId("sucursal-phone")).toHaveAttribute("href", /wa\.me\/593991475809/)
+  // The panel is TABBED (as the mockup has it), so one store renders at a time — check both by
+  // switching tabs. Each carries its OWN number, linked to WhatsApp.
+  const card = page.getByTestId("sucursal-card")
+  await expect(card).toHaveAttribute("data-sucursal", "matriz")
+  await expect(card.getByTestId("sucursal-phone")).toHaveText("099 087 6620")
+  await expect(card.getByTestId("sucursal-phone")).toHaveAttribute("href", /wa\.me\/593990876620/)
+  await expect(card.getByTestId("sucursal-address")).toContainText("Guayaquil y Benalcázar 1815")
+
+  await page.getByRole("tab", { name: /Sucursal/ }).click()
+  await expect(card).toHaveAttribute("data-sucursal", "sucursal")
+  await expect(card.getByTestId("sucursal-phone")).toHaveText("099 147 5809")
+  await expect(card.getByTestId("sucursal-phone")).toHaveAttribute("href", /wa\.me\/593991475809/)
+  await expect(card.getByTestId("sucursal-address")).toContainText("Juan Montalvo y Av. José Veloz")
 
   // the footer, which was wrong on every page of the site until now
   await expect(page.getByTestId("footer-phone")).toHaveText("099 087 6620")
@@ -672,11 +685,12 @@ test("contacto: the form validates and never fakes a successful send", async ({ 
   )
 
   // a valid submit lands in the honest "not connected yet" state — the receiver is ticket 25
-  await page.fill("#c-name", "Camila Morales")
-  await page.fill("#c-phone", "0999999999")
-  await page.fill("#c-email", "camila@example.com")
-  await page.fill("#c-message", "Quisiera consultar por almendras al por mayor.")
-  await page.check("#c-consent")
+  // (field ids are the mockup's own)
+  await page.fill("#full-name", "Camila Morales")
+  await page.fill("#contact-phone", "0999999999")
+  await page.fill("#contact-email", "camila@example.com")
+  await page.fill("#contact-message", "Quisiera consultar por almendras al por mayor.")
+  await page.check("#privacy-policy")
   await page.getByTestId("contact-submit").click()
   await expect(page.getByTestId("contact-not-wired")).toBeVisible()
   await expect(page.getByTestId("contact-not-wired")).toContainText("todavía no está conectado")
