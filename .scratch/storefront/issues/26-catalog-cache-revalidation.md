@@ -1,11 +1,23 @@
 # 26: Cache the catalog and invalidate it from Payload (webhook → on-demand revalidation)
 
+**Status:** **Done — closed 2026-10-23** (`develop` `526fa41`). **Not in production** and **not yet
+active**: the code is complete and verified, but the shared secret is not set on either platform yet,
+so the webhook is currently a silent no-op — see *To activate* at the bottom.
+
 **What to build:** Stop reading the catalog uncached, and stop relying on a timer. Prerender the
 storefront, tag the cached catalog reads, and have Payload tell the site when something changed so
 only the affected cache is busted.
 
 This closes the one decision ticket 16 parked: the homepage currently makes **three uncached Payload
 calls per request**. Correct at low traffic, wasteful at any real traffic.
+
+## Decisions taken (owner, 2026-10-23) — deliberately NOT what I first proposed
+
+| I proposed | Owner chose | Why |
+| --- | --- | --- |
+| A 1-hour safety-net revalidate, so a missed webhook self-heals | **No timer — the cache lives until invalidated** | The catalog barely changes, "at least until we introduce catalog existence". A missed webhook can be re-published or invalidated by hand. |
+| Per-entity tags (`product:<slug>`) so one edit doesn't bust all 278 products | **Coarse `catalog` tag** | Enough at this size; fine tags stay the upgrade path if the catalog grows. |
+| — | **Do it now** | On the free tier, every avoided CMS round-trip is the point. |
 
 ## Why this is possible (verified against the installed code, 2026-10-21)
 
@@ -34,8 +46,9 @@ this a small change rather than a sweep.
    instead of `no-store`. Coarse tag `catalog` for everything, plus per-entity tags
    (`product:<slug>`, `category:<slug>`) where the call knows its entity — a coarse tag alone busts all
    278 products on any single edit, which is fine now but would not be at 10× the catalog.
-   Keep a long `revalidate` (e.g. 3600) as a safety net: if a webhook is ever missed, the site
-   self-heals within the hour rather than serving stale content forever.
+   ~~Keep a long `revalidate` (e.g. 3600) as a safety net.~~ **NOT DONE — the owner rejected a timer:**
+   the cache now lives until it is invalidated. A missed webhook means the site keeps serving the old
+   catalog until someone calls the endpoint by hand or redeploys. That is the accepted trade.
 2. **Drop `force-dynamic` from `app/page.tsx`** so the homepage actually prerenders. That reverses part
    of the 16 fix — deliberately: 16 bought correctness at build time, this buys caching. The
    `isDynamicServerUsage` guard stays (it is still the right way to treat that sentinel).
@@ -50,19 +63,57 @@ this a small change rather than a sweep.
    time-based fallback, so landing the code before the secret cannot break anything.
 6. **Redeploy the CMS** (Coolify) to pick up the hooks — the container runs `payload migrate && next start`.
 
-## Acceptance
-- [ ] A product edited in Payload appears on the homepage **and** its tienda card within seconds, with no redeploy.
-- [ ] The same product's deep link (`/tienda?producto=<slug>`) reflects the edit.
-- [ ] An unauthenticated POST to `/api/revalidate` is rejected (401), asserted in the gate or a test.
-- [ ] Saving a product with the storefront unreachable still succeeds in the CMS (the hook cannot block a save) — assert by pointing the hook at a dead URL.
-- [ ] `next build` output shows the homepage as prerendered (`○`), not `ƒ`.
-- [ ] The layout gate stays green.
+## Acceptance — how each item was actually verified
 
-## Open questions for the owner (answer before/while building)
-- **Staleness window if a webhook is missed:** proposing a 1-hour safety-net revalidate. Acceptable? 
-- **Coarse vs fine tags now:** fine-grained (`product:<slug>`) is a little more code and much better at
-  scale. Recommending we do it now, while `lib/payload.ts` is the only place to touch.
-- Nothing here changes what the customer sees except **speed** — the visible content stays identical.
+- [x] **`next build` shows the homepage prerendered** — build output `┌ ○ /`, with `/api/revalidate`
+      as `ƒ`. Exact, no interpretation needed.
+- [x] **An unauthenticated POST is rejected** — no secret → `401`, wrong secret → `401`. Also posted
+      `{"tags":["../../etc/passwd","ok-tag"]}`; the response shows only `["ok-tag"]`, so the traversal
+      tag was filtered out.
+- [x] **The hook cannot block a save** — ran the real hook function with `STOREFRONT_URL` pointing at a
+      dead port: it logged and returned **without throwing**. The no-secret case is a silent no-op.
+- [x] **The layout gate stays green** — `check:layout` **31 passed, 1 skipped**; `tsc` clean in both packages.
+- [x] **Invalidation really does refresh cached content** — proved with a **stub CMS**, the only way to
+      tell cached from fresh content unambiguously. Ran the built server with `PAYLOAD_URL` pointed at a
+      stub carrying a marker the real catalog cannot contain:
+
+      | step | result |
+      | --- | --- |
+      | before invalidation | real catalog present, stub marker absent |
+      | `POST /api/revalidate` | `{"revalidated":true,"tags":["catalog"]}` |
+      | cache headers | `x-nextjs-cache: HIT` → **`STALE`** |
+      | following request | **stub marker present, real catalog gone** — it re-rendered from new data |
+      | then | back to `x-nextjs-cache: HIT` |
+
+- [~] **"A product edited in Payload appears on the site"** — the mechanism is proven above, but it has
+      **not** been exercised against the real CMS, because the secret is not set yet. This is the one
+      item still open, and it is on the owner's side.
+
+## To activate (one-time, owner)
+1. Generate a secret and set **the same value** in both places:
+   - **Coolify** (CMS): `REVALIDATE_SECRET` — optionally `STOREFRONT_URL` (defaults to `https://wasigranel.com`).
+   - **Vercel** (web): `REVALIDATE_SECRET`.
+2. Redeploy the CMS so the collection hooks are picked up.
+3. Then: edit a product in Payload, load the site, refresh once — it should show the change.
+4. If a webhook is ever missed, invalidate by hand:
+   `curl -X POST https://wasigranel.com/api/revalidate -H "x-wasi-secret: $REVALIDATE_SECRET"`
+
+## Two behaviours worth knowing
+- **It is stale-while-revalidate.** The FIRST request after an invalidation can still serve the old page
+  while it regenerates in the background; a refresh then shows the change. Worth telling the owner, so a
+  stale first look isn't mistaken for a broken webhook.
+- **Once the secret is set, an edit is only as live as the webhook.** With no timer, a failed POST is
+  silent (by design) and the catalog stays stale until step 4 above or a redeploy.
+
+## Follow-up discovered while verifying (worth remembering)
+Running `next build` while `next dev` is running **wedges the dev server** — both write to `.next`. The
+homepage degraded to an empty carousel and the layout gate failed, which looked exactly like a
+regression from this change. It was not: the fix is the documented one (kill the dev server,
+`rm -rf .next`, restart), after which the homepage rendered all 11 cards again and the gate went green.
+Do not trust a gate run taken immediately after a build.
+
+(A second false alarm in the same sitting: `grep -c` counts matching LINES, and the page HTML is a
+single line — so an 11-card homepage reported as "1". Count occurrences with `grep -o … | wc -l`.)
 
 ## Note: the bigger Next 16 option, deliberately NOT chosen here
 Next 16's **Cache Components** (`cacheComponents: true` + `'use cache'` + `cacheTag()`) is the modern
