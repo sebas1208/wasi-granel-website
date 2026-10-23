@@ -70,9 +70,19 @@ Nobody browsing the store finds coffee: both products sit in a 5-product **Endul
 Four changes the owner asked for after reviewing the ported page:
 
 1. **Real Google maps.** The mockup's map was an illustration with invented streets, so it now embeds
-   the stores' actual Google listings (keyless `?q=…&output=embed`), and "Cómo llegar" links the real
-   listing per store. `store-map.tsx` is deleted. This **resolves the "San Andrés" question**: it was a
-   neighbourhood label on the mockup's drawing, not a third store.
+   the real map, and "Cómo llegar" links the actual Google listing per store. `store-map.tsx` is
+   deleted. This **resolves the "San Andrés" question**: it was a neighbourhood label on the mockup's
+   drawing, not a third store.
+
+   **The embed is pinned by coordinates, not a text query.** The first attempt searched
+   `"Wasi Granel Matriz, Guayaquil y Benalcázar 1815, Riobamba"`, and Google disambiguated it to a
+   supermarket a block away — the owner's *"close but not focused"*. Two things were wrong with that:
+   - the `@lat,lng` in a Maps share link is the **viewport centre** (country zoom, 9z), not the place;
+     the real coordinates are in the `!3d/!4d` parameters;
+   - a text query lets Google pick whatever business it prefers.
+   The cards now use the `!3d/!4d` coordinates with `&z=17`. Reverse-geocoded to confirm they are the
+   right places: Matriz → Calle Guayaquil (its address *is* "Guayaquil y Benalcázar"), Sucursal → José
+   Veloz. A regression test asserts each store's embed contains its own coordinates.
    - Matriz — https://maps.app.goo.gl/YN79ofZo9A6BeANu6
    - Sucursal — https://maps.app.goo.gl/dhzgsJtQoUTa9kPA6
 2. **"Escríbenos por WhatsApp" now opens WhatsApp** (Matriz number, prefilled message). It used to

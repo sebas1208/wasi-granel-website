@@ -16,14 +16,8 @@ function waNumber(local: string): string {
   return `593${local.replace(/\D/g, "").replace(/^0/, "")}`
 }
 
-function mapsQuery(address: string): string {
-  return encodeURIComponent(`${address}, Riobamba, Ecuador`)
-}
-
 export type Sucursal = {
   id: string
-  /** Short label for the form's "Sucursal de Interés" select. */
-  short: string
   /** Label for the mockup's tab switcher. */
   tabLabel: string
   /** Status chip on the info card ("Sede Fundadora"). */
@@ -42,11 +36,25 @@ export type Sucursal = {
   /** The store's REAL Google Maps listing — the shared link the owner supplied. */
   placeUrl: string
   /**
-   * Keyless Google Maps embed for the store card. The mockup drew a stylized SVG illustration
-   * ("those from stitch were mockups"), which showed invented streets; this shows the real place.
+   * The store's exact coordinates, read from the `!3d/!4d` part of that same link. NB the `@lat,lng`
+   * in it is NOT the place — it is the viewport centre, which sits at country zoom (9z).
+   *
+   * The card embed uses these rather than a name/address search, because the embed disambiguates a
+   * text query to whatever Google prefers: "Wasi Granel Matriz, Guayaquil y Benalcazar 1815" landed
+   * the pin on a supermarket a block away ("close but not focused" — the owner). Coordinates cannot
+   * drift. Reverse-geocoded to Calle Guayaquil / Jose Veloz respectively, matching the addresses.
    */
-  embedUrl: string
+  lat: number
+  lng: number
   services: string[]
+}
+
+/**
+ * Keyless Google Maps embed, focused on a store's exact coordinates. Deliberately coordinate-based:
+ * see the `lat`/`lng` note on `Sucursal` — a text query lets Google pick a different business.
+ */
+export function storeEmbedUrl(s: Pick<Sucursal, "lat" | "lng">): string {
+  return `https://www.google.com/maps?q=${s.lat},${s.lng}&z=17&output=embed`
 }
 
 /** Real opening hours — the owner's. Sundays closed. The stub AND the mockup were both wrong. */
@@ -93,7 +101,6 @@ export const STORE = {
   sucursales: [
     {
       id: "matriz",
-      short: "Matriz (Riobamba)",
       tabLabel: "1. Matriz (Riobamba)",
       badge: "Sede Fundadora",
       region: "Chimborazo",
@@ -105,12 +112,12 @@ export const STORE = {
       phoneDisplay: "099 087 6620",
       whatsapp: waNumber("0990876620"),
       placeUrl: "https://maps.app.goo.gl/YN79ofZo9A6BeANu6",
-      embedUrl: `https://www.google.com/maps?q=${mapsQuery("Wasi Granel Matriz, Guayaquil y Benalcázar 1815")}&output=embed`,
+      lat: -1.6758726,
+      lng: -78.6477544,
       services: SERVICES,
     },
     {
       id: "sucursal",
-      short: "Sucursal (Riobamba)",
       tabLabel: "2. Sucursal (Riobamba)",
       badge: "Segunda Casa",
       region: "Chimborazo",
@@ -122,7 +129,8 @@ export const STORE = {
       phoneDisplay: "099 147 5809",
       whatsapp: waNumber("0991475809"),
       placeUrl: "https://maps.app.goo.gl/dhzgsJtQoUTa9kPA6",
-      embedUrl: `https://www.google.com/maps?q=${mapsQuery("Wasi Granel Sucursal, Juan Montalvo y Av. José Veloz")}&output=embed`,
+      lat: -1.668246,
+      lng: -78.6529131,
       services: SERVICES,
     },
   ] as Sucursal[],

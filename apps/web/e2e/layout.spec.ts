@@ -673,14 +673,25 @@ test("contacto: renders the real store data and none of the mockup's inventions"
 
   // The maps are the stores' REAL Google listings — the mockup's map was an illustration with
   // invented streets, so a stylized SVG must not be back.
-  await expect(page.getByTestId("store-map")).toHaveAttribute("src", /google\.com\/maps/)
-  // (the assertions above left the panel on Sucursal, so come back to Matriz first)
+  //
+  // And they are pinned by COORDINATES, never a text query: searching by name/address let Google put
+  // the Matriz pin on a supermarket a block away ("close but not focused" — the owner). The coords
+  // come from the owner's own listing link, and reverse-geocode to the two store addresses.
+  // (the assertions above left the panel on Sucursal, so select Matriz explicitly)
   await page.getByRole("tab", { name: /Matriz/ }).click()
+  await expect(page.getByTestId("store-map")).toHaveAttribute(
+    "src",
+    /google\.com\/maps\?q=-1\.6758726,-78\.6477544/,
+  )
   await expect(page.getByTestId("sucursal-directions")).toHaveAttribute(
     "href",
     "https://maps.app.goo.gl/YN79ofZo9A6BeANu6",
   )
   await page.getByRole("tab", { name: /Sucursal/ }).click()
+  await expect(page.getByTestId("store-map")).toHaveAttribute(
+    "src",
+    /google\.com\/maps\?q=-1\.668246,-78\.6529131/,
+  )
   await expect(page.getByTestId("sucursal-directions")).toHaveAttribute(
     "href",
     "https://maps.app.goo.gl/dhzgsJtQoUTa9kPA6",

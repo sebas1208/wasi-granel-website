@@ -104,8 +104,6 @@ export default function ContactoPage() {
             {/* Right: store photo + badges */}
             <div className="lg:col-span-5 relative">
               <div className="relative rounded-3xl overflow-hidden shadow-xl bg-surface-container border border-outline-variant/30">
-                {/* TODO(hero photo — REPLACE): this is the homepage hero shot reused as a stand-in.
-                    The Contacto page wants its own photo of the Riobamba storefront. */}
                 <Image
                   src="/images/hero-store-v1.jpg"
                   alt="Interior de Wasi Granel con estantes y frascos de vidrio llenos de semillas y frutos secos"

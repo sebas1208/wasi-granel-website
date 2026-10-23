@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { HOURS, STORE, whatsappLink } from "@/lib/store-info"
+import { HOURS, STORE, storeEmbedUrl, whatsappLink } from "@/lib/store-info"
 
 /**
  * "Nuestras Casas Wasi" — the tabbed store panel from the "Contacto y Sucursales" mockup: a tab
@@ -161,7 +161,7 @@ export function SucursalesPanel() {
             <iframe
               data-testid="store-map"
               title={`Mapa de ${s.name}`}
-              src={s.embedUrl}
+              src={storeEmbedUrl(s)}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="w-full h-full border-0"
