@@ -15,6 +15,25 @@ export const metadata: Metadata = {
     "Frutos secos, semillas, granos y productos naturales a granel, al peso exacto. Riobamba, Ecuador.",
 }
 
+/**
+ * The homepage always reads the live catalog — three Payload calls, `no-store`, a deliberate
+ * "fresh reads" choice. Declare that intent: without this, `next build` attempts to PRERENDER the
+ * route, the `no-store` fetch throws Next's DYNAMIC_SERVER_USAGE sentinel, and the catch below logs a
+ * misleading "failed to load catalog from Payload" on every build. The route was already dynamic in
+ * the output; this just stops Next attempting the static pass it can never finish.
+ *
+ * If CMS load ever matters more than instant freshness, replace this with `export const revalidate = 60`
+ * and let the reads use the data cache — the same trade /tienda already makes.
+ */
+export const dynamic = "force-dynamic"
+
+/** Next signals "this route cannot be static" with a tagged error. That is control flow, not a fault. */
+const isDynamicServerUsage = (err: unknown): boolean =>
+  typeof err === "object" &&
+  err !== null &&
+  "digest" in err &&
+  String((err as { digest?: unknown }).digest).startsWith("DYNAMIC_SERVER_USAGE")
+
 const getPopularProductsFallback = async (popular: Product[], products: Product[]) => {
   if (popular.length > 0) return popular;
 
@@ -51,6 +70,9 @@ const getDataForHomePage = async (): Promise<[CategoryWithCount[], Product[]]> =
 
     return [categories, popularFinal];
   } catch (err) {
+    // Never swallow Next's control-flow sentinel — it is not a data failure, and catching it can
+    // quietly change how the route is classified. Only genuine fetch errors fall through to the log.
+    if (isDynamicServerUsage(err)) throw err
     console.error("[homepage] failed to load catalog from Payload:", err)
     // Sections render empty rather than crashing the page.
     return [[], []] as const;
