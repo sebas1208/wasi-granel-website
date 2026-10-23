@@ -73,18 +73,37 @@ Four changes the owner asked for after reviewing the ported page:
    the real map, and "Cómo llegar" links the actual Google listing per store. `store-map.tsx` is
    deleted. This **resolves the "San Andrés" question**: it was a neighbourhood label on the mockup's
    drawing, not a third store.
-
-   **The embed is pinned by coordinates, not a text query.** The first attempt searched
-   `"Wasi Granel Matriz, Guayaquil y Benalcázar 1815, Riobamba"`, and Google disambiguated it to a
-   supermarket a block away — the owner's *"close but not focused"*. Two things were wrong with that:
-   - the `@lat,lng` in a Maps share link is the **viewport centre** (country zoom, 9z), not the place;
-     the real coordinates are in the `!3d/!4d` parameters;
-   - a text query lets Google pick whatever business it prefers.
-   The cards now use the `!3d/!4d` coordinates with `&z=17`. Reverse-geocoded to confirm they are the
-   right places: Matriz → Calle Guayaquil (its address *is* "Guayaquil y Benalcázar"), Sucursal → José
-   Veloz. A regression test asserts each store's embed contains its own coordinates.
    - Matriz — https://maps.app.goo.gl/YN79ofZo9A6BeANu6
    - Sucursal — https://maps.app.goo.gl/dhzgsJtQoUTa9kPA6
+
+   **The embed is resolved by CID.** Two earlier attempts were wrong, in instructive ways:
+
+   | embed form | what it actually gives |
+   | --- | --- |
+   | `q="Wasi Granel Matriz, Guayaquil y Benalcázar 1815, Riobamba"` | Google disambiguated the text query to a **supermarket a block away** — the owner's *"close but not focused"* |
+   | `q=<lat>,<lng>&z=17` | a bare pin with **no store info at all** — the owner's *"now it is not showing in both"* |
+   | `?cid=<CID>` | the **real listing**: name, address, phone, website, card and "Open in Maps" |
+
+   The CID is the decimal form of the second `0x…` in the share link's `!1s0x…:0x…` id — Matriz
+   `0x35fc8990eb8e45ec` → `3890135433661531628`, Sucursal `0x69f0b93b9c272599` → `7633805034067010969`.
+   Also worth knowing: the `@lat,lng` in a Maps share link is the **viewport centre** (it sat at country
+   zoom, `9z`), not the place; the place coordinates are the `!3d/!4d` parameters.
+
+   How this was verified, since vision kept contradicting itself: the embed URL was fetched directly and
+   its own payload read. It carries the business name, real address, phone and website — e.g.
+   `"Wasi Granel Matriz, Guayaquil y Benalcazar 1815 y, 060111 Riobamba"`, `099 087 6620`,
+   `wasigranel.com`. The regression test asserts each store's embed contains its own CID.
+
+### Root cause of the gate's intermittent homepage failure (fixed here too)
+Not a flake, and the earlier diagnosis (image-load race) was wrong. The homepage is **streamed**: the
+server sends its content inside `<div hidden id="S:n">` containers and an inline script swaps it into
+place afterwards; until then the page is a viewport-height shell. Elements in those containers are
+already queryable *and their images already report `complete`*, so the waits passed while the layout
+was collapsed — measured as `navBottom` 0 / clearance 0. Probed and confirmed: failing runs had the
+correct DOM (`h1` and all) with `scrollHeight` == viewport. The tests now wait for the elements they
+measure to have a layout. Assertions unchanged; a genuine collapse still fails (by timeout). The
+homepage test went from failing ~1 in 3 to 8/8.
+
 2. **"Escríbenos por WhatsApp" now opens WhatsApp** (Matriz number, prefilled message). It used to
    jump to an on-page anchor — a CTA that claimed to chat and didn't.
 3. **Email is `info@wasigranel.com`** (was `hola@`). The old address was added to the gate's forbidden
