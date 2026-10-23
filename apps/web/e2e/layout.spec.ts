@@ -632,6 +632,7 @@ test("contacto: renders the real store data and none of the mockup's inventions"
     ["the mockup's invented phone", /9\s?8765\s?4321/],
     ["the mockup's second invented phone", /9\s?9123\s?4567/],
     ["the old stub's phone", /986\s?016\s?764/],
+    ["the old contact address", /hola@wasigranel\.com/],
     ["the old brand (Jatunwasi)", /Jatunwasi/i],
     ["a Quito branch that does not exist", /Wasi Granel Quito|La Floresta|Guipúzcoa/i],
     ["the footer's old 'Riobamba · Quito'", /Riobamba · Quito/],
@@ -646,7 +647,7 @@ test("contacto: renders the real store data and none of the mockup's inventions"
   // since the panel shows one store at a time)
   expect(body, "Matriz address").toMatch(/Guayaquil y Benalcázar 1815/i)
   expect(body, "the real opening hours").toMatch(/Lunes a Sábado: 9:00 – 19:00/i)
-  expect(body, "the store email").toMatch(/hola@wasigranel\.com/)
+  expect(body, "the store email").toMatch(/info@wasigranel\.com/)
   expect(body, "nationwide courier").toMatch(/Servientrega/)
 
   // The panel is TABBED (as the mockup has it), so one store renders at a time — check both by
@@ -665,7 +666,25 @@ test("contacto: renders the real store data and none of the mockup's inventions"
 
   // the footer, which was wrong on every page of the site until now
   await expect(page.getByTestId("footer-phone")).toHaveText("099 087 6620")
-  await expect(page.getByTestId("footer-email")).toHaveText("hola@wasigranel.com")
+  await expect(page.getByTestId("footer-email")).toHaveText("info@wasigranel.com")
+
+  // The hero CTA opens WhatsApp for real (it used to jump to an on-page anchor)
+  await expect(page.getByTestId("hero-whatsapp")).toHaveAttribute("href", /wa\.me\/593990876620/)
+
+  // The maps are the stores' REAL Google listings — the mockup's map was an illustration with
+  // invented streets, so a stylized SVG must not be back.
+  await expect(page.getByTestId("store-map")).toHaveAttribute("src", /google\.com\/maps/)
+  // (the assertions above left the panel on Sucursal, so come back to Matriz first)
+  await page.getByRole("tab", { name: /Matriz/ }).click()
+  await expect(page.getByTestId("sucursal-directions")).toHaveAttribute(
+    "href",
+    "https://maps.app.goo.gl/YN79ofZo9A6BeANu6",
+  )
+  await page.getByRole("tab", { name: /Sucursal/ }).click()
+  await expect(page.getByTestId("sucursal-directions")).toHaveAttribute(
+    "href",
+    "https://maps.app.goo.gl/dhzgsJtQoUTa9kPA6",
+  )
 })
 
 test("contacto: the form validates and never fakes a successful send", async ({ page }) => {
@@ -698,6 +717,11 @@ test("contacto: the form validates and never fakes a successful send", async ({ 
   // the consent checkbox opens the privacy statement (a modal, not a page — user decision)
   await page.getByTestId("privacy-trigger").click()
   await expect(page.getByTestId("privacy-modal")).toBeVisible()
+
+  // "Sucursal de Interés" was removed at the owner's request
+  await page.keyboard.press("Escape")
+  await expect(page.locator("#location-select")).toHaveCount(0)
+  await expect(page.getByTestId("contact-form")).not.toContainText("Sucursal de Interés")
 })
 
 test("unit-priced product: plain numeric quantity, no weight pills", async ({ page }) => {

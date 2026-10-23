@@ -32,7 +32,6 @@ export function ContactForm() {
     name: "",
     phone: "",
     email: "",
-    sucursal: STORE.sucursales[0].id,
     subject: SUBJECTS[0].v,
     message: "",
     consent: false,
@@ -128,46 +127,23 @@ export function ContactForm() {
         {err("email", "err-email")}
       </div>
 
-      {/* Sucursal + motivo. The mockup's options were Riobamba / Quito / Ambas / Nacionales;
-          Quito does not exist, so both real stores are listed. */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="space-y-1.5">
-          <label className={labelCls} htmlFor="location-select">
-            Sucursal de Interés
-          </label>
-          <select
-            className={field}
-            id="location-select"
-            value={form.sucursal}
-            onChange={(e) => set("sucursal", e.target.value)}
-          >
-            {STORE.sucursales.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.short}
-              </option>
-            ))}
-            <option value="ambas">Ambas sedes</option>
-            <option value="nacional">Envíos Nacionales</option>
-          </select>
-        </div>
-
-        <div className="space-y-1.5">
-          <label className={labelCls} htmlFor="subject-select">
-            Tipo de Consulta
-          </label>
-          <select
-            className={field}
-            id="subject-select"
-            value={form.subject}
-            onChange={(e) => set("subject", e.target.value)}
-          >
-            {SUBJECTS.map((s) => (
-              <option key={s.v} value={s.v}>
-                {s.l}
-              </option>
-            ))}
-          </select>
-        </div>
+      {/* Tipo de Consulta. ("Sucursal de Interés" was removed at the owner's request.) */}
+      <div className="space-y-1.5">
+        <label className={labelCls} htmlFor="subject-select">
+          Tipo de Consulta
+        </label>
+        <select
+          className={field}
+          id="subject-select"
+          value={form.subject}
+          onChange={(e) => set("subject", e.target.value)}
+        >
+          {SUBJECTS.map((s) => (
+            <option key={s.v} value={s.v}>
+              {s.l}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Mensaje */}

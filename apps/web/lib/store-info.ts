@@ -39,9 +39,13 @@ export type Sucursal = {
   phoneDisplay: string
   /** wa.me digits. */
   whatsapp: string
-  mapsUrl: string
-  /** Marker label on the stylized map (the mockup draws an SVG map, not a real one). */
-  marker: string
+  /** The store's REAL Google Maps listing — the shared link the owner supplied. */
+  placeUrl: string
+  /**
+   * Keyless Google Maps embed for the store card. The mockup drew a stylized SVG illustration
+   * ("those from stitch were mockups"), which showed invented streets; this shows the real place.
+   */
+  embedUrl: string
   services: string[]
 }
 
@@ -74,7 +78,7 @@ export const PILLARS = [
 const SERVICES = ["Molienda de café en tienda", "Pesaje exacto a granel", "Atención personalizada"]
 
 export const STORE = {
-  email: "hola@wasigranel.com",
+  email: "info@wasigranel.com",
   city: "Riobamba",
   /** Nationwide delivery — the owner lives in Quito and wants to ship there. */
   shipping: { courier: "Servientrega", scope: "a todo el Ecuador" },
@@ -100,8 +104,8 @@ export const STORE = {
       phone: "0990876620",
       phoneDisplay: "099 087 6620",
       whatsapp: waNumber("0990876620"),
-      mapsUrl: `https://www.google.com/maps/search/?api=1&query=${mapsQuery("Guayaquil y Benalcázar 1815")}`,
-      marker: "Wasi Matriz Riobamba",
+      placeUrl: "https://maps.app.goo.gl/YN79ofZo9A6BeANu6",
+      embedUrl: `https://www.google.com/maps?q=${mapsQuery("Wasi Granel Matriz, Guayaquil y Benalcázar 1815")}&output=embed`,
       services: SERVICES,
     },
     {
@@ -117,8 +121,8 @@ export const STORE = {
       phone: "0991475809",
       phoneDisplay: "099 147 5809",
       whatsapp: waNumber("0991475809"),
-      mapsUrl: `https://www.google.com/maps/search/?api=1&query=${mapsQuery("Juan Montalvo y Av. José Veloz")}`,
-      marker: "Wasi Sucursal Riobamba",
+      placeUrl: "https://maps.app.goo.gl/dhzgsJtQoUTa9kPA6",
+      embedUrl: `https://www.google.com/maps?q=${mapsQuery("Wasi Granel Sucursal, Juan Montalvo y Av. José Veloz")}&output=embed`,
       services: SERVICES,
     },
   ] as Sucursal[],

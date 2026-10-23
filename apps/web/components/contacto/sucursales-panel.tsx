@@ -2,11 +2,11 @@
 
 import { useState } from "react"
 import { HOURS, STORE, whatsappLink } from "@/lib/store-info"
-import { StoreMap } from "./store-map"
 
 /**
  * "Nuestras Casas Wasi" — the tabbed store panel from the "Contacto y Sucursales" mockup: a tab
- * switcher, a 5-column info card, and a 7-column stylized map, all toggling together.
+ * switcher, a 5-column info card, and a 7-column map, all toggling together. (The mockup's map was
+ * an illustration; this uses the store's real Google listing.)
  *
  * The mockup's tabs were "1. Riobamba (Matriz)" / "2. Quito (La Floresta)". Quito does not exist — the
  * owner has TWO stores in Riobamba — so the tabs are Matriz and Sucursal, and the Quito map (and the
@@ -141,7 +141,7 @@ export function SucursalesPanel() {
 
             <div className="mt-6">
               <a
-                href={s.mapsUrl}
+                href={s.placeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="sucursal-directions"
@@ -154,10 +154,18 @@ export function SucursalesPanel() {
           </div>
         </div>
 
-        {/* Stylized map */}
+        {/* Real Google map. The mockup drew a stylized SVG illustration whose streets and
+            neighbourhoods were invented; this shows the actual listing. */}
         <div className="lg:col-span-7 flex flex-col gap-4">
           <div className="relative w-full h-[420px] lg:h-[510px] rounded-3xl overflow-hidden shadow-md bg-[#eef3f0] border border-outline-variant/30">
-            <StoreMap marker={s.marker} />
+            <iframe
+              data-testid="store-map"
+              title={`Mapa de ${s.name}`}
+              src={s.embedUrl}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="w-full h-full border-0"
+            />
           </div>
         </div>
       </div>
