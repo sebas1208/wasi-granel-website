@@ -60,16 +60,34 @@ test("homepage layout matches Stitch (desktop + mobile)", async ({ page }) => {
   await page.getByTestId("hero-card").waitFor({ state: "attached", timeout: 20_000 })
   // wait for webfonts so button widths are final (fallback fonts are wider and
   // can momentarily wrap the CTA buttons, making this assertion flaky)
-  // The hero image drives the section height (and so the card's clearance from the navbar), and the
-  // webfonts drive button widths. Wait for BOTH properly: guarding on "if the image exists" races
-  // when the element has not rendered yet, which made this measurement flaky in full-suite runs
-  // (a collapsed section measured a clearance of 0). The assertions are unchanged — the measurement
-  // just waits for the conditions it depends on.
   await page.evaluate(() => document.fonts.ready)
   await page.waitForFunction(
     () => {
       const img = document.querySelector("main img") as HTMLImageElement | null
       return !!img && img.complete
+    },
+    { timeout: 15_000 },
+  )
+  // ROOT CAUSE of this test's long-standing intermittent "card must not touch the navbar" failure:
+  // the homepage is STREAMED. The server sends its content inside `<div hidden id="S:n">` containers
+  // and an inline script swaps it into place afterwards; until that runs the page is a
+  // viewport-height shell. Elements inside those containers are already queryable and their images
+  // already report `complete`, so every wait above passes while the layout is still collapsed —
+  // measured as navBottom 0 / clearance 0. (Probed and confirmed: the failing runs had the correct
+  // DOM present, h1 and all, with scrollHeight == viewport.)
+  //
+  // So wait for the elements this test actually measures to have a layout. This does not weaken the
+  // assertion: if the hero genuinely collapses, this times out and the test still fails.
+  await page.waitForFunction(
+    () => {
+      const nav = document.querySelector('[data-testid="nav-bar"]')
+      const card = document.querySelector('[data-testid="hero-card"]')
+      return (
+        !!nav &&
+        !!card &&
+        nav.getBoundingClientRect().height > 0 &&
+        card.getBoundingClientRect().height > 0
+      )
     },
     { timeout: 15_000 },
   )
@@ -138,16 +156,22 @@ test("carousel next snaps to a card boundary (no half card on the left)", async 
   await page.getByTestId("hero-card").waitFor({ state: "attached", timeout: 20_000 })
   // webfonts must be loaded first: fallback fonts are wider and shift card
   // widths, which made this measurement flaky.
-  // The hero image drives the section height (and so the card's clearance from the navbar), and the
-  // webfonts drive button widths. Wait for BOTH properly: guarding on "if the image exists" races
-  // when the element has not rendered yet, which made this measurement flaky in full-suite runs
-  // (a collapsed section measured a clearance of 0). The assertions are unchanged — the measurement
-  // just waits for the conditions it depends on.
+  // Then the same streaming caveat the homepage test documents: the page arrives inside hidden
+  // Suspense containers, so elements are queryable (and images report complete) while the layout is
+  // still a collapsed shell. Wait for fonts, the image, and for the navbar to actually have a
+  // layout before measuring anything.
   await page.evaluate(() => document.fonts.ready)
   await page.waitForFunction(
     () => {
       const img = document.querySelector("main img") as HTMLImageElement | null
       return !!img && img.complete
+    },
+    { timeout: 15_000 },
+  )
+  await page.waitForFunction(
+    () => {
+      const nav = document.querySelector('[data-testid="nav-bar"]')
+      return !!nav && nav.getBoundingClientRect().height > 0
     },
     { timeout: 15_000 },
   )
@@ -674,14 +698,15 @@ test("contacto: renders the real store data and none of the mockup's inventions"
   // The maps are the stores' REAL Google listings — the mockup's map was an illustration with
   // invented streets, so a stylized SVG must not be back.
   //
-  // And they are pinned by COORDINATES, never a text query: searching by name/address let Google put
-  // the Matriz pin on a supermarket a block away ("close but not focused" — the owner). The coords
-  // come from the owner's own listing link, and reverse-geocode to the two store addresses.
+  // And they must be resolved by CID: that is what makes the embed return the actual business.
+  // Neither other form works — a coordinate pin (`q=lat,lng`) draws a pin with NO store info
+  // ("now it is not showing in both" — the owner), and a name/address query lets Google pick a
+  // different business entirely (the Matriz query landed on a supermarket a block away).
   // (the assertions above left the panel on Sucursal, so select Matriz explicitly)
   await page.getByRole("tab", { name: /Matriz/ }).click()
   await expect(page.getByTestId("store-map")).toHaveAttribute(
     "src",
-    /google\.com\/maps\?q=-1\.6758726,-78\.6477544/,
+    /google\.com\/maps\?cid=3890135433661531628/,
   )
   await expect(page.getByTestId("sucursal-directions")).toHaveAttribute(
     "href",
@@ -690,7 +715,7 @@ test("contacto: renders the real store data and none of the mockup's inventions"
   await page.getByRole("tab", { name: /Sucursal/ }).click()
   await expect(page.getByTestId("store-map")).toHaveAttribute(
     "src",
-    /google\.com\/maps\?q=-1\.668246,-78\.6529131/,
+    /google\.com\/maps\?cid=7633805034067010969/,
   )
   await expect(page.getByTestId("sucursal-directions")).toHaveAttribute(
     "href",

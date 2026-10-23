@@ -36,25 +36,28 @@ export type Sucursal = {
   /** The store's REAL Google Maps listing — the shared link the owner supplied. */
   placeUrl: string
   /**
-   * The store's exact coordinates, read from the `!3d/!4d` part of that same link. NB the `@lat,lng`
-   * in it is NOT the place — it is the viewport centre, which sits at country zoom (9z).
+   * The listing's CID — the decimal form of the second `0x…` in the link's `!1s0x…:0x…` id.
    *
-   * The card embed uses these rather than a name/address search, because the embed disambiguates a
-   * text query to whatever Google prefers: "Wasi Granel Matriz, Guayaquil y Benalcazar 1815" landed
-   * the pin on a supermarket a block away ("close but not focused" — the owner). Coordinates cannot
-   * drift. Reverse-geocoded to Calle Guayaquil / Jose Veloz respectively, matching the addresses.
+   * This is what makes the embed resolve to the actual BUSINESS. Neither of the obvious
+   * alternatives does:
+   *  - a plain coordinate pin (`q=lat,lng`) draws a pin and NO store info at all ("now it is not
+   *    showing in both" — the owner);
+   *  - a name/address text query lets Google pick whatever it prefers (the Matriz query landed on a
+   *    supermarket a block away: "close but not focused").
+   * With the CID the embed returns the real listing, card and all. Verified by reading the embed's
+   * own payload: name "Wasi Granel Matriz, Guayaquil y Benalcazar 1815 y, 060111 Riobamba",
+   * coords [-1.6758726,-78.6477544], phone "099 087 6620", site wasigranel.com.
    */
-  lat: number
-  lng: number
+  placeCid: string
   services: string[]
 }
 
 /**
- * Keyless Google Maps embed, focused on a store's exact coordinates. Deliberately coordinate-based:
- * see the `lat`/`lng` note on `Sucursal` — a text query lets Google pick a different business.
+ * Keyless Google Maps embed, resolved by CID so the map shows the real listing (name, address,
+ * phone, website) rather than a bare pin. See the `placeCid` note on `Sucursal`.
  */
-export function storeEmbedUrl(s: Pick<Sucursal, "lat" | "lng">): string {
-  return `https://www.google.com/maps?q=${s.lat},${s.lng}&z=17&output=embed`
+export function storeEmbedUrl(s: Pick<Sucursal, "placeCid">): string {
+  return `https://www.google.com/maps?cid=${s.placeCid}&output=embed`
 }
 
 /** Real opening hours — the owner's. Sundays closed. The stub AND the mockup were both wrong. */
@@ -112,8 +115,7 @@ export const STORE = {
       phoneDisplay: "099 087 6620",
       whatsapp: waNumber("0990876620"),
       placeUrl: "https://maps.app.goo.gl/YN79ofZo9A6BeANu6",
-      lat: -1.6758726,
-      lng: -78.6477544,
+      placeCid: "3890135433661531628",
       services: SERVICES,
     },
     {
@@ -129,8 +131,7 @@ export const STORE = {
       phoneDisplay: "099 147 5809",
       whatsapp: waNumber("0991475809"),
       placeUrl: "https://maps.app.goo.gl/dhzgsJtQoUTa9kPA6",
-      lat: -1.668246,
-      lng: -78.6529131,
+      placeCid: "7633805034067010969",
       services: SERVICES,
     },
   ] as Sucursal[],
