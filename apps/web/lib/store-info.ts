@@ -103,7 +103,7 @@ export const STORE = {
     titleAccent: "la raíz",
     body: "Wasi Granel nació para transformar el consumo cotidiano en un acto consciente de equilibrio, trayendo granos seleccionados, frutos secos y cacao puro desde el corazón de los Andes ecuatorianos hasta tu mesa.",
     visitTitle: "Visítanos en persona",
-    visitSub: "Dos casas en Riobamba",
+    visitSub: "Dos locales en Riobamba",
   },
   sucursales: [
     {

@@ -132,8 +132,11 @@ export default function ContactoPage() {
                       <p className="font-body text-xs text-on-surface-variant font-medium">{STORE.hero.visitSub}</p>
                     </div>
                   </div>
-                  <span className="px-2.5 py-1 text-[11px] font-bold uppercase rounded-md bg-[#f5dece] text-[#726155]">
-                    2 Casas
+                  <span
+                    data-testid="hero-locales-badge"
+                    className="px-2.5 py-1 text-[11px] font-bold uppercase rounded-md bg-[#f5dece] text-[#726155]"
+                  >
+                    {STORE.sucursales.length} Locales
                   </span>
                 </div>
               </div>

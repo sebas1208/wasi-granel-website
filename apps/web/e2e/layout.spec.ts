@@ -677,6 +677,12 @@ test("contacto: renders the real store data and none of the mockup's inventions"
   expect(body, "the store email").toMatch(/info@wasigranel\.com/)
   expect(body, "nationwide courier").toMatch(/Servientrega/)
 
+  // "casas" read oddly for two shop premises (owner). They are "locales" now, and the badge count is
+  // derived from the data instead of hardcoded, so adding a third store cannot leave it stale.
+  expect(body, "the two premises").toMatch(/Dos locales en Riobamba/i)
+  await expect(page.getByTestId("hero-locales-badge")).toHaveText("2 Locales")
+  expect(body, "no 'casas' for the premises").not.toMatch(/\d+ Casas|Dos casas/i)
+
   // The panel is TABBED (as the mockup has it), so one store renders at a time — check both by
   // switching tabs. Each carries its OWN number, linked to WhatsApp.
   const card = page.getByTestId("sucursal-card")
