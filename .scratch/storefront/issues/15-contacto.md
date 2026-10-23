@@ -4,7 +4,7 @@
 
 **Blocked by:** 10 (app shell). The contact data is now supplied, so the page is unblocked.
 
-**Status:** **Done — closed 2026-10-21** (`develop` `587fd85`) — implemented and browser-verified. **Not in production**: ships with the rest of the storefront when `develop` merges to `main`.
+**Status:** **Done — closed 2026-10-21** (`develop` `14f071e`) — implemented and browser-verified across four rounds of owner review. **Not in production**: ships when `develop` merges to `main`.
 
 ## Design references (refetched 2026-10-21)
 - Desktop: `.scratch/stitch-fetch/screens/wasi-granel-contacto-y-sucursales__71ee0d81.html`
@@ -109,6 +109,12 @@ homepage test went from failing ~1 in 3 to 8/8.
 3. **Email is `info@wasigranel.com`** (was `hola@`). The old address was added to the gate's forbidden
    list.
 4. **"Sucursal de Interés" removed** from the form at the owner's request.
+5. **"casas" → "locales"** for the two premises (the owner found "casas" an odd word): the hero
+   subtitle reads *"Dos locales en Riobamba"* and the badge *"2 Locales"*. The badge count had been
+   hardcoded (`2 Casas`) while the page already had the store list, so it now derives from
+   `STORE.sucursales.length` — a third store can no longer leave it stale. *(The section heading
+   "Nuestras Casas Wasi" is untouched: it is the mockup's own wordplay, and only the two strings were
+   named.)*
 
 Plus the hero photo: it is a stand-in reusing the homepage shot, and its replacement is tracked as
 item 3 on **ticket 21** rather than as a `TODO` in the source.
