@@ -110,14 +110,14 @@ homepage test went from failing ~1 in 3 to 8/8.
    list.
 4. **"Sucursal de Interés" removed** from the form at the owner's request.
 
-Plus a `TODO(hero photo — REPLACE)` marking the hero image as a stand-in for a dedicated storefront shot.
+Plus the hero photo: it is a stand-in reusing the homepage shot, and its replacement is tracked as
+item 3 on **ticket 21** rather than as a `TODO` in the source.
 
-### ⚠️ Unresolved: opening hours disagree with Google
-The owner told us **"Lunes a Sábado: 9:00 – 19:00"** (this is what the page says), but the Google
-listings the owner supplied say **8 AM – 7 PM, Monday to Saturday, Sunday closed**. Both agree Sunday
-is closed; the opening time differs by an hour. **The site currently shows 9:00.** Needs one
-confirmation before launch — a customer arriving at 8:00 to a site that says 9:00 is the harmless
-direction, but only the owner knows which is correct.
+### ✅ Resolved: opening hours
+The owner first said **"Lunes a Sábado: 9:00 – 19:00"**, but the Google listings he supplied say
+**8 AM – 7 PM**, Mon–Sat, Sunday closed. Shown the discrepancy, he confirmed **8:00**. The site now
+reads `Lunes a Sábado: 8:00 – 19:00` / `Domingos: cerrado`, and the superseded 9:00 value was added to
+the gate's forbidden list so it cannot quietly return.
 
 ## Design-port correction (2026-10-21, `16eb2de`)
 **The first pass was wrong and the user caught it.** I mined the mockup for *content* (headings, form

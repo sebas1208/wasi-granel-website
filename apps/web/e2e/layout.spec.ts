@@ -662,6 +662,9 @@ test("contacto: renders the real store data and none of the mockup's inventions"
     ["the footer's old 'Riobamba · Quito'", /Riobamba · Quito/],
     ["invented store features", /Taras automáticas|Bicimensajería|Barra de Cremas/i],
     ["the invented scale claim", /200 referencias/i],
+    // not invented, but superseded: the owner first said 9:00, then confirmed the store's Google
+    // listing's 8:00. Guarded so the earlier value cannot quietly come back.
+    ["the superseded 9:00 opening", /Lunes a Sábado: 9:00/],
   ]
   for (const [what, re] of forbidden) {
     expect(body, `${what} must not appear`).not.toMatch(re)
@@ -670,7 +673,7 @@ test("contacto: renders the real store data and none of the mockup's inventions"
   // ...and the real data must be there (the Sucursal address is asserted after its tab is opened,
   // since the panel shows one store at a time)
   expect(body, "Matriz address").toMatch(/Guayaquil y Benalcázar 1815/i)
-  expect(body, "the real opening hours").toMatch(/Lunes a Sábado: 9:00 – 19:00/i)
+  expect(body, "the real opening hours").toMatch(/Lunes a Sábado: 8:00 – 19:00/i)
   expect(body, "the store email").toMatch(/info@wasigranel\.com/)
   expect(body, "nationwide courier").toMatch(/Servientrega/)
 

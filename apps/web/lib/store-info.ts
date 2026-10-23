@@ -60,8 +60,12 @@ export function storeEmbedUrl(s: Pick<Sucursal, "placeCid">): string {
   return `https://www.google.com/maps?cid=${s.placeCid}&output=embed`
 }
 
-/** Real opening hours — the owner's. Sundays closed. The stub AND the mockup were both wrong. */
-export const HOURS = ["Lunes a Sábado: 9:00 – 19:00", "Domingos: cerrado"]
+/**
+ * Real opening hours — Lunes a Sábado 8:00–19:00, Domingos cerrado. The stub AND the mockup were both
+ * wrong. The owner first said 9:00, but the store's own Google listing says 8 AM, and on being shown
+ * that he confirmed 8:00 (a customer arriving before 9 to a site that says 9 finds the door open).
+ */
+export const HOURS = ["Lunes a Sábado: 8:00 – 19:00", "Domingos: cerrado"]
 
 /**
  * The three transparency pillars from the mockup's hero. The mockup's copy is kept verbatim, with one
