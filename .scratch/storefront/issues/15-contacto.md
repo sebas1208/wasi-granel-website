@@ -4,7 +4,7 @@
 
 **Blocked by:** 10 (app shell). The contact data is now supplied, so the page is unblocked.
 
-**Status:** **Done — closed 2026-10-21** (`develop` `14c9c5f`) — implemented and browser-verified. **Not in production**: ships with the rest of the storefront when `develop` merges to `main`.
+**Status:** **Done — closed 2026-10-21** (`develop` `16eb2de`) — implemented and browser-verified. **Not in production**: ships with the rest of the storefront when `develop` merges to `main`.
 
 ## Design references (refetched 2026-10-21)
 - Desktop: `.scratch/stitch-fetch/screens/wasi-granel-contacto-y-sucursales__71ee0d81.html`
@@ -66,9 +66,32 @@ Nobody browsing the store finds coffee: both products sit in a 5-product **Endul
 - [x] The privacy modal opens from the consent checkbox.
 - [x] Browser-verified per `AGENTS.md`: `check:layout` **31 passed, 1 skipped** (desktop 1280 + mobile 390), including a test that asserts the real data is present **and** that every invented value is absent (the mockup's two phones, the stub's phone, Jatunwasi, the Quito branch, `Riobamba · Quito`, the invented features and the "200+ references" claim). `tsc` clean, `lint` 0 errors.
 
+## Design-port correction (2026-10-21, `16eb2de`)
+**The first pass was wrong and the user caught it.** I mined the mockup for *content* (headings, form
+fields, links) and then wrote my own markup and Tailwind classes — so the page had no hero photo, no
+watermark, no tab switcher, the wrong section structure and a different footer. The mockup HTML is the
+design authority; it is now ported properly:
+
+| section | what the mockup actually is |
+| --- | --- |
+| Hero | editorial 12-col, Andean watermark (3 nested polygons at 3% opacity), eyebrow pill, two-line headline with accent span, 3 pillars, 2 CTAs, and a 5-col store photo card with gradient + brand mark + floating "2 Casas" badge |
+| Nuestras Casas Wasi | a **tab switcher**, a 5-col info card and a 7-col map, toggling together — not two side-by-side cards |
+| The map | a **stylized SVG** (parks, roads, Riobamba-area labels) with a marker pill — not a Google embed. This is also where the ticket's open question about **"San Andrés"** came from: it is a neighbourhood label on that illustration |
+| Estamos para ayudarte | a 5/7 split: dark WhatsApp card + emails card + FAQ card on the left, the form in its own raised card on the right |
+| The form | the mockup's own field ids (`full-name`, `contact-phone`, `contact-email`, `location-select`, `subject-select`, `contact-message`, `privacy-policy`), labels, spacing and input styling |
+
+The mockup's tabs were Riobamba + **Quito**; Quito does not exist, so they are Matriz and Sucursal and
+the Quito card and map are gone. All real data is preserved.
+
+**Lesson (already in the memory notes, now proven again):** for a design ticket, port the mockup's
+actual markup — reading it for copy while hand-writing the UI silently produces a different design,
+and it is not visible from the code alone.
+
 ## What shipped
 - **`lib/store-info.ts`** (new) — the single source of truth for everything the page says about the store, so there is exactly one place to correct and no invented value can leak in.
-- **`app/contacto/page.tsx`** — rebuilt from both mockups (hero, value props, two store cards with maps, help section, form, FAQ).
+- **`app/contacto/page.tsx`** — ported from both mockups (hero, tabbed stores, contact split).
+- **`components/contacto/sucursales-panel.tsx`** (new) — the tabbed store panel.
+- **`components/contacto/store-map.tsx`** (new) — the stylized SVG map.
 - **`components/contacto/contact-form.tsx`** (new) — full client-side validation (name, phone, email, message, consent) with `aria-invalid`/`role="alert"` on every error; deliberately unwired.
 - **`components/contacto/privacy-modal.tsx`** (new) — plain-language data statement in a modal.
 - **`components/footer.tsx`** — real numbers, real email, no fake city.
