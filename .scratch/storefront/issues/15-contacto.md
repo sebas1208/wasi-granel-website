@@ -4,7 +4,7 @@
 
 **Blocked by:** 10 (app shell). The contact data is now supplied, so the page is unblocked.
 
-**Status:** **Done — closed 2026-10-21** (`develop` `16eb2de`) — implemented and browser-verified. **Not in production**: ships with the rest of the storefront when `develop` merges to `main`.
+**Status:** **Done — closed 2026-10-21** (`develop` `587fd85`) — implemented and browser-verified. **Not in production**: ships with the rest of the storefront when `develop` merges to `main`.
 
 ## Design references (refetched 2026-10-21)
 - Desktop: `.scratch/stitch-fetch/screens/wasi-granel-contacto-y-sucursales__71ee0d81.html`
@@ -65,6 +65,30 @@ Nobody browsing the store finds coffee: both products sit in a 5-product **Endul
 - [x] The contact form has **no fake success state**: it validates, and a valid submit lands in an honest "todavía no está conectado" state pointing at the WhatsApp channel. The real receiver is ticket 25.
 - [x] The privacy modal opens from the consent checkbox.
 - [x] Browser-verified per `AGENTS.md`: `check:layout` **31 passed, 1 skipped** (desktop 1280 + mobile 390), including a test that asserts the real data is present **and** that every invented value is absent (the mockup's two phones, the stub's phone, Jatunwasi, the Quito branch, `Riobamba · Quito`, the invented features and the "200+ references" claim). `tsc` clean, `lint` 0 errors.
+
+## Post-review changes (2026-10-21, `587fd85`)
+Four changes the owner asked for after reviewing the ported page:
+
+1. **Real Google maps.** The mockup's map was an illustration with invented streets, so it now embeds
+   the stores' actual Google listings (keyless `?q=…&output=embed`), and "Cómo llegar" links the real
+   listing per store. `store-map.tsx` is deleted. This **resolves the "San Andrés" question**: it was a
+   neighbourhood label on the mockup's drawing, not a third store.
+   - Matriz — https://maps.app.goo.gl/YN79ofZo9A6BeANu6
+   - Sucursal — https://maps.app.goo.gl/dhzgsJtQoUTa9kPA6
+2. **"Escríbenos por WhatsApp" now opens WhatsApp** (Matriz number, prefilled message). It used to
+   jump to an on-page anchor — a CTA that claimed to chat and didn't.
+3. **Email is `info@wasigranel.com`** (was `hola@`). The old address was added to the gate's forbidden
+   list.
+4. **"Sucursal de Interés" removed** from the form at the owner's request.
+
+Plus a `TODO(hero photo — REPLACE)` marking the hero image as a stand-in for a dedicated storefront shot.
+
+### ⚠️ Unresolved: opening hours disagree with Google
+The owner told us **"Lunes a Sábado: 9:00 – 19:00"** (this is what the page says), but the Google
+listings the owner supplied say **8 AM – 7 PM, Monday to Saturday, Sunday closed**. Both agree Sunday
+is closed; the opening time differs by an hour. **The site currently shows 9:00.** Needs one
+confirmation before launch — a customer arriving at 8:00 to a site that says 9:00 is the harmless
+direction, but only the owner knows which is correct.
 
 ## Design-port correction (2026-10-21, `16eb2de`)
 **The first pass was wrong and the user caught it.** I mined the mockup for *content* (headings, form
