@@ -1,5 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
+import { revalidateCatalog, revalidateCatalogAfterDelete } from '../hooks/revalidateStorefront'
+
 /**
  * Product categories (mirrors `categorySchema` from @wasi-granel/schema).
  * Flat list; `slug` is the URL-stable key that products reference.
@@ -12,6 +14,11 @@ export const Categories: CollectionConfig = {
   },
   access: {
     read: () => true,
+  },
+  /** A renamed/reordered category changes what the storefront renders — invalidate it (ticket 26). */
+  hooks: {
+    afterChange: [revalidateCatalog],
+    afterDelete: [revalidateCatalogAfterDelete],
   },
   fields: [
     {

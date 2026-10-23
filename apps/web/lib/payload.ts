@@ -67,11 +67,26 @@ export type TiendaResult = {
   limit: number
 }
 
-async function fetcher<T>(path: string, init?: RequestInit & { next?: { revalidate?: number } }): Promise<T> {
-  // Default: no-store (homepage wants fresh reads). Tienda passes `next.revalidate`
-  // to opt into Next's data cache instead.
-  const opts: RequestInit = init?.next ? init : { ...init, cache: "no-store" }
-  const res = await fetch(`${base}${path}`, opts)
+/**
+ * Every catalog read is cached under ONE tag and never expires on its own.
+ *
+ * Invalidation is event-driven, not time-based: the CMS's `afterChange`/`afterDelete` hooks POST to
+ * `/api/revalidate`, which calls `revalidateTag(CATALOG_TAG)`. A timer would be pure waste here — the
+ * catalog barely changes (at least until we introduce catalog existence) — and we are on a free tier,
+ * so every avoided CMS round-trip is the point of this.
+ *
+ * If a webhook is ever missed, invalidate by hand:
+ *   curl -X POST <site>/api/revalidate -H "x-wasi-secret: $REVALIDATE_SECRET"
+ * A redeploy also clears everything, since the build id is part of the cache key.
+ */
+export const CATALOG_TAG = "catalog"
+
+async function fetcher<T>(path: string, init?: RequestInit): Promise<T> {
+  const res = await fetch(`${base}${path}`, {
+    ...init,
+    // `revalidate: false` == keep until the tag is invalidated. Deliberate; see above.
+    next: { tags: [CATALOG_TAG], revalidate: false },
+  })
   if (!res.ok) throw new Error(`Payload GET ${path} -> ${res.status}`)
   return res.json()
 }
@@ -156,7 +171,6 @@ export async function getTiendaProducts(q: TiendaQuery, categoryId?: number | nu
   params.set("sort", sortMap[q.sort ?? ""] ?? "-popular,name")
   const d = await fetcher<{ docs: Product[]; totalDocs: number; page: number; totalPages: number; limit: number }>(
     `/api/products?${params.toString()}`,
-    { next: { revalidate: 60 } },
   )
   return { docs: d.docs, totalDocs: d.totalDocs ?? d.docs.length, page: d.page ?? 1, totalPages: d.totalPages ?? 1, limit: d.limit ?? 12 }
 }
@@ -171,7 +185,6 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   try {
     const d = await fetcher<{ docs: Product[] }>(
       `/api/products?where[slug][equals]=${encodeURIComponent(slug)}&limit=1&depth=1`,
-      { next: { revalidate: 60 } },
     )
     return d.docs[0] ?? null
   } catch {
@@ -188,7 +201,6 @@ export async function getCategoryCounts(): Promise<Record<string, number>> {
         try {
           const d = await fetcher<{ totalDocs: number }>(
             `/api/products?where[category][equals]=${c.id}&limit=1`,
-            { next: { revalidate: 120 } },
           )
           return [c.slug, d.totalDocs] as const
         } catch {

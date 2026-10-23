@@ -22,8 +22,20 @@ The storefront (root domain, landing page) runs on Vercel — no overlap.
   (the git remote that was `sebas1208/jatunwasi-website`).
 - **Application resource:** Build Pack = **Docker Compose**, Base Directory = `apps/cms`,
   Docker Compose Location = `docker-compose.yml`, branch `main`.
-- **Env vars (Coolify):** `POSTGRES_PASSWORD`, `PAYLOAD_SECRET` only — the compose's
+- **Env vars (Coolify):** `POSTGRES_PASSWORD`, `PAYLOAD_SECRET`, plus the two below — the compose's
   `DATABASE_URL` interpolates `POSTGRES_PASSWORD`, and migrations run at boot.
+  - `REVALIDATE_SECRET` — shared with the storefront (Vercel). Enables the cache-invalidation webhook
+    (ticket 26): saving a product/category/media POSTs to the site so it refreshes without a redeploy.
+    **While unset the hook is a silent no-op** and the storefront's cache then only clears on a
+    redeploy, or by hand.
+  - `STOREFRONT_URL` — where to send that POST. Defaults to `https://wasigranel.com`.
+- **Cache invalidation (ticket 26):** the two env vars above must **match** between Coolify (CMS) and
+  Vercel (web). To invalidate by hand after a missed webhook:
+  ```
+  curl -X POST https://wasigranel.com/api/revalidate -H "x-wasi-secret: $REVALIDATE_SECRET"
+  ```
+  Note it is stale-while-revalidate: the *first* request after invalidation may still serve the old
+  page while it regenerates in the background; a refresh then shows the change.
 - **Domain:** `payload.wasigranel.com` via Coolify/Traefik (+ Let's Encrypt wildcard).
 
 ## Update & redeploy (no agent needed)

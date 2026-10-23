@@ -16,23 +16,14 @@ export const metadata: Metadata = {
 }
 
 /**
- * The homepage always reads the live catalog — three Payload calls, `no-store`, a deliberate
- * "fresh reads" choice. Declare that intent: without this, `next build` attempts to PRERENDER the
- * route, the `no-store` fetch throws Next's DYNAMIC_SERVER_USAGE sentinel, and the catch below logs a
- * misleading "failed to load catalog from Payload" on every build. The route was already dynamic in
- * the output; this just stops Next attempting the static pass it can never finish.
+ * The homepage is PRERENDERED now, not dynamic.
  *
- * If CMS load ever matters more than instant freshness, replace this with `export const revalidate = 60`
- * and let the reads use the data cache — the same trade /tienda already makes.
+ * The catalog is cached under a tag and invalidated by the CMS (see lib/payload.ts and
+ * app/api/revalidate/route.ts), so this page is built once and re-rendered only when something
+ * actually changed. That is why there is no `force-dynamic` here any more: a dynamic route re-fetches
+ * the catalog from Payload on EVERY visit — three round-trips per page view — which is precisely the
+ * cost this change removes.
  */
-export const dynamic = "force-dynamic"
-
-/** Next signals "this route cannot be static" with a tagged error. That is control flow, not a fault. */
-const isDynamicServerUsage = (err: unknown): boolean =>
-  typeof err === "object" &&
-  err !== null &&
-  "digest" in err &&
-  String((err as { digest?: unknown }).digest).startsWith("DYNAMIC_SERVER_USAGE")
 
 const getPopularProductsFallback = async (popular: Product[], products: Product[]) => {
   if (popular.length > 0) return popular;
@@ -50,33 +41,36 @@ const getPopularProductsFallback = async (popular: Product[], products: Product[
 
 }
 
+/**
+ * Deliberately NO try/catch around the catalog load.
+ *
+ * This page's output is cached until the CMS invalidates it, so swallowing a failed load would bake an
+ * EMPTY homepage into the cache and keep serving it — far worse than before, when the next request
+ * simply retried. Failing loudly is the correct behaviour now: at build time it fails the deploy (no
+ * empty homepage is ever shipped), and during a tag revalidation Next keeps the last good cache entry
+ * rather than replacing it with nothing.
+ *
+ * (`getPopularProducts` keeps its own internal fallback — an empty popular list is a legitimate state,
+ * and `getPopularProductsFallback` below derives one from the full catalog.)
+ */
 const getDataForHomePage = async (): Promise<[CategoryWithCount[], Product[]]> => {
-  try {
-    const [rawCategories, popular, products] = await Promise.all([
-      getCategories(),
-      getPopularProducts(),
-      getProducts(),
-    ]);
+  const [rawCategories, popular, products] = await Promise.all([
+    getCategories(),
+    getPopularProducts(),
+    getProducts(),
+  ]);
 
-    const popularFinal = await getPopularProductsFallback(popular, products);
+  const popularFinal = await getPopularProductsFallback(popular, products);
 
-    // Per-category variety counts, derived from the catalog.
-    const counts = new Map<string, number>()
-    for (const p of products) {
-      const slug = p.category?.slug ?? ""
-      if (slug) counts.set(slug, (counts.get(slug) ?? 0) + 1)
-    }
-    const categories = rawCategories.map((c) => ({ ...c, count: counts.get(c.slug) ?? 0 }))
-
-    return [categories, popularFinal];
-  } catch (err) {
-    // Never swallow Next's control-flow sentinel — it is not a data failure, and catching it can
-    // quietly change how the route is classified. Only genuine fetch errors fall through to the log.
-    if (isDynamicServerUsage(err)) throw err
-    console.error("[homepage] failed to load catalog from Payload:", err)
-    // Sections render empty rather than crashing the page.
-    return [[], []] as const;
+  // Per-category variety counts, derived from the catalog.
+  const counts = new Map<string, number>()
+  for (const p of products) {
+    const slug = p.category?.slug ?? ""
+    if (slug) counts.set(slug, (counts.get(slug) ?? 0) + 1)
   }
+  const categories = rawCategories.map((c) => ({ ...c, count: counts.get(c.slug) ?? 0 }))
+
+  return [categories, popularFinal];
 }
 
 export default async function HomePage() {

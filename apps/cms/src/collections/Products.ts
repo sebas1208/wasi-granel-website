@@ -1,5 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
+import { revalidateCatalog, revalidateCatalogAfterDelete } from '../hooks/revalidateStorefront'
+
 /**
  * Products (mirrors `productSchema` + `purchaseOptionSchema` from @wasi-granel/schema).
  *
@@ -16,6 +18,15 @@ export const Products: CollectionConfig = {
   },
   access: {
     read: () => true,
+  },
+  /**
+   * The storefront caches the catalog until it is told otherwise, so every product save or delete has
+   * to invalidate that cache (ticket 26). The hook swallows its own failures by design — a CMS save
+   * must never fail because the site was unreachable.
+   */
+  hooks: {
+    afterChange: [revalidateCatalog],
+    afterDelete: [revalidateCatalogAfterDelete],
   },
   fields: [
     {
