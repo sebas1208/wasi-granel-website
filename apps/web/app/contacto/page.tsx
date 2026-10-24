@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { draftMode } from "next/headers"
 import Image from "next/image"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
@@ -23,7 +24,13 @@ export const metadata: Metadata = {
  * Quito branch and the store services — none of that is here. See tickets 15 and 19.
  */
 export default async function ContactoPage() {
-  const [copy, footer] = await Promise.all([resolveContacto(), resolveFooterProps()])
+  // Draft mode is the cookie the CMS's preview pane turns on for the logged-in editor. It MUST reach
+  // the resolvers, or the editor would be shown the published copy and conclude editing is broken.
+  const { isEnabled: draft } = await draftMode()
+  const [copy, footer] = await Promise.all([
+    resolveContacto({ draft }),
+    resolveFooterProps({ draft }),
+  ])
 
   return (
     <>

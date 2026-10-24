@@ -8,6 +8,7 @@ import { History } from "@/components/home/history"
 import { Newsletter } from "@/components/home/newsletter"
 import { getCategories, getPopularProducts, getProducts, priceDisplay, Product, productImageUrl } from "@/lib/payload"
 import { Metadata } from "next"
+import { draftMode } from "next/headers"
 import { resolveFooterProps, resolveInicio } from "@/lib/site-copy"
 
 export const metadata: Metadata = {
@@ -76,7 +77,13 @@ const getDataForHomePage = async (): Promise<[CategoryWithCount[], Product[]]> =
 
 export default async function HomePage() {
   const [categories, popular] = await getDataForHomePage();
-  const [footer, inicio] = await Promise.all([resolveFooterProps(), resolveInicio()])
+  // Draft mode is the cookie the CMS's preview pane turns on for the logged-in editor. It MUST reach
+  // the resolvers, or the editor would be shown the published copy and conclude editing is broken.
+  const { isEnabled: draft } = await draftMode()
+  const [footer, inicio] = await Promise.all([
+    resolveFooterProps({ draft }),
+    resolveInicio({ draft }),
+  ])
 
 
   return (

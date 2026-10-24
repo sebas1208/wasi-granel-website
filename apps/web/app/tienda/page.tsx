@@ -7,6 +7,7 @@ import { ShopBanner } from "@/components/tienda/shop-banner"
 import { Toolbar } from "@/components/tienda/toolbar"
 import { ActiveChips } from "@/components/tienda/active-chips"
 import type { Metadata } from "next"
+import { draftMode } from "next/headers"
 import { resolveFooterProps } from "@/lib/site-copy"
 import {
   getCategoryCounts,
@@ -71,7 +72,10 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
 
 export default async function TiendaPage({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams
-  const footer = await resolveFooterProps()
+  // Draft mode is the cookie the CMS's preview pane turns on for the logged-in editor. It MUST reach
+  // the resolvers, or the editor would be shown the published copy and conclude editing is broken.
+  const { isEnabled: draft } = await draftMode()
+  const footer = await resolveFooterProps({ draft })
 
   const categoria = str(sp.categoria) || null
   const modalidadRaw = str(sp.modalidad)
