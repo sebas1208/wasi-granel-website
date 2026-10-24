@@ -7,6 +7,7 @@ import { ShopBanner } from "@/components/tienda/shop-banner"
 import { Toolbar } from "@/components/tienda/toolbar"
 import { ActiveChips } from "@/components/tienda/active-chips"
 import type { Metadata } from "next"
+import { resolveFooterProps } from "@/lib/site-copy"
 import {
   getCategoryCounts,
   getCategories,
@@ -70,6 +71,7 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
 
 export default async function TiendaPage({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams
+  const footer = await resolveFooterProps()
 
   const categoria = str(sp.categoria) || null
   const modalidadRaw = str(sp.modalidad)
@@ -159,7 +161,7 @@ export default async function TiendaPage({ searchParams }: { searchParams: Promi
         </div>
       </div>
 
-      <Footer />
+      <Footer copy={footer} />
     </>
   )
 }

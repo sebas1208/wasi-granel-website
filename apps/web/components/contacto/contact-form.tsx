@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { PrivacyModal } from "./privacy-modal"
-import { STORE, whatsappLink } from "@/lib/store-info"
 
 /**
  * The contact form from the "Contacto y Sucursales" mockup — its field ids, labels, spacing and input
@@ -27,7 +26,15 @@ const field =
   "w-full px-4 py-3 rounded-xl bg-[#fff5ea] text-on-surface placeholder:text-outline/70 text-sm focus:outline-none focus:ring-2 focus:ring-[#fcbf00] border border-outline-variant/30 transition-all"
 const labelCls = "block font-label text-xs uppercase tracking-wider font-bold text-on-surface"
 
-export function ContactForm() {
+export function ContactForm({
+  email,
+  whatsappHref,
+}: {
+  /** From the `contacto` global, so the form and the privacy notice cannot disagree with the footer. */
+  email: string
+  /** Pre-built WhatsApp deep link for the fallback path (the form has no receiver yet — ticket 25). */
+  whatsappHref: string
+}) {
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -176,7 +183,7 @@ export function ContactForm() {
         />
         <label className="text-xs text-on-surface-variant leading-relaxed" htmlFor="privacy-policy">
           Acepto el tratamiento de mis datos de contacto para recibir una respuesta a mi requerimiento, según el{" "}
-          <PrivacyModal>
+          <PrivacyModal email={email}>
             <button
               type="button"
               data-testid="privacy-trigger"
@@ -213,7 +220,7 @@ export function ContactForm() {
             <p className="font-bold">Este formulario todavía no está conectado.</p>
             <p className="mt-0.5">Mientras lo terminamos, escríbenos directamente por WhatsApp.</p>
             <a
-              href={whatsappLink(STORE.sucursales[0].whatsapp, "Hola Wasi Granel, quisiera hacer una consulta")}
+              href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-1.5 inline-flex items-center gap-1.5 font-bold text-[#875d00] hover:underline"

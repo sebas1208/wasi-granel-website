@@ -4,7 +4,7 @@ import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { ContactForm } from "@/components/contacto/contact-form"
 import { SucursalesPanel } from "@/components/contacto/sucursales-panel"
-import { PILLARS, STORE, whatsappLink } from "@/lib/store-info"
+import { branchWhatsapp, resolveContacto, resolveFooterProps } from "@/lib/site-copy"
 
 export const metadata: Metadata = {
   title: "Contacto — Wasi Granel",
@@ -17,11 +17,14 @@ export const metadata: Metadata = {
  * editorial hero with the Andean watermark and the store photo, the tabbed "Nuestras Casas Wasi"
  * panel, and the "Estamos para ayudarte" 5/7 split with the dark WhatsApp card beside the form.
  *
- * Everything the page says about the store comes from lib/store-info.ts. The mockup invented the
- * phone numbers, the addresses, the hours, a Quito branch and the store services — none of that is
- * here. See ticket 15.
+ * Everything the page says about the store comes from the `contacto` Global, resolved through
+ * lib/site-copy.ts — which falls back to lib/store-info.ts for every field the owner has left empty,
+ * so no edit can blank the page. The mockup invented the phone numbers, the addresses, the hours, a
+ * Quito branch and the store services — none of that is here. See tickets 15 and 19.
  */
-export default function ContactoPage() {
+export default async function ContactoPage() {
+  const [copy, footer] = await Promise.all([resolveContacto(), resolveFooterProps()])
+
   return (
     <>
       <Navigation />
@@ -50,20 +53,20 @@ export default function ContactoPage() {
             <div className="lg:col-span-7 flex flex-col items-start space-y-6">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#faebd7] text-on-surface text-xs font-semibold uppercase tracking-widest">
                 <span className="w-2 h-2 rounded-full bg-[#fcbf00]" />
-                {STORE.hero.eyebrow}
+                {copy.hero.eyebrow}
               </div>
 
               <h1 className="font-headline font-bold text-4xl sm:text-5xl lg:text-6xl text-[#241a0d] tracking-tight leading-[1.1]">
-                {STORE.hero.titleTop} <br />
-                <span className="text-[#875d00]">{STORE.hero.titleAccent}</span>
+                {copy.hero.titleTop} <br />
+                <span className="text-[#875d00]">{copy.hero.titleAccent}</span>
               </h1>
 
               <p className="font-body text-base sm:text-lg text-on-surface-variant leading-relaxed max-w-2xl">
-                {STORE.hero.body}
+                {copy.hero.body}
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full pt-2" data-testid="contact-values">
-                {PILLARS.map((p) => (
+                {copy.pillars.map((p) => (
                   <div
                     key={p.title}
                     className="p-5 rounded-2xl bg-surface-container-lowest shadow-sm flex flex-col gap-2"
@@ -80,8 +83,8 @@ export default function ContactoPage() {
               <div className="flex flex-wrap items-center gap-4 pt-3">
                 <a
                   data-testid="hero-whatsapp"
-                  href={whatsappLink(
-                    STORE.sucursales[0].whatsapp,
+                  href={branchWhatsapp(
+                    copy.branches[0].phone,
                     "Hola Wasi Granel, quisiera hacer una consulta sobre sus productos...",
                   )}
                   rel="noopener noreferrer"
@@ -127,16 +130,16 @@ export default function ContactoPage() {
                     </div>
                     <div>
                       <p className="font-headline font-bold text-xs uppercase tracking-wider text-on-surface">
-                        {STORE.hero.visitTitle}
+                        {copy.hero.visitTitle}
                       </p>
-                      <p className="font-body text-xs text-on-surface-variant font-medium">{STORE.hero.visitSub}</p>
+                      <p className="font-body text-xs text-on-surface-variant font-medium">{copy.hero.visitSub}</p>
                     </div>
                   </div>
                   <span
                     data-testid="hero-locales-badge"
                     className="px-2.5 py-1 text-[11px] font-bold uppercase rounded-md bg-[#f5dece] text-[#726155]"
                   >
-                    {STORE.sucursales.length} Locales
+                    {copy.branches.length} Locales
                   </span>
                 </div>
               </div>
@@ -145,7 +148,7 @@ export default function ContactoPage() {
         </section>
 
         {/* ============ NUESTRAS CASAS WASI (tabbed) ============ */}
-        <SucursalesPanel />
+        <SucursalesPanel branches={copy.branches} hours={copy.hours} />
 
         {/* ============ CONTACTO DIRECTO ============ */}
         <section
@@ -185,15 +188,15 @@ export default function ContactoPage() {
                   <a
                     data-testid="help-whatsapp"
                     className="w-full flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-xl bg-[#fcbf00] text-[#241a0d] font-headline font-bold text-xs uppercase tracking-wider hover:brightness-95 shadow-sm transition-all"
-                    href={whatsappLink(
-                      STORE.sucursales[0].whatsapp,
+                    href={branchWhatsapp(
+                      copy.branches[0].phone,
                       "Hola Wasi Granel, quiero hacer un pedido o consulta sobre sus productos...",
                     )}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
                     <span className="material-symbols-outlined text-base">call</span>
-                    {STORE.sucursales[0].phoneDisplay} — Chatear ahora
+                    {copy.branches[0].phoneDisplay} — Chatear ahora
                   </a>
                 </div>
 
@@ -207,9 +210,9 @@ export default function ContactoPage() {
                     <a
                       data-testid="help-email"
                       className="font-semibold text-xs text-on-surface hover:text-[#875d00] transition-colors"
-                      href={`mailto:${STORE.email}`}
+                      href={`mailto:${copy.email}`}
                     >
-                      {STORE.email}
+                      {copy.email}
                     </a>
                   </div>
                 </div>
@@ -220,8 +223,8 @@ export default function ContactoPage() {
                     <span className="material-symbols-outlined text-[18px]">help</span>
                     Pregunta Frecuente
                   </div>
-                  <p className="font-headline font-bold text-xs text-on-surface">{STORE.faq.q}</p>
-                  <p className="text-xs text-on-surface-variant mt-1.5 leading-relaxed">{STORE.faq.a}</p>
+                  <p className="font-headline font-bold text-xs text-on-surface">{copy.faq.question}</p>
+                  <p className="text-xs text-on-surface-variant mt-1.5 leading-relaxed">{copy.faq.answer}</p>
                 </div>
               </div>
 
@@ -237,7 +240,13 @@ export default function ContactoPage() {
                       Completa el formulario y te responderemos en un lapso máximo de 24 horas laborables.
                     </p>
                   </div>
-                  <ContactForm />
+                  <ContactForm
+                    email={copy.email}
+                    whatsappHref={branchWhatsapp(
+                      copy.branches[0].phone,
+                      "Hola Wasi Granel, quisiera hacer una consulta",
+                    )}
+                  />
                 </div>
               </div>
             </div>
@@ -245,7 +254,7 @@ export default function ContactoPage() {
         </section>
       </main>
 
-      <Footer />
+      <Footer copy={footer} />
     </>
   )
 }

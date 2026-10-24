@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { HOURS, STORE, storeEmbedUrl, whatsappLink } from "@/lib/store-info"
+import type { BranchCopy } from "@/lib/site-copy"
+import { storeEmbedUrl, whatsappLink } from "@/lib/store-info"
 
 /**
  * "Nuestras Casas Wasi" — the tabbed store panel from the "Contacto y Sucursales" mockup: a tab
@@ -11,10 +12,14 @@ import { HOURS, STORE, storeEmbedUrl, whatsappLink } from "@/lib/store-info"
  * The mockup's tabs were "1. Riobamba (Matriz)" / "2. Quito (La Floresta)". Quito does not exist — the
  * owner has TWO stores in Riobamba — so the tabs are Matriz and Sucursal, and the Quito map (and the
  * invented Quito address, hours and phone that went with it) is gone.
+ *
+ * Branches and hours arrive as props from the `contacto` Global (ticket 19) rather than being read from
+ * lib/store-info.ts here: the CMS is the source, store-info is only the fallback, and that resolution
+ * happens on the server so this component stays presentational.
  */
-export function SucursalesPanel() {
-  const [active, setActive] = useState(STORE.sucursales[0].id)
-  const s = STORE.sucursales.find((x) => x.id === active) ?? STORE.sucursales[0]
+export function SucursalesPanel({ branches, hours }: { branches: BranchCopy[]; hours: string[] }) {
+  const [active, setActive] = useState(branches[0].id)
+  const s = branches.find((x) => x.id === active) ?? branches[0]
 
   return (
     <section className="w-full max-w-7xl mx-auto px-6 lg:px-12 py-16 lg:py-24" id="sucursales">
@@ -36,7 +41,7 @@ export function SucursalesPanel() {
           role="tablist"
           data-testid="sucursal-tabs"
         >
-          {STORE.sucursales.map((x) => (
+          {branches.map((x) => (
             <button
               key={x.id}
               type="button"
@@ -101,9 +106,9 @@ export function SucursalesPanel() {
                 <div>
                   <p className="text-xs uppercase font-label font-bold text-on-surface">Horario de Atención</p>
                   <p data-testid="sucursal-hours" className="text-sm text-on-surface-variant">
-                    {HOURS[0]}
+                    {hours[0]}
                   </p>
-                  <p className="text-xs text-on-surface-variant/80">{HOURS[1]}</p>
+                  <p className="text-xs text-on-surface-variant/80">{hours[1]}</p>
                 </div>
               </div>
 

@@ -1,7 +1,6 @@
 "use client"
 
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { STORE } from "@/lib/store-info"
 
 /**
  * Privacy statement as a modal (user decision: a simple modal with plain wording, not a new page —
@@ -9,7 +8,7 @@ import { STORE } from "@/lib/store-info"
  *
  * Plain-language draft, not legal advice — review before relying on it.
  */
-export function PrivacyModal({ children }: { children: React.ReactNode }) {
+export function PrivacyModal({ children, email }: { children: React.ReactNode; email: string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -35,8 +34,8 @@ export function PrivacyModal({ children }: { children: React.ReactNode }) {
           </p>
           <p>
             Puedes pedirnos que los eliminemos en cualquier momento escribiendo a{" "}
-            <a className="font-bold text-deep-amber hover:underline" href={`mailto:${STORE.email}`}>
-              {STORE.email}
+            <a className="font-bold text-deep-amber hover:underline" href={`mailto:${email}`}>
+              {email}
             </a>
             .
           </p>
