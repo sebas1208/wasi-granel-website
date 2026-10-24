@@ -28,7 +28,11 @@ The storefront (root domain, landing page) runs on Vercel — no overlap.
     (ticket 26): saving a product/category/media POSTs to the site so it refreshes without a redeploy.
     **While unset the hook is a silent no-op** and the storefront's cache then only clears on a
     redeploy, or by hand.
-  - `STOREFRONT_URL` — where to send that POST. Defaults to `https://wasigranel.com`.
+  - `STOREFRONT_URL` — where to send that POST. Defaults to `https://wasigranel.com`, which is the
+    right value: **it must be a publicly reachable URL.** Preview deployments sit behind Vercel
+    Authentication, so a POST from the CMS to a `*.vercel.app` preview gets an SSO redirect instead of
+    reaching the route (confirmed: 302 → "Protected by Vercel Authentication"). Only production works.
+    Testing a preview by hand needs the bypass: `vercel curl /api/revalidate --deployment <url> -X POST`.
 - **Cache invalidation (ticket 26):** the two env vars above must **match** between Coolify (CMS) and
   Vercel (web). To invalidate by hand after a missed webhook:
   ```
