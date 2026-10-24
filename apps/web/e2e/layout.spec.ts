@@ -859,3 +859,46 @@ test("tienda loading state: real banner shows immediately and does not shift", a
     `banner height must not change after load (during=${during.h} vw=${during.vw} sb=${during.scrollbar} | after=${after.h} vw=${after.vw} sb=${after.scrollbar})`,
   ).toBe(during.h)
 })
+
+/**
+ * Hydration guard.
+ *
+ * A hydration mismatch is invisible to every other assertion in this file: the page still renders and
+ * the geometry is still correct — the only trace is a console error nobody reads. Seen for real when a
+ * stale dev server was serving old HTML against a fresh client bundle (running `next build` while
+ * `next dev` is live clobbers the same `.next`), and the symptom was exactly this: React reporting that
+ * a server-rendered attribute did not match the client's first render.
+ *
+ * So: load each catalog route, exercise the interactive bits whose attributes can only be known on the
+ * client (the carousel arrows derive from embla, so they flip after measuring), and fail if React says
+ * the tree did not hydrate cleanly.
+ */
+test("no hydration mismatch on the catalog routes", async ({ page }) => {
+  test.skip((page.viewportSize()?.width ?? 0) < 1024, "runs once, from the desktop project")
+
+  const problems: string[] = []
+  page.on("console", (m) => {
+    const text = m.text()
+    if (m.type() === "error" && /hydrat|did not match|didn't match|server rendered HTML/i.test(text)) {
+      problems.push(`hydration error: ${text.slice(0, 500)}`)
+    }
+  })
+  page.on("pageerror", (e) => problems.push(`uncaught error: ${String(e).slice(0, 500)}`))
+
+  for (const path of ["/", "/tienda", "/contacto"]) {
+    await page.goto(path, { waitUntil: "load" })
+    await page
+      .waitForFunction(() => document.readyState === "complete", { timeout: 20_000 })
+      .catch(() => {})
+
+    // Scroll the carousel where there is one: that is what flips the arrows, so it is where a
+    // client-only attribute would diverge from the server's render.
+    const next = page.getByRole("button", { name: "Producto siguiente" })
+    if (await next.count()) {
+      await next.first().click({ timeout: 5_000 }).catch(() => {})
+    }
+    await page.waitForTimeout(1_500)
+  }
+
+  expect(problems, "React must hydrate these routes without a mismatch").toEqual([])
+})
