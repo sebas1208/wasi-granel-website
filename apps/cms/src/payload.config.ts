@@ -10,6 +10,8 @@ import { Media } from './collections/Media'
 import { Categories } from './collections/Categories'
 import { Products } from './collections/Products'
 import { Contacto } from './globals/Contacto'
+import { Inicio } from './globals/Inicio'
+import { Footer } from './globals/Footer'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -24,7 +26,7 @@ export default buildConfig({
   collections: [Users, Media, Categories, Products],
   // Site copy the owner and his father edit themselves (ticket 19). Globals are single documents —
   // one form each, no list, no create/delete. See src/globals/ for the reasoning per global.
-  globals: [Contacto],
+  globals: [Contacto, Inicio, Footer],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

@@ -125,6 +125,37 @@ export const Contacto: GlobalConfig = {
       ],
     },
     {
+      name: 'pillars',
+      type: 'array',
+      required: true,
+      minRows: 1,
+      maxRows: 4,
+      label: 'Pilares del encabezado',
+      labels: { singular: 'Pilar', plural: 'Pilares' },
+      admin: {
+        description:
+          'Los tres argumentos que acompañan a los botones del encabezado. OJO: el texto original del diseño prometía "desde 10 gramos" y la tienda vende desde 50 g — mantén el mínimo real.',
+      },
+      fields: [
+        {
+          name: 'icon',
+          type: 'select',
+          required: true,
+          label: 'Icono',
+          defaultValue: 'eco',
+          options: [
+            { label: 'Hoja (natural)', value: 'eco' },
+            { label: 'Balanza (peso exacto)', value: 'scale' },
+            { label: 'Red (comercio justo)', value: 'hub' },
+            { label: 'Reciclaje', value: 'recycling' },
+            { label: 'Corazón', value: 'favorite' },
+          ],
+        },
+        { name: 'title', type: 'text', required: true, label: 'Título' },
+        { name: 'text', type: 'textarea', required: true, label: 'Texto' },
+      ],
+    },
+    {
       name: 'hours',
       type: 'array',
       required: true,

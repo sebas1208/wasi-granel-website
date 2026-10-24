@@ -58,22 +58,9 @@ and do nothing; on a store that ships to customers that is worse than not showin
 
 **Owner decision (2026-10-24):**
 - **"Devoluciones" removed entirely** — done in code, not a page we want.
-- **Keep "Términos y Condiciones" and "Política de Privacidad"**, and render them as **modals built from
-  one reusable component** so checkout (ticket 23) shows the same text without a second implementation.
-  The pattern already exists: the contact form's consent checkbox opens `contacto/privacy-modal.tsx`.
-
-**Do we need both?** Practically, yes — they answer different questions, and they are not
-interchangeable:
-- **Términos y Condiciones** — the commercial rules: prices, shipping, order acceptance, liability.
-  Payment providers commonly require them, so ticket 23 will likely need this to exist.
-- **Política de Privacidad** — what happens to personal data. The site already collects name, phone and
-  email through the contact form (and emails through the newsletter), and Ecuador's *Ley Orgánica de
-  Protección de Datos Personales* requires a privacy notice for that. The consent checkbox already
-  points at a privacy statement.
-
-**The text itself is the owner's to supply or approve** — I can draft both from how the store actually
-operates (shipping via Servientrega, no online payment yet, WhatsApp ordering), but the wording that
-binds must be his (or a lawyer's). Not a legal opinion; just where I'd start.
+- **Términos y Condiciones and Política de Privacidad both stay**, and moved off this ticket to
+  **ticket 27** (owner: *"let's note to add both on the other ticket for legal terms and related"*).
+  Ticket 27 covers the wording, the reusable modal and the wiring; it blocks checkout (ticket 23).
 
 ### 5c. Footer should show both store addresses (owner request, 2026-10-24 — later)
 The footer's "Ubicación" column currently says only *"Riobamba, Ecuador · Matriz · Sucursal"*. The
