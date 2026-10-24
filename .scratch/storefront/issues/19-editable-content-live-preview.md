@@ -14,7 +14,9 @@
 - [ ] Storefront reads them over **REST**, replacing the hardcoded copy — with a **code fallback** to today's values whenever a field is blank.
 - [ ] **`admin.livePreview` on all three globals — IN SCOPE** (owner, 2026-10-24: *"the point of the global itself is the editing experience, not the source. If so I can just edit the components."* — he is right; without it this ticket only relocates data). Requires: `@payloadcms/live-preview-react` on the storefront, a preview route that verifies a secret and enables `draftMode()`, pages that merge the live form state via `useLivePreview`, and `admin.livePreview` naming the three globals (`RootLivePreviewConfig` takes `globals?: string[]`, verified in `payload@3.90.2`).
       - **Where the iframe points matters.** It renders in the *editor's* browser. Production custom domains are public (`ssoProtection: all_except_custom_domains`), so `wasigranel.com` needs no auth. A `*.vercel.app` preview URL is SSO-walled — usable by appending the project's **already-provisioned** Protection Bypass for Automation secret (`?x-vercel-protection-bypass=…`; it also exists as `VERCEL_AUTOMATION_BYPASS_SECRET`), with `x-vercel-set-bypass-cookie: true` so it is needed once rather than on every request. Keep the URL in an env var so it can be production, a preview, or localhost for local editing.
-      - **Drafts stay OUT of scope** (save = live, unchanged) — and live preview does not require them: Payload pushes the unsaved form state straight into the iframe. Drafts would only matter if Save should stop being public immediately; worth revisiting once editing is real, since with save=live a half-finished thought is published the moment it is saved.
+      - **Drafts ARE in scope** (owner, 2026-10-24 — he asked for exactly this: *"draft changes preview … on publish it goes to prod?"*). Save keeps the change private; Publish makes it live. Each global gets `versions: { drafts: true }`, and the editor previews the **draft on the real site**, because draft mode is a cookie for the logged-in editor — not a second deployment. Customers keep seeing the published version at the same URL.
+      - **The revalidation hook must gate on `_status === 'published'`.** With drafts on, every draft save fires `afterChange`; pinging the storefront for those would bust the cache for content nobody can see yet. Only a publish — or an edit to an already-published document — should invalidate.
+      - **No development deployment is needed for any of this.** Pointing the iframe at a `*.vercel.app` URL would show unreleased *code* (mid-refactor, the editor edits against a broken layout), cost the bypass secret and a second build, and still not provide draft/publish — that part is drafts, not deployments.
 - [ ] Content edits propagate without a rebuild — fetch globals with `next: { tags: ['globals'], revalidate: false }` and extend the ticket-26 `afterChange`/`afterDelete` hooks to invalidate that tag as well as `catalog`.
 - [ ] Every field carries a plain-language description (two editors — the owner and his father) and is `required` wherever a blank would reach a customer.
 
@@ -40,7 +42,7 @@
 | question | answer |
 | --- | --- |
 | Scope of this ticket | **All three globals at once** — contacto, inicio, footer. Not contact-only. |
-| Editing model | **Save = live.** No drafts, no live preview (both dropped — see the checklist). |
+| Editing model | **Drafts + live preview** (revised the same day): Save = private draft, Publish = live, and the preview shows the draft on the real site via draft mode. |
 | Who edits | **The owner and his father.** Fields need plain-language descriptions and sensible `required` flags. |
 | Blank/broken field | **Fall back to today's code values.** Decided without asking — a customer must never see an empty phone number because of a mistyped edit. |
 

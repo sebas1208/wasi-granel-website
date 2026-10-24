@@ -73,6 +73,14 @@ export const revalidateCatalogAfterDelete: CollectionAfterDeleteHook = async ({ 
  * Payload globals cannot be deleted, so the hook does not exist to wire up.
  */
 export const revalidateGlobals: GlobalAfterChangeHook = async ({ doc }) => {
+  /**
+   * Drafts are enabled on the globals, so EVERY save fires this hook — including saves no visitor can
+   * see. Only a published document should invalidate the public cache: a Publish, or an edit to an
+   * already-published document. Busting the cache for a private draft would cost a rebuild on the
+   * storefront and change nothing a customer sees.
+   */
+  if ((doc as { _status?: string } | undefined)?._status !== 'published') return doc
+
   await pingStorefront([GLOBALS_TAG])
   return doc
 }

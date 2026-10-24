@@ -28,6 +28,15 @@ export const Contacto: GlobalConfig = {
   access: {
     read: () => true,
   },
+  /**
+   * Drafts (owner, 2026-10-24). Saving keeps the change private; **Publish** makes it live. This is
+   * what lets an edit be previewed on the real site before a customer sees it: the editor is in draft
+   * mode, so the preview renders the draft, while everyone else still gets the published version at
+   * the same URL. No second deployment is involved.
+   */
+  versions: {
+    drafts: true,
+  },
   hooks: {
     afterChange: [revalidateGlobals],
   },

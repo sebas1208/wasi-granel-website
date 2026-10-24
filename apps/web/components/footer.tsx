@@ -55,11 +55,6 @@ export function Footer() {
                   Política de Privacidad
                 </Link>
               </li>
-              <li>
-                <Link href="#" className="text-sm font-semibold text-primary-foreground hover:underline">
-                  Devoluciones
-                </Link>
-              </li>
             </ul>
           </div>
 

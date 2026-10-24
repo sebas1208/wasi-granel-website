@@ -56,13 +56,29 @@ Do: create a **Café** category, move both products into it, and add an entry to
 **Política de Privacidad** and **Devoluciones** — all pointing at `href="#"`. They look like real links
 and do nothing; on a store that ships to customers that is worse than not showing them.
 
-Two possible fixes, and it depends on whether the owner wants the pages:
-- **Write them.** Terms/privacy/returns are real obligations for an online shop; the privacy text is
-  also referenced by the contact form's consent checkbox (`privacy-modal.tsx`).
-- **Remove them** until they exist, so nothing dangles.
+**Owner decision (2026-10-24):**
+- **"Devoluciones" removed entirely** — done in code, not a page we want.
+- **Keep "Términos y Condiciones" and "Política de Privacidad"**, and render them as **modals built from
+  one reusable component** so checkout (ticket 23) shows the same text without a second implementation.
+  The pattern already exists: the contact form's consent checkbox opens `contacto/privacy-modal.tsx`.
 
-Worth deciding together with ticket 25 (the contact form's receiver) and ticket 23 (checkout), since
-all three touch what a customer is promised.
+**Do we need both?** Practically, yes — they answer different questions, and they are not
+interchangeable:
+- **Términos y Condiciones** — the commercial rules: prices, shipping, order acceptance, liability.
+  Payment providers commonly require them, so ticket 23 will likely need this to exist.
+- **Política de Privacidad** — what happens to personal data. The site already collects name, phone and
+  email through the contact form (and emails through the newsletter), and Ecuador's *Ley Orgánica de
+  Protección de Datos Personales* requires a privacy notice for that. The consent checkbox already
+  points at a privacy statement.
+
+**The text itself is the owner's to supply or approve** — I can draft both from how the store actually
+operates (shipping via Servientrega, no online payment yet, WhatsApp ordering), but the wording that
+binds must be his (or a lawyer's). Not a legal opinion; just where I'd start.
+
+### 5c. Footer should show both store addresses (owner request, 2026-10-24 — later)
+The footer's "Ubicación" column currently says only *"Riobamba, Ecuador · Matriz · Sucursal"*. The
+owner wants the actual addresses of both stores there. Trivial once ticket 19 lands, since the
+addresses then live in the `contacto` global — read them from there rather than duplicating strings.
 
 ### 6. Verify the CMS webhook actually fires (owner request) — after the final merge
 Ticket 26's revalidation webhook is **configured but inert**. Everything is in place except the code path:
