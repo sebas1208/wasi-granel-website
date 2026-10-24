@@ -51,6 +51,19 @@ The `use-toast` files are shadcn scaffolding; if nothing uses them, deleting the
 
 Do: create a **Café** category, move both products into it, and add an entry to `lib/category-icons.ts` (the homepage grid and the tienda sidebar share that map, so the new category needs an icon or it renders blank in both). The 0-images gap for these two is ticket 22.
 
+### 5b. The footer's legal links go nowhere (found 2026-10-24 while inventorying copy for ticket 19)
+`apps/web/components/footer.tsx` has three links under "Legal" — **Términos y Condiciones**,
+**Política de Privacidad** and **Devoluciones** — all pointing at `href="#"`. They look like real links
+and do nothing; on a store that ships to customers that is worse than not showing them.
+
+Two possible fixes, and it depends on whether the owner wants the pages:
+- **Write them.** Terms/privacy/returns are real obligations for an online shop; the privacy text is
+  also referenced by the contact form's consent checkbox (`privacy-modal.tsx`).
+- **Remove them** until they exist, so nothing dangles.
+
+Worth deciding together with ticket 25 (the contact form's receiver) and ticket 23 (checkout), since
+all three touch what a customer is promised.
+
 ### 6. Verify the CMS webhook actually fires (owner request) — after the final merge
 Ticket 26's revalidation webhook is **configured but inert**. Everything is in place except the code path:
 
