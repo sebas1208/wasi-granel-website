@@ -1,16 +1,22 @@
 import type { CollectionConfig } from 'payload'
 
-import { revalidateCatalog, revalidateCatalogAfterDelete } from '../hooks/revalidateStorefront'
+import {
+  revalidateCatalogAndGlobals,
+  revalidateCatalogAndGlobalsAfterDelete,
+} from '../hooks/revalidateStorefront'
 
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
     read: () => true,
   },
-  /** Replacing a photo must not wait for a manual revalidation — invalidate on change (ticket 26). */
+  /**
+   * Replacing a photo must not wait for a manual revalidation. Media is used by BOTH the catalog and
+   * the site-copy globals, so this invalidates both caches (tickets 26 + 19).
+   */
   hooks: {
-    afterChange: [revalidateCatalog],
-    afterDelete: [revalidateCatalogAfterDelete],
+    afterChange: [revalidateCatalogAndGlobals],
+    afterDelete: [revalidateCatalogAndGlobalsAfterDelete],
   },
   fields: [
     {

@@ -1,4 +1,8 @@
-import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
+import type {
+  CollectionAfterChangeHook,
+  CollectionAfterDeleteHook,
+  GlobalAfterChangeHook,
+} from 'payload'
 
 /**
  * Tell the storefront that its cached catalog is stale.
@@ -24,6 +28,9 @@ const TIMEOUT_MS = 4000
 
 /** The storefront caches the whole catalog under this one tag (coarse on purpose — see ticket 26). */
 const CATALOG_TAG = 'catalog'
+
+/** Site copy edited as Global documents is cached under its own tag (ticket 19). */
+const GLOBALS_TAG = 'globals'
 
 export async function pingStorefront(tags: string[]): Promise<void> {
   const secret = process.env.REVALIDATE_SECRET
@@ -58,5 +65,28 @@ export const revalidateCatalog: CollectionAfterChangeHook = async ({ doc }) => {
 
 export const revalidateCatalogAfterDelete: CollectionAfterDeleteHook = async ({ doc }) => {
   await pingStorefront([CATALOG_TAG])
+  return doc
+}
+
+/**
+ * Site copy held in Globals (ticket 19). Note there is deliberately no `afterDelete` counterpart:
+ * Payload globals cannot be deleted, so the hook does not exist to wire up.
+ */
+export const revalidateGlobals: GlobalAfterChangeHook = async ({ doc }) => {
+  await pingStorefront([GLOBALS_TAG])
+  return doc
+}
+
+/**
+ * Uploaded media can appear in the catalog (product photos) AND in a Global (a hero or store photo),
+ * so a change to either invalidates both caches. Cheap: it is one POST with two tags.
+ */
+export const revalidateCatalogAndGlobals: CollectionAfterChangeHook = async ({ doc }) => {
+  await pingStorefront([CATALOG_TAG, GLOBALS_TAG])
+  return doc
+}
+
+export const revalidateCatalogAndGlobalsAfterDelete: CollectionAfterDeleteHook = async ({ doc }) => {
+  await pingStorefront([CATALOG_TAG, GLOBALS_TAG])
   return doc
 }
