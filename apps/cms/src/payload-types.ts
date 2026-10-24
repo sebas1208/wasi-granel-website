@@ -91,8 +91,16 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    contacto: Contacto;
+    inicio: Inicio;
+    footer: Footer;
+  };
+  globalsSelect: {
+    contacto: ContactoSelect<false> | ContactoSelect<true>;
+    inicio: InicioSelect<false> | InicioSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -502,6 +510,429 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Todo lo que aparece en la página de Contacto y en el pie del sitio sale de aquí. Cambiar algo aquí y guardar lo publica al instante.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacto".
+ */
+export interface Contacto {
+  id: number;
+  general: {
+    /**
+     * Se muestra en la página de Contacto y en el pie del sitio.
+     */
+    email: string;
+    /**
+     * Ej. Riobamba. Ambas sucursales están en la misma ciudad.
+     */
+    city: string;
+    /**
+     * Ej. Servientrega.
+     */
+    courier: string;
+    /**
+     * Ej. a todo el Ecuador.
+     */
+    courierScope: string;
+  };
+  /**
+   * El bloque grande de arriba en la página de Contacto.
+   */
+  hero: {
+    /**
+     * La frase pequeña sobre el titular.
+     */
+    eyebrow: string;
+    titleTop: string;
+    /**
+     * Se muestra en color de acento, en la misma línea.
+     */
+    titleAccent: string;
+    body: string;
+    /**
+     * Ej. "Visítanos en persona".
+     */
+    visitTitle: string;
+    /**
+     * Ej. "Dos locales en Riobamba".
+     */
+    visitSub: string;
+  };
+  /**
+   * Los tres argumentos que acompañan a los botones del encabezado. OJO: el texto original del diseño prometía "desde 10 gramos" y la tienda vende desde 50 g — mantén el mínimo real.
+   */
+  pillars: {
+    icon: 'eco' | 'scale' | 'hub' | 'recycling' | 'favorite';
+    title: string;
+    text: string;
+    id?: string | null;
+  }[];
+  /**
+   * Una línea por franja. Ej. "Lunes a Sábado: 8:00 – 19:00" y "Domingos: cerrado". Aparece en la tarjeta de cada sucursal.
+   */
+  hours: {
+    line: string;
+    id?: string | null;
+  }[];
+  /**
+   * Cada sucursal es una pestaña en la página de Contacto. El orden de esta lista es el orden de las pestañas. La primera se usa como contacto principal en el pie y en el menú.
+   */
+  branches: {
+    /**
+     * Ej. "Wasi Granel Matriz". Es el título de la tarjeta y del mapa.
+     */
+    name: string;
+    /**
+     * Ej. "1. Matriz (Riobamba)". La numeración es parte del texto.
+     */
+    tabLabel: string;
+    /**
+     * Chip pequeño sobre la tarjeta. Ej. "Sede Fundadora".
+     */
+    badge?: string | null;
+    /**
+     * Ej. "Chimborazo".
+     */
+    region?: string | null;
+    /**
+     * Un par de líneas sobre esta sucursal.
+     */
+    description?: string | null;
+    /**
+     * Tal como se la darías a alguien para que llegue.
+     */
+    address: string;
+    /**
+     * Solo números, como lo marcas tú: 0990876620. El enlace de WhatsApp y el formato con espacios (099 087 6620) se generan solos — no los escribas.
+     */
+    phone: string;
+    /**
+     * Abre la ficha de esta sucursal en Google Maps, toca "Compartir" y pega aquí el enlace corto (empieza con maps.app.goo.gl). Es el botón "Cómo llegar".
+     */
+    mapsUrl: string;
+    /**
+     * Lo necesita el mapa incrustado para mostrar la ficha REAL del negocio. Sin él, el mapa no aparece. Se obtiene de la URL de Maps: es el número decimal que corresponde al segundo valor "0x…" del enlace largo. Pídele a un desarrollador este dato. OJO: no son las coordenadas.
+     */
+    mapsCid?: string | null;
+    /**
+     * Chips con lo que se ofrece en esta sucursal.
+     */
+    services?:
+      | {
+          /**
+           * Ej. "Molienda de café en tienda".
+           */
+          service: string;
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
+  /**
+   * La tarjeta de preguntas al lado del formulario de contacto.
+   */
+  faq: {
+    question: string;
+    answer: string;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Los textos de la página de inicio. Se publican al pulsar Publicar; guardar solo crea un borrador.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inicio".
+ */
+export interface Inicio {
+  id: number;
+  /**
+   * La tarjeta blanca sobre la foto de la tienda.
+   */
+  hero: {
+    eyebrow: string;
+    /**
+     * La frase en mayúsculas sobre el titular. Ej. "Frutos secos · Semillas · Granos · Gourmet".
+     */
+    kicker: string;
+    title: string;
+    body: string;
+    /**
+     * El botón amarillo. Siempre lleva a la tienda.
+     */
+    ctaPrimaryLabel: string;
+    /**
+     * El botón con borde. Siempre lleva a Contacto.
+     */
+    ctaSecondaryLabel: string;
+  };
+  /**
+   * La franja de tres beneficios. En escritorio se muestra solo el título; en móvil también la segunda línea.
+   */
+  benefits: {
+    icon: 'scale' | 'recycling' | 'terrain' | 'eco' | 'storefront' | 'local_shipping';
+    label: string;
+    /**
+     * Ej. "Solo lo que necesitas". Se ve únicamente en pantallas pequeñas.
+     */
+    sub?: string | null;
+    id?: string | null;
+  }[];
+  history: {
+    eyebrow: string;
+    title: string;
+    body1: string;
+    body2: string;
+    stats: {
+      /**
+       * Ej. "100%" o "50+".
+       */
+      value: string;
+      label: string;
+      id?: string | null;
+    }[];
+    badgeTitle: string;
+    badgeSub: string;
+  };
+  categories: {
+    eyebrow: string;
+    title: string;
+    ctaLabel: string;
+  };
+  /**
+   * Los productos que se muestran aquí se eligen en el catálogo, con la casilla "Popular".
+   */
+  popular: {
+    title: string;
+    ctaLabel: string;
+  };
+  newsletter: {
+    title: string;
+    body: string;
+    ctaLabel: string;
+    /**
+     * El texto gris dentro del campo antes de escribir. Ej. "Tu correo electrónico...".
+     */
+    placeholder: string;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * El pie de página, que aparece en todas las páginas del sitio.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: number;
+  /**
+   * El texto bajo el logo, en la primera columna.
+   */
+  brandBlurb: string;
+  /**
+   * Los enlaces de la columna "Navegación". El destino se elige de una lista para que no se pueda romper; solo cambia el texto visible.
+   */
+  navigation: {
+    label: string;
+    path: '/' | '/tienda' | '/contacto';
+    id?: string | null;
+  }[];
+  /**
+   * Los documentos de la columna "Legal". Se abren en una ventana dentro del sitio; el texto lo define el ticket 27.
+   */
+  legal: {
+    label: string;
+    document: 'terms' | 'privacy';
+    id?: string | null;
+  }[];
+  /**
+   * Solo la ciudad y el resumen de sedes. Las direcciones y teléfonos completos se editan en "Contacto y sucursales".
+   */
+  location: {
+    city: string;
+    /**
+     * Ej. "Matriz · Sucursal".
+     */
+    branchesLine: string;
+  };
+  /**
+   * El texto pequeño al final del pie. El año se añade automáticamente, no lo escribas.
+   */
+  legalLine: string;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacto_select".
+ */
+export interface ContactoSelect<T extends boolean = true> {
+  general?:
+    | T
+    | {
+        email?: T;
+        city?: T;
+        courier?: T;
+        courierScope?: T;
+      };
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        titleTop?: T;
+        titleAccent?: T;
+        body?: T;
+        visitTitle?: T;
+        visitSub?: T;
+      };
+  pillars?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  hours?:
+    | T
+    | {
+        line?: T;
+        id?: T;
+      };
+  branches?:
+    | T
+    | {
+        name?: T;
+        tabLabel?: T;
+        badge?: T;
+        region?: T;
+        description?: T;
+        address?: T;
+        phone?: T;
+        mapsUrl?: T;
+        mapsCid?: T;
+        services?:
+          | T
+          | {
+              service?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  faq?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inicio_select".
+ */
+export interface InicioSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        kicker?: T;
+        title?: T;
+        body?: T;
+        ctaPrimaryLabel?: T;
+        ctaSecondaryLabel?: T;
+      };
+  benefits?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        sub?: T;
+        id?: T;
+      };
+  history?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        body1?: T;
+        body2?: T;
+        stats?:
+          | T
+          | {
+              value?: T;
+              label?: T;
+              id?: T;
+            };
+        badgeTitle?: T;
+        badgeSub?: T;
+      };
+  categories?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        ctaLabel?: T;
+      };
+  popular?:
+    | T
+    | {
+        title?: T;
+        ctaLabel?: T;
+      };
+  newsletter?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        ctaLabel?: T;
+        placeholder?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  brandBlurb?: T;
+  navigation?:
+    | T
+    | {
+        label?: T;
+        path?: T;
+        id?: T;
+      };
+  legal?:
+    | T
+    | {
+        label?: T;
+        document?: T;
+        id?: T;
+      };
+  location?:
+    | T
+    | {
+        city?: T;
+        branchesLine?: T;
+      };
+  legalLine?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -81,12 +81,29 @@ export type TiendaResult = {
  */
 export const CATALOG_TAG = "catalog"
 
-async function fetcher<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${base}${path}`, {
-    ...init,
+/**
+ * Site copy edited as Global documents (ticket 19) caches under its own tag, so publishing a global
+ * refreshes the pages without throwing away the catalog cache.
+ */
+export const GLOBALS_TAG = "globals"
+
+type FetchOptions = {
+  /** Cache tags this read is invalidated by. Defaults to the catalog. */
+  tags?: string[]
+  /**
+   * Bypass the cache completely. Required in preview: the editor has to see the DRAFT, and a cached
+   * read would hand them the published copy — which looks exactly like live preview being broken.
+   */
+  noStore?: boolean
+}
+
+async function fetcher<T>(path: string, opts: FetchOptions = {}): Promise<T> {
+  const { tags = [CATALOG_TAG], noStore = false } = opts
+  const res = await fetch(
+    `${base}${path}`,
     // `revalidate: false` == keep until the tag is invalidated. Deliberate; see above.
-    next: { tags: [CATALOG_TAG], revalidate: false },
-  })
+    noStore ? { cache: "no-store" } : { next: { tags, revalidate: false } },
+  )
   if (!res.ok) throw new Error(`Payload GET ${path} -> ${res.status}`)
   return res.json()
 }
@@ -214,6 +231,111 @@ export async function getCategoryCounts(): Promise<Record<string, number>> {
   }
 }
 
+
+/* ——— Site copy (Payload Globals, ticket 19) ——————————————————————————————————————
+ * Three single documents the owner edits himself: contacto, inicio, footer.
+ *
+ * Every field is OPTIONAL and every fetch returns `null` on failure, on purpose. Two reasons:
+ *  1. a global can legitimately be saved before all its fields are filled in;
+ *  2. the storefront falls back to the copy in `lib/store-info.ts` and the components, so a CMS
+ *     hiccup — or a global that has not been seeded yet — degrades to today's text instead of blanking
+ *     the site. A customer must never see an empty phone number because of a mistyped edit.
+ */
+
+export type ContactoBranch = {
+  name?: string | null
+  tabLabel?: string | null
+  badge?: string | null
+  region?: string | null
+  description?: string | null
+  address?: string | null
+  /** Digits as the owner types them. WhatsApp + the spaced display form are derived, not stored. */
+  phone?: string | null
+  mapsUrl?: string | null
+  /** Decimal form of the listing id — what makes the embedded map show the real business. */
+  mapsCid?: string | null
+  services?: ({ service?: string | null } | null)[] | null
+}
+
+export type GlobalContacto = {
+  general?: {
+    email?: string | null
+    city?: string | null
+    courier?: string | null
+    courierScope?: string | null
+  } | null
+  hero?: {
+    eyebrow?: string | null
+    titleTop?: string | null
+    titleAccent?: string | null
+    body?: string | null
+    visitTitle?: string | null
+    visitSub?: string | null
+  } | null
+  pillars?: ({ icon?: string | null; title?: string | null; text?: string | null } | null)[] | null
+  hours?: ({ line?: string | null } | null)[] | null
+  branches?: (ContactoBranch | null)[] | null
+  faq?: { question?: string | null; answer?: string | null } | null
+}
+
+export type GlobalInicio = {
+  hero?: {
+    eyebrow?: string | null
+    kicker?: string | null
+    title?: string | null
+    body?: string | null
+    ctaPrimaryLabel?: string | null
+    ctaSecondaryLabel?: string | null
+  } | null
+  benefits?: ({ icon?: string | null; label?: string | null; sub?: string | null } | null)[] | null
+  history?: {
+    eyebrow?: string | null
+    title?: string | null
+    body1?: string | null
+    body2?: string | null
+    stats?: ({ value?: string | null; label?: string | null } | null)[] | null
+    badgeTitle?: string | null
+    badgeSub?: string | null
+  } | null
+  categories?: { eyebrow?: string | null; title?: string | null; ctaLabel?: string | null } | null
+  popular?: { title?: string | null; ctaLabel?: string | null } | null
+  newsletter?: {
+    title?: string | null
+    body?: string | null
+    ctaLabel?: string | null
+    placeholder?: string | null
+  } | null
+}
+
+export type LegalDocumentSlug = "terms" | "privacy"
+
+export type GlobalFooter = {
+  brandBlurb?: string | null
+  navigation?: ({ label?: string | null; path?: string | null } | null)[] | null
+  legal?: ({ label?: string | null; document?: LegalDocumentSlug | null } | null)[] | null
+  location?: { city?: string | null; branchesLine?: string | null } | null
+  legalLine?: string | null
+}
+
+/**
+ * Read one global. `draft: true` asks Payload for the unpublished version AND bypasses the cache —
+ * that combination is what makes live preview show what the editor is typing.
+ */
+async function fetchGlobal<T>(slug: string, opts: { draft?: boolean } = {}): Promise<T | null> {
+  try {
+    const query = opts.draft ? "?draft=true" : ""
+    return await fetcher<T>(`/api/globals/${slug}${query}`, {
+      tags: [GLOBALS_TAG],
+      noStore: !!opts.draft,
+    })
+  } catch {
+    return null
+  }
+}
+
+export const getContacto = (o?: { draft?: boolean }) => fetchGlobal<GlobalContacto>("contacto", o)
+export const getInicio = (o?: { draft?: boolean }) => fetchGlobal<GlobalInicio>("inicio", o)
+export const getFooter = (o?: { draft?: boolean }) => fetchGlobal<GlobalFooter>("footer", o)
 
 /** Grams per canonical unit (priceUnit). null = not a weight-based price. */
 export function unitGrams(u: PriceUnit | null | undefined): number | null {
