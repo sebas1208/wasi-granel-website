@@ -1,5 +1,6 @@
 import { Suspense } from "react"
 import { Footer } from "@/components/footer"
+import { FooterLivePreview } from "@/components/footer-live-preview"
 import { Navigation } from "@/components/navigation"
 import { CatalogCard } from "@/components/tienda/catalog-card"
 import { FilterSidebar } from "@/components/tienda/filter-sidebar"
@@ -165,7 +166,7 @@ export default async function TiendaPage({ searchParams }: { searchParams: Promi
         </div>
       </div>
 
-      <Footer copy={footer} />
+      {draft ? <FooterLivePreview serverCopy={footer} /> : <Footer copy={footer} />}
     </>
   )
 }

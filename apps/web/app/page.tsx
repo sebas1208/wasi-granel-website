@@ -1,11 +1,9 @@
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
-import { Hero } from "@/components/home/hero"
-import { Benefits } from "@/components/home/benefits"
-import { PopularProducts } from "@/components/home/popular-products"
-import { CategoryGrid, type CategoryWithCount } from "@/components/home/category-grid"
-import { History } from "@/components/home/history"
-import { Newsletter } from "@/components/home/newsletter"
+import { HomeSections } from "@/components/home/home-sections"
+import { HomeLivePreview } from "@/components/home/home-live-preview"
+import { FooterLivePreview } from "@/components/footer-live-preview"
+import { type CategoryWithCount } from "@/components/home/category-grid"
 import { getCategories, getPopularProducts, getProducts, priceDisplay, Product, productImageUrl } from "@/lib/payload"
 import { Metadata } from "next"
 import { draftMode } from "next/headers"
@@ -90,14 +88,16 @@ export default async function HomePage() {
     <>
       <Navigation />
       <main className="flex-1">
-        <Hero copy={inicio.hero} />
-        <Benefits copy={inicio.benefits} />
-        <PopularProducts products={popular} copy={inicio.popular} />
-        <CategoryGrid categories={categories} copy={inicio.categories} />
-        <History copy={inicio.history} />
-        <Newsletter copy={inicio.newsletter} />
+        {/* Identical markup either way — HomeSections owns the section list, so the preview cannot
+            drift from what a visitor sees. A visitor takes the server branch and never downloads the
+            preview client code. */}
+        {draft ? (
+          <HomeLivePreview serverCopy={inicio} popular={popular} categories={categories} />
+        ) : (
+          <HomeSections copy={inicio} popular={popular} categories={categories} />
+        )}
       </main>
-      <Footer copy={footer} />
+      {draft ? <FooterLivePreview serverCopy={footer} /> : <Footer copy={footer} />}
     </>
   )
 }

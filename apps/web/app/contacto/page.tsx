@@ -3,6 +3,7 @@ import { draftMode } from "next/headers"
 import Image from "next/image"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { FooterLivePreview } from "@/components/footer-live-preview"
 import { ContactForm } from "@/components/contacto/contact-form"
 import { SucursalesPanel } from "@/components/contacto/sucursales-panel"
 import { branchWhatsapp, resolveContacto, resolveFooterProps } from "@/lib/site-copy"
@@ -261,7 +262,7 @@ export default async function ContactoPage() {
         </section>
       </main>
 
-      <Footer copy={footer} />
+      {draft ? <FooterLivePreview serverCopy={footer} /> : <Footer copy={footer} />}
     </>
   )
 }

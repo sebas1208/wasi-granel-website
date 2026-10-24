@@ -4,21 +4,21 @@
 
 **Blocked by:** nothing. 10, 11, 15 and 16 are all closed — the pages exist and already read Payload, so there is something real to preview against.
 
-**Status:** ready-for-agent — researched **and scoped with the owner** on 2026-10-24. The findings below correct two of this ticket's own assumptions; the agreed decisions and a three-step plan sit underneath them.
+**Status:** IN PROGRESS — steps 1 and 2 landed 2026-10-24 (`develop` `552ea4d`, `ac29af3`, `cf4f2be`, `ea6430b`). All three globals exist with drafts, the storefront reads them with a code fallback, live preview is configured end-to-end and the CMS migration is applied-and-tested. **Step 3 (seed + browser verify) remains**, plus wiring live updates on the contacto body. Evidence and the two honest gaps are under Progress.
 **Priority:** low (the storefront itself is still the priority; this is a convenience for the owner)
 
-- [ ] **Three globals in `apps/cms`** (the owner chose all three at once, not contact-only):
+- [x] **Three globals in `apps/cms`** (the owner chose all three at once, not contact-only):
       1. `contacto` — sucursales (name, address, both phones, WhatsApp, maps CID, the "Cómo llegar" link), opening hours, shipping note. Replaces `apps/web/lib/store-info.ts`.
       2. `inicio` — homepage hero (title, accent word, body), the three pillars, the benefits bar, the history/mission block.
       3. `footer` — the footer blurb, its links and the legal line.
-- [ ] Storefront reads them over **REST**, replacing the hardcoded copy — with a **code fallback** to today's values whenever a field is blank.
-- [ ] **`admin.livePreview` on all three globals — IN SCOPE** (owner, 2026-10-24: *"the point of the global itself is the editing experience, not the source. If so I can just edit the components."* — he is right; without it this ticket only relocates data). Requires: `@payloadcms/live-preview-react` on the storefront, a preview route that verifies a secret and enables `draftMode()`, pages that merge the live form state via `useLivePreview`, and `admin.livePreview` naming the three globals (`RootLivePreviewConfig` takes `globals?: string[]`, verified in `payload@3.90.2`).
+- [x] Storefront reads them over **REST**, replacing the hardcoded copy — with a **code fallback** to today's values whenever a field is blank.
+- [x] **`admin.livePreview` on all three globals — IN SCOPE** (owner, 2026-10-24: *"the point of the global itself is the editing experience, not the source. If so I can just edit the components."* — he is right; without it this ticket only relocates data). Requires: `@payloadcms/live-preview-react` on the storefront, a preview route that verifies a secret and enables `draftMode()`, pages that merge the live form state via `useLivePreview`, and `admin.livePreview` naming the three globals (`RootLivePreviewConfig` takes `globals?: string[]`, verified in `payload@3.90.2`).
       - **Where the iframe points matters.** It renders in the *editor's* browser. Production custom domains are public (`ssoProtection: all_except_custom_domains`), so `wasigranel.com` needs no auth. A `*.vercel.app` preview URL is SSO-walled — usable by appending the project's **already-provisioned** Protection Bypass for Automation secret (`?x-vercel-protection-bypass=…`; it also exists as `VERCEL_AUTOMATION_BYPASS_SECRET`), with `x-vercel-set-bypass-cookie: true` so it is needed once rather than on every request. Keep the URL in an env var so it can be production, a preview, or localhost for local editing.
       - **Drafts ARE in scope** (owner, 2026-10-24 — he asked for exactly this: *"draft changes preview … on publish it goes to prod?"*). Save keeps the change private; Publish makes it live. Each global gets `versions: { drafts: true }`, and the editor previews the **draft on the real site**, because draft mode is a cookie for the logged-in editor — not a second deployment. Customers keep seeing the published version at the same URL.
       - **The revalidation hook must gate on `_status === 'published'`.** With drafts on, every draft save fires `afterChange`; pinging the storefront for those would bust the cache for content nobody can see yet. Only a publish — or an edit to an already-published document — should invalidate.
       - **No development deployment is needed for any of this.** Pointing the iframe at a `*.vercel.app` URL would show unreleased *code* (mid-refactor, the editor edits against a broken layout), cost the bypass secret and a second build, and still not provide draft/publish — that part is drafts, not deployments.
-- [ ] Content edits propagate without a rebuild — fetch globals with `next: { tags: ['globals'], revalidate: false }` and extend the ticket-26 `afterChange`/`afterDelete` hooks to invalidate that tag as well as `catalog`.
-- [ ] Every field carries a plain-language description (two editors — the owner and his father) and is `required` wherever a blank would reach a customer.
+- [x] Content edits propagate without a rebuild — fetch globals with `next: { tags: ['globals'], revalidate: false }` and extend the ticket-26 `afterChange`/`afterDelete` hooks to invalidate that tag as well as `catalog`.
+- [x] Every field carries a plain-language description (two editors — the owner and his father) and is `required` wherever a blank would reach a customer.
 
 ## Research (2026-10-24) — checked against the installed stack, not from memory
 
@@ -52,6 +52,68 @@
 3. **Seed + verify** — load globals whose values match today's copy exactly (so nothing changes visually on day one), then verify in the browser at 1280 + 390 and keep `check:layout` green.
 
 Step 3's "match today's copy exactly" matters: it makes the change provably non-visual, so any diff afterwards is a real bug rather than an expected content shift.
+
+## Progress
+
+### Step 1 — CMS + plumbing: DONE
+
+Three globals (`contacto`, `inicio`, `footer`), each with `versions: { drafts: true }` and an
+`afterChange` hook that only fires when `_status === 'published'` — so a private draft save does not bust
+the public cache. Media invalidates `catalog` **and** `globals`. Field labels are Spanish, field names
+English, icons are selects so a typo cannot produce a blank glyph, and everything customer-facing is
+`required`.
+
+**A migration was required and is committed.** Adding globals creates tables and Payload's schema push is
+dev-only, so without one the production CMS would have failed on missing tables the moment this shipped.
+Generated with `migrate:create`, then reviewed rather than trusted: `up()` creates exactly 22 tables and
+drops nothing, its 16 `ALTER`s are all `ADD CONSTRAINT` on those same new tables, `down()` drops exactly
+what `up()` creates, and no foreign key reaches out to `products`/`media`/`users`. All six migrations were
+then applied to a scratch database and finished clean.
+
+`admin.livePreview` names the three globals with móvil(390) + escritorio(1280) breakpoints. Verified by
+reading the config back out (not just typechecking): all three listed, both breakpoints registered, drafts
+resolving on `contacto`, and the `url` function producing the right path per global.
+
+`PREVIEW_SECRET` is deliberately separate from `REVALIDATE_SECRET` — one grants draft viewing, the other
+busts the public cache. Different capabilities, different secrets.
+
+### Step 2 — Rewire + live preview: DONE except the contacto body
+
+`lib/site-copy.ts` resolves each global to a fully-populated object, CMS value first and today's copy
+behind it, so no component null-checks and a half-filled global degrades field by field. Rewired: the
+contacto page and its branch panel, the contact form and privacy modal (the email now flows in as a prop,
+so the form's notice cannot disagree with the footer), the footer on all four pages that render it, and
+the homepage sections. The store's phone numbers are now **derived from one stored value**, so the
+WhatsApp link and the displayed number cannot drift apart.
+
+The footer deliberately keeps reading the email and phone numbers from the `contacto` global rather than
+its own: those are facts about the store and belong in exactly one editable place.
+
+**What the browser proved:**
+
+| check | result |
+| --- | --- |
+| layout gate with an EMPTY CMS | 32 passed — the same assertions now run through the fallback path, the strongest evidence the rewiring is non-visual |
+| preview route guards | no secret 401, wrong secret 401, off-site path 400, traversal 400 |
+| preview route happy path | 307 to the page **with** the draft cookie set; `?disable=1` clears it |
+| draft plumbing (stub CMS recording requests) | visitor read hit `/api/globals/inicio` → published marker; preview read hit `/api/globals/inicio?draft=true` → draft marker |
+| preview components mounted? | public page tree references neither `HomeLivePreview` nor `FooterLivePreview`; the draft-mode tree references both |
+
+### Honest gaps
+
+1. **The contacto body is not live-wired.** Opening the pane on `/contacto` shows the saved **draft**
+   (text updates after a save), but not unsaved typing. The homepage and the footer — the two the owner
+   edits most — are live. Wiring contacto means extracting its ~250 lines of inline JSX into a
+   presentational component the way `HomeSections` was extracted.
+2. **Step 3 has not run, so nothing is visible in the CMS yet.** The globals exist but hold no values;
+   until they are seeded, every page renders today's copy through the fallback. Seeding is what makes the
+   switch provable — values must match the current copy exactly, so any diff afterwards is a real bug.
+
+One operational lesson, recorded in the `web-layout-regression` skill: **never edit source while a gate
+run is in flight.** Doing so produced 11 failures that looked like a real regression — the server HTML had
+the new copy while the client bundle still had the old module, so a component received `undefined` and
+React unmounted the tree. Fetching the failing client chunk named the exact source line, and the fix was
+the documented one (stop, clear `.next`, restart), not a code change.
 
 ## Comments
 
