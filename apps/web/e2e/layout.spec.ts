@@ -60,7 +60,18 @@ test("homepage layout matches Stitch (desktop + mobile)", async ({ page }) => {
   await page.getByTestId("hero-card").waitFor({ state: "attached", timeout: 20_000 })
   // wait for webfonts so button widths are final (fallback fonts are wider and
   // can momentarily wrap the CTA buttons, making this assertion flaky)
-  await page.evaluate(() => document.fonts.ready)
+  // Wait for the faces the CTA labels and icon glyphs actually use. `document.fonts.ready` alone is
+  // NOT sufficient: it can resolve before a face requested later has arrived, and the wider fallback
+  // glyphs push the two CTAs onto separate rows — measured once as a 68px vertical offset between
+  // them, which fails this test while the design is perfectly fine.
+  await page.evaluate(async () => {
+    await Promise.all([
+      document.fonts.load('700 16px zalandoSans'),
+      document.fonts.load('400 18px "Material Symbols Outlined"'),
+      document.fonts.load('700 32px Fredoka'),
+    ])
+    await document.fonts.ready
+  })
   await page.waitForFunction(
     () => {
       const img = document.querySelector("main img") as HTMLImageElement | null
@@ -160,7 +171,18 @@ test("carousel next snaps to a card boundary (no half card on the left)", async 
   // Suspense containers, so elements are queryable (and images report complete) while the layout is
   // still a collapsed shell. Wait for fonts, the image, and for the navbar to actually have a
   // layout before measuring anything.
-  await page.evaluate(() => document.fonts.ready)
+  // Wait for the faces the CTA labels and icon glyphs actually use. `document.fonts.ready` alone is
+  // NOT sufficient: it can resolve before a face requested later has arrived, and the wider fallback
+  // glyphs push the two CTAs onto separate rows — measured once as a 68px vertical offset between
+  // them, which fails this test while the design is perfectly fine.
+  await page.evaluate(async () => {
+    await Promise.all([
+      document.fonts.load('700 16px zalandoSans'),
+      document.fonts.load('400 18px "Material Symbols Outlined"'),
+      document.fonts.load('700 32px Fredoka'),
+    ])
+    await document.fonts.ready
+  })
   await page.waitForFunction(
     () => {
       const img = document.querySelector("main img") as HTMLImageElement | null
@@ -222,7 +244,18 @@ test("tienda layout: desktop sidebar + 3-col grid, mobile drawer + 2-col", async
   await page.goto("/tienda")
   await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })
   // /tienda has no hero image (and no <main>), so only the webfonts matter for this measurement.
-  await page.evaluate(() => document.fonts.ready)
+  // Wait for the faces the CTA labels and icon glyphs actually use. `document.fonts.ready` alone is
+  // NOT sufficient: it can resolve before a face requested later has arrived, and the wider fallback
+  // glyphs push the two CTAs onto separate rows — measured once as a 68px vertical offset between
+  // them, which fails this test while the design is perfectly fine.
+  await page.evaluate(async () => {
+    await Promise.all([
+      document.fonts.load('700 16px zalandoSans'),
+      document.fonts.load('400 18px "Material Symbols Outlined"'),
+      document.fonts.load('700 32px Fredoka'),
+    ])
+    await document.fonts.ready
+  })
   const m = await page.evaluate(() => {
     const grid = document.querySelector('[data-testid="tienda-grid"]')
     const sidebar = document.querySelector('[data-testid="filter-sidebar"]')
