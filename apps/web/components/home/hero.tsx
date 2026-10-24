@@ -1,6 +1,11 @@
 import Image from "next/image"
+import type { InicioCopy } from "@/lib/site-copy"
 
-export function Hero() {
+/**
+ * The hero takes its copy as a prop (ticket 19): the page resolves the `inicio` global, so this
+ * component stays presentational and the same markup can be re-rendered live while the owner types.
+ */
+export function Hero({ copy }: { copy: InicioCopy["hero"] }) {
   return (
     <section className="relative w-full overflow-hidden bg-background">
       {/* Store interior: full-bleed behind on lg+, top block with a bottom scrim on mobile */}
@@ -26,16 +31,16 @@ export function Hero() {
             <div className="relative -mt-36 lg:mt-0 mb-6 lg:mb-0 mx-4 md:mx-8 lg:mx-0 bg-white/95 lg:bg-white backdrop-blur-xl border border-[#ead7c3] p-5 md:p-8 lg:p-10 rounded-xl lg:rounded-3xl shadow-2xl shadow-foreground/15" data-testid="hero-card">
               <div className="animate-fade-up inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#ffebd6] border border-[#d3c5ab] text-deep-amber font-bold text-xs uppercase tracking-wider mb-4 hover:scale-105 transition-transform duration-200 cursor-default shadow-xs">
                 <span className="material-symbols-outlined text-sm text-deep-amber">location_on</span>
-                <span>Riobamba, Ecuador</span>
+                <span>{copy.eyebrow}</span>
               </div>
               <div className="animate-fade-up [animation-delay:90ms] text-deep-amber font-bold mb-2 block text-xs uppercase tracking-widest">
-                Frutos secos · Semillas · Granos · Gourmet
+                {copy.kicker}
               </div>
               <h1 className="animate-fade-up [animation-delay:170ms] font-headline text-2xl sm:text-3xl md:text-5xl font-bold text-foreground mb-4 leading-tight">
-                Equilibrio para tu despensa
+                {copy.title}
               </h1>
               <p className="animate-fade-up [animation-delay:250ms] text-sm md:text-base lg:text-lg text-[#6c5b4f] mb-6 md:mb-8 leading-relaxed">
-                Compra la cantidad exacta que necesitas — siempre fresco, con la mejor calidad.
+                {copy.body}
               </p>
               <div className="animate-fade-up [animation-delay:330ms] flex flex-col sm:flex-row flex-wrap gap-2.5 lg:gap-4">
                 <a
@@ -43,14 +48,14 @@ export function Hero() {
                   className="btn-shimmer w-full sm:w-auto shrink-0 whitespace-nowrap inline-flex items-center justify-center bg-primary text-foreground font-bold px-7 py-3.5 rounded-xl hover:bg-[#fabd00] hover:shadow-lg active:scale-95 transition-all duration-200 shadow-md gap-2"
                 >
                   <span className="material-symbols-outlined text-[20px]">storefront</span>
-                  Explorar Tienda
+                  {copy.ctaPrimaryLabel}
                 </a>
                 <a
                   href="/contacto"
                   className="w-full sm:w-auto shrink-0 whitespace-nowrap inline-flex items-center justify-center border-2 border-foreground/20 text-foreground bg-background hover:bg-[#f3dfcb] hover:border-foreground/40 active:scale-95 font-bold px-7 py-3.5 rounded-xl transition-all duration-200 gap-2"
                 >
                   <span className="material-symbols-outlined text-[20px]">storefront</span>
-                  Nuestra Historia
+                  {copy.ctaSecondaryLabel}
                 </a>
               </div>
             </div>

@@ -8,7 +8,7 @@ import { History } from "@/components/home/history"
 import { Newsletter } from "@/components/home/newsletter"
 import { getCategories, getPopularProducts, getProducts, priceDisplay, Product, productImageUrl } from "@/lib/payload"
 import { Metadata } from "next"
-import { resolveFooterProps } from "@/lib/site-copy"
+import { resolveFooterProps, resolveInicio } from "@/lib/site-copy"
 
 export const metadata: Metadata = {
   title: "Wasi Granel — Despensa urbana y consciente",
@@ -76,19 +76,19 @@ const getDataForHomePage = async (): Promise<[CategoryWithCount[], Product[]]> =
 
 export default async function HomePage() {
   const [categories, popular] = await getDataForHomePage();
-  const footer = await resolveFooterProps()
+  const [footer, inicio] = await Promise.all([resolveFooterProps(), resolveInicio()])
 
 
   return (
     <>
       <Navigation />
       <main className="flex-1">
-        <Hero />
-        <Benefits />
-        <PopularProducts products={popular} />
-        <CategoryGrid categories={categories} />
-        <History />
-        <Newsletter />
+        <Hero copy={inicio.hero} />
+        <Benefits copy={inicio.benefits} />
+        <PopularProducts products={popular} copy={inicio.popular} />
+        <CategoryGrid categories={categories} copy={inicio.categories} />
+        <History copy={inicio.history} />
+        <Newsletter copy={inicio.newsletter} />
       </main>
       <Footer copy={footer} />
     </>

@@ -1,35 +1,37 @@
 import Image from "next/image"
 import { Reveal } from "@/components/home/reveal"
+import type { InicioCopy } from "@/lib/site-copy"
 
-export function History() {
+/** Copy comes from the `inicio` global via the page (ticket 19); the statistic cards are a list, so
+ * the owner can add a third without a code change. */
+export function History({ copy }: { copy: InicioCopy["history"] }) {
   return (
     <section className="py-20 bg-background overflow-hidden relative" id="nuestra-historia">
       <div className="px-4 md:px-12 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
         <Reveal className="order-2 lg:order-1">
           <div className="inline-flex items-center gap-2 text-deep-amber font-bold mb-4">
             <div className="h-0.5 w-8 bg-deep-amber" aria-hidden />
-            <span className="uppercase tracking-wider text-xs font-bold">Nuestra Esencia</span>
+            <span className="uppercase tracking-wider text-xs font-bold">{copy.eyebrow}</span>
           </div>
           <h2 className="font-headline text-3xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
-            Calidad gourmet, desde Riobamba
+            {copy.title}
           </h2>
           <div className="space-y-4 text-base md:text-lg text-[#6c5b4f] leading-relaxed">
-            <p>
-              En Wasi Granel reunimos frutos secos, semillas, granos, especias y productos gourmet
-              elegidos por calidad y sabor. Compras al peso exacto, sin desperdicio, con la frescura
-              que tu despensa merece.
-            </p>
-            <p>La cantidad exacta que necesitas, con la más alta calidad y frescura.</p>
+            <p>{copy.body1}</p>
+            <p>{copy.body2}</p>
           </div>
           <div className="mt-8 grid grid-cols-2 gap-4 md:gap-6">
-            <div className="p-6 bg-white rounded-2xl border-2 border-[#ffebd6] shadow-sm hover:border-primary hover:shadow-md hover:-translate-y-1 transition-all duration-300">
-              <div className="font-headline text-3xl md:text-4xl font-bold text-deep-amber mb-1">100%</div>
-              <div className="text-sm font-semibold text-foreground">Al peso exacto</div>
-            </div>
-            <div className="p-6 bg-white rounded-2xl border-2 border-[#ffebd6] shadow-sm hover:border-primary hover:shadow-md hover:-translate-y-1 transition-all duration-300">
-              <div className="font-headline text-3xl md:text-4xl font-bold text-deep-amber mb-1">50+</div>
-              <div className="text-sm font-semibold text-foreground">Productos gourmet</div>
-            </div>
+            {copy.stats.map((stat) => (
+              <div
+                key={stat.label}
+                className="p-6 bg-white rounded-2xl border-2 border-[#ffebd6] shadow-sm hover:border-primary hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="font-headline text-3xl md:text-4xl font-bold text-deep-amber mb-1">
+                  {stat.value}
+                </div>
+                <div className="text-sm font-semibold text-foreground">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </Reveal>
 
@@ -51,8 +53,8 @@ export function History() {
               <span className="material-symbols-outlined text-[26px]">store</span>
             </div>
             <div>
-              <div className="font-bold text-foreground text-sm font-headline">Visítanos en Riobamba</div>
-              <div className="text-xs text-foreground/80 font-medium">Experiencia a granel local</div>
+              <div className="font-bold text-foreground text-sm font-headline">{copy.badgeTitle}</div>
+              <div className="text-xs text-foreground/80 font-medium">{copy.badgeSub}</div>
             </div>
           </div>
         </Reveal>

@@ -1,12 +1,19 @@
 import type { Category } from "@/lib/payload"
 import { Reveal } from "@/components/home/reveal"
 import { categoryIcon } from "@/lib/category-icons"
+import type { InicioCopy } from "@/lib/site-copy"
 
 
 
 export type CategoryWithCount = Category & { count: number }
 
-export function CategoryGrid({ categories }: { categories: CategoryWithCount[] }) {
+export function CategoryGrid({
+  categories,
+  copy,
+}: {
+  categories: CategoryWithCount[]
+  copy: InicioCopy["categories"]
+}) {
   return (
     <section className="py-20 bg-[#fff1e5]/60 border-b border-[#ead7c3] relative overflow-hidden" id="categorias">
       <div className="px-4 md:px-12 max-w-7xl mx-auto relative z-10">
@@ -14,10 +21,10 @@ export function CategoryGrid({ categories }: { categories: CategoryWithCount[] }
           <div>
             <div className="inline-flex items-center gap-2 text-deep-amber font-bold mb-2">
               <span className="material-symbols-outlined text-[18px] text-deep-amber">grain</span>
-              <span className="uppercase tracking-wider text-xs font-bold">Explora nuestra despensa</span>
+              <span className="uppercase tracking-wider text-xs font-bold">{copy.eyebrow}</span>
             </div>
             <h2 className="font-headline text-3xl md:text-4xl font-bold text-foreground leading-tight">
-              Categorías de Producto
+              {copy.title}
             </h2>
             <p className="text-[#6c5b4f] text-sm md:text-base mt-2 max-w-2xl leading-relaxed">
               Frutos secos, semillas, granos, especias y más — todo al peso exacto, listo para tu despensa.
@@ -27,7 +34,7 @@ export function CategoryGrid({ categories }: { categories: CategoryWithCount[] }
             href="/tienda"
             className="inline-flex items-center gap-2 text-deep-amber hover:text-foreground font-bold text-sm transition-colors group self-start md:self-auto"
           >
-            Ver catálogo completo
+            {copy.ctaLabel}
             <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">
               arrow_forward
             </span>

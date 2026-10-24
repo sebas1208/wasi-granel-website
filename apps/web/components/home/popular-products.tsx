@@ -9,8 +9,15 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel"
 import { priceDisplay, productImageUrl, type Product } from "@/lib/payload"
+import type { InicioCopy } from "@/lib/site-copy"
 
-export function PopularProducts({ products }: { products: Product[] }) {
+export function PopularProducts({
+  products,
+  copy,
+}: {
+  products: Product[]
+  copy: InicioCopy["popular"]
+}) {
   const [api, setApi] = useState<CarouselApi>()
   const [canPrev, setCanPrev] = useState(false)
   const [canNext, setCanNext] = useState(false)
@@ -41,14 +48,14 @@ export function PopularProducts({ products }: { products: Product[] }) {
       <div className="px-4 md:px-12 max-w-7xl mx-auto relative z-10">
         <div className="flex flex-row items-center justify-between mb-8 gap-4">
           <h2 className="font-headline text-2xl md:text-4xl font-bold text-white leading-tight">
-            Productos Populares
+            {copy.title}
           </h2>
           <div className="flex items-center gap-4">
             <a
               href="/tienda"
               className="hidden sm:inline-flex items-center gap-1.5 text-primary hover:text-white transition-colors font-semibold text-sm group"
             >
-              Ver todos
+              {copy.ctaLabel}
               <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1.5 transition-transform">
                 arrow_forward
               </span>
