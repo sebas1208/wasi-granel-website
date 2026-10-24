@@ -4,13 +4,17 @@
 
 **Blocked by:** nothing. 10, 11, 15 and 16 are all closed — the pages exist and already read Payload, so there is something real to preview against.
 
-**Status:** ready-for-agent — researched 2026-10-24; the findings below correct two of this ticket's own assumptions, and the open questions are at the bottom.
+**Status:** ready-for-agent — researched **and scoped with the owner** on 2026-10-24. The findings below correct two of this ticket's own assumptions; the agreed decisions and a three-step plan sit underneath them.
 **Priority:** low (the storefront itself is still the priority; this is a convenience for the owner)
 
-- [ ] Define Globals in `apps/cms`: site copy (homepage hero/intro, about, banners), contact + sucursales, footer.
-- [ ] Storefront reads the Globals over **REST**, replacing the hardcoded copy. (**Correction:** this ticket said "via the Payload Local API" — that is not possible here. The Local API only exists server-side *inside* the Payload app; `apps/web` is a separate application and reaches Payload over HTTP, exactly like the catalog already does via `lib/payload.ts`.)
-- [ ] Enable `admin.livePreview` on the Globals with a storefront preview route (renders draft content via preview token).
-- [ ] Content edits propagate without a rebuild (revalidates Vercel ISR / refetches).
+- [ ] **Three globals in `apps/cms`** (the owner chose all three at once, not contact-only):
+      1. `contacto` — sucursales (name, address, both phones, WhatsApp, maps CID, the "Cómo llegar" link), opening hours, shipping note. Replaces `apps/web/lib/store-info.ts`.
+      2. `inicio` — homepage hero (title, accent word, body), the three pillars, the benefits bar, the history/mission block.
+      3. `footer` — the footer blurb, its links and the legal line.
+- [ ] Storefront reads them over **REST**, replacing the hardcoded copy — with a **code fallback** to today's values whenever a field is blank.
+- [x] ~~Enable `admin.livePreview` + drafts~~ — **dropped by the owner (2026-10-24): save = live.** This removes the `@payloadcms/live-preview-react` dependency, the drafts/versions config on the globals, and the `draftMode()` preview route. Content is published the moment it is saved; the ticket-26 webhook is what makes the site pick it up.
+- [ ] Content edits propagate without a rebuild — fetch globals with `next: { tags: ['globals'], revalidate: false }` and extend the ticket-26 `afterChange`/`afterDelete` hooks to invalidate that tag as well as `catalog`.
+- [ ] Every field carries a plain-language description (two editors — the owner and his father) and is `required` wherever a blank would reach a customer.
 
 ## Research (2026-10-24) — checked against the installed stack, not from memory
 
@@ -30,12 +34,20 @@
 
 **Risk worth naming:** moving contact data into the CMS makes the CMS the source of truth for the store's phone numbers and addresses. A blank or bad edit would ship to customers. Mitigation to decide below: required fields, and/or a code fallback to today's values.
 
-## Open questions for the owner
-1. **Which content first?** Strong recommendation: **contact + sucursales only** (it is the piece you cannot currently change yourselves, and it proves the pattern end-to-end). Homepage copy and footer can follow as separate small steps. — *Would you rather do all of it in one go?*
-2. **Live preview now, or "save and refresh"?** Recommendation: **skip live preview initially.** Save-then-refresh already works via the webhook, and live preview adds drafts + draft mode + a new package. Add it later if editing feels blind. — *Agree, or is seeing it while typing worth the extra work to you?*
-3. **Who will edit this?** You, your father, or both? It decides how strict the fields should be (required vs optional) and whether drafts matter.
-4. **Do you want drafts** (prepare a change, publish later), or is "save = live" fine?
-5. **If a global is blank or broken, should the site fall back** to today's hardcoded values, or show the gap plainly? Recommendation: **fall back** — a customer must never see an empty phone number because of a mistyped edit.
+## Decisions (owner, 2026-10-24)
+| question | answer |
+| --- | --- |
+| Scope of this ticket | **All three globals at once** — contacto, inicio, footer. Not contact-only. |
+| Editing model | **Save = live.** No drafts, no live preview (both dropped — see the checklist). |
+| Who edits | **The owner and his father.** Fields need plain-language descriptions and sensible `required` flags. |
+| Blank/broken field | **Fall back to today's code values.** Decided without asking — a customer must never see an empty phone number because of a mistyped edit. |
+
+## Implementation plan (three steps, in order)
+1. **CMS + plumbing** — define the three globals in `apps/cms`, add the storefront REST fetchers (`lib/payload.ts`) under a `globals` cache tag, and extend the revalidation hooks to invalidate it.
+2. **Rewire the storefront** — `lib/store-info.ts` becomes the fallback rather than the source; `app/contacto/page.tsx`, the home components and `components/footer.tsx` read the globals; every consumer keeps working if the CMS returns nothing.
+3. **Seed + verify** — load globals whose values match today's copy exactly (so nothing changes visually on day one), then verify in the browser at 1280 + 390 and keep `check:layout` green.
+
+Step 3's "match today's copy exactly" matters: it makes the change provably non-visual, so any diff afterwards is a real bug rather than an expected content shift.
 
 ## Comments
 
