@@ -1,8 +1,7 @@
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { HomeSections } from "@/components/home/home-sections"
-import { HomeLivePreview } from "@/components/home/home-live-preview"
-import { FooterLivePreview } from "@/components/footer-live-preview"
+import { RefreshRouteOnSave } from "@/components/refresh-route-on-save"
 import { type CategoryWithCount } from "@/components/home/category-grid"
 import { getCategories, getPopularProducts, getProducts, priceDisplay, Product, productImageUrl } from "@/lib/payload"
 import { Metadata } from "next"
@@ -87,17 +86,13 @@ export default async function HomePage() {
   return (
     <>
       <Navigation />
+      {/* In the preview pane only: refresh this route after each save so the SERVER re-renders, using
+          the draft cookie to decide whether the reads return drafts. Renders nothing. */}
+      {draft ? <RefreshRouteOnSave /> : null}
       <main className="flex-1">
-        {/* Identical markup either way — HomeSections owns the section list, so the preview cannot
-            drift from what a visitor sees. A visitor takes the server branch and never downloads the
-            preview client code. */}
-        {draft ? (
-          <HomeLivePreview serverCopy={inicio} popular={popular} categories={categories} />
-        ) : (
-          <HomeSections copy={inicio} popular={popular} categories={categories} />
-        )}
+        <HomeSections copy={inicio} popular={popular} categories={categories} />
       </main>
-      {draft ? <FooterLivePreview serverCopy={footer} /> : <Footer copy={footer} />}
+      <Footer copy={footer} />
     </>
   )
 }

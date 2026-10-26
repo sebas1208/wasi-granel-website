@@ -1,6 +1,5 @@
 import { Suspense } from "react"
 import { Footer } from "@/components/footer"
-import { FooterLivePreview } from "@/components/footer-live-preview"
 import { Navigation } from "@/components/navigation"
 import { CatalogCard } from "@/components/tienda/catalog-card"
 import { FilterSidebar } from "@/components/tienda/filter-sidebar"
@@ -8,7 +7,6 @@ import { ShopBanner } from "@/components/tienda/shop-banner"
 import { Toolbar } from "@/components/tienda/toolbar"
 import { ActiveChips } from "@/components/tienda/active-chips"
 import type { Metadata } from "next"
-import { draftMode } from "next/headers"
 import { resolveFooterProps } from "@/lib/site-copy"
 import {
   getCategoryCounts,
@@ -73,10 +71,7 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
 
 export default async function TiendaPage({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams
-  // Draft mode is the cookie the CMS's preview pane turns on for the logged-in editor. It MUST reach
-  // the resolvers, or the editor would be shown the published copy and conclude editing is broken.
-  const { isEnabled: draft } = await draftMode()
-  const footer = await resolveFooterProps({ draft })
+  const footer = await resolveFooterProps()
 
   const categoria = str(sp.categoria) || null
   const modalidadRaw = str(sp.modalidad)
@@ -166,7 +161,7 @@ export default async function TiendaPage({ searchParams }: { searchParams: Promi
         </div>
       </div>
 
-      {draft ? <FooterLivePreview serverCopy={footer} /> : <Footer copy={footer} />}
+      <Footer copy={footer} />
     </>
   )
 }

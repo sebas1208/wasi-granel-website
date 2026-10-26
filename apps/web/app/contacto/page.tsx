@@ -3,7 +3,7 @@ import { draftMode } from "next/headers"
 import Image from "next/image"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
-import { FooterLivePreview } from "@/components/footer-live-preview"
+import { RefreshRouteOnSave } from "@/components/refresh-route-on-save"
 import { ContactForm } from "@/components/contacto/contact-form"
 import { SucursalesPanel } from "@/components/contacto/sucursales-panel"
 import { branchWhatsapp, resolveContacto, resolveFooterProps } from "@/lib/site-copy"
@@ -36,6 +36,8 @@ export default async function ContactoPage() {
   return (
     <>
       <Navigation />
+      {/* See app/page.tsx: refreshes the route after a save while the editor previews. */}
+      {draft ? <RefreshRouteOnSave /> : null}
 
       <main className="w-full pt-20 flex-grow">
         {/* ============ HERO ============ */}
@@ -262,7 +264,7 @@ export default async function ContactoPage() {
         </section>
       </main>
 
-      {draft ? <FooterLivePreview serverCopy={footer} /> : <Footer copy={footer} />}
+      <Footer copy={footer} />
     </>
   )
 }

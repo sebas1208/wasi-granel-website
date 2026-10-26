@@ -59,6 +59,21 @@ export default buildConfig({
       ],
     },
   },
+  /**
+   * This CMS's own public origin. Payload warns when it is unset ("Falling back to empty string as
+   * request origin... recommended to explicitly set the serverURL") and uses it to build file URLs, so
+   * it is set from `SERVER_URL` rather than left empty.
+   *
+   * `cors` / `csrf` are deliberately NOT set. They are only required when the front-end calls this API
+   * CROSS-ORIGIN — which is what payload's CLIENT-side live preview does (its hook POSTs the editor's form
+   * state back here to re-serialize it). This site uses the SERVER-side preview Payload recommends for the
+   * App Router instead: the pane only calls `router.refresh()`, and every read of this API happens
+   * server-to-server, so no browser CORS policy is involved and there is nothing to allowlist. If
+   * client-side preview is ever adopted, the docs' snippet is
+   * `cors: [storefrontOrigin], csrf: [storefrontOrigin]` — and `csrf` must stay non-strict-safe, because
+   * the admin's own POSTs carry an Origin too.
+   */
+  serverURL: process.env.SERVER_URL ?? 'https://payload.wasigranel.com',
   collections: [Users, Media, Categories, Products],
   // Site copy the owner and his father edit themselves (ticket 19). Globals are single documents —
   // one form each, no list, no create/delete. See src/globals/ for the reasoning per global.

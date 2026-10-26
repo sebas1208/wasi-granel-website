@@ -25,7 +25,15 @@ export const Inicio: GlobalConfig = {
     read: () => true,
   },
   versions: {
-    drafts: true,
+    /**
+     * Autosave is what makes server-side Live Preview feel live: the pane refreshes the route when the
+     * document is SAVED, so saving every 375ms turns "updates after you save" into "updates as you type".
+     * Payload's docs recommend pairing the two for exactly this reason.
+     *
+     * These land as DRAFTS, so the publish-gated revalidation hook stays quiet and neither the public site
+     * nor its cache changes while the editor types.
+     */
+    drafts: { autosave: { interval: 375 } },
   },
   hooks: {
     afterChange: [revalidateGlobals],
