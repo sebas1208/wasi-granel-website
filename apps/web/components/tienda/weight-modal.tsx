@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react"
 import Image from "next/image"
 import Markdown from "react-markdown"
-import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { useFavorite } from "@/lib/favorites"
 import { addToCart } from "@/lib/cart"
 import {
@@ -286,6 +286,13 @@ export function WeightModal({
               <DialogTitle className="font-headline text-2xl sm:text-3xl text-on-surface font-bold leading-tight mb-2">
                 {product.name}
               </DialogTitle>
+
+              {/* Radix warns (and screen readers suffer) when a dialog has no description: the dialog is
+                  announced with a name but no context. Visually hidden, matching the privacy modal, because
+                  the design has no room for a paragraph — but it still has to exist for assistive tech. */}
+              <DialogDescription className="sr-only">
+                {`Detalle de ${product.name}: fotos, precio y opciones de cantidad para añadirlo al carrito.`}
+              </DialogDescription>
 
               {/* CANONICAL price — the fixed rate everything derives from, never changes */}
               <div className="flex items-baseline gap-2 mb-1 flex-wrap">
