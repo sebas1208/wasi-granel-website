@@ -1,7 +1,27 @@
 // Minimal, typed read-layer over the Payload REST API.
-// Local dev can override the base with `PAYLOAD_URL` (e.g. http://localhost:3001);
-// default is the production CMS so it works everywhere with no env wiring.
-const base = (process.env.PAYLOAD_URL ?? "https://payload.wasigranel.com").replace(/\/+$/, "")
+//
+// TWO bases, deliberately — they answer different questions, and conflating them caused a real bug.
+//
+// `base` is for SERVER-side reads. It may point at an address only the server can reach (a private or
+// local CMS), which is why it is read from a server-only variable.
+//
+// `imageBase` is for URLs that end up in the HTML. This module is imported by TWELVE client components,
+// so it is evaluated in the browser too, and the browser has to be able to load what it names. It
+// therefore reads only a `NEXT_PUBLIC_` variable — the one kind that resolves identically on both sides.
+//
+// They must never collapse back into one expression. When the image URL fell back to `PAYLOAD_URL`, the
+// server rendered `/_next/image?url=http://localhost:3001/...` while the browser rendered
+// `...payload.wasigranel.com...`: every product photo produced an attribute mismatch, React logged a
+// hydration error on the catalog routes, and the interactivity tests (the Quick View's Escape handler)
+// failed with it. The same hazard exists in production the moment `PAYLOAD_URL` is set there.
+const base = (
+  process.env.PAYLOAD_URL ??
+  process.env.NEXT_PUBLIC_PAYLOAD_URL ??
+  "https://payload.wasigranel.com"
+).replace(/\/+$/, "")
+
+/** Media URLs rendered into HTML: reads a public variable so server and client always agree. */
+const imageBase = (process.env.NEXT_PUBLIC_PAYLOAD_URL ?? "https://payload.wasigranel.com").replace(/\/+$/, "")
 
 export type PayloadImage = {
   url: string
@@ -111,7 +131,7 @@ async function fetcher<T>(path: string, opts: FetchOptions = {}): Promise<T> {
 /** Payload returns relative media URLs (`/api/media/file/...`) — make them absolute. */
 export function absoluteImage(img?: PayloadImage | null): string | null {
   if (!img?.url) return null
-  return img.url.startsWith("http") ? img.url : `${base}${img.url}`
+  return img.url.startsWith("http") ? img.url : `${imageBase}${img.url}`
 }
 
 /** Products store their media nested under `images[].image`. Resolve the first photo URL. */
