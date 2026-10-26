@@ -1,7 +1,7 @@
 > **BORRADOR para revisión del dueño — no es asesoría legal.**
 > Texto propuesto para el modal de Términos y Condiciones (ticket 27). Nada de esto está publicado ni
-> cableado todavía. El dueño confirmó: razón social y RUC, IVA, la política cuando algo sale mal, y que el
-> envío gratis queda en espera. Queda por confirmar la tolerancia de peso (ver §7).
+> cableado todavía. **El dueño aprobó el texto completo el 2026-10-26**, incluida la tolerancia de peso
+> (§7). Falta que lo revise un abogado antes de publicarse.
 > Última redacción: 2026-10-26.
 
 ---
@@ -75,8 +75,8 @@ Pesamos cada pedido al momento de despacharlo. El peso final puede variar leveme
 por el redondeo de la balanza, así que **cobramos el peso que realmente se despacha**, que puede ser un
 poco más o un poco menos que lo pedido.
 
-**PENDIENTE — confirmar:** si la diferencia supera el **5%**, te escribimos antes de enviar para que
-decidas si mantienes, ajustas o cancelas el pedido. (Propuesta a confirmar por el dueño.)
+Si la diferencia supera el **5%**, te escribimos antes de enviar para que decidas si mantienes, ajustas o
+cancelas el pedido.
 
 ## 8. Si algo sale mal
 

@@ -1,8 +1,7 @@
 > **BORRADOR para revisión del dueño — no es asesoría legal.**
 > Texto propuesto para el modal de Política de Privacidad (ticket 27). Nada de esto está publicado ni
-> cableado todavía.
-> El dueño confirmó: razón social y RUC, que el formulario enviará a Google Sheets, la ubicación del
-> servidor, y los plazos de conservación.
+> cableado todavía. **El dueño aprobó el texto completo el 2026-10-26.** Falta que lo revise un abogado
+> antes de publicarse.
 > **Ojo:** el formulario todavía no envía nada (ticket 25); este texto describe el flujo ya cableado.
 > Última redacción: 2026-10-26.
 

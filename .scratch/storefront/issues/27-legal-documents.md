@@ -10,10 +10,9 @@ for legal terms and related."*
 **Blocked by:** nothing, but the **text** is the owner's to supply or approve. **Ticket 23 (checkout)
 is blocked by this** — payment providers routinely require published terms.
 
-**Status:** DRAFTED 2026-10-26 — owner asked me to write it (option 2 below). Both texts are in
-`.scratch/storefront/legal/` and are **awaiting the owner's review**; nothing is wired into the code yet.
-Seven of the eight open questions are answered; **one remains (weight tolerance, §7)**. Owner will also
-have a lawyer review before publication.
+**Status:** TEXT APPROVED 2026-10-26 — the owner approved both documents in full, including the weight
+tolerance in §7 of the terms. **The remaining work is the build** (design decided, below). A lawyer still
+reviews before publication.
 
 ## Why BOTH, not one
 
@@ -117,3 +116,37 @@ difference exceeds 5%. Awaiting the owner's confirmation.
 **Note on §5 of the privacy policy:** it names Google as the form's destination, which is correct once
 ticket 25 is wired — the form transmits nothing today. The draft header records this so nobody reads the
 policy as a description of the current behaviour.
+
+
+## The build (design decided, not yet written)
+
+The acceptance says *"both reachable without JavaScript"* and *"no dead `href="#"` links"*. A modal alone
+is JavaScript, so the modal cannot be the only way in — and a legal document should be a real, indexable
+page anyway. So:
+
+**Real pages first, modal as the enhancement.**
+
+| piece | file |
+| --- | --- |
+| the two documents, one source of truth | `apps/web/content/legal/{terms,privacy}.md` |
+| renders a document from its slug | `apps/web/components/legal/legal-document.tsx` (server component) |
+| the reusable window | `apps/web/components/legal/legal-modal.tsx` (client, Radix Dialog) |
+| the real pages | `apps/web/app/legal/[documento]/page.tsx` — `generateStaticParams` for `terms` \| `privacy` |
+| footer wiring | `components/footer.tsx:56` — `href="#"` → `href={legalHref(item.document)}` |
+| consent checkbox | `components/contacto/contact-form.tsx:186` — `PrivacyModal` → the shared `LegalModal` |
+
+The footer link is a real `<a href="/legal/terms">`, so it works with JavaScript disabled. `LegalModal`
+wraps it, calls `preventDefault()` on click, and opens the same document in a dialog. One content
+component serves both paths, so the page and the window can never drift.
+
+The document ids are already stable: the Payload `footer` global exposes `legal[].document` as a select
+with exactly `terms` and `privacy`, and `components/footer.tsx` already carries `data-legal-doc` on each
+link with a comment reserving it for this ticket. Nothing new has to be invented.
+
+**Known trade-off:** passing the server-rendered document as the dialog's children puts both documents in
+the RSC payload of every page that renders the footer (~10-16 KB). The alternative — fetching the text on
+open — saves the bytes but adds a round trip and a loading state to a document that must always be
+readable. Accepted, and worth revisiting only if page weight becomes a real problem.
+
+**Reuse:** ticket 23 (checkout) needs the same window for the terms at the point of purchase, which is why
+`LegalModal` takes a slug rather than being footer-specific.
