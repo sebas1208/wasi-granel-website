@@ -376,10 +376,8 @@ async function fetchGlobal<T>(slug: string, opts: { draft?: boolean } = {}): Pro
       current = await read()
     }
 
-    // eslint-disable-next-line no-console
-    console.warn(
-      `[preview] draft read for "${slug}" returned a PUBLISHED document after ${DRAFT_RETRY_ATTEMPTS} attempts (either this global has no draft saved yet, which is normal, or the write race beat every retry)`,
-    )
+    // No log: a global with no draft yet legitimately returns its published version here, so this is
+    // the normal path for e.g. `contacto` on every homepage render — not a fault worth reporting.
     return current
   } catch {
     return null
