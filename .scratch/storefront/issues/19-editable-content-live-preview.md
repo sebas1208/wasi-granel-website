@@ -119,7 +119,7 @@ non-visual" quietly stops being true.
 The 1280/390 pass is the automated gate rather than a hand-run browser session, which is stronger: it
 asserts the invariants (hero-card clearance, grid columns, navbar form per viewport) on every run.
 
-### Three real bugs this step found
+### Four real bugs this step found
 
 1. **The seed wrote drafts, not published content.** Payload's global update only treats `draft: false` as
    "do not force a draft" — it never promotes an unpublished global, so all three sat as drafts and the
@@ -139,6 +139,18 @@ asserts the invariants (hero-card clearance, grid columns, navbar form per viewp
    public domain and needs no exception. Verified: 200 with a real JPEG, and zero rejections in the log.
 
    This one was in a dev-server log I had said I would stop reading. It was worth reading.
+
+4. **The footer crashed inside the preview pane** (`can't access property Symbol.iterator, copy.branches is
+   undefined`, which Next's dev overlay showed as "This page couldn't load"). `FooterProps` is wider than
+   the footer global: it also carries `email` and `branches`, borrowed from the `contacto` global. Payload's
+   `mergeData` does not merge locally — it POSTs the form state back to the CMS and returns that global's
+   serialized document, so the borrowed keys are absent and `Footer`'s destructuring threw. The wrapper now
+   re-attaches them from the server copy, since they are not part of the document being edited.
+   `HomeLivePreview` is unaffected by construction: `InicioCopy` is exactly the inicio global's field set.
+
+   **This is the one class of bug the automated gate cannot reach.** The wrapper mounts only in draft mode,
+   and entering draft mode needs an admin session, so no Playwright run exercises this path — it was found
+   by the owner using the pane. Anything that renders from live-preview data has to be checked by hand.
 
 ### Honest gaps
 
