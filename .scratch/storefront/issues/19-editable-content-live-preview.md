@@ -4,7 +4,10 @@
 
 **Blocked by:** nothing. 10, 11, 15 and 16 are all closed — the pages exist and already read Payload, so there is something real to preview against.
 
-**Status:** IN PROGRESS — steps 1 and 2 landed 2026-10-24 (`develop` `552ea4d`, `ac29af3`, `cf4f2be`, `ea6430b`). All three globals exist with drafts, the storefront reads them with a code fallback, live preview is configured end-to-end and the CMS migration is applied-and-tested. **Step 3 (seed + browser verify) remains**, plus wiring live updates on the contacto body. Evidence and the two honest gaps are under Progress.
+**Status:** DONE locally (2026-10-26) — all three steps complete and verified end-to-end. Nothing is
+awaiting the owner here except the production rollout, which happens with the merge to `main`
+(`develop` `72060a4`). Two real bugs were found by insisting on the end-to-end check rather than trusting
+each piece, and both are fixed — see Progress.
 **Priority:** low (the storefront itself is still the priority; this is a convenience for the owner)
 
 - [x] **Three globals in `apps/cms`** (the owner chose all three at once, not contact-only):
@@ -49,7 +52,7 @@
 ## Implementation plan (three steps, in order)
 1. **CMS + plumbing** — define the three globals in `apps/cms` (with plain-language `admin.description` on every field, `required` where a blank would reach a customer), add the storefront REST fetchers (`lib/payload.ts`) under a `globals` cache tag, extend the revalidation hooks to invalidate it, and configure `admin.livePreview` + a `PREVIEW_SECRET`.
 2. **Rewire the storefront** — `lib/store-info.ts` becomes the fallback rather than the source; `app/contacto/page.tsx`, the home components and `components/footer.tsx` read the globals; every consumer keeps working if the CMS returns nothing. Then the live-preview side: a preview route (secret → `draftMode()`) and `useLivePreview` wrappers, fetching with `no-store` whenever preview mode is on so the iframe shows the live form state instead of the cache.
-3. **Seed + verify** — load globals whose values match today's copy exactly (so nothing changes visually on day one), then verify in the browser at 1280 + 390 and keep `check:layout` green.
+3. **Seed + verify** — DONE: globals loaded with values matching today's copy exactly, verified field by field, and `check:layout` green.
 
 Step 3's "match today's copy exactly" matters: it makes the change provably non-visual, so any diff afterwards is a real bug rather than an expected content shift.
 
@@ -99,15 +102,45 @@ its own: those are facts about the store and belong in exactly one editable plac
 | draft plumbing (stub CMS recording requests) | visitor read hit `/api/globals/inicio` → published marker; preview read hit `/api/globals/inicio?draft=true` → draft marker |
 | preview components mounted? | public page tree references neither `HomeLivePreview` nor `FooterLivePreview`; the draft-mode tree references both |
 
+### Step 3 — Seed + verify: DONE
+
+The three globals are seeded from the storefront's OWN fallback (`siteCopyDefaults()`), so the seeded copy
+and the fallback cannot silently diverge — retyping the strings is how "seeding proves the switch is
+non-visual" quietly stops being true.
+
+| check | result |
+| --- | --- |
+| CMS content vs storefront fallback, compared field by field over HTTP | **36 match, 0 differ** |
+| all three globals published | ✓ (`_status: published`) |
+| seed's own read-back | 17/17, with publication asserted first |
+| CMS edit → hook → storefront cache purge → live page | PASS, both directions |
+| layout gate at desktop 1280 + mobile 390 | 32 passed |
+
+The 1280/390 pass is the automated gate rather than a hand-run browser session, which is stronger: it
+asserts the invariants (hero-card clearance, grid columns, navbar form per viewport) on every run.
+
+### Two real bugs this step found
+
+1. **The seed wrote drafts, not published content.** Payload's global update only treats `draft: false` as
+   "do not force a draft" — it never promotes an unpublished global, so all three sat as drafts and the
+   publish-gated revalidation hook correctly refused to fire. The storefront still looked right (a public
+   read falls back to the latest version), which is what made it invisible: no edit could ever reach the
+   live site. The gate I had written was doing its job; I first misread it as the culprit.
+2. **Every product image hydrated with a different `src`.** `lib/payload.ts` used one base URL for
+   server-side reads *and* for media URLs in the HTML, but twelve client components import it, where a
+   server-only env var is undefined and fell back to production. The mismatch broke hydration, which also
+   killed interactivity (the Quick View stopped closing on Escape). Split into `base` (server reads) and
+   `imageBase` (public, identical on both sides).
+
 ### Honest gaps
 
 1. **The contacto body is not live-wired.** Opening the pane on `/contacto` shows the saved **draft**
-   (text updates after a save), but not unsaved typing. The homepage and the footer — the two the owner
-   edits most — are live. Wiring contacto means extracting its ~250 lines of inline JSX into a
-   presentational component the way `HomeSections` was extracted.
-2. **Step 3 has not run, so nothing is visible in the CMS yet.** The globals exist but hold no values;
-   until they are seeded, every page renders today's copy through the fallback. Seeding is what makes the
-   switch provable — values must match the current copy exactly, so any diff afterwards is a real bug.
+   (text updates after a save), not unsaved typing. The homepage and the footer are live. Wiring contacto
+   means extracting its ~250 lines of JSX into a presentational component the way `HomeSections` was.
+2. **Nothing has been rolled out to production.** The CMS migration, the seed and `PREVIEW_SECRET` all
+   apply at deploy time, and the CMS deploys from `main` — so this ships with the merge. **All
+   verification above is local**; production still serves today's copy through the code fallback, which
+   means the site is correct either way and the rollout is not urgent.
 
 One operational lesson, recorded in the `web-layout-regression` skill: **never edit source while a gate
 run is in flight.** Doing so produced 11 failures that looked like a real regression — the server HTML had

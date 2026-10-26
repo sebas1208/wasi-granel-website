@@ -85,9 +85,24 @@ this a small change rather than a sweep.
       | following request | **stub marker present, real catalog gone** — it re-rendered from new data |
       | then | back to `x-nextjs-cache: HIT` |
 
-- [~] **"A product edited in Payload appears on the site"** — the mechanism is proven above, but it has
-      **not** been exercised against the real CMS, because the secret is not set yet. This is the one
-      item still open, and it is on the owner's side.
+- [x] **"An edit in Payload appears on the site" — now PROVEN against the real CMS** (2026-10-26, closing
+      this ticket's only open item). `verify:cms-to-site` edits a Global, waits, polls the running
+      storefront and reverts, against a **production build** so the cache is genuinely in play:
+
+      | reading | result |
+      | --- | --- |
+      | control, before any edit | `false` — the stale copy really was being served from cache |
+      | after the edit | `true`, on the **second** request |
+      | after the revert | `false`, on the second request |
+
+      The second request is not a quirk: it is the stale-while-revalidate behaviour this ticket
+      documented — the first request after an invalidation can still serve the old page while the new one
+      regenerates behind it. A single-fetch check therefore reports a false negative, which is exactly
+      how the probe first "failed".
+
+      Two real bugs were in the way and are fixed: the site-copy seed was writing drafts rather than
+      publishing (so the publish-gated hook correctly refused to fire), and a server/client base-URL
+      divergence made every product image hydrate differently. Both are committed.
 
 ## To activate (one-time, owner)
 1. Generate a secret and set **the same value** in both places:
