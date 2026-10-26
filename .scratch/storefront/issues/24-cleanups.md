@@ -126,6 +126,34 @@ than in a rushed change. (A third, recurring `Missing Description … {DialogCon
 same log and **fixed** — the Quick View dialog now carries a visually hidden description; the warnings
 stopped appearing after that change.)
 
+### 9. Homepage carousel arrows log a hydration mismatch on every load (found 2026-10-26)
+`apps/web/components/home/popular-products.tsx:68,77`:
+
+```tsx
+disabled={!canPrev}   // and disabled={!canNext}
+```
+
+`canPrev`/`canNext` start `useState(false)` and are then set from embla's measurements in an effect. The
+served HTML therefore has `disabled=""` on **both** arrows, and the client clears them once embla has
+measured — React reports this as an attribute mismatch on every homepage load:
+
+```
+<button aria-label="Producto siguiente" onClick={...}
++  disabled={true}
+-  disabled={null}
+```
+
+Read the diff carefully: an OMITTED attribute shows as `null`, so the server rendered `disabled` and the
+client did not. That is the client being right (the arrows should be enabled) — so this is a warning, not a
+broken control, and it does not affect the visible layout. It is worth fixing because a hydration warning is
+noise that hides real ones, and because React explicitly does not patch a mismatch up: the subtree is left
+to the client. Fix by making the first client render agree with the server (e.g. only reflect `canPrev` /
+`canNext` after a mounted flag, or suppress deliberately with a comment explaining why), then confirm the
+warning is gone from the dev-server log — Next forwards browser console output there as `[browser] …` lines.
+
+Note: this is the same *shape* as the Admin Panel's own `popup-button` mismatch (`disabled={true}` vs
+`disabled={null}`) reported at the start of ticket 19. That one is Payload's UI, not ours.
+
 ## Acceptance
 - [ ] "Borrar filtros" clears every filter and the active-chips row disappears; covered by a gate test.
 - [ ] The dead `grams` / `suffix` code is gone and `lint` reports 0 warnings from our own files.
