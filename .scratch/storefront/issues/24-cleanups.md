@@ -101,6 +101,31 @@ This is a **stopgap, not a state**: the next production deployment re-claims the
   ```
   (The alternative — reverting the homepage merge on `main` — is **not** safe: git can then treat that branch as already merged and the final `develop → main` merge would silently ship *without* the homepage.)
 
+### 8. Two image warnings the dev-server log reports on every visit (found 2026-10-26)
+Next forwards browser console messages into the dev-server log as `[browser] …` lines, which is how these
+surfaced. Neither is visible in a screenshot; both are real.
+
+- **The nav logo is the Largest Contentful Paint and is lazy.** On every page:
+  ```
+  [browser] Image with src "/logo.svg" was detected as the Largest Contentful Paint (LCP).
+  Please add the `loading="eager"` property if this image is above the fold.
+  ```
+  It is above the fold in the header, so it should not wait behind lazy loading — add `priority` (or
+  `loading="eager"`) where the header renders it. LCP is a Core Web Vital, so this is worth more than tidiness.
+- **The `/contacto` hero photo can distort.** On `/contacto`:
+  ```
+  [browser] Image with src "/images/hero-store-v1.jpg" has either width or height modified, but not the
+  other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or
+  'height: "auto"' to maintain the aspect ratio.
+  ```
+  The element sets one dimension in CSS without the other, so the browser cannot keep the ratio. Add the
+  matching `h-auto` / `w-auto` (or set both) where that hero image is styled.
+
+Both are one-line fixes with no design change, but they are not blocking anything, so they live here rather
+than in a rushed change. (A third, recurring `Missing Description … {DialogContent}` warning was found in the
+same log and **fixed** — the Quick View dialog now carries a visually hidden description; the warnings
+stopped appearing after that change.)
+
 ## Acceptance
 - [ ] "Borrar filtros" clears every filter and the active-chips row disappears; covered by a gate test.
 - [ ] The dead `grams` / `suffix` code is gone and `lint` reports 0 warnings from our own files.
