@@ -352,8 +352,8 @@ export type GlobalFooter = {
  * this is the failure mode that looks like "live preview is broken" from the editor's seat and it should
  * never be silent.
  */
-const DRAFT_RETRY_DELAY_MS = 250
-const DRAFT_RETRY_ATTEMPTS = 3
+const DRAFT_RETRY_DELAY_MS = 150
+const DRAFT_RETRY_ATTEMPTS = 2
 
 async function fetchGlobal<T>(slug: string, opts: { draft?: boolean } = {}): Promise<T | null> {
   const read = () =>
