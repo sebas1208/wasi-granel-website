@@ -5,7 +5,7 @@ import { RefreshRouteOnSave } from "@/components/refresh-route-on-save"
 import { type CategoryWithCount } from "@/components/home/category-grid"
 import { getCategories, getPopularProducts, getProducts, priceDisplay, Product, productImageUrl } from "@/lib/payload"
 import { Metadata } from "next"
-import { draftMode } from "next/headers"
+import { draftMode, headers } from "next/headers"
 import { resolveFooterProps, resolveInicio } from "@/lib/site-copy"
 
 export const metadata: Metadata = {
@@ -87,8 +87,13 @@ export default async function HomePage() {
   // A pane showing published content has exactly three possible causes — the render lost draft mode, the
   // CMS handed back a published document for a draft read, or the client never applied the update — and
   // this line separates them. Server-side, so it lands in the dev-server log with no admin session.
+  const h = await headers()
   // eslint-disable-next-line no-console
-  console.warn(`[preview] render draft=${draft} headline=${JSON.stringify(inicio.hero.title)}`)
+  console.warn(
+    `[preview] render draft=${draft} headline=${JSON.stringify(inicio.hero.title)}` +
+      ` fetchMode=${h.get("sec-fetch-mode") ?? "-"} dest=${h.get("sec-fetch-dest") ?? "-"}` +
+      ` rsc=${h.get("rsc") ? "yes" : "no"} bypassCookie=${h.get("cookie")?.includes("__prerender_bypass") ? "yes" : "no"}`,
+  )
 
 
   return (

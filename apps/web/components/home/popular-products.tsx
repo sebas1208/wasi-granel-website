@@ -65,6 +65,11 @@ export function PopularProducts({
                 type="button"
                 aria-label="Producto anterior"
                 onClick={() => api?.scrollPrev()}
+                // The server cannot know embla's measurements, so this attribute legitimately differs on the
+                // first client pass. Without this React reports a hydration mismatch on every homepage load
+                // and refuses to patch the tree up afterwards — which stops later router.refresh() payloads
+                // from being applied, i.e. the live-preview pane stops updating.
+                suppressHydrationWarning
                 disabled={!canPrev}
                 className="w-9 h-9 rounded-full bg-[#695c50] hover:bg-primary hover:text-foreground active:scale-90 border border-[#817660] text-white flex items-center justify-center transition-all duration-200 shadow-sm disabled:opacity-40"
               >
@@ -74,6 +79,7 @@ export function PopularProducts({
                 type="button"
                 aria-label="Producto siguiente"
                 onClick={() => api?.scrollNext()}
+                suppressHydrationWarning
                 disabled={!canNext}
                 className="w-9 h-9 rounded-full bg-[#695c50] hover:bg-primary hover:text-foreground active:scale-90 border border-[#817660] text-white flex items-center justify-center transition-all duration-200 shadow-sm disabled:opacity-40"
               >
