@@ -6,7 +6,7 @@
 
 **Status:** DONE locally (2026-10-26) — all three steps complete and verified end-to-end. Nothing is
 awaiting the owner here except the production rollout, which happens with the merge to `main`
-(`develop` `72060a4`). Two real bugs were found by insisting on the end-to-end check rather than trusting
+(`develop` `5a19503`). Two real bugs were found by insisting on the end-to-end check rather than trusting
 each piece, and both are fixed — see Progress.
 **Priority:** low (the storefront itself is still the priority; this is a convenience for the owner)
 
@@ -201,6 +201,26 @@ asserts the invariants (hero-card clearance, grid columns, navbar form per viewp
    **Production is unaffected between deploys** (the build is stable), and a new deploy *should* invalidate
    old preview sessions. The dev remedy is to re-open the Live Preview pane, which re-hits `/api/preview` on
    the site and issues a fresh cookie.
+
+7. **The real root cause, found last: the pane depended on a cookie that Next signs PER BUILD.** Every
+   earlier theory was a symptom. Next generates a new `__prerender_bypass` value on each `next build`, so
+   every deploy — and in development every server restart — invalidates the cookie a pane is holding. The
+   original design made the pane rely on that cookie for the rest of its life (`/api/preview` enabled draft
+   mode and REDIRECTED to `/`), so afterwards every post-save refresh was a fetch carrying a cookie that
+   could already be dead: dead cookie → the server renders the PUBLISHED page → the editor watches their
+   text revert. Reloading recovered because it re-navigated through the preview route and minted a fresh
+   one. That is "it only shows on reload", deterministically.
+
+   The fix is structural, not a patch: the pane's URL must not change when it enters preview. `/preview`
+   now renders the page itself — no draft mode, no cookie — so the secret travels with every request
+   including `router.refresh()`, and there is no lifetime left to expire. `force-dynamic` is scoped to that
+   route, so the public pages keep the static caching from ticket 26.
+
+   The lesson worth keeping: **the owner said "cookies, something else?" early and was right.** Three
+   intermediate theories (the draft-read race, third-party cookie blocking, the homepage hydration
+   mismatch) each produced real fixes but none was the cause, because each was tested in a fresh session —
+   and a fresh session always has a valid cookie. The failing state could only be reproduced by holding a
+   cookie across a restart.
 
 ### Honest gaps
 
