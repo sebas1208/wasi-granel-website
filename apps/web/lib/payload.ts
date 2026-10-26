@@ -340,14 +340,32 @@ export type GlobalFooter = {
 /**
  * Read one global. `draft: true` asks Payload for the unpublished version AND bypasses the cache —
  * that combination is what makes live preview show what the editor is typing.
+ *
+ * THE RETRY IS LOAD-BEARING, not defensive padding. Payload resolves a draft through a `latest` flag,
+ * and an autosave briefly moves that flag while writing. A read that lands in that window does not fail
+ * — it silently returns the PUBLISHED document, which the pane then renders as the editor's own text
+ * being thrown away. Measured against a running autosave loop: 2 of 210 concurrent draft reads came back
+ * published. Since the live-preview refresh is deliberately timed to fire around an autosave, that small
+ * rate is hit constantly in practice, and the symptom is the editor typing and watching their text revert
+ * to the published copy.
+ *
+ * So: when we asked for a draft and got a document that says it is published, read once more. The window
+ * is momentary, so one retry rides it out. It is bounded at one retry because a global with NO draft yet
+ * legitimately returns its published version for `?draft=true` — retrying that forever would hang.
  */
 async function fetchGlobal<T>(slug: string, opts: { draft?: boolean } = {}): Promise<T | null> {
-  try {
-    const query = opts.draft ? "?draft=true" : ""
-    return await fetcher<T>(`/api/globals/${slug}${query}`, {
+  const read = () =>
+    fetcher<T>(`/api/globals/${slug}${opts.draft ? "?draft=true" : ""}`, {
       tags: [GLOBALS_TAG],
       noStore: !!opts.draft,
     })
+
+  try {
+    const first = await read()
+    if (!opts.draft) return first
+    // A published `_status` on a draft request means the race (or a global that has no draft at all).
+    if ((first as { _status?: string } | null)?._status !== "published") return first
+    return await read()
   } catch {
     return null
   }

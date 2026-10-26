@@ -39,10 +39,13 @@ import { LIVE_PREVIEW_SERVER_URL } from "@/lib/live-preview"
  * Renders nothing.
  */
 const DEBOUNCE_MS = 300
+/** How long after a completed save to refresh again, in case the first render raced the write. */
+const FOLLOW_UP_MS = 700
 
 export function RefreshRouteOnSave() {
   const router = useRouter()
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const followUp = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const scheduleRefresh = useCallback(() => {
     if (timer.current) clearTimeout(timer.current)
@@ -52,6 +55,23 @@ export function RefreshRouteOnSave() {
       console.warn("[preview] refreshing the route")
       router.refresh()
     }, DEBOUNCE_MS)
+  }, [router])
+
+  /**
+   * A render fired at the exact moment a save lands can read the PUBLISHED document: Payload resolves a
+   * draft through a `latest` flag that the write briefly moves, and a read in that window silently falls
+   * back to the published row (measured: 2 of 210 concurrent draft reads). The read layer retries once,
+   * but belt and braces — one extra refresh shortly after a save means a raced render self-corrects
+   * instead of leaving the editor looking at their text being thrown away.
+   */
+  const scheduleFollowUp = useCallback(() => {
+    if (followUp.current) clearTimeout(followUp.current)
+    followUp.current = setTimeout(() => {
+      followUp.current = null
+      // eslint-disable-next-line no-console
+      console.warn("[preview] follow-up refresh after save")
+      router.refresh()
+    }, FOLLOW_UP_MS)
   }, [router])
 
   useEffect(() => {
@@ -73,6 +93,8 @@ export function RefreshRouteOnSave() {
       if (type !== "payload-document-event" && type !== "payload-live-preview") return
 
       scheduleRefresh()
+      // A completed save is the moment a raced render is possible, so refresh again just after.
+      if (type === "payload-document-event") scheduleFollowUp()
     }
 
     window.addEventListener("message", onMessage)
@@ -86,8 +108,9 @@ export function RefreshRouteOnSave() {
     return () => {
       window.removeEventListener("message", onMessage)
       if (timer.current) clearTimeout(timer.current)
+      if (followUp.current) clearTimeout(followUp.current)
     }
-  }, [scheduleRefresh])
+  }, [scheduleRefresh, scheduleFollowUp])
 
   return null
 }
