@@ -24,10 +24,7 @@ export const metadata: Metadata = {
  * so no edit can blank the page. The mockup invented the phone numbers, the addresses, the hours, a
  * Quito branch and the store services — none of that is here. See tickets 15 and 19.
  */
-export default async function ContactoPage() {
-  // Draft mode is the cookie the CMS's preview pane turns on for the logged-in editor. It MUST reach
-  // the resolvers, or the editor would be shown the published copy and conclude editing is broken.
-  const { isEnabled: draft } = await draftMode()
+export async function ContactoContent({ draft }: { draft: boolean }) {
   const [copy, footer] = await Promise.all([
     resolveContacto({ draft }),
     resolveFooterProps({ draft }),
@@ -267,4 +264,11 @@ export default async function ContactoPage() {
       <Footer copy={footer} />
     </>
   )
+}
+
+export default async function ContactoPage() {
+  // Draft mode is the cookie the CMS's preview pane turns on for the logged-in editor. It MUST reach
+  // the resolvers, or the editor would be shown the published copy and conclude editing is broken.
+  const { isEnabled: draft } = await draftMode()
+  return <ContactoContent draft={draft} />
 }

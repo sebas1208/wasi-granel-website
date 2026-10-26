@@ -25,9 +25,14 @@ const PREVIEW_PATHS: Record<string, string> = {
 }
 
 /**
- * The storefront's preview route: it verifies `PREVIEW_SECRET`, turns on draft mode for THIS browser
- * session, and redirects to the real page. Draft mode is a cookie, not a second site — so the editor
- * sees the unpublished draft at the normal URL while a visitor still gets the published version.
+ * The storefront's preview route.
+ *
+ * It verifies `PREVIEW_SECRET` and renders the page with drafts FORCED ON, right there — it does not
+ * redirect and it does not use draft mode. That is deliberate, and it is what makes the pane keep
+ * working: Next signs the draft-mode cookie per build, so every deploy (and every dev-server restart)
+ * invalidates the cookie a pane is holding, after which its refreshes render the PUBLISHED page and
+ * only a reload recovers. Keeping the pane on `/preview?…` means the secret travels with every request,
+ * including `router.refresh()`, and there is no cookie to go stale.
  *
  * `PREVIEW_SECRET` is deliberately separate from `REVALIDATE_SECRET`: one enables draft viewing, the
  * other busts the public cache. Different capabilities, so they get different secrets.
@@ -36,7 +41,7 @@ const previewUrl = ({ globalConfig }: { globalConfig?: { slug?: string } }): str
   const base = (process.env.STOREFRONT_URL ?? 'https://wasigranel.com').replace(/\/+$/, '')
   const path = PREVIEW_PATHS[globalConfig?.slug ?? ''] ?? '/'
   const secret = process.env.PREVIEW_SECRET ?? ''
-  return `${base}/api/preview?path=${encodeURIComponent(path)}&secret=${encodeURIComponent(secret)}`
+  return `${base}/preview?path=${encodeURIComponent(path)}&secret=${encodeURIComponent(secret)}`
 }
 
 export default buildConfig({

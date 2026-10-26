@@ -5,7 +5,7 @@ import { RefreshRouteOnSave } from "@/components/refresh-route-on-save"
 import { type CategoryWithCount } from "@/components/home/category-grid"
 import { getCategories, getPopularProducts, getProducts, priceDisplay, Product, productImageUrl } from "@/lib/payload"
 import { Metadata } from "next"
-import { draftMode, headers } from "next/headers"
+import { draftMode } from "next/headers"
 import { resolveFooterProps, resolveInicio } from "@/lib/site-copy"
 
 export const metadata: Metadata = {
@@ -72,29 +72,19 @@ const getDataForHomePage = async (): Promise<[CategoryWithCount[], Product[]]> =
   return [categories, popularFinal];
 }
 
-export default async function HomePage() {
+/**
+ * The homepage body, with `draft` passed in rather than read here.
+ *
+ * That is what lets app/preview/page.tsx render this same markup for the Live Preview pane with `draft`
+ * forced true. The pane needs a URL that STAYS a preview URL: a redirect plus a cookie is not enough,
+ * because the bypass cookie is signed per build and dies on every restart/deploy — see app/preview.
+ */
+export async function HomeContent({ draft }: { draft: boolean }) {
   const [categories, popular] = await getDataForHomePage();
-  // Draft mode is the cookie the CMS's preview pane turns on for the logged-in editor. It MUST reach
-  // the resolvers, or the editor would be shown the published copy and conclude editing is broken.
-  const { isEnabled: draft } = await draftMode()
   const [footer, inicio] = await Promise.all([
     resolveFooterProps({ draft }),
     resolveInicio({ draft }),
   ])
-
-  // TEMPORARY DIAGNOSTIC (remove once the preview pane is confirmed working). This is the only place that
-  // can say what the SERVER rendered on a given refresh: the draft flag it saw and the headline it built.
-  // A pane showing published content has exactly three possible causes — the render lost draft mode, the
-  // CMS handed back a published document for a draft read, or the client never applied the update — and
-  // this line separates them. Server-side, so it lands in the dev-server log with no admin session.
-  const h = await headers()
-  // eslint-disable-next-line no-console
-  console.warn(
-    `[preview] render draft=${draft} headline=${JSON.stringify(inicio.hero.title)}` +
-      ` fetchMode=${h.get("sec-fetch-mode") ?? "-"} dest=${h.get("sec-fetch-dest") ?? "-"}` +
-      ` rsc=${h.get("rsc") ? "yes" : "no"} bypassCookie=${h.get("cookie")?.includes("__prerender_bypass") ? "yes" : "no"}`,
-  )
-
 
   return (
     <>
@@ -108,4 +98,11 @@ export default async function HomePage() {
       <Footer copy={footer} />
     </>
   )
+}
+
+export default async function HomePage() {
+  // Draft mode is the cookie the CMS's preview pane turns on for the logged-in editor. It MUST reach
+  // the resolvers, or the editor would be shown the published copy and conclude editing is broken.
+  const { isEnabled: draft } = await draftMode()
+  return <HomeContent draft={draft} />
 }
