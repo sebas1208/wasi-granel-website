@@ -28,11 +28,23 @@ The storefront (root domain, landing page) runs on Vercel — no overlap.
     (ticket 26): saving a product/category/media POSTs to the site so it refreshes without a redeploy.
     **While unset the hook is a silent no-op** and the storefront's cache then only clears on a
     redeploy, or by hand.
-  - `STOREFRONT_URL` — where to send that POST. Defaults to `https://wasigranel.com`, which is the
+  - `STOREFRONT_URL` — the storefront's public base. Used both to send the cache-invalidation POST and to
+    build the Live Preview pane's URL. Defaults to `https://wasigranel.com`, which is the
     right value: **it must be a publicly reachable URL.** Preview deployments sit behind Vercel
     Authentication, so a POST from the CMS to a `*.vercel.app` preview gets an SSO redirect instead of
     reaching the route (confirmed: 302 → "Protected by Vercel Authentication"). Only production works.
     Testing a preview by hand needs the bypass: `vercel curl /api/revalidate --deployment <url> -X POST`.
+  - `PREVIEW_SECRET` — shared with the storefront (Vercel). Gates Live Preview (ticket 19): the CMS puts
+    it in the pane's URL and the storefront verifies it before rendering drafts. **While unset, the
+    preview renders the not-found page** — the pane simply looks broken and nothing logs an error, which
+    is exactly how this was first discovered. It must **match** between Coolify (CMS) and Vercel (web),
+    where it is set for Production, Preview and Development; the value lives outside the repo at
+    `../.env.preview` and is never committed. Rotating it in **both** places is how a leaked preview URL
+    is revoked, so it is the revocation mechanism, not just a token.
+    The pane carries it as a query param (Payload's and Next's own documented pattern for a preview
+    route); `/preview` sends `Referrer-Policy: no-referrer` so it cannot leak to a third party via the
+    Referer header. See `apps/web/app/preview/page.tsx` for why the pane must stay on that URL rather
+    than being redirected into draft mode.
 - **Cache invalidation (ticket 26):** the two env vars above must **match** between Coolify (CMS) and
   Vercel (web). To invalidate by hand after a missed webhook:
   ```
