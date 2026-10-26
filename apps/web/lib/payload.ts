@@ -341,18 +341,20 @@ export type GlobalFooter = {
  * Read one global. `draft: true` asks Payload for the unpublished version AND bypasses the cache —
  * that combination is what makes live preview show what the editor is typing.
  *
- * THE RETRY IS LOAD-BEARING, not defensive padding. Payload resolves a draft through a `latest` flag,
- * and an autosave briefly moves that flag while writing. A read that lands in that window does not fail
- * — it silently returns the PUBLISHED document, which the pane then renders as the editor's own text
- * being thrown away. Measured against a running autosave loop: 2 of 210 concurrent draft reads came back
- * published. Since the live-preview refresh is deliberately timed to fire around an autosave, that small
- * rate is hit constantly in practice, and the symptom is the editor typing and watching their text revert
- * to the published copy.
+ * THE RETRY IS LOAD-BEARING, not defensive padding, and it must WAIT before retrying. Payload resolves a
+ * draft through a `latest` flag, and an autosave briefly moves that flag while writing. A read landing in
+ * that window does not fail — it silently returns the PUBLISHED document, which the pane then renders as
+ * the editor's own text being thrown away. Measured against a running autosave loop: 2 of 210 concurrent
+ * draft reads came back published.
  *
- * So: when we asked for a draft and got a document that says it is published, read once more. The window
- * is momentary, so one retry rides it out. It is bounded at one retry because a global with NO draft yet
- * legitimately returns its published version for `?draft=true` — retrying that forever would hang.
+ * An immediate retry does NOT help: it arrives inside the same write window and sees the same thing. The
+ * retry therefore sleeps first, long enough for the write to settle. A double failure is logged, because
+ * this is the failure mode that looks like "live preview is broken" from the editor's seat and it should
+ * never be silent.
  */
+const DRAFT_RETRY_DELAY_MS = 250
+const DRAFT_RETRY_ATTEMPTS = 3
+
 async function fetchGlobal<T>(slug: string, opts: { draft?: boolean } = {}): Promise<T | null> {
   const read = () =>
     fetcher<T>(`/api/globals/${slug}${opts.draft ? "?draft=true" : ""}`, {
@@ -363,9 +365,22 @@ async function fetchGlobal<T>(slug: string, opts: { draft?: boolean } = {}): Pro
   try {
     const first = await read()
     if (!opts.draft) return first
-    // A published `_status` on a draft request means the race (or a global that has no draft at all).
-    if ((first as { _status?: string } | null)?._status !== "published") return first
-    return await read()
+
+    // A published `_status` on a draft request means the race (or a global that has no draft at all —
+    // in which case every attempt returns published and we accept it after the attempts run out).
+    let current = first
+    for (let attempt = 1; attempt <= DRAFT_RETRY_ATTEMPTS; attempt++) {
+      if ((current as { _status?: string } | null)?._status !== "published") return current
+      if (attempt === DRAFT_RETRY_ATTEMPTS) break
+      await new Promise((r) => setTimeout(r, DRAFT_RETRY_DELAY_MS))
+      current = await read()
+    }
+
+    // eslint-disable-next-line no-console
+    console.warn(
+      `[preview] draft read for "${slug}" returned a PUBLISHED document after ${DRAFT_RETRY_ATTEMPTS} attempts (either this global has no draft saved yet, which is normal, or the write race beat every retry)`,
+    )
+    return current
   } catch {
     return null
   }

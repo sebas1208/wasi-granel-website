@@ -82,6 +82,14 @@ export default async function HomePage() {
     resolveInicio({ draft }),
   ])
 
+  // TEMPORARY DIAGNOSTIC (remove once the preview pane is confirmed working). This is the only place that
+  // can say what the SERVER rendered on a given refresh: the draft flag it saw and the headline it built.
+  // A pane showing published content has exactly three possible causes — the render lost draft mode, the
+  // CMS handed back a published document for a draft read, or the client never applied the update — and
+  // this line separates them. Server-side, so it lands in the dev-server log with no admin session.
+  // eslint-disable-next-line no-console
+  console.warn(`[preview] render draft=${draft} headline=${JSON.stringify(inicio.hero.title)}`)
+
 
   return (
     <>
