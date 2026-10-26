@@ -45,6 +45,42 @@ async function siteShowsMarker(): Promise<{ shown: boolean; bytes: number }> {
   return { shown: html.includes(MARKER), bytes: html.length }
 }
 
+/**
+ * Poll, because stale-while-revalidate is the documented behaviour: the FIRST request after an
+ * invalidation can still serve the old page while the new one regenerates behind it. A single fetch
+ * therefore reports a false negative — which is exactly how this probe first "failed".
+ */
+async function pollForMarker(seconds = 25): Promise<{ shown: boolean; attempts: number; bytes: number }> {
+  const deadline = Date.now() + seconds * 1000
+  let attempts = 0
+  let bytes = 0
+  while (Date.now() < deadline) {
+    attempts++
+    const r = await siteShowsMarker()
+    bytes = r.bytes
+    if (r.shown) return { shown: true, attempts, bytes }
+    await new Promise((res) => setTimeout(res, 1500))
+  }
+  return { shown: false, attempts, bytes }
+}
+
+/**
+ * Poll for the marker to DISAPPEAR — same stale-while-revalidate reasoning in reverse. This must wait for
+ * ABSENCE; reusing pollForMarker here would return the moment the marker was still present, which is the
+ * opposite of what is being asserted.
+ */
+async function pollForNoMarker(seconds = 25): Promise<{ shown: boolean; attempts: number }> {
+  const deadline = Date.now() + seconds * 1000
+  let attempts = 0
+  while (Date.now() < deadline) {
+    attempts++
+    const r = await siteShowsMarker()
+    if (!r.shown) return { shown: false, attempts }
+    await new Promise((res) => setTimeout(res, 1500))
+  }
+  return { shown: true, attempts }
+}
+
 async function main() {
   assertLocalDatabase()
   const payload = await getPayload({ config })
@@ -64,8 +100,7 @@ async function main() {
   })
   console.log('  published an edit carrying the marker; waiting for the afterChange hook...')
 
-  await new Promise((r) => setTimeout(r, 7000))
-  const afterEdit = await siteShowsMarker()
+  const afterEdit = await pollForMarker()
 
   await payload.updateGlobal({
     slug: 'contacto',
@@ -75,15 +110,14 @@ async function main() {
   })
   console.log('  reverted the edit; waiting for the hook again...')
 
-  await new Promise((r) => setTimeout(r, 7000))
-  const afterRevert = await siteShowsMarker()
+  const afterRevert = await pollForNoMarker()
 
   const back = await payload.findGlobal({ slug: 'contacto', draft: false })
   const restored = back.faq?.answer === original
 
   console.log()
-  console.log(`  after the edit   -> site shows marker: ${afterEdit.shown}  (expect true)`)
-  console.log(`  after the revert -> site shows marker: ${afterRevert.shown}  (expect false)`)
+  console.log(`  after the edit   -> site shows marker: ${afterEdit.shown}  (expect true, after ${afterEdit.attempts} request(s))`)
+  console.log(`  after the revert -> site shows marker: ${afterRevert.shown}  (expect false, after ${afterRevert.attempts} request(s))`)
   console.log(`  CMS value restored: ${restored}`)
 
   const ok = !control.shown && afterEdit.shown && !afterRevert.shown && restored

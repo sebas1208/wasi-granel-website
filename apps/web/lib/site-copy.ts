@@ -391,3 +391,23 @@ export async function resolveFooterProps(opts?: { draft?: boolean }): Promise<Fo
   const [footer, contacto] = await Promise.all([resolveFooter(opts), resolveContacto(opts)])
   return { ...footer, email: contacto.email, branches: contacto.branches }
 }
+
+/* ——— defaults, for seeding ————————————————————————————————————————————————————————
+ * The unresolvable-free fallback copy for all three globals (no CMS read at all).
+ *
+ * Exported so the seeding script can start the CMS out matching today's copy EXACTLY. That is what makes
+ * the switch from hardcoded strings to CMS-driven copy provably non-visual: any visible difference
+ * afterwards is a real bug, not an expected content shift. Keep this the single definition — if the
+ * defaults lived in two places, seeding would silently stop matching the fallback.
+ */
+export function siteCopyDefaults(): {
+  contacto: ContactoCopy
+  inicio: InicioCopy
+  footer: FooterCopy
+} {
+  return {
+    contacto: CONTACTO_DEFAULTS,
+    inicio: INICIO_DEFAULTS,
+    footer: FOOTER_DEFAULTS,
+  }
+}

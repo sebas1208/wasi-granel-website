@@ -119,7 +119,7 @@ non-visual" quietly stops being true.
 The 1280/390 pass is the automated gate rather than a hand-run browser session, which is stronger: it
 asserts the invariants (hero-card clearance, grid columns, navbar form per viewport) on every run.
 
-### Two real bugs this step found
+### Three real bugs this step found
 
 1. **The seed wrote drafts, not published content.** Payload's global update only treats `draft: false` as
    "do not force a draft" — it never promotes an unpublished global, so all three sat as drafts and the
@@ -131,6 +131,14 @@ asserts the invariants (hero-card clearance, grid columns, navbar form per viewp
    server-only env var is undefined and fell back to production. The mismatch broke hydration, which also
    killed interactivity (the Quick View stopped closing on Escape). Split into `base` (server reads) and
    `imageBase` (public, identical on both sides).
+3. **Next 16's SSRF guard then blocked every local image.** Fixing #2 pointed the browser at the local CMS,
+   which exposed a latent block: the image optimizer refuses to fetch an upstream image resolving to a
+   private IP, and `remotePatterns` does not override it — so `/_next/image` returned 400 for every photo
+   and all product images rendered broken locally. `images.dangerouslyAllowLocalIP` is now set for
+   development only (`NODE_ENV !== "production"`), so the guard stays on in production, where the CMS is a
+   public domain and needs no exception. Verified: 200 with a real JPEG, and zero rejections in the log.
+
+   This one was in a dev-server log I had said I would stop reading. It was worth reading.
 
 ### Honest gaps
 
