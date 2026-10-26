@@ -10,9 +10,10 @@ for legal terms and related."*
 **Blocked by:** nothing, but the **text** is the owner's to supply or approve. **Ticket 23 (checkout)
 is blocked by this** — payment providers routinely require published terms.
 
-**Status:** DRAFTED 2026-10-26 — owner asked me to write it (option 2 below). Both texts are drafted in
+**Status:** DRAFTED 2026-10-26 — owner asked me to write it (option 2 below). Both texts are in
 `.scratch/storefront/legal/` and are **awaiting the owner's review**; nothing is wired into the code yet.
-Eight «PENDIENTE» items need his confirmation before either document can go live (listed at the bottom).
+Seven of the eight open questions are answered; **one remains (weight tolerance, §7)**. Owner will also
+have a lawyer review before publication.
 
 ## Why BOTH, not one
 
@@ -94,3 +95,25 @@ delivers** — the destination is still ticket 25's decision, and the draft mark
 
 **Not legal advice.** The wording binds the owner, so it is his to approve — and the consumer-law clause in
 particular is worth a lawyer's eye before it goes live.
+
+
+## Owner's answers (2026-10-26)
+
+| question | answer |
+| --- | --- |
+| Razón social y RUC | **Wasi Granel**, RUC **0601801327001** — the mother's RUC, which is what the store is registered under |
+| ¿IVA? | Prices **do not include IVA** because the products are not taxed — essentially all of them are 0%-rated food. Text says so, and leaves room for a taxed product to show it on the receipt |
+| Envío gratis | **On hold.** No threshold is promised; revisit once checkout (23) is decided |
+| Qué ofrecemos cuando algo sale mal | **Replacement or refund** |
+| Plazos de conservación | **12 months** for contact messages (as proposed) |
+| País del servidor | Contabo is in the **United States** — the transfer notice now names both countries |
+| Destino del formulario | **A Google Sheet**, same mechanism as the newsletter. A more robust destination is an after-launch task, recorded on ticket 24 |
+
+**Still open — weight tolerance (§7 of the terms).** The question: since products are weighed to order, the
+scale will not land exactly on the requested weight, so what does the store do when it differs? The draft
+proposes charging the weight actually dispatched, and writing to the customer before shipping if the
+difference exceeds 5%. Awaiting the owner's confirmation.
+
+**Note on §5 of the privacy policy:** it names Google as the form's destination, which is correct once
+ticket 25 is wired — the form transmits nothing today. The draft header records this so nobody reads the
+policy as a description of the current behaviour.

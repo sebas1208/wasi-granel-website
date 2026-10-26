@@ -181,3 +181,10 @@ Note: this is the same *shape* as the Admin Panel's own `popup-button` mismatch 
   Worth resolving before it stops being cosmetic: either pin sharp to the 0.34 line Payload expects, or
   cast at the call site. Deliberately NOT changed now — a sharp downgrade could alter image processing, and
   the error is not blocking anything today.
+
+## Added from ticket 27 (2026-10-26)
+
+- **Replace the Google Sheets signup destination with something more robust.** Both the newsletter
+  (`app/api/signup/route.ts`) and, going forward, the contact form post to a Google Apps Script endpoint.
+  The owner's call: ship with Sheets now, move to a real destination after launch. Note the Apps Script URL
+  is hardcoded in the source and accepts unauthenticated POSTs — anyone holding it can write to the sheet.

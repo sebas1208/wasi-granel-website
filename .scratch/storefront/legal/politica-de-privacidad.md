@@ -1,7 +1,9 @@
 > **BORRADOR para revisión del dueño — no es asesoría legal.**
 > Texto propuesto para el modal de Política de Privacidad (ticket 27). Nada de esto está publicado ni
-> cableado todavía. Los campos marcados «PENDIENTE» son datos que solo el dueño puede confirmar, y los
-> marcados «VERIFICAR» dependen de tareas aún abiertas.
+> cableado todavía.
+> El dueño confirmó: razón social y RUC, que el formulario enviará a Google Sheets, la ubicación del
+> servidor, y los plazos de conservación.
+> **Ojo:** el formulario todavía no envía nada (ticket 25); este texto describe el flujo ya cableado.
 > Última redacción: 2026-10-26.
 
 ---
@@ -15,12 +17,9 @@ suscribes a nuestras novedades. Aplica la *Ley Orgánica de Protección de Datos
 
 ## 1. Quién responde por tus datos
 
-**Wasi Granel** — Matriz: Guayaquil y Benalcázar 1815, 060111 Riobamba, Ecuador.
+**Wasi Granel** · RUC **0601801327001** · Matriz: Guayaquil y Benalcázar 1815, 060111 Riobamba, Ecuador.
 
 Correo para cualquier tema de datos personales: **info@wasigranel.com**
-
-**PENDIENTE — identificación legal:** razón social y RUC, para que la responsabilidad quede identificada
-con precisión.
 
 ## 2. Qué datos recogemos
 
@@ -55,28 +54,20 @@ Tus datos no se venden ni se alquilan. Intervienen estos proveedores, solo para 
 
 | proveedor | para qué | qué recibe |
 | --- | --- | --- |
+| **Google** | guarda los mensajes del formulario y la lista de suscriptores | lo que escribes en el formulario y tu correo |
 | **Vercel** | aloja el sitio y mide visitas | datos técnicos de navegación, agregados |
-| **Google** | guarda la lista de suscriptores de novedades | tu correo electrónico |
-| **Servientrega** | entrega las encomiendas | nombre, dirección y teléfono, cuando haces un pedido |
 | **Contabo** | aloja el servidor del sistema de contenidos | los datos almacenados por el sitio |
-
-**VERIFICAR — destino del formulario:** el correo del formulario debe llegar a un destino concreto
-(ticket 25, pendiente de decidir). Cuando esté definido, debe nombrarse aquí: esta política no puede
-describir un flujo que todavía no existe.
+| **Servientrega** | entrega las encomiendas | nombre, dirección y teléfono, cuando haces un pedido |
 
 ## 6. Dónde se guardan
 
-En servidores de Vercel (Estados Unidos) y de Contabo, lo que implica una **transferencia internacional**
-de datos. Al usar el formulario o suscribirte, aceptas esa transferencia.
-
-**PENDIENTE — ubicación del servidor:** confirmar en qué país está el VPS de Contabo, para nombrarlo aquí
-en lugar de solo la empresa.
+En servidores de Vercel y de Contabo, **ambos en los Estados Unidos**, lo que implica una **transferencia
+internacional** de datos. Al usar el formulario o suscribirte, aceptas esa transferencia.
 
 ## 7. Cuánto tiempo los guardamos
 
-**PENDIENTE — plazos.** Propuesta a confirmar por el dueño:
-- Mensajes del formulario: **12 meses** desde la última conversación.
-- Lista de novedades: hasta que pidas la baja.
+- **Mensajes del formulario:** 12 meses desde la última conversación.
+- **Lista de novedades:** hasta que pidas la baja.
 
 ## 8. Tus derechos
 
