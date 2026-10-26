@@ -175,6 +175,19 @@ asserts the invariants (hero-card clearance, grid columns, navbar form per viewp
    bespoke solution, while ten minutes in the official docs produced a simpler one that removes the failure
    mode instead of defending against it. Read the docs before patching around a library.
 
+5. **Server-side preview did not refresh on saves — the pane needed a full page load.** The component
+   Payload provides refreshes only on `payload-document-event` (emitted when a save completes), and that
+   message does not arrive in this setup even though autosave is demonstrably writing drafts. Each link was
+   isolated first: autosave saves ✓, the CMS serves the draft ✓, the page renders a draft ✓, and an RSC
+   refresh carrying the draft cookie returns draft content ✓ — so the draft path was never the problem, only
+   the trigger. `RefreshRouteOnSave` now also listens for `payload-live-preview` (the message the admin emits
+   on every form-state change) and debounces a `router.refresh()` at 300ms, so the pane follows the editor
+   while typing regardless of whether the save event fires.
+
+   Verified without an admin session by pointing the origin check at the page's own origin: a
+   `payload-live-preview` message and a `payload-document-event` each produced a route request, and an
+   unrelated message produced none.
+
 ### Honest gaps
 
 1. **The contacto body is not live-wired.** Opening the pane on `/contacto` shows the saved **draft**
