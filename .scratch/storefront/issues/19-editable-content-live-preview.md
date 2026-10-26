@@ -140,17 +140,31 @@ asserts the invariants (hero-card clearance, grid columns, navbar form per viewp
 
    This one was in a dev-server log I had said I would stop reading. It was worth reading.
 
-4. **The footer crashed inside the preview pane** (`can't access property Symbol.iterator, copy.branches is
-   undefined`, which Next's dev overlay showed as "This page couldn't load"). `FooterProps` is wider than
-   the footer global: it also carries `email` and `branches`, borrowed from the `contacto` global. Payload's
-   `mergeData` does not merge locally — it POSTs the form state back to the CMS and returns that global's
-   serialized document, so the borrowed keys are absent and `Footer`'s destructuring threw. The wrapper now
-   re-attaches them from the server copy, since they are not part of the document being edited.
-   `HomeLivePreview` is unaffected by construction: `InicioCopy` is exactly the inicio global's field set.
+4. **Live preview cross-contaminated between documents — the real cause of the pane crash.** The owner
+   saw `copy.branches` undefined, then `copy.navigation` undefined, shown by Next's dev overlay as "This
+   page couldn't load". Payload's `handleMessage` accepts ANY live-preview event — it checks the origin and
+   the message type but never that the message's `globalSlug` is the document this hook was given — and it
+   keeps its merged result in a MODULE-LEVEL cache shared by every hook on the page. This page puts two
+   globals in the pane at once (`inicio` and `footer`, which renders everywhere), so editing `inicio` also
+   handed the inicio document to the footer's hook: `brandBlurb` rendered blank (no throw), then
+   `navigation.map` threw.
 
-   **This is the one class of bug the automated gate cannot reach.** The wrapper mounts only in draft mode,
-   and entering draft mode needs an admin session, so no Playwright run exercises this path — it was found
-   by the owner using the pane. Anything that renders from live-preview data has to be checked by hand.
+   Fixed with `lib/use-global-live-preview.ts`, a slug-scoped hook that keeps its own state and merge
+   history and — the part that matters — ignores documents that are not its own. It reuses the package's
+   `isLivePreviewEvent` and `mergeData` rather than re-implementing the protocol, and it drops a merge whose
+   response is a Payload error body instead of adopting validation messages as page content.
+
+   **A second, independent defect sits underneath it**, which is why the first fix attempt (re-attaching
+   borrowed fields) was necessary but not sufficient: `mergeData` POSTs the form state to the CMS and returns
+   that global's serialized document, so the footer's `email` and `branches` — borrowed from the `contacto`
+   global — are genuinely absent and must be re-attached from the server copy. Both fixes are needed.
+
+   **How it was verified without an admin session:** point `NEXT_PUBLIC_PAYLOAD_URL` at the web server
+   temporarily so the page's own origin passes the hook's origin check, then post messages from the page and
+   read `performance.getEntriesByType('resource')`. One `inicio` message produced exactly one request
+   (`/api/globals/inicio`); one `footer` message produced exactly one (`/api/globals/footer`). Under the old
+   hook both fired for either message. The merges themselves failed (no admin cookie), which also proved the
+   error-body guard keeps the page intact. The env was restored and the images re-verified afterwards.
 
 ### Honest gaps
 

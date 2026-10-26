@@ -1,11 +1,10 @@
 "use client"
 
-import { useLivePreview } from "@payloadcms/live-preview-react"
 import type { CategoryWithCount } from "@/components/home/category-grid"
 import { HomeSections } from "@/components/home/home-sections"
-import { LIVE_PREVIEW_SERVER_URL } from "@/lib/live-preview"
 import type { Product } from "@/lib/payload"
 import type { InicioCopy } from "@/lib/site-copy"
+import { useGlobalLivePreview } from "@/lib/use-global-live-preview"
 
 /**
  * The homepage as the Live Preview pane renders it (ticket 19).
@@ -30,9 +29,9 @@ export function HomeLivePreview({
   popular: Product[]
   categories: CategoryWithCount[]
 }) {
-  const { data } = useLivePreview<InicioCopy>({
+  const data = useGlobalLivePreview<InicioCopy>({
     initialData: serverCopy,
-    serverURL: LIVE_PREVIEW_SERVER_URL,
+    globalSlug: "inicio",
   })
 
   return <HomeSections copy={data} popular={popular} categories={categories} />

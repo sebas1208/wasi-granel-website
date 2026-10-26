@@ -1,9 +1,8 @@
 "use client"
 
-import { useLivePreview } from "@payloadcms/live-preview-react"
 import { Footer } from "@/components/footer"
-import { LIVE_PREVIEW_SERVER_URL } from "@/lib/live-preview"
 import type { FooterProps } from "@/lib/site-copy"
+import { useGlobalLivePreview } from "@/lib/use-global-live-preview"
 
 /**
  * The footer as the Live Preview pane renders it (ticket 19). Mounted only while the pane is open, for
@@ -26,9 +25,11 @@ import type { FooterProps } from "@/lib/site-copy"
  * an admin session. It is a by-hand check.)
  */
 export function FooterLivePreview({ serverCopy }: { serverCopy: FooterProps }) {
-  const { data } = useLivePreview<Omit<FooterProps, "email" | "branches">>({
+  const data = useGlobalLivePreview<Omit<FooterProps, "email" | "branches">>({
     initialData: serverCopy,
-    serverURL: LIVE_PREVIEW_SERVER_URL,
+    // Scoped to this global so an `inicio` edit cannot hand this footer the wrong document — the exact
+    // crash the owner hit (`copy.navigation` undefined). See the hook's comment.
+    globalSlug: "footer",
   })
 
   return <Footer copy={{ ...data, email: serverCopy.email, branches: serverCopy.branches }} />
