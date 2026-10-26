@@ -63,7 +63,7 @@ export function RefreshRouteOnSave() {
 
       // eslint-disable-next-line no-console
       console.warn(
-        `[preview] message type=${type} origin=${event.origin} fromParent=${event.source === window.parent}`,
+        `[preview] message type=${type} origin=${event.origin} fromParent=${event.source === window.parent} parentIsTop=${window.parent === window.top} frameDepth=${window === window.top ? 0 : 1}`,
       )
 
       if (event.source !== window.parent) return
