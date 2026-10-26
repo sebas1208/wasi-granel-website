@@ -10,7 +10,9 @@ for legal terms and related."*
 **Blocked by:** nothing, but the **text** is the owner's to supply or approve. **Ticket 23 (checkout)
 is blocked by this** — payment providers routinely require published terms.
 
-**Status:** needs-info — waiting on the owner's text (or a go-ahead for me to draft it).
+**Status:** DRAFTED 2026-10-26 — owner asked me to write it (option 2 below). Both texts are drafted in
+`.scratch/storefront/legal/` and are **awaiting the owner's review**; nothing is wired into the code yet.
+Eight «PENDIENTE» items need his confirmation before either document can go live (listed at the bottom).
 
 ## Why BOTH, not one
 
@@ -53,3 +55,42 @@ Either way: **not legal advice**, and the binding wording is his call.
 - [ ] The privacy text names Vercel Analytics and the contact form's actual data destination.
 - [ ] Both documents are reachable without JavaScript (a link that works, not only a modal) — a
       customer on a broken connection must still be able to read the terms they are agreeing to.
+
+
+## The drafts (2026-10-26)
+
+- `.scratch/storefront/legal/terminos-y-condiciones.md`
+- `.scratch/storefront/legal/politica-de-privacidad.md`
+
+Written from how the store actually operates, not from a template. The facts they are grounded in, all
+verified in the code rather than assumed:
+
+| fact | source |
+| --- | --- |
+| Analytics is running and is **cookieless** | `app/layout.tsx` mounts `<Analytics />` from `@vercel/analytics/next` |
+| The newsletter list is stored in **Google** | `app/api/signup/route.ts` forwards the email to a Google Apps Script endpoint |
+| The contact form **transmits nothing today** | `contact-form.tsx` `onSubmit` only sets a submitted flag — deliberate, so it never claimed a success that was not real |
+| Cart and favourites are **browser-only** | local state / `useSyncExternalStore` + localStorage, no server storage |
+| Shipping is Servientrega, continental Ecuador, coordinated by WhatsApp | `lib/store-info.ts` |
+| Minimum order is 50 g per product | `MIN_GRAMS` in `lib/payload.ts` |
+| No online payment exists yet | checkout is ticket 23 |
+
+Two consequences worth flagging: the privacy text **names Vercel Analytics and Google** (a notice that
+omits the processors actually in use is inaccurate), and it **does not promise that the contact form
+delivers** — the destination is still ticket 25's decision, and the draft marks that spot «VERIFICAR».
+
+## Open questions for the owner
+
+1. **Razón social y RUC** — both documents identify the business; today neither exists anywhere in the repo.
+2. **¿Los precios incluyen IVA?** — and how it appears on the receipt.
+3. **¿Envío gratis a partir de cierto monto?** — also the business number ticket 23 is waiting on.
+4. **Tolerancia de peso** — do we accept a variation from the requested weight, and up to how much?
+5. **Qué ofrecemos cuando algo sale mal** — replacement, refund, or credit. "Devoluciones" was removed from
+   the footer on purpose, so this needs a policy the store can actually honour rather than a boilerplate one.
+6. **Plazos de conservación** — proposed 12 months for contact messages; the owner should confirm.
+7. **País del servidor Contabo** — the privacy text currently names the company; a transfer notice is
+   stronger with the country.
+8. **Destino del formulario** (ticket 25) — must be named in the privacy policy once decided.
+
+**Not legal advice.** The wording binds the owner, so it is his to approve — and the consumer-law clause in
+particular is worth a lawyer's eye before it goes live.
