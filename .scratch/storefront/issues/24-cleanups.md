@@ -109,3 +109,22 @@ This is a **stopgap, not a state**: the next production deployment re-claims the
 - [ ] `check:layout` stays green (32 passed, 2 skipped at time of writing — the count grows as guards are added).
 - [ ] **After the final merge** — the CMS webhook is genuinely firing, not just configured (item 6).
 - [ ] **After the final merge** — the real storefront is live on `wasigranel.com` and the expectation page is gone (item 7).
+
+## Found while working on ticket 19
+
+- **The CMS typecheck reports one PRE-EXISTING error** (not caused by that work — confirmed by stashing the
+  changes and typechecking the committed tree):
+
+  ```
+  src/payload.config.ts: Type 'SharpConstructor' is not assignable to type 'SharpDependency'
+  ```
+
+  Payload 3.90.2 types `SharpDependency` as a FUNCTION `(input?, options?) => sharp.Sharp`, while sharp
+  0.35's default export is a `SharpConstructor`. Both `main` and `develop` declare `sharp: 0.35.4`, so the
+  mismatch is in committed code on both branches. It is a LOCAL artifact of having two sharp versions
+  installed (0.34.5 transitively via Next, 0.35.4 declared), which is why the Docker build has been
+  deploying fine.
+
+  Worth resolving before it stops being cosmetic: either pin sharp to the 0.34 line Payload expects, or
+  cast at the call site. Deliberately NOT changed now — a sharp downgrade could alter image processing, and
+  the error is not blocking anything today.

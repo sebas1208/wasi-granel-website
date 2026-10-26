@@ -140,31 +140,40 @@ asserts the invariants (hero-card clearance, grid columns, navbar form per viewp
 
    This one was in a dev-server log I had said I would stop reading. It was worth reading.
 
-4. **Live preview cross-contaminated between documents — the real cause of the pane crash.** The owner
-   saw `copy.branches` undefined, then `copy.navigation` undefined, shown by Next's dev overlay as "This
-   page couldn't load". Payload's `handleMessage` accepts ANY live-preview event — it checks the origin and
-   the message type but never that the message's `globalSlug` is the document this hook was given — and it
-   keeps its merged result in a MODULE-LEVEL cache shared by every hook on the page. This page puts two
-   globals in the pane at once (`inicio` and `footer`, which renders everywhere), so editing `inicio` also
-   handed the inicio document to the footer's hook: `brandBlurb` rendered blank (no throw), then
-   `navigation.map` threw.
+4. **The pane crashed twice, and the fix was to change APPROACH, not to patch the symptom.**
 
-   Fixed with `lib/use-global-live-preview.ts`, a slug-scoped hook that keeps its own state and merge
-   history and — the part that matters — ignores documents that are not its own. It reuses the package's
-   `isLivePreviewEvent` and `mergeData` rather than re-implementing the protocol, and it drops a merge whose
-   response is a Payload error body instead of adopting validation messages as page content.
+   The crashes (`copy.branches` undefined, then `copy.navigation` undefined, shown as "This page couldn't
+   load") came from the client-side integration. Two separate defects sat under it: Payload's
+   `useLivePreview` accepts ANY live-preview event — it never checks that the message's `globalSlug` is the
+   document the hook was given, and it caches the merge in a module-level variable shared by every hook on
+   the page — so previewing `inicio` and `footer` together cross-contaminated them; and `mergeData` returns
+   that global's serialized document, so borrowed fields are absent.
 
-   **A second, independent defect sits underneath it**, which is why the first fix attempt (re-attaching
-   borrowed fields) was necessary but not sufficient: `mergeData` POSTs the form state to the CMS and returns
-   that global's serialized document, so the footer's `email` and `branches` — borrowed from the `contacto`
-   global — are genuinely absent and must be re-attached from the server copy. Both fixes are needed.
+   I fixed both (a slug-scoped hook plus re-attaching borrowed fields) and they worked — verified by driving
+   the hooks directly and reading `performance.getEntriesByType('resource')`: one message produced exactly
+   one upstream request. **Then I checked Payload's docs, which was overdue.** For the App Router they
+   recommend the opposite architecture:
 
-   **How it was verified without an admin session:** point `NEXT_PUBLIC_PAYLOAD_URL` at the web server
-   temporarily so the page's own origin passes the hook's origin check, then post messages from the page and
-   read `performance.getEntriesByType('resource')`. One `inicio` message produced exactly one request
-   (`/api/globals/inicio`); one `footer` message produced exactly one (`/api/globals/footer`). Under the old
-   hook both fired for either message. The merges themselves failed (no admin cookie), which also proved the
-   error-body guard keeps the page intact. The env was restored and the images re-verified afterwards.
+   > "Server-side Live Preview works by making a roundtrip to the server every time your document is saved…
+   > In Next.js, this means simply calling `router.refresh()`."
+
+   The official website template ships exactly this with Header/Footer globals — the shape this site has.
+
+   **So the client-side machinery was deleted and replaced** with one `RefreshRouteOnSave` component
+   (`e9b16da`). Rendering on the server makes cross-contamination impossible rather than guarded against —
+   each component re-reads its own global through the normal server path — and removes the bespoke hook that
+   was the only thing standing between the editor and a crash. As-you-type now comes from AUTOSAVE (375ms),
+   which the docs recommend pairing with server-side preview; those saves land as drafts, so the
+   publish-gated revalidation hook stays quiet and neither the public site nor its cache changes while the
+   editor types.
+
+   Verified after the switch: `RefreshRouteOnSave` appears in the draft-mode payload and NOT in the public
+   one; the deleted wrappers appear nowhere; the live copy still renders in both; the globals remain
+   published; gate 32 passed.
+
+   **Lesson worth keeping:** two rounds of reverse-engineering Payload's internals produced a working but
+   bespoke solution, while ten minutes in the official docs produced a simpler one that removes the failure
+   mode instead of defending against it. Read the docs before patching around a library.
 
 ### Honest gaps
 
