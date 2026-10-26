@@ -14,6 +14,14 @@ import { LIVE_PREVIEW_SERVER_URL } from "@/lib/live-preview"
  * drafts. Nothing is merged in the browser, which is why previewing several globals on one page is safe
  * here (the client-side hook this ticket first used cross-contaminated them).
  *
+ * WHO MAY DRIVE THIS: the window that EMBEDS us, and nothing else. The first version required the message's
+ * origin to equal `NEXT_PUBLIC_PAYLOAD_URL`, which fails silently and misleadingly — open the Admin Panel on
+ * any other hostname that reaches the same server (a LAN address, a tunnel, a different port) and every
+ * message is dropped while the page itself still looks correct. Comparing `event.source` against
+ * `window.parent` is the stronger rule: only the embedding window qualifies, whatever host it is on, and a
+ * page that merely frames us can do no more than ask for a re-render of OUR server-rendered HTML, since no
+ * content is ever taken from the message.
+ *
  * WHY THIS IS NOT JUST `RefreshRouteOnSave` FROM THE PACKAGE. Payload's component refreshes only on
  * `payload-document-event`, which the admin is supposed to emit when a save completes. Verified locally,
  * that event does not arrive: autosave demonstrably saves drafts (`_inicio_v` rows carrying autosave=true,
@@ -23,8 +31,10 @@ import { LIVE_PREVIEW_SERVER_URL } from "@/lib/live-preview"
  * `payload-live-preview`, the message the admin emits on EVERY form-state change (i.e. as you type), and
  * treats either as a reason to re-render.
  *
- * That makes the pane follow the editor even when the save-driven event is silent, and the debounce keeps a
- * burst of keystrokes from costing a server render each.
+ * TEMPORARY DIAGNOSTIC (remove once the pane is confirmed working): every Payload-shaped message is logged
+ * with its origin and whether it came from the parent, and each scheduled refresh is logged. Next forwards
+ * browser console output to the dev-server log, so those lines are readable from the server side without an
+ * admin session.
  *
  * Renders nothing.
  */
@@ -38,17 +48,25 @@ export function RefreshRouteOnSave() {
     if (timer.current) clearTimeout(timer.current)
     timer.current = setTimeout(() => {
       timer.current = null
+      // eslint-disable-next-line no-console
+      console.warn("[preview] refreshing the route")
       router.refresh()
     }, DEBOUNCE_MS)
   }, [router])
 
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
-      // The same rule the package's own helper applies: only the Admin Panel may drive this.
-      if (event.origin !== LIVE_PREVIEW_SERVER_URL) return
       if (!event.data || typeof event.data !== "object") return
 
       const type = (event.data as { type?: string }).type
+      if (!type || !String(type).startsWith("payload-")) return
+
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[preview] message type=${type} origin=${event.origin} fromParent=${event.source === window.parent}`,
+      )
+
+      if (event.source !== window.parent) return
       // Two different events, one action:
       //   payload-document-event  — a save finished (Payload's own trigger)
       //   payload-live-preview    — form state changed (fires while typing)
@@ -58,6 +76,8 @@ export function RefreshRouteOnSave() {
     }
 
     window.addEventListener("message", onMessage)
+    // eslint-disable-next-line no-console
+    console.warn(`[preview] listener attached (serverURL=${LIVE_PREVIEW_SERVER_URL})`)
 
     // Announce that we are listening, then refresh once so a freshly opened pane is current.
     ready({ serverURL: LIVE_PREVIEW_SERVER_URL })
