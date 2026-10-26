@@ -188,6 +188,20 @@ asserts the invariants (hero-card clearance, grid columns, navbar form per viewp
    `payload-live-preview` message and a `payload-document-event` each produced a route request, and an
    unrelated message produced none.
 
+6. **"It worked for some time, then reverted to old behaviour" — that was the draft cookie, not the code.** Next
+   signs the `__prerender_bypass` cookie per build, so a **dev-server restart invalidates a cookie a pane is
+   already holding**. Proven both ways: a cookie that showed draft content before a restart showed the
+   published copy after it, and a freshly issued cookie worked again (`deploymentId` does NOT pin the
+   signature — set, tested, still invalidated, reverted).
+
+   That explains the owner's report exactly: the pane held a stale cookie, the page rendered without draft
+   mode, and `.scratch` — because `RefreshRouteOnSave` is draft-only, it unmounted too, so nothing even tried
+   to re-render. "Old behaviour" was the symptom of an expired preview session, not a regression.
+
+   **Production is unaffected between deploys** (the build is stable), and a new deploy *should* invalidate
+   old preview sessions. The dev remedy is to re-open the Live Preview pane, which re-hits `/api/preview` on
+   the site and issues a fresh cookie.
+
 ### Honest gaps
 
 1. **The contacto body is not live-wired.** Opening the pane on `/contacto` shows the saved **draft**
