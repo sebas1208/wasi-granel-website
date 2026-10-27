@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { PrivacyModal } from "./privacy-modal"
+import { LegalModal } from "@/components/legal/legal-modal"
 
 /**
  * The contact form from the "Contacto y Sucursales" mockup — its field ids, labels, spacing and input
@@ -27,11 +27,8 @@ const field =
 const labelCls = "block font-label text-xs uppercase tracking-wider font-bold text-on-surface"
 
 export function ContactForm({
-  email,
   whatsappHref,
 }: {
-  /** From the `contacto` global, so the form and the privacy notice cannot disagree with the footer. */
-  email: string
   /** Pre-built WhatsApp deep link for the fallback path (the form has no receiver yet — ticket 25). */
   whatsappHref: string
 }) {
@@ -183,15 +180,12 @@ export function ContactForm({
         />
         <label className="text-xs text-on-surface-variant leading-relaxed" htmlFor="privacy-policy">
           Acepto el tratamiento de mis datos de contacto para recibir una respuesta a mi requerimiento, según el{" "}
-          <PrivacyModal email={email}>
-            <button
-              type="button"
-              data-testid="privacy-trigger"
-              className="font-bold text-[#875d00] underline hover:no-underline"
-            >
-              tratamiento de datos
-            </button>
-          </PrivacyModal>{" "}
+          <LegalModal
+            doc="privacy"
+            className="font-bold text-[#875d00] underline hover:no-underline"
+          >
+            tratamiento de datos
+          </LegalModal>{" "}
           de Wasi Granel.
         </label>
       </div>

@@ -248,7 +248,6 @@ export async function ContactoContent({ draft }: { draft: boolean }) {
                     </p>
                   </div>
                   <ContactForm
-                    email={copy.email}
                     whatsappHref={branchWhatsapp(
                       copy.branches[0].phone,
                       "Hola Wasi Granel, quisiera hacer una consulta",

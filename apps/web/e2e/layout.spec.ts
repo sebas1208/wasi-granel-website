@@ -792,9 +792,11 @@ test("contacto: the form validates and never fakes a successful send", async ({ 
   await expect(page.getByTestId("contact-not-wired")).toBeVisible()
   await expect(page.getByTestId("contact-not-wired")).toContainText("todavía no está conectado")
 
-  // the consent checkbox opens the privacy statement (a modal, not a page — user decision)
-  await page.getByTestId("privacy-trigger").click()
-  await expect(page.getByTestId("privacy-modal")).toBeVisible()
+  // the consent checkbox opens the Política de Privacidad from the SAME component the footer uses
+  // (ticket 27). The trigger is an anchor carrying a real href, so it also works without JavaScript —
+  // scoped to the consent label because the footer renders a link for the same document.
+  await page.locator('label[for="privacy-policy"] a[data-legal-doc="privacy"]').click()
+  await expect(page.getByTestId("legal-modal-privacy")).toBeVisible()
 
   // "Sucursal de Interés" was removed at the owner's request
   await page.keyboard.press("Escape")
@@ -934,4 +936,50 @@ test("no hydration mismatch on the catalog routes", async ({ page }) => {
   }
 
   expect(problems, "React must hydrate these routes without a mismatch").toEqual([])
+})
+
+test("legal documents: real links, a working window, and a readable page without JavaScript", async ({
+  page,
+}) => {
+  // ---- the footer links are real anchors, not the dead `href="#"` placeholders ticket 27 replaced
+  await page.goto("/")
+  const footerLegal = page.locator("footer a[data-legal-doc]")
+  await expect(footerLegal).toHaveCount(2)
+  const hrefs = await footerLegal.evaluateAll((els) => els.map((e) => e.getAttribute("href")))
+  expect(hrefs.sort(), "footer legal links must point at the real documents").toEqual([
+    "/legal/privacy",
+    "/legal/terms",
+  ])
+
+  // ---- clicking one opens the document in a window, and must NOT navigate away from the page
+  const before = page.url()
+  await page.locator('footer a[data-legal-doc="terms"]').click()
+  const termsModal = page.getByTestId("legal-modal-terms")
+  await expect(termsModal).toBeVisible()
+  await expect(termsModal).toContainText("Términos y Condiciones")
+  await expect(termsModal, "the owner's RUC must reach the reader").toContainText("0601801327001")
+  await expect(termsModal).toContainText("Ley aplicable")
+  expect(page.url(), "opening the window must not navigate").toBe(before)
+
+  await page.keyboard.press("Escape")
+  await expect(termsModal).toBeHidden()
+
+  // ---- the privacy policy renders its processor TABLE, which only works if remark-gfm is wired
+  await page.locator('footer a[data-legal-doc="privacy"]').click()
+  const privacyModal = page.getByTestId("legal-modal-privacy")
+  await expect(privacyModal).toBeVisible()
+  await expect(privacyModal.locator("table")).toBeVisible()
+  await expect(privacyModal).toContainText("Vercel Analytics")
+  await page.keyboard.press("Escape")
+  await expect(privacyModal).toBeHidden()
+
+  // ---- the real page: what a visitor without JavaScript gets, fully server-rendered
+  const res = await page.goto("/legal/terms")
+  expect(res?.status(), "the terms page must be a real 200").toBe(200)
+  await expect(page.locator("h1")).toHaveText("Términos y Condiciones")
+  await expect(page.locator('[data-legal-document="terms"]')).toContainText("cobramos el peso")
+
+  // ---- an unknown document is a genuine 404, not a 200 serving the not-found body
+  const missing = await page.goto("/legal/no-existe")
+  expect(missing?.status(), "an unknown document must 404").toBe(404)
 })

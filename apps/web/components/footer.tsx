@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { LegalModal } from "@/components/legal/legal-modal"
 import type { FooterProps } from "@/lib/site-copy"
 import { whatsappLink } from "@/lib/store-info"
 
@@ -43,8 +44,10 @@ export function Footer({ copy }: { copy: FooterProps }) {
             </ul>
           </div>
 
-          {/* Legal — the label is editable, the destination is a document id. Ticket 27 replaces the
-              placeholder href with the shared modal component, which is why the id is on the element. */}
+          {/* Legal — the label is editable and the destination is a document id, so the CMS can rename a
+              link without knowing where it points. `LegalModal` renders a real `<a href="/legal/…">` and
+              intercepts the click to open the document in a window; when JavaScript is unavailable the
+              anchor still lands on a readable page. See ticket 27. */}
           <div>
             <h4 className="font-headline uppercase tracking-wider font-bold text-xs text-primary-foreground mb-4">
               Legal
@@ -52,13 +55,12 @@ export function Footer({ copy }: { copy: FooterProps }) {
             <ul className="flex flex-col gap-2.5">
               {copy.legal.map((item) => (
                 <li key={item.document}>
-                  <Link
-                    href="#"
-                    data-legal-doc={item.document}
+                  <LegalModal
+                    doc={item.document}
                     className="text-sm font-semibold text-primary-foreground hover:underline"
                   >
                     {item.label}
-                  </Link>
+                  </LegalModal>
                 </li>
               ))}
             </ul>
