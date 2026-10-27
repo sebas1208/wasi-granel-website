@@ -10,8 +10,9 @@ for legal terms and related."*
 **Blocked by:** nothing, but the **text** is the owner's to supply or approve. **Ticket 23 (checkout)
 is blocked by this** — payment providers routinely require published terms.
 
-**Status:** DONE 2026-10-26 — text approved and the build shipped on `develop` (`0912ea8`), verified in a
-browser at both viewports and against a production build. Two things outlive this ticket, both expected:
+**Status:** DONE 2026-10-27 — text approved and the build shipped on `develop`. **The owner removed the
+modal on 2026-10-27** (closing amendment below): the pages are the only surface. Re-verified after that
+change at both viewports. Two things outlive this ticket, both expected:
 the owner's **lawyer review** before the wording binds anyone, and **ticket 23 reusing `LegalModal`** for
 the terms at checkout, which cannot be checked until 23 exists.
 
@@ -191,3 +192,35 @@ All four real routes set their own metadata, so it only surfaces on the 404 page
 **One deliberate duplication:** the documents hardcode `info@wasigranel.com` rather than reading the
 `contacto` global, so the legal text stays stable and reviewable. If that address ever changes, it changes
 in `lib/legal/documents.ts` too — the footer and the form read the global, the documents do not.
+
+
+## Amendment 2026-10-27 — the modal is gone; the pages are the only surface
+
+**Owner's instruction:** *"I told you you can do the pages, not the modals"*, followed by *"On the form just
+open those link in another tab."*
+
+So `components/legal/legal-modal.tsx` is deleted. The footer's links are plain `<Link>`s to the real pages,
+and the consent link is a plain anchor with `target="_blank" rel="noopener noreferrer"`.
+
+**Why the new tab on the form specifically:** that link sits inside a form the visitor may have already
+filled in. Navigating in the same tab destroys what they typed — which is presumably why the original
+`privacy-modal.tsx` carried the note *"a modal, not a page — user decision"*. A new tab keeps the typing
+and still needs no overlay. A link at rest (the footer) has no such cost, so it just navigates.
+
+**Acceptance, amended:**
+
+| original acceptance | now |
+| --- | --- |
+| ~~One reusable legal modal component; the footer opens both documents from it~~ | **DROPPED by the owner.** The footer links to the pages directly. `LegalModal` no longer exists. |
+| ~~Checkout (23) reuses the same component for terms acceptance~~ | **DROPPED** — there is no component to reuse. When 23 lands it renders its own consent, and it should open the terms the same way this form does: a new tab. |
+| The consent checkbox opens the Política de Privacidad | **done, differently** — a new-tab link to `/legal/privacy`, asserted by the gate (`href`, `target`, `rel`). |
+| ~~No dead `href="#"` legal links remain~~ | **still done** — both footer links point at real documents. |
+| The privacy text names Vercel Analytics and the form's destination | **still done.** |
+| Both documents reachable without JavaScript | **still done, and now the only path** — there is no JavaScript-dependent surface at all. |
+
+The gate test was rewritten accordingly: it now follows the footer link and asserts it *lands on* the page
+(`toHaveURL(/\/legal\/terms$/)`) instead of asserting a window opened, and it asserts the consent link's
+`target`/`rel`. Same coverage of the documents, no coverage of a component that no longer exists.
+
+**What did not change:** `lib/legal/documents.ts`, `components/legal/legal-document.tsx` and
+`app/legal/[documento]/page.tsx` — the content, the renderer and the pages all stay.

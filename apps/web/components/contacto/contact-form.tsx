@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { LegalModal } from "@/components/legal/legal-modal"
+import { legalHref } from "@/lib/legal/documents"
 
 /**
  * The contact form from the "Contacto y Sucursales" mockup — its field ids, labels, spacing and input
@@ -180,12 +180,18 @@ export function ContactForm({
         />
         <label className="text-xs text-on-surface-variant leading-relaxed" htmlFor="privacy-policy">
           Acepto el tratamiento de mis datos de contacto para recibir una respuesta a mi requerimiento, según el{" "}
-          <LegalModal
-            doc="privacy"
+          {/* Opens in a NEW TAB on purpose (owner's call, 2026-10-27): the visitor can read the policy
+              without losing what they have typed into the form. A window would have worked too, but the
+              owner wants plain links for the legal documents — the pages are the only surface. */}
+          <a
+            href={legalHref("privacy")}
+            data-legal-doc="privacy"
+            target="_blank"
+            rel="noopener noreferrer"
             className="font-bold text-[#875d00] underline hover:no-underline"
           >
             tratamiento de datos
-          </LegalModal>{" "}
+          </a>{" "}
           de Wasi Granel.
         </label>
       </div>

@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { LegalModal } from "@/components/legal/legal-modal"
+import { legalHref } from "@/lib/legal/documents"
 import type { FooterProps } from "@/lib/site-copy"
 import { whatsappLink } from "@/lib/store-info"
 
@@ -45,9 +45,9 @@ export function Footer({ copy }: { copy: FooterProps }) {
           </div>
 
           {/* Legal — the label is editable and the destination is a document id, so the CMS can rename a
-              link without knowing where it points. `LegalModal` renders a real `<a href="/legal/…">` and
-              intercepts the click to open the document in a window; when JavaScript is unavailable the
-              anchor still lands on a readable page. See ticket 27. */}
+              link without knowing where it points. These are plain links to the real pages: the owner
+              chose pages as the only surface for the legal documents (2026-10-27), so there is no window
+              here to open. `legalHref` is the one place the URL is built. */}
           <div>
             <h4 className="font-headline uppercase tracking-wider font-bold text-xs text-primary-foreground mb-4">
               Legal
@@ -55,12 +55,13 @@ export function Footer({ copy }: { copy: FooterProps }) {
             <ul className="flex flex-col gap-2.5">
               {copy.legal.map((item) => (
                 <li key={item.document}>
-                  <LegalModal
-                    doc={item.document}
+                  <Link
+                    href={legalHref(item.document)}
+                    data-legal-doc={item.document}
                     className="text-sm font-semibold text-primary-foreground hover:underline"
                   >
                     {item.label}
-                  </LegalModal>
+                  </Link>
                 </li>
               ))}
             </ul>
