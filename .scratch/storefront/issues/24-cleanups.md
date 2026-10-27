@@ -188,3 +188,7 @@ Note: this is the same *shape* as the Admin Panel's own `popup-button` mismatch 
   (`app/api/signup/route.ts`) and, going forward, the contact form post to a Google Apps Script endpoint.
   The owner's call: ship with Sheets now, move to a real destination after launch. Note the Apps Script URL
   is hardcoded in the source and accepts unauthenticated POSTs — anyone holding it can write to the sheet.
+
+- **The root layout's default page title is stale:** `app/layout.tsx` still declares
+  `"Wasi Granel - Espéranos Pronto!"`. All four real routes override it, so it only shows on the 404 page —
+  but that is a pre-launch title on a live site. Found while building ticket 27.

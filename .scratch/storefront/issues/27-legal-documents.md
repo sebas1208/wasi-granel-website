@@ -10,9 +10,10 @@ for legal terms and related."*
 **Blocked by:** nothing, but the **text** is the owner's to supply or approve. **Ticket 23 (checkout)
 is blocked by this** — payment providers routinely require published terms.
 
-**Status:** TEXT APPROVED 2026-10-26 — the owner approved both documents in full, including the weight
-tolerance in §7 of the terms. **The remaining work is the build** (design decided, below). A lawyer still
-reviews before publication.
+**Status:** DONE 2026-10-26 — text approved and the build shipped on `develop` (`0912ea8`), verified in a
+browser at both viewports and against a production build. Two things outlive this ticket, both expected:
+the owner's **lawyer review** before the wording binds anyone, and **ticket 23 reusing `LegalModal`** for
+the terms at checkout, which cannot be checked until 23 exists.
 
 ## Why BOTH, not one
 
@@ -150,3 +151,43 @@ readable. Accepted, and worth revisiting only if page weight becomes a real prob
 
 **Reuse:** ticket 23 (checkout) needs the same window for the terms at the point of purchase, which is why
 `LegalModal` takes a slug rather than being footer-specific.
+
+
+## Verification record (2026-10-26)
+
+| acceptance | state |
+| --- | --- |
+| One reusable legal modal component; the footer opens both documents from it | **done** — `components/legal/legal-modal.tsx` |
+| Checkout (23) reuses it for terms acceptance | **not verifiable yet** — `LegalModal` takes a document slug rather than being footer-specific, so 23 can reuse it, but nothing can be checked until 23 exists |
+| The consent checkbox opens the Política de Privacidad from the same component | **done** — the bespoke `privacy-modal.tsx` is deleted |
+| No dead `href="#"` legal links remain anywhere | **done** — `grep -rn 'href="#"' --include=*.tsx` outside `node_modules` returns nothing; the gate asserts both real hrefs |
+| The privacy text names Vercel Analytics and the form's actual destination | **done** — Analytics from `app/layout.tsx`, destination Google Sheets from `api/signup`, both named in §5 |
+| Both documents reachable without JavaScript | **done** — verified by `curl`, no JS |
+
+**No-JS reachability, measured.** `/legal/terms` returns 53,421 bytes carrying the whole document
+server-rendered (heading, RUC, the weight clause, "Ley aplicable"); `/legal/privacy` returns 64,662 bytes
+including the processor `<table>`. The production build prerenders both as **static HTML** — `● /legal/[documento]`
+with `/legal/terms` and `/legal/privacy`, and nothing else.
+
+**Browser pass.** `check:layout` → **34 passed, 2 skipped** (was 32; the new legal test runs at desktop 1280
+AND mobile 390). It asserts that the footer's two links carry real `/legal/...` hrefs, that clicking one
+opens the window containing the RUC and the weight clause **without navigating**, that Escape closes it,
+that the privacy window renders the processor `<table>` (proving `remark-gfm` is actually wired), that
+`/legal/terms` is a 200 with a server-rendered `<h1>` and body, and that `/legal/no-existe` is a genuine
+**404**.
+
+Also: `tsc --noEmit` clean, `pnpm lint` 0 errors (10 pre-existing warnings), `pnpm build` succeeds.
+
+**Bug found during verification, and fixed.** `/legal/<unknown>` returned **HTTP 200** while serving the
+not-found body: the route matched, ran the page, and called `notFound()` — and a crawler or a payment
+provider checking that our terms URL is valid would read a 200 as a working page. Fixed with
+`export const dynamicParams = false`, closing the param set so an unknown document 404s at the router. The
+fix only took effect after a dev-server restart (the stale Turbopack watcher again — a fresh process is
+the reliable check, not a fresh request).
+
+**Noted, not fixed here:** the root layout's default title is still `"Wasi Granel - Espéranos Pronto!"`.
+All four real routes set their own metadata, so it only surfaces on the 404 page — recorded on ticket 24.
+
+**One deliberate duplication:** the documents hardcode `info@wasigranel.com` rather than reading the
+`contacto` global, so the legal text stays stable and reviewable. If that address ever changes, it changes
+in `lib/legal/documents.ts` too — the footer and the form read the global, the documents do not.
