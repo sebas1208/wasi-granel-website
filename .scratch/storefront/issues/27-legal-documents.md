@@ -48,15 +48,26 @@ Either way: **not legal advice**, and the binding wording is his call.
 - `apps/web/components/footer.tsx` — the "Legal" column currently links Términos y Condiciones and
   Política de Privacidad at `href="#"` (**dead links**; "Devoluciones" was removed 2026-10-24).
 
-## Acceptance
-- [ ] One reusable legal modal component; the footer opens both documents from it.
-- [ ] Checkout (ticket 23) reuses the same component for terms acceptance.
-- [ ] The contact form's consent checkbox opens the **Política de Privacidad** from the same component
-      (replacing the bespoke `privacy-modal.tsx`).
-- [ ] No dead `href="#"` legal links remain anywhere.
-- [ ] The privacy text names Vercel Analytics and the contact form's actual data destination.
-- [ ] Both documents are reachable without JavaScript (a link that works, not only a modal) — a
-      customer on a broken connection must still be able to read the terms they are agreeing to.
+## Acceptance — final, as of 2026-10-27
+
+Each line is marked with what actually happened. Two were dropped by the owner mid-build; they are struck
+through and labelled rather than deleted, so the record shows the requirement changed rather than vanished.
+
+- [x] **The contact form's consent link opens the Política de Privacidad** — as a new-tab link to
+      `/legal/privacy`, not "from the same component"; there is no component. Asserts `href`, `target` and
+      `rel` in the gate.
+- [x] **No dead `href="#"` legal links remain anywhere.** `grep -rn 'href="#"' --include=*.tsx` outside
+      `node_modules` returns nothing.
+- [x] **The privacy text names Vercel Analytics and the contact form's actual data destination** — Analytics
+      from `app/layout.tsx`, destination Google Sheets from `api/signup`, both named in §5.
+- [x] **Both documents are reachable without JavaScript** — and now that is the *only* way they are
+      reached, so there is nothing left that JavaScript can break.
+- **DROPPED by the owner, 2026-10-27** — ~~One reusable legal modal component; the footer opens both
+  documents from it.~~ *"I told you you can do the pages, not the modals."* The footer links straight to
+  the pages; `legal-modal.tsx` is deleted.
+- **DROPPED by the owner, 2026-10-27** — ~~Checkout (ticket 23) reuses the same component for terms
+  acceptance.~~ There is no component to reuse. When 23 lands it renders its own consent, and it should
+  open the terms the way this form does: a new tab.
 
 
 ## The drafts (2026-10-26)
