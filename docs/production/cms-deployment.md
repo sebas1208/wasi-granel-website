@@ -1,5 +1,10 @@
 # Payload CMS — deployment & update runbook
 
+> **Releasing?** Start at the release gate: `.scratch/storefront/issues/28-production-release-checklist.md`.
+> This runbook is the *how*; that checklist is everything that must be true at the merge — the secrets to
+> set in Coolify and Vercel, the migration, the data to seed, and the features that can only be proven in
+> production.
+
 Target: **Payload CMS 3.90.2** hosted on the Wasi Granel VPS (`82.197.67.162`),
 served at **`https://payload.wasigranel.com`**, with Postgres on the same VPS.
 The storefront (root domain, landing page) runs on Vercel — no overlap.

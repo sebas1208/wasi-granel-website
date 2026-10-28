@@ -5,6 +5,9 @@
 **Blocked by:** nothing. 10, 11, 15 and 16 are all closed — the pages exist and already read Payload, so there is something real to preview against.
 
 **Status:** DONE locally (2026-10-26) — all three steps complete and verified end-to-end. Nothing is
+
+> **Production release step:** this can only be proven in production. It is tracked on the release
+> gate — `28-production-release-checklist.md`, section 6.
 awaiting the owner here except the production rollout, which happens with the merge to `main`
 (`develop` `5a19503`). Two real bugs were found by insisting on the end-to-end check rather than trusting
 each piece, and both are fixed — see Progress.

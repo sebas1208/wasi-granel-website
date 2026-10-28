@@ -192,3 +192,7 @@ Note: this is the same *shape* as the Admin Panel's own `popup-button` mismatch 
 - **The root layout's default page title is stale:** `app/layout.tsx` still declares
   `"Wasi Granel - Espéranos Pronto!"`. All four real routes override it, so it only shows on the 404 page —
   but that is a pre-launch title on a live site. Found while building ticket 27.
+
+> **Production release step:** the alias re-claim above, and every other item here that
+> only matters at release, is tracked on `28-production-release-checklist.md`
+> (sections 4 and 9).
