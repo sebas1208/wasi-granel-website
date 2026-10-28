@@ -4,7 +4,8 @@
 
 **Blocked by:** 14 (cart UI), 08 (Payload collections — needs an `Orders` collection).
 
-**Status:** DESIGN AGREED 2026-10-28 (open items: the automated first message, and shipping rates).
+**Status:** DESIGN AGREED 2026-10-28, awaiting the owner's confirmation of the end-to-end section below
+(four last questions). Research is complete — the numbers are in.
 The flow is **merchant-initiated** — the *store* messages the customer, not the PRD's customer-initiated
 handoff. The owner is designing the checkout screen in Stitch; the CMS/backend work can proceed in parallel
 because it does not depend on that design. See "Facts confirmed" and "Owner's answers".
@@ -189,3 +190,83 @@ so hosting the personal DeUna QR at a URL (e.g. `/pago`) and putting that link i
 to the customer on every channel — WhatsApp, email, and anywhere else — with nothing to attach. That also
 removes the only reason to consider the paid API for images. Worth designing that page alongside the
 checkout.
+
+
+## Research results (2026-10-28)
+
+### The automated first WhatsApp message
+
+**Meta Cloud API** *(primary: Meta developer docs)*
+- An unsolicited first message **is** allowed — but **only as a pre-approved template**. Free-form is blocked
+  outside a customer-service window.
+- **UTILITY is the right category**: Meta names "order confirmation or update" as a utility example.
+  Marketing-flavoured wording gets auto-reclassified to the pricier marketing category.
+- Approval: submit via WhatsApp Manager; Meta allows up to 24h, but a clean utility template is usually
+  **minutes**.
+- **Opt-in:** the checkout consent counts **only if it is an explicit, not-pre-ticked box**, and it no longer
+  has to name WhatsApp — but Meta does not verify at send time, so **the business must keep the proof**
+  (the wording, its source, the date).
+- The customer replying **opens a 24-hour window** in which a human replies free-form, no template. Which is
+  exactly the requested flow.
+
+**Cost** — the fee is trivial; the onboarding is the real cost.
+- Meta's utility rate to an Ecuadorian number is **a fraction of a cent to ~1.1¢** (sources differ on the
+  region band: ~$0.003–$0.0113). At 100 orders a month that is **≈$0.50–$1.50, no platform fee**.
+- Resellers, if used: **Gupshup** $0/mo + $0.001/msg and **Twilio** $0/mo + $0.005/msg are the only ones
+  without a monthly fee. 360dialog (€49), Wati ($49), ManyChat ($39), Zenvia (~R$99) are overhead at this
+  volume. **No Ecuador-specific provider exists.**
+- Requirements: Meta Business Portfolio **plus business verification** (registration certificate, tax ID,
+  address proof, consistent legal name), a WABA with an approved display name, and **a phone number not
+  active on personal WhatsApp**.
+- From 1 Oct 2026 utility templates inside the window and service replies are billable, with the **first
+  1,000 service messages per number per month free** — irrelevant at this volume.
+
+**The free WhatsApp Business app**
+- **It cannot send an unsolicited first message at all.** Greeting and away messages fire only *after* the
+  customer writes.
+- Greeting: on a customer's first message, or after 14 days of inactivity. Away: messages outside set hours.
+  Quick replies: manual "/" only.
+- **Greeting and away are TEXT-ONLY.** Only quick replies can carry an attachment, and those are manual.
+- Limits: one number per device, one greeting, one away, 50 quick replies, ~1024 characters.
+
+**The consequence that decided the design:** the free app can never start a conversation, so "the first
+message is automatic" is only true on the paid API. But if the **customer** sends first — one tap from the
+confirmation screen — the free app auto-replies instantly with the payment block, which is text-only anyway,
+and a person then continues in the same app. Both roads end in the same place; they differ in what it costs
+to get moving.
+
+### Shipping (Ecuador)
+
+- **No Ecuadorian courier publishes a 1–5 kg rate table.** All of them quote through an interactive form or
+  WhatsApp. Servientrega's quoter endpoint exists (`/Cotizador/GetCotizacionNacional`) but would not return a
+  completed quote.
+- Best published anchors: **Gintracom $2.74–$5.48 for 1–5 kg** (pre-tax) and **Urbano Express from $3.55 for
+  up to 4 kg**. Base weights before surcharge: Servientrega 2 kg, Urbano 4 kg, Laar and Gintracom 5 kg.
+- So **a small parcel out of Riobamba costs roughly $3–$6**, and beyond the base weight it climbs by the kilo
+  plus volumetric weight.
+- Olva Courier is Peru-only (international to Ecuador) — not a domestic option. Correos del Ecuador publishes
+  only handling fees.
+- **Inside Riobamba:** **PedidosYa does cover Riobamba** (confirmed) and Uber Eats lists it. Rappi does not,
+  Glovo left in 2021, Clipp is Loja only. No dedicated in-city courier verified — most stores self-deliver.
+- **Pricing model:** a flat per-zone rate is only safe at light weights; it loses money the moment an order
+  is heavy or bulky.
+
+## The flow, end to end (for confirmation before building)
+
+1. **Customer fills the checkout** — name, phone, delivery address, an optional note, **plus an explicit,
+   unticked consent box for WhatsApp messages**.
+2. The checkout **POSTs to a Next route handler**, which writes the order to Payload via an API key. The
+   order gets reference **`WG-2026-0001`** style, status **Nuevo**, and keeps the `unitPrice` snapshots it was
+   built with, so a later price change cannot rewrite history.
+3. **The customer sees a confirmation** — the reference, what happens next, the store's hours, and that the
+   weight, shipping and total are confirmed in the chat (consistent with the terms, where the weight may
+   vary ±5%).
+4. **The store is notified** — email, and (if the customer's message arrives first) WhatsApp itself.
+5. **The first WhatsApp message carries the payment block** — bank details, the DeUna number, and a link to
+   the personal DeUna QR hosted on the site.
+6. **A person continues the chat**: confirms the weight, quotes the shipping, agrees the method.
+7. **The customer pays** by transfer to the personal DeUna or the bank account — **0% on both**.
+8. **The store marks it Pagado**, then **Entregado**. Statuses: Nuevo → Enviado → Pagado → Entregado, plus
+   Cancelado and an automatic **Vencido** after 3 days.
+9. **Delivery**: free inside Riobamba on the store's own wheels; outside, Servientrega at extra cost, which
+   the store quotes in step 6.
