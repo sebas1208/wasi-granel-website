@@ -4,8 +4,10 @@
 
 **Blocked by:** 14 (cart UI), 08 (Payload collections — needs an `Orders` collection).
 
-**Status:** DESIGN AGREED 2026-10-28, awaiting the owner's confirmation of the end-to-end section below
-(four last questions). Research is complete — the numbers are in.
+**Status:** DESIGN AGREED 2026-10-28. Q11 and Q14 settled, Q13 deferred to the family, and Q12 hinges on
+whether the number keeps its phone app. Two facts in flight (WhatsApp app+API coexistence; courier
+cash-on-delivery). Owner's set-up, verbatim: *"We have a different WhatsApp number in another cellphone
+with business enabled but we haven't setup anything yet nor setup the API."*
 The flow is **merchant-initiated** — the *store* messages the customer, not the PRD's customer-initiated
 handoff. The owner is designing the checkout screen in Stitch; the CMS/backend work can proceed in parallel
 because it does not depend on that design. See "Facts confirmed" and "Owner's answers".
@@ -270,3 +272,47 @@ to get moving.
    Cancelado and an automatic **Vencido** after 3 days.
 9. **Delivery**: free inside Riobamba on the store's own wheels; outside, Servientrega at extra cost, which
    the store quotes in step 6.
+
+
+## Owner's answers, round 2 (2026-10-28)
+
+| # | question | answer |
+| --- | --- | --- |
+| Q11 | WhatsApp consent box | **Yes** — and it lands in the Stitch checkout design. |
+| Q12 | free tap or paid automatic send | **The store must start the conversation.** *"People don't like to start conversations and we can't put everything on the template message."* Hinges on the dashboard question below. |
+| Q13 | shipping pricing | **Deferred** — the owner will ask his family. His shape: **a dropdown (Riobamba / Other cities); if Other, the price is confirmed with the buyer.** Which is the "quote in the chat" answer, with a zone captured at checkout. |
+| Q14 | a payment page | **Yes** — host the QR on our side so WhatsApp can link to it. |
+
+**New fact about their set-up:** they already have a **separate phone with a dedicated number running
+WhatsApp Business**, currently unconfigured. That matters twice: the "the API needs a number not on personal
+WhatsApp" objection is already satisfied, and that line is the natural one to automate on — it would not
+disturb the store's main WhatsApp.
+
+**New option the owner raised:** **pago contra entrega** — paying when the delivery arrives, which he has seen
+when buying online. In-city that is the store's own courier taking cash or a transfer at the door (0%, and
+the customer never has to pay a stranger before receiving goods). Nationwide it would ride on the courier's
+*contra-entrega* / recaudo-en-destino service, which carries a fee and a remittance delay. Being priced.
+
+### A correction worth recording: the API's template IS per-order
+
+*"We can't put everything on the template message"* conflates two different things. The free Business app's
+**greeting message is fixed text** — that is the one that cannot carry an order. A **Cloud API template** is
+filled with **per-recipient variables at send time**, so the automated first message can carry the entire
+order summary and the payment block, composed from that order's data, for every customer individually. The
+only thing it cannot carry is an image — solved by linking the payment page (Q14).
+
+### What "the dashboard" means (the Q12 question)
+
+A WhatsApp number can be on **the app** or **the API** — normally not both. On the API:
+
+- The phone **stops showing those conversations.** Messages arrive at our system as webhooks, not in an app.
+- To read and reply, staff need a UI — and there are only two kinds:
+  1. **A provider's shared inbox** (Wati, 360dialog, ManyChat, Gupshup). A web app, sometimes with a phone
+     app, where staff see threads and reply. **~$39–49/month.**
+  2. **Our own screen inside the Payload admin.** No monthly fee, but real work: receiving webhooks,
+     storing threads, sending replies, respecting the 24-hour window, attachments, failures.
+
+**Implication:** if that number goes on the API without coexistence, someone has to reply from a browser, and
+the phone app they know is gone for that line. That is the actual cost of "the store starts the
+conversation" — not the cent per message. **Unless Meta's app+API coexistence applies, which is what the
+research in flight is checking.** If it does, they keep the app and gain the automatic first message.
