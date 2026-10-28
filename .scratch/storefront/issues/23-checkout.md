@@ -4,9 +4,10 @@
 
 **Blocked by:** 14 (cart UI), 08 (Payload collections — needs an `Orders` collection).
 
-**Status:** ANALYSED 2026-10-28 — the flow is now merchant-initiated (the *store* messages the customer), not the
-PRD's customer-initiated WhatsApp handoff. Nine questions are with the owner; the build starts once they land.
-See "Facts confirmed" for the primary-source figures the design rests on.
+**Status:** DESIGN AGREED 2026-10-28 (open items: the automated first message, and shipping rates).
+The flow is **merchant-initiated** — the *store* messages the customer, not the PRD's customer-initiated
+handoff. The owner is designing the checkout screen in Stitch; the CMS/backend work can proceed in parallel
+because it does not depend on that design. See "Facts confirmed" and "Owner's answers".
 
 ## Scope
 
@@ -154,3 +155,37 @@ receiving sales is still the owner's accountant's call; the rates above are fact
 **Consequence:** automated sending is cheap per message (~1.1¢) but has a real onboarding gate — and it
 would be an integration of its own. A person clicking a free click-to-chat link costs nothing and needs no
 verification, which is why it remains the recommendation for the first version.
+
+
+## Owner's answers (2026-10-28)
+
+| # | question | answer |
+| --- | --- | --- |
+| Q1 | what the checkout collects | **Yes, a checkout form storing that data. The owner will design the screen in Stitch** — so the UI waits on that design; the Orders collection, write path and email do not. |
+| Q2 | what the customer sees after submitting | As proposed — order reference, "te escribimos por WhatsApp", the store's hours, and that the total is confirmed in the chat. |
+| Q3 | when the cart empties | On submit. The flow then moves offline. |
+| Q4 | who presses send | **The owner wants the FIRST message automated** — the payment instructions go out automatically, then a person continues the chat. Research in flight. |
+| Q5 | payment instructions | **Both, plus the DeUna QR — the PERSONAL one, not the merchant QR.** That is the 0% channel: a personal P2P QR, not the 2% Deuna Negocios route. |
+| Q6 | shipping | **The rule: free inside Riobamba city or nearby; outside, via Servientrega at extra cost.** The owner asked what else the Ecuadorian market offers — research in flight. |
+| Q7 | how the store learns of an order | **Email — a must, and for now the only channel**, unless a free or very cheap WhatsApp route exists (which is what the Q4 research is checking). |
+| Q8 | the lifecycle | **After the first message the conversation is manual.** Further automation is a post-launch task, by the owner's own call. |
+| Q9 | where the checkout design comes from | **The owner will create it in Stitch**, so no code-first design. |
+
+### What this settles about the flow
+
+```
+customer fills the checkout  ->  POST to a Next route handler  ->  Orders record in Payload (status: Nuevo)
+                             ->  confirmation screen with the order reference
+                             ->  [automated first WhatsApp message with the payment instructions]   <- Q4, in flight
+                             ->  a person continues the chat, sets/confirms shipping, confirms the weight
+                             ->  customer pays (bank transfer / DeUna personal) -> store marks it Pagado
+                             ->  dispatched; Riobamba is free, outside goes by Servientrega
+```
+
+### The image problem has a clean answer
+
+Q5 asks for the QR image, and the facts say a click-to-chat message is text-only. But **a link is text** —
+so hosting the personal DeUna QR at a URL (e.g. `/pago`) and putting that link in the message gets the QR
+to the customer on every channel — WhatsApp, email, and anywhere else — with nothing to attach. That also
+removes the only reason to consider the paid API for images. Worth designing that page alongside the
+checkout.
