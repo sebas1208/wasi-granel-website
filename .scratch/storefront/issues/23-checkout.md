@@ -4,9 +4,9 @@
 
 **Blocked by:** 14 (cart UI), 08 (Payload collections — needs an `Orders` collection).
 
-**Status:** DESIGN AGREED 2026-10-28. Q11 and Q14 settled, Q13 deferred to the family. **Q12 is answered in
-principle: coexistence is real** — the phone app keeps working while the API sends the first message. One
-fact still in flight: which provider can onboard it, and at what cost. Owner's set-up, verbatim: *"We have a different WhatsApp number in another cellphone
+**Status:** DESIGN AGREED 2026-10-28. Q11, Q12, Q14 settled; Q13 deferred to the family. **The recommended
+shape is the admin-composed message with a human tapping send** — free, no API, no partner, keeps the phone
+app. Fully automatic sending is costed below as a later upgrade. Owner's set-up, verbatim: *"We have a different WhatsApp number in another cellphone
 with business enabled but we haven't setup anything yet nor setup the API."*
 The flow is **merchant-initiated** — the *store* messages the customer, not the PRD's customer-initiated
 handoff. The owner is designing the checkout screen in Stitch; the CMS/backend work can proceed in parallel
@@ -375,3 +375,50 @@ carrying cash.
 the order — in-city COD (free, and the customer never pre-pays) or a transfer before dispatch (free, and no
 refusal risk on the freight). For orders outside Riobamba, a transfer before dispatch is the safer default
 because a refusal there costs real money in both directions.
+
+
+## Coexistence: partner-only, and never free (2026-10-28)
+
+*Primary: Meta's "Onboard WhatsApp Business app users" Requirements — "You must already be a Solution Partner
+or Tech Provider." A plain self-serve Cloud API developer **cannot** enable it; there is no self-serve route.*
+
+Providers that document coexistence onboarding, with published monthly fees:
+
+| provider | fee | notes |
+| --- | --- | --- |
+| **Gupshup** | self-serve, **fee unverified** | the only one documenting **no enablement gate** — apps are created through its self-serve UI |
+| 360dialog | **€49 / $59 per month** minimum | primary provider docs |
+| Interakt | **$55** | |
+| Wati | **$59**, billed annually | must ask support to enable it |
+| Gallabox | **$150 per quarter** | must email support to enable it |
+| Infobip | enterprise terms | primary docs |
+
+**No provider documents a $0-monthly-fee, pay-per-message-only coexistence plan.** Meta's per-message rate
+applies on top. So coexistence realistically costs **~$55+/month ≈ US$650/year** — for one automated message
+per order at this volume.
+
+Two operational rules if they take that road *(provider doc: 360dialog)*: the Business app must be **opened at
+least once every 13 days** or the API link drops, and the number needs prior active use on the app (Gupshup
+says 3 months with active messaging; Meta **has not published the eligibility criteria**).
+
+## The recommendation, and why it changed
+
+There is a third shape that costs nothing and was not on the table until the details were known:
+
+**The CMS composes the message, a person taps send.**
+- The order already knows everything — the lines, the totals, the customer's number. The admin renders the
+  full message (order summary + payment block + a link to the QR page) against a **"Enviar por WhatsApp"**
+  button, which opens WhatsApp with the customer's number and that text pre-filled. The staff member taps
+  send.
+- **The store still starts the conversation** — the owner's actual requirement. Nobody has to tap first, and
+  the message holds everything, because it is not a template.
+- **£0.** No API, no partner, no monthly fee, no dashboard, and the phone app keeps working exactly as today.
+- It also means a human has *looked at the order* before it goes out — which is worth something on a first
+  order from a stranger.
+
+The only thing it lacks is zero-touch. The customer experience is nearly identical either way: the message
+arrives a minute or two after checkout, versus instantly.
+
+**So: build the tap first. If volume ever makes the tap a complaint, the upgrade is coexistence at ~$55/month
+— and by then there will be revenue to justify it.** The alternative upgrade (direct Cloud API, no BSP) costs
+~$0/month but takes the phone app away for that number, which means building a reply screen in the admin.
