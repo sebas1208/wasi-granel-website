@@ -4,9 +4,9 @@
 
 **Blocked by:** 14 (cart UI), 08 (Payload collections — needs an `Orders` collection).
 
-**Status:** DESIGN AGREED 2026-10-28. Q11 and Q14 settled, Q13 deferred to the family, and Q12 hinges on
-whether the number keeps its phone app. Two facts in flight (WhatsApp app+API coexistence; courier
-cash-on-delivery). Owner's set-up, verbatim: *"We have a different WhatsApp number in another cellphone
+**Status:** DESIGN AGREED 2026-10-28. Q11 and Q14 settled, Q13 deferred to the family. **Q12 is answered in
+principle: coexistence is real** — the phone app keeps working while the API sends the first message. One
+fact still in flight: which provider can onboard it, and at what cost. Owner's set-up, verbatim: *"We have a different WhatsApp number in another cellphone
 with business enabled but we haven't setup anything yet nor setup the API."*
 The flow is **merchant-initiated** — the *store* messages the customer, not the PRD's customer-initiated
 handoff. The owner is designing the checkout screen in Stitch; the CMS/backend work can proceed in parallel
@@ -316,3 +316,62 @@ A WhatsApp number can be on **the app** or **the API** — normally not both. On
 the phone app they know is gone for that line. That is the actual cost of "the store starts the
 conversation" — not the cent per message. **Unless Meta's app+API coexistence applies, which is what the
 research in flight is checking.** If it does, they keep the app and gain the automatic first message.
+
+
+## Coexistence is real — and it is the answer to Q12 (2026-10-28)
+
+*Primary: Meta, `developers.facebook.com`, "Onboard WhatsApp Business app users", updated 2026-06-26.*
+
+Connecting a number to the Cloud API **no longer kills the phone app.** After onboarding the business "can
+still send messages on a one-to-one basis using the WhatsApp Business app", and history syncs both ways —
+messages sent from the app arrive at the API as `smb_message_echoes`. The formal feature name is *Onboard
+WhatsApp Business app users*; **"Coexistence" is the colloquial name**, which is why it is hard to search for.
+
+- **GA since 2025**, enabled through **Embedded Signup** — entering an in-use Business-app number triggers it.
+- **The API can send the order-confirmation utility template while the phone keeps handling human replies.**
+  That is exactly the requested flow, with none of the workflow change.
+- **Caveat:** messages sent *from the app* stay free but **do not open or extend the API's 24-hour window**.
+  The two channels keep separate windows.
+- **Limitations:** fixed 20 msg/sec; group chats, broadcasts, disappearing/view-once/live location, calls and
+  catalogs do not sync to the API; no OBA green badge.
+
+**The catch, and it is a real one:** Meta gates coexistence behind **Solution Partner or Tech Provider
+status** — a plain self-serve Cloud API developer cannot enable it. So in practice it is onboarded *through a
+provider*, which may reintroduce a monthly fee. That is the last fact in flight.
+
+**Why this matters so much:** without coexistence, "the store starts the conversation" costs the phone app and
+requires a reply UI (~$29–69/month, or one we build). With coexistence, it costs nothing operationally — the
+shop keeps working exactly as it does today and gains the automatic first message. **So the target is
+coexistence; the only question is who onboards it and for how much.**
+
+## Cash on delivery in Ecuador (2026-10-28)
+
+**Servientrega** offers contra-entrega brand-wide and deposits the collected amount to the account you
+nominate, freight paid at origin — **but Ecuador's own site publishes no fee, no percentage, no remittance
+time and no maximum.** It has to be quoted by an account rep. (A 5.5% figure circulating online is Servientrega
+*Colombia* and must not be applied here.)
+
+| courier | cost | max collectible | notes |
+| --- | --- | --- | --- |
+| **Gintracom** | **3% + IVA of the amount collected, minimum $2 + IVA** | **$1,000** | cash only, 279 destinations |
+| **Urbano Express** | not published | **$500** | cash or card |
+| **Laarcourier** | not published ("requires prior coordination") | **$300** | cash or card |
+| **Tramaco** | not published | **$300** | |
+| **Servientrega** | **not published** | not published | quote via an account rep |
+
+Settlement is not same-day: a multicourier platform quotes payouts on Mondays/Wednesdays/Fridays (Gintracom)
+or Wednesdays, with a $20 minimum withdrawal credited within 24h.
+
+**The real cost of COD is not the commission, it is refusals.** Sendifico's own data cites an **8% average
+COD return rate**, and flags **15–30% rejections** in the market. A refused parcel costs the outbound freight
+and, depending on the courier, the return leg too — on top of the ~3% + IVA.
+
+**In-city (Riobamba) is different and better:** the store's own rider collects cash, or the customer pays on
+the spot by card terminal or QR — **0%**, and no courier in the middle. Note the **DeUna business QR caps a
+single payment at $299.99**, which is worth knowing for large bulk orders. Risks are the same refusals, plus
+carrying cash.
+
+**Recommendation on payment:** offer **both**, and let the customer choose at the point the store confirms
+the order — in-city COD (free, and the customer never pre-pays) or a transfer before dispatch (free, and no
+refusal risk on the freight). For orders outside Riobamba, a transfer before dispatch is the safer default
+because a refusal there costs real money in both directions.
