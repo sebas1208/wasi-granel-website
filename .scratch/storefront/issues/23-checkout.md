@@ -4,8 +4,9 @@
 
 **Blocked by:** 14 (cart UI), 08 (Payload collections — needs an `Orders` collection).
 
-**Status:** ANALYSED 2026-10-27 — grounded in the code that exists and in what the Ecuadorian payment market actually charges.
-Three questions are with the owner (payment model, shipping pricing, address). The build starts once they land.
+**Status:** ANALYSED 2026-10-28 — the flow is now merchant-initiated (the *store* messages the customer), not the
+PRD's customer-initiated WhatsApp handoff. Nine questions are with the owner; the build starts once they land.
+See "Facts confirmed" for the primary-source figures the design rests on.
 
 ## Scope
 
@@ -97,3 +98,59 @@ storefront has no session, so this cannot be a browser call. It needs an `Orders
 `auth: { useAPIKey: true }`, a **Payload API key held server-side**, and a Next route handler in the web app
 that the checkout POSTs to. That is one new secret (`PAYLOAD_API_KEY`) and one new collection — worth
 knowing before the questions below are answered, because option C would ride on the same path.
+
+
+## Facts confirmed (2026-10-28) — primary sources, not estimates
+
+Gathered because the flow depends on them and none was safe to assume.
+
+### WhatsApp: a click-to-chat link is TEXT ONLY
+
+`https://wa.me/<number>?text=<message>` supports **only** a `text` parameter — Meta's own Help Center
+documents no image or attachment parameter, so **a QR image cannot be attached to a click-to-chat
+message.** *Primary: `faq.whatsapp.com` ("How to use click to chat").*
+
+- **Maximum length: not documented by Meta.** Secondary sources cite ~4096 chars; the practical ceiling is
+  the long-URL limit (~2000+ chars, lower once the text is percent-encoded or non-ASCII). Either way the
+  composed message must stay short, which is a real design constraint on a many-line order.
+- Sending an image programmatically **is** supported, but only through the WhatsApp Business Cloud API
+  (`type=image`, media id or link, caption ≤1024 chars, JPEG/PNG ≤5MB) — and media generally needs an
+  **approved template** outside the 24-hour customer-service window. *Primary: `developers.facebook.com`.*
+
+**Consequence:** a payment **link** is text and fits a free click-to-chat message; a payment **QR image**
+does not. The free path is text payment details, or a manual attach by whoever sends.
+
+### DeUna: 2% on the business QR, free person-to-person — and the two are different accounts
+
+| channel | cost | basis |
+| --- | --- | --- |
+| Deuna **Negocios** QR / link de cobro / código único | **2% flat**, on the amount collected | *Primary: `deuna.ec/negocios/empresas`, `soporte.deunaapp.com`* |
+| **Person-to-person** DeUna transfer to a DeUna phone number | **free** | *Primary: `pichincha.com` — "los pagos entre usuarios de Deuna y entre cuentas Banco Pichincha no cobran comisión"* |
+| DeUna send to an account at **another bank** | **free** | *Primary: `deuna.ec`* |
+
+**DeUna Personas and DeUna Negocios are separate products.** The 2% applies only to Negocios, and
+Negocios **requires an active RUC and the applicant to be the sole legal representative**. That matters
+here: the RUC is the owner's mother's, so she is the one who can register it — which is the same question
+the two legal documents raise about who the business legally is.
+
+So "no commissions" is true for a personal P2P transfer or a bank transfer, and **2% is the price of
+collecting through a properly constituted business account.** Which instrument is correct for a business
+receiving sales is still the owner's accountant's call; the rates above are facts, the choice is not.
+
+### WhatsApp Business API: ~1.1 US cents per message, and service replies stopped being free
+
+- Since **1 July 2025** Meta bills **per delivered message** by category and recipient market — not per
+  24-hour conversation. *Primary: `developers.facebook.com/docs/whatsapp/pricing`.*
+- **Service** (the business replying to a customer) was free until 30 Sep 2026; **from 1 Oct 2026** it is
+  charged at the market's utility rate, with the **first 1,000 service messages per phone number per
+  month free** and no rollover. Messages *from* customers to the business remain free.
+- **Utility** templates are charged per delivery. Ecuador has **no standalone rate** — it sits in Meta's
+  *Rest of Latin America* region: utility/authentication ≈ **US$0.0113**, marketing ≈ US$0.0740.
+- **Onboarding is the real cost, not the fee:** Meta Business Portfolio plus business verification
+  (registration certificate, tax ID, address proof, a consistent legal name), a WABA with an approved
+  display name, a **dedicated phone number not active on personal WhatsApp** able to receive OTPs, every
+  template submitted for approval, and recipient opt-in.
+
+**Consequence:** automated sending is cheap per message (~1.1¢) but has a real onboarding gate — and it
+would be an integration of its own. A person clicking a free click-to-chat link costs nothing and needs no
+verification, which is why it remains the recommendation for the first version.
