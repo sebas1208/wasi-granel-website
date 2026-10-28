@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     categories: Category;
     products: Product;
+    orders: Order;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +83,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -137,6 +139,10 @@ export interface User {
   id: number;
   updatedAt: string;
   createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
+  hasAPIKey?: boolean | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -293,6 +299,90 @@ export interface Product {
   createdAt: string;
 }
 /**
+ * Pedidos recibidos desde la tienda. Todavía no llega aviso por correo: no hay proveedor de correo configurado, así que revisa esta lista.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  /**
+   * Human-readable order number, e.g. "WG-2026-0001". Set automatically on create; the customer is asked to quote it when they transfer.
+   */
+  reference: string;
+  /**
+   * Movido a mano por la tienda — no hay pasarela de pago.
+   */
+  status: 'nuevo' | 'enviado' | 'pagado' | 'entregado' | 'cancelado' | 'vencido';
+  customer: {
+    name: string;
+    /**
+     * The number the store messages. Normalised to digits before saving.
+     */
+    phone: string;
+    address: string;
+    note?: string | null;
+  };
+  /**
+   * Riobamba is free delivery by our own staff. "Otra ciudad" is quoted by Servientrega and confirmed with the buyer in the same WhatsApp conversation.
+   */
+  zone: 'riobamba' | 'otra';
+  items: {
+    product: number | Product;
+    /**
+     * What the customer actually chose, e.g. "500 g" or "1 unidad".
+     */
+    optionLabel?: string | null;
+    kind: 'weight' | 'unit';
+    /**
+     * Peso solicitado, en gramos (peso).
+     */
+    grams?: number | null;
+    /**
+     * Cantidad (unidad).
+     */
+    amount?: number | null;
+    qty: number;
+    /**
+     * Precio unitario cotizado — copiado del carrito, no recalculado.
+     */
+    unitPrice: number;
+    id?: string | null;
+  }[];
+  /**
+   * Lo que el cliente veía en el carrito. No incluye envío.
+   */
+  subtotal: number;
+  /**
+   * Costo de envío, fijado por la tienda al confirmar. Vacío en Riobamba.
+   */
+  shipping?: number | null;
+  /**
+   * Subtotal + envío. Confirmado en el chat.
+   */
+  total?: number | null;
+  /**
+   * Acordado con el cliente; el cobro ocurre fuera del sitio.
+   */
+  paymentMethod?: ('transferencia' | 'deuna' | 'contra_entrega') | null;
+  /**
+   * El cliente aceptó recibir por WhatsApp la confirmación y los datos de pago.
+   */
+  whatsappConsent: boolean;
+  /**
+   * Cuándo lo aceptó. Es la prueba del consentimiento.
+   */
+  whatsappConsentAt?: string | null;
+  /**
+   * Primer mensaje enviado.
+   */
+  messageSentAt?: string | null;
+  paidAt?: string | null;
+  deliveredAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -331,6 +421,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'products';
         value: number | Product;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: number | Order;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -381,6 +475,10 @@ export interface PayloadMigration {
 export interface UsersSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
+  hasAPIKey?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
@@ -468,6 +566,46 @@ export interface ProductsSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  reference?: T;
+  status?: T;
+  customer?:
+    | T
+    | {
+        name?: T;
+        phone?: T;
+        address?: T;
+        note?: T;
+      };
+  zone?: T;
+  items?:
+    | T
+    | {
+        product?: T;
+        optionLabel?: T;
+        kind?: T;
+        grams?: T;
+        amount?: T;
+        qty?: T;
+        unitPrice?: T;
+        id?: T;
+      };
+  subtotal?: T;
+  shipping?: T;
+  total?: T;
+  paymentMethod?: T;
+  whatsappConsent?: T;
+  whatsappConsentAt?: T;
+  messageSentAt?: T;
+  paidAt?: T;
+  deliveredAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

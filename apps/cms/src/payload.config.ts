@@ -9,6 +9,7 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Categories } from './collections/Categories'
 import { Products } from './collections/Products'
+import { Orders } from './collections/Orders'
 import { Contacto } from './globals/Contacto'
 import { Inicio } from './globals/Inicio'
 import { Footer } from './globals/Footer'
@@ -79,7 +80,7 @@ export default buildConfig({
    * the admin's own POSTs carry an Origin too.
    */
   serverURL: process.env.SERVER_URL ?? 'https://payload.wasigranel.com',
-  collections: [Users, Media, Categories, Products],
+  collections: [Users, Media, Categories, Products, Orders],
   // Site copy the owner and his father edit themselves (ticket 19). Globals are single documents —
   // one form each, no list, no create/delete. See src/globals/ for the reasoning per global.
   globals: [Contacto, Inicio, Footer],

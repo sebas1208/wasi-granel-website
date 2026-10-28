@@ -4,7 +4,8 @@
 
 **Blocked by:** 14 (cart UI), 08 (Payload collections — needs an `Orders` collection).
 
-**Status:** DESIGN AGREED 2026-10-28. Q11, Q12, Q14 settled; Q13 deferred to the family. **The recommended
+**Status:** BUILDING 2026-10-28 — the `Orders` collection and its migration are in and verified; the
+checkout form waits on the Stitch screens; the email notification is blocked on an email provider. **The recommended
 shape is the admin-composed message with a human tapping send** — free, no API, no partner, keeps the phone
 app. Fully automatic sending is costed below as a later upgrade. Owner's set-up, verbatim: *"We have a different WhatsApp number in another cellphone
 with business enabled but we haven't setup anything yet nor setup the API."*
@@ -422,3 +423,48 @@ arrives a minute or two after checkout, versus instantly.
 **So: build the tap first. If volume ever makes the tap a complaint, the upgrade is coexistence at ~$55/month
 — and by then there will be revenue to justify it.** The alternative upgrade (direct Cloud API, no BSP) costs
 ~$0/month but takes the phone app away for that number, which means building a reply screen in the admin.
+
+
+## Build log — the Orders collection (2026-10-28)
+
+**What landed:** `apps/cms/src/collections/Orders.ts`, `Users.auth.useAPIKey`, and migration
+`20261028_200006`. Access is authenticated-only for every operation — an order holds a customer's name, phone
+and address, so nothing here is public, and the storefront will write through a Next route handler holding a
+Payload **API key**. Order line prices are snapshots, so a later price change cannot rewrite what someone was
+quoted. There are deliberately **no revalidation hooks**: an order is never rendered on the storefront, so
+touching the catalog tag would clear the site's cache for nothing.
+
+**Three things were wrong with it, and are fixed:**
+
+1. **The migration was a syntax error.** Four `DO $$ BEGIN` blocks opened `CREATE TYPE` and never closed —
+   no `EXCEPTION WHEN duplicate_object THEN null;` and no `END $$;` — leaving the dollar-quoting
+   unterminated. Since the container boots with `payload migrate && next start`, this is the runbook's
+   "a bad migration is a prod outage": **the CMS would never have started.** Restored the four guards.
+2. **Three `ADD CONSTRAINT … FOREIGN KEY` statements had no guard** — the same class of bug, and the same
+   class as the near-miss already recorded in the runbook (`20261015_020120`). Postgres has no
+   `ADD CONSTRAINT IF NOT EXISTS`, so they are wrapped in the same `DO … EXCEPTION` pattern.
+3. **The collection promised behaviour it did not have.** Its own field descriptions claimed an
+   auto-generated `reference`, a normalised phone, a consent timestamp and an email to the store — and there
+   were **no hooks at all**. Written now: `reference` as `WG-YYYY-NNNN` (generated in `beforeChange` so a
+   second caller cannot forget it, protected by the unique index), the phone normalised to international
+   digits so a `wa.me` link works, the WhatsApp consent timestamped as the proof Meta requires, and the
+   status timestamps (`messageSentAt` / `paidAt` / `deliveredAt`) stamped but **never overwritten** — re-saving
+   a paid order must not move the moment it was paid.
+
+**Verified, not assumed:**
+- The migration applies **from scratch** on a scratch DB (`wasi_migtest`) — all 7 migrations in order.
+- Re-running its SQL against an already-migrated DB emits **21 notices and 0 errors** — genuinely idempotent,
+  which is the runbook's second-run test.
+- A probe against the Local API passed **9/9**: reference generated and incrementing, phone normalised both
+  from `099…` and from `+593…`, consent stamped, status defaulting to `nuevo`, `paidAt` stamped on `pagado`
+  and not overwritten on re-save. Probe deleted afterwards.
+- `tsc` clean apart from the **pre-existing** Sharp error already recorded on ticket 24; lint 0 errors.
+
+**Not done, and why:** the email notification to the store. `payload.config.ts` has **no email adapter**
+(Payload logs "No email adapter provided. Email will be written to console"), so there is nothing to send
+through — it is blocked on the same email-provider decision as ticket 25. The collection's admin description
+used to claim "el correo de aviso solo está activo en producción", which was simply untrue; it now says
+plainly that no email arrives yet and the list must be checked by hand.
+
+**Still to build:** the route handler + API key, the `/pago` page hosting the QR, the email notification
+(once a provider exists), and the checkout form itself (waiting on Stitch).
