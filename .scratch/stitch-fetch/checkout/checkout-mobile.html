@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "outline-variant": "#d3c5ab", "background": "#fff8f4", "primary-container": "#fcbf00", "primary-fixed-dim": "#fabd00", "inverse-on-surface": "#ffeedd", "tertiary-container": "#d7c6b7", "on-secondary": "#ffffff", "surface-variant": "#f3dfcb", "on-tertiary-fixed": "#231a11", "secondary-container": "#f5dece", "surface-bright": "#fff8f4", "tertiary-fixed": "#f1dfd0", "on-tertiary-container": "#5e5246", "surface": "#fff8f4", "on-surface": "#241a0d", "on-secondary-container": "#726155", "on-background": "#241a0d", "tertiary": "#695c50", "on-secondary-fixed": "#251910", "error": "#ba1a1a", "surface-dim": "#ead7c3", "on-primary-fixed": "#251a00", "on-primary": "#ffffff", "on-error-container": "#93000a", "inverse-surface": "#3a2e21", "on-tertiary": "#ffffff", "surface-container": "#ffebd6", "on-surface-variant": "#4f4632", "error-container": "#ffdad6", "surface-container-high": "#f9e5d0", "on-primary-container": "#6b4f00", "on-secondary-fixed-variant": "#534438", "primary": "#785a00", "on-primary-fixed-variant": "#5b4300", "surface-tint": "#785a00", "surface-container-lowest": "#ffffff", "surface-container-highest": "#f3dfcb", "tertiary-fixed-dim": "#d4c4b5", "secondary-fixed": "#f5dece", "secondary-fixed-dim": "#d8c3b3", "outline": "#817660", "surface-container-low": "#fff1e5", "secondary": "#6c5b4f", "inverse-primary": "#fabd00", "on-tertiary-fixed-variant": "#50453a", "on-error": "#ffffff", "primary-fixed": "#ffdf9d" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": {}, "fontFamily": { "headline": ["Plus Jakarta Sans"], "display": ["Plus Jakarta Sans"], "body": ["Plus Jakarta Sans"], "label": ["Plus Jakarta Sans"] }, "fontSize": {} } } }</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"><div class="h-16 px-4 flex items-center justify-between"><div class="flex items-center gap-1"><button aria-label="Regresar al carrito" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-variant/40 transition-colors" onclick="history.back()" type="button"><span class="material-symbols-outlined text-[24px]">arrow_back</span></button><h1 class="text-base font-headline font-semibold text-on-surface tracking-tight ml-1">Finalizar Pedido</h1></div><div class="flex items-center gap-2"><div aria-label="Perfil" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 bg-surface pb-safe"><div class="flex flex-col w-full">
+<div class="px-4 py-4 space-y-4">
+<!-- Trust Header Banner -->
+<div class="bg-surface-container-low rounded-xl p-4 shadow-sm space-y-2">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary-container/30 text-on-primary-container text-[11px] font-bold tracking-wider uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+          Compra al peso exacto
+        </span>
+<div class="flex items-center gap-1 text-primary text-xs font-semibold">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span>Checkout Seguro</span>
+</div>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed flex items-start gap-2 pt-1">
+<span class="material-symbols-outlined text-[18px] text-primary shrink-0 mt-0.5" style="font-variation-settings: 'FILL' 1;">security</span>
+<span><strong>Cero fricción:</strong> No se realiza ningún pago en este sitio. Te contactaremos por WhatsApp para coordinar el peso exacto, fotos de tu empaque y transferir tranquilamente.</span>
+</p>
+</div>
+<!-- Accordion Order Summary -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden transition-all duration-300">
+<button aria-expanded="false" class="w-full px-4 py-3.5 flex items-center justify-between bg-surface-container-low text-left" id="accordion-toggle" type="button">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-primary-container/40 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+</div>
+<div>
+<div class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Resumen de compra</div>
+<div class="text-sm font-bold text-on-surface">3 productos a granel</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-base font-bold text-on-surface" id="summary-total-badge">$22.80</span>
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant transition-transform duration-200" id="accordion-icon">expand_more</span>
+</div>
+</button>
+<!-- Collapsible details -->
+<div class="hidden px-4 pt-3 pb-4 space-y-4" id="accordion-content">
+<!-- Product 1 -->
+<div class="flex items-start gap-3 py-2">
+<img class="w-14 h-14 rounded-lg object-cover bg-surface-variant shrink-0" data-alt="Glass jar filled with assorted raw nuts including almonds, walnuts, and cashews on a warm minimal studio surface with soft natural lighting and warm earth tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9GDfR623nsFPlFqKakT7vZGqYc0MZsJatlrBdrzB5qhUHFXtUST4GnaQ5TUvyW8rXuD6XvQm3xvwGTKzKPPfU9GET6aWeb9yPXKLgTcp1wQxm-EeZn6-OWgm6jWsk-Sg2SzogVUyxvEQxWzsUtBwXmWVqYpdA3TIpiQff61ihXixJRc2DLajbN-A12G5R6V9foOzDabD-7GUrMrgWSdPGpjX64U9zXKb5Y2G8DciC"/>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-semibold text-on-surface truncate">Mix de Frutos Secos</h4>
+<div class="text-[11px] text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+<span>500 g</span>
+<span>•</span>
+<span class="truncate">Frasco vidrio retornable</span>
+</div>
+<div class="flex items-center justify-between mt-2">
+<!-- Stepper -->
+<div class="flex items-center bg-surface-container rounded-lg px-1 py-0.5 gap-2">
+<button class="w-6 h-6 flex items-center justify-center text-on-surface hover:text-primary active:scale-95 text-xs font-bold" type="button">−</button>
+<span class="text-xs font-bold text-on-surface">1</span>
+<button class="w-6 h-6 flex items-center justify-center text-on-surface hover:text-primary active:scale-95 text-xs font-bold" type="button">+</button>
+</div>
+<div class="text-right">
+<div class="text-xs text-on-surface-variant text-[10px]">Unit: $9.00</div>
+<div class="text-sm font-bold text-on-surface">$9.00</div>
+</div>
+</div>
+</div>
+</div>
+<div class="h-px bg-surface-container-high w-full"></div>
+<!-- Product 2 -->
+<div class="flex items-start gap-3 py-2">
+<img class="w-14 h-14 rounded-lg object-cover bg-surface-variant shrink-0" data-alt="Brown compostable kraft paper pouch filled with natural raw almonds, organic packaging aesthetic on a clean warm beige background with warm earth tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbWO4wCrQ6UEtpQV_njiSGHY-56sMefXglSm6dkiNWgqW-OPpi5f6pWOo_lOKiU62rxtnDiMEqQZavsUXd8HfFTciy5N5iY5vkYnGRPGfGVn5zWWSYqIQ3ogCFlW-MFrAVRfBpKHSoih5UU0ixUQt10JvNYrwjRxHH7qh0Hk1o5ZUO_LxnykQWyhSxWRd5UlRIyoAvmkkL6yfHZteUB61dDFAU3mNzOC8AdKPOsO6D"/>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-semibold text-on-surface truncate">Almendras Naturales</h4>
+<div class="text-[11px] text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+<span>1 lb (453 g)</span>
+<span>•</span>
+<span class="truncate">Bolsa kraft compostable</span>
+</div>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center bg-surface-container rounded-lg px-1 py-0.5 gap-2">
+<button class="w-6 h-6 flex items-center justify-center text-on-surface hover:text-primary active:scale-95 text-xs font-bold" type="button">−</button>
+<span class="text-xs font-bold text-on-surface">1</span>
+<button class="w-6 h-6 flex items-center justify-center text-on-surface hover:text-primary active:scale-95 text-xs font-bold" type="button">+</button>
+</div>
+<div class="text-right">
+<div class="text-xs text-on-surface-variant text-[10px]">Unit: $7.60</div>
+<div class="text-sm font-bold text-on-surface">$7.60</div>
+</div>
+</div>
+</div>
+</div>
+<div class="h-px bg-surface-container-high w-full"></div>
+<!-- Product 3 -->
+<div class="flex items-start gap-3 py-2">
+<img class="w-14 h-14 rounded-lg object-cover bg-surface-variant shrink-0" data-alt="Artisanal dark chocolate cacao truffles in a minimalist reusable box, warm moody earth-toned lighting highlighting the velvety cocoa powder dusting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcoR8fR8Oci6kZbSQiUc7n74x6ahfWIv8zd-GzIZTcu4s8ZndAyRng2aZFJLuCDPiQMW1Tj_WSUqsXXCLTkWGoksXnyP6nBVlAsoAB6lle4Udu5y5uEPTm7iIPGl983kIKXmiDIanqy9KVETmxDK2MAv5aUM51XwfVKgH1JHcm-I4uHIw3RwgwyysD5IRe_OsFn4omnElgsbw0PSnf7BLo8x95OYiXnvvUaoVklM9M"/>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-semibold text-on-surface truncate">Trufas de Cacao Puro 70%</h4>
+<div class="text-[11px] text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+<span>250 g</span>
+<span>•</span>
+<span class="truncate">Caja reutilizable</span>
+</div>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center bg-surface-container rounded-lg px-1 py-0.5 gap-2">
+<button class="w-6 h-6 flex items-center justify-center text-on-surface hover:text-primary active:scale-95 text-xs font-bold" type="button">−</button>
+<span class="text-xs font-bold text-on-surface">1</span>
+<button class="w-6 h-6 flex items-center justify-center text-on-surface hover:text-primary active:scale-95 text-xs font-bold" type="button">+</button>
+</div>
+<div class="text-right">
+<div class="text-xs text-on-surface-variant text-[10px]">Unit: $5.20</div>
+<div class="text-sm font-bold text-on-surface">$5.20</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Pricing breakdown table -->
+<div class="bg-surface-container-low rounded-lg p-3 space-y-2 text-xs">
+<div class="flex justify-between text-on-surface-variant">
+<span>Subtotal estimado</span>
+<span class="font-semibold text-on-surface">$21.80</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="flex items-center gap-1">
+              Envase retornable (depósito)
+              <span class="material-symbols-outlined text-[13px] text-primary" title="Reembolsable con devolución">info</span>
+</span>
+<span class="font-semibold text-on-surface">$1.00</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span>Envío estimado (Riobamba)</span>
+<span class="font-semibold text-primary">Gratis</span>
+</div>
+<div class="h-px bg-surface-container w-full my-1"></div>
+<div class="flex justify-between text-sm font-bold text-on-surface pt-0.5">
+<span>Total estimado</span>
+<span class="text-base text-primary">$22.80</span>
+</div>
+</div>
+<!-- Commitment & reassurance tags -->
+<div class="flex items-center gap-2 p-2.5 rounded-lg bg-surface-container text-on-surface-variant text-[11px] leading-snug">
+<span class="material-symbols-outlined text-[18px] text-primary shrink-0">recycling</span>
+<span><strong>Zero Waste Activo:</strong> Ahorras plástico de un solo uso en cada entrega y puedes devolver el frasco en tu siguiente pedido.</span>
+</div>
+</div>
+</div>
+<!-- Form Section -->
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-sm space-y-4">
+<div class="flex items-center gap-2 pb-1">
+<div class="w-6 h-6 rounded-full bg-primary text-on-primary text-xs font-bold flex items-center justify-center">1</div>
+<h2 class="text-base font-bold text-on-surface tracking-tight">Tus datos de entrega</h2>
+</div>
+<form class="space-y-4" id="checkout-form" onsubmit="event.preventDefault();">
+<!-- Nombre Completo -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold uppercase tracking-wider text-on-surface" for="full-name">
+            Nombre Completo <span class="text-primary">*</span>
+</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-on-surface-variant">person</span>
+<input class="w-full pl-10 pr-3.5 py-3 rounded-lg bg-surface-container-low text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:bg-surface-container text-sm transition-colors min-h-[48px]" id="full-name" name="name" placeholder="Ej. Camila Morales" required="" type="text"/>
+</div>
+</div>
+<!-- Teléfono / WhatsApp -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="block text-xs font-bold uppercase tracking-wider text-on-surface" for="phone-whatsapp">
+              Teléfono / WhatsApp <span class="text-primary">*</span>
+</label>
+<span class="text-[10px] text-primary font-bold">Canal Principal</span>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-on-surface-variant">phone_iphone</span>
+<input class="w-full pl-10 pr-3.5 py-3 rounded-lg bg-surface-container-low text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:bg-surface-container text-sm transition-colors min-h-[48px]" id="phone-whatsapp" name="phone" placeholder="Ej. +593 9 9999 9999" required="" type="tel"/>
+</div>
+<p class="text-[11px] text-on-surface-variant leading-tight flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-primary">chat</span>
+            Es donde te enviaremos la foto del gramaje exacto y el código QR de pago.
+          </p>
+</div>
+<!-- Zona de Entrega -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold uppercase tracking-wider text-on-surface" for="delivery-zone">
+            Zona de Entrega <span class="text-primary">*</span>
+</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-on-surface-variant">location_city</span>
+<select class="w-full pl-10 pr-10 py-3 rounded-lg bg-surface-container-low text-on-surface text-sm focus:outline-none focus:bg-surface-container appearance-none transition-colors min-h-[48px]" id="delivery-zone" name="zone" required="">
+<option value="riobamba">Riobamba (entrega gratis)</option>
+<option value="otra">Otra ciudad (envío por Servientrega)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-[20px] text-on-surface-variant pointer-events-none">unfold_more</span>
+</div>
+</div>
+<!-- Soft Callout Banner for Zone -->
+<div class="p-3 rounded-lg bg-secondary-container/40 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-[20px] text-secondary shrink-0 mt-0.5">local_shipping</span>
+<p class="text-xs text-on-secondary-container leading-relaxed">
+<strong>Despacho local sin recargo:</strong> En Riobamba la entrega es gratuita en envases retornables. Para envíos nacionales te notificamos la guía Servientrega.
+          </p>
+</div>
+<!-- Dirección de Entrega -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold uppercase tracking-wider text-on-surface" for="address">
+            Dirección de Entrega <span class="text-primary">*</span>
+</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-on-surface-variant">home_pin</span>
+<input class="w-full pl-10 pr-3.5 py-3 rounded-lg bg-surface-container-low text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:bg-surface-container text-sm transition-colors min-h-[48px]" id="address" name="address" placeholder="Calle, número de casa, sector de referencia" required="" type="text"/>
+</div>
+</div>
+<!-- Nota para el Pedido -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="block text-xs font-bold uppercase tracking-wider text-on-surface" for="order-notes">
+              Nota para el pedido
+            </label>
+<span class="text-[11px] text-on-surface-variant">(Opcional)</span>
+</div>
+<textarea class="w-full p-3 rounded-lg bg-surface-container-low text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:bg-surface-container text-sm transition-colors resize-none" id="order-notes" name="notes" placeholder="Ej. Prefiero almendras sin tostar, entregar preferiblemente después de las 15:00" rows="2"></textarea>
+</div>
+<!-- Consent Checkboxes -->
+<div class="space-y-3 pt-2">
+<!-- Consent 1 -->
+<label class="flex items-start gap-3 cursor-pointer group min-h-[44px]">
+<input class="mt-1 w-5 h-5 rounded text-primary focus:ring-0 accent-primary shrink-0 cursor-pointer" id="consent-privacy" name="consent_privacy" required="" type="checkbox"/>
+<span class="text-xs text-on-surface-variant leading-relaxed select-none">
+              Acepto el tratamiento de mis datos de contacto para gestionar mi pedido, según la <span class="font-semibold text-on-surface underline">Política de Privacidad</span> de Wasi Granel.
+            </span>
+</label>
+<!-- Consent 2 -->
+<label class="flex items-start gap-3 cursor-pointer group min-h-[44px]">
+<input class="mt-1 w-5 h-5 rounded text-primary focus:ring-0 accent-primary shrink-0 cursor-pointer" id="consent-whatsapp" name="consent_whatsapp" required="" type="checkbox"/>
+<span class="text-xs text-on-surface-variant leading-relaxed select-none">
+              Acepto recibir por WhatsApp la confirmación de mi pedido, la foto de la balanza con el gramaje exacto y los datos bancarios.
+            </span>
+</label>
+</div>
+</form>
+</div>
+<!-- Value Propositions / Trust Chips -->
+<div class="grid grid-cols-3 gap-2 py-1">
+<div class="bg-surface-container-low p-2.5 rounded-xl text-center space-y-1">
+<span class="material-symbols-outlined text-[20px] text-primary" style="font-variation-settings: 'FILL' 1;">scale</span>
+<div class="text-[10px] font-bold text-on-surface leading-tight">Gramaje Verificado</div>
+</div>
+<div class="bg-surface-container-low p-2.5 rounded-xl text-center space-y-1">
+<span class="material-symbols-outlined text-[20px] text-primary" style="font-variation-settings: 'FILL' 1;">eco</span>
+<div class="text-[10px] font-bold text-on-surface leading-tight">Envases Retornables</div>
+</div>
+<div class="bg-surface-container-low p-2.5 rounded-xl text-center space-y-1">
+<span class="material-symbols-outlined text-[20px] text-primary" style="font-variation-settings: 'FILL' 1;">forum</span>
+<div class="text-[10px] font-bold text-on-surface leading-tight">Trato Humano 1 a 1</div>
+</div>
+</div>
+<!-- Action Section -->
+<div class="space-y-3 pt-2">
+<button class="w-full min-h-[52px] bg-primary-container text-on-primary-container hover:bg-primary-fixed-dim active:scale-[0.99] font-headline font-bold text-sm tracking-wide rounded-xl shadow-sm flex items-center justify-center gap-2 transition-all duration-150" id="submit-order-btn" type="button">
+<span>Confirmar pedido</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+<div class="text-center">
+<button class="text-xs font-semibold text-on-surface-variant hover:text-on-surface py-2 px-4 transition-colors" onclick="history.back()" type="button">
+          Volver a la tienda
+        </button>
+</div>
+</div>
+<!-- Brand Closure -->
+<div class="pt-6 pb-4 text-center space-y-2">
+<div class="inline-flex items-center justify-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="font-headline font-bold text-sm tracking-tight text-on-surface">Wasi Granel</span>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<p class="text-[11px] text-on-surface-variant">
+        Consumo consciente • Riobamba y Quito, Ecuador
+      </p>
+<p class="text-[10px] text-outline">
+        © 2025 Wasi Granel. Alimentos limpios, cero residuos.
+      </p>
+</div>
+</div>
+</div>
+<script>
+  // Simple Accordion Behavior
+  const accordionToggle = document.getElementById('accordion-toggle');
+  const accordionContent = document.getElementById('accordion-content');
+  const accordionIcon = document.getElementById('accordion-icon');
+
+  if (accordionToggle && accordionContent && accordionIcon) {
+    accordionToggle.addEventListener('click', () => {
+      const isExpanded = accordionToggle.getAttribute('aria-expanded') === 'true';
+      if (isExpanded) {
+        accordionContent.classList.add('hidden');
+        accordionToggle.setAttribute('aria-expanded', 'false');
+        accordionIcon.style.transform = 'rotate(0deg)';
+      } else {
+        accordionContent.classList.remove('hidden');
+        accordionToggle.setAttribute('aria-expanded', 'true');
+        accordionIcon.style.transform = 'rotate(180deg)';
+      }
+    });
+  }
+
+  // CTA validation micro-interaction
+  const submitBtn = document.getElementById('submit-order-btn');
+  const consentPrivacy = document.getElementById('consent-privacy');
+  const consentWhatsapp = document.getElementById('consent-whatsapp');
+  const fullName = document.getElementById('full-name');
+  const phone = document.getElementById('phone-whatsapp');
+
+  if (submitBtn) {
+    submitBtn.addEventListener('click', () => {
+      if (!fullName.value.trim()) {
+        fullName.focus();
+        fullName.parentElement.classList.add('ring-2', 'ring-primary');
+        setTimeout(() => fullName.parentElement.classList.remove('ring-2', 'ring-primary'), 1500);
+        return;
+      }
+      if (!phone.value.trim()) {
+        phone.focus();
+        phone.parentElement.classList.add('ring-2', 'ring-primary');
+        setTimeout(() => phone.parentElement.classList.remove('ring-2', 'ring-primary'), 1500);
+        return;
+      }
+      if (!consentPrivacy.checked || !consentWhatsapp.checked) {
+        alert('Por favor, autoriza las opciones de contacto para procesar tu pedido vía WhatsApp.');
+        return;
+      }
+
+      // Visual feedback on confirmation
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <span class="inline-block animate-spin material-symbols-outlined text-[18px]">progress_activity</span>
+        <span>Conectando con WhatsApp...</span>
+      `;
+      setTimeout(() => {
+        submitBtn.innerHTML = `
+          <span class="material-symbols-outlined text-[18px]">check_circle</span>
+          <span>¡Pedido Enviado! Te escribimos de inmediato.</span>
+        `;
+        submitBtn.classList.replace('bg-primary-container', 'bg-surface-container-high');
+      }, 1000);
+    });
+  }
+</script></main></body></html>
