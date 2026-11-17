@@ -555,10 +555,21 @@ win, and the branding belongs around it, not in it.
 
 ### The ordering model — decided
 
-**The free weight input goes.** The Quick View should offer **only the product's defined options, with
-multipliers**, and a **money amount only for weight-priced products**. (Read as: multipliers apply to every
-option kind; the dollar amount is offered only where a dollar maps to a weight. Correct that reading if it
-is wrong.)
+**The free weight input goes.** The Quick View offers **only the product's defined options**.
+
+**Multipliers apply to `weight` options and `money` (dollar) options — NOT to `unit` options.** An earlier
+entry here recorded that reading wrongly ("multipliers for every option kind"); the owner corrected it on
+2026-11-17. So:
+
+| option kind | in the Quick View |
+| --- | --- |
+| `weight` (e.g. `weightGrams: 454`) | the defined weights, each with a multiplier — 1 lb, 2 lb, 3 lb |
+| `money` (e.g. a $5 tier) | the defined amounts, each with a multiplier — $5, $10 |
+| `unit` (Porción, Funda, Unidad) | **no multiplier** — a unit is a unit; quantity is the cart's stepper's job, as it already is |
+
+**Open consequence to confirm:** with no multiplier on units, the only way to buy three *Porciones* is the
+cart's existing quantity stepper. That is the sensible reading and the cart already supports it, but it is
+the one thing that must be right, because it decides whether a customer can order three of something.
 
 **A correction to this ticket's own record.** An earlier entry here claimed "159 weight options carry no
 label at all — raw grams" and asked whether that was a data problem. It was **a bug in my own scan**: I read
@@ -577,3 +588,15 @@ already does that.
 **Where this lands:** the Quick View, so tickets 13/14 rather than 23. Added to ticket 24 so it is not lost.
 The order record already expresses the result — a line carries `optionLabel`, a multiplier and/or an amount —
 so nothing in `Orders` changes.
+
+
+### Task: use the branded payment images
+
+The assets exist and are verified (`apps/web/public/pago/`): the bare QR in PNG and SVG, and the branded
+1080×1350 card. **Nothing consumes them yet.** The owner has said to keep them but not to build with them
+now, so this is the task that will:
+
+1. Render the **branded card** on `/pago` — it replaces the placeholder square in the Stitch design.
+2. Use it in the **WhatsApp message** the admin composes, or link `/pago` from that message (the link is the
+   route that works today; a link is text, an image is not).
+3. Leave the bare QR + SVG for anywhere a transparent or scalable code is more useful than the card.

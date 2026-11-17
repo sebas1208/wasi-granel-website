@@ -199,8 +199,9 @@ Note: this is the same *shape* as the Admin Panel's own `popup-button` mismatch 
 
 ## Added from ticket 23 (2026-11-17)
 
-- **The Quick View must drop the free weight input.** Ordering becomes the product's defined options with
-  multipliers, plus a **money amount for weight-priced products only**. Decided by the owner; lands with the
-  Quick View work (tickets 13/14), not with checkout. The `Orders` record already supports the result.
+- **The Quick View must drop the free weight input.** Ordering becomes the product's defined options.
+  **Multipliers apply to `weight` and `money` (dollar) options only — NOT to `unit` options.** Decided by the
+  owner 2026-11-17 (correcting an earlier misreading); lands with the Quick View work (tickets 13/14), not
+  with checkout. The `Orders` record already supports the result.
 - Note from the same review: **weight options carry no display label**, so the UI derives it from
   `weightGrams` — `formatInUnit()` in `apps/web/lib/payload.ts` already exists for that.
