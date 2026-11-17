@@ -557,38 +557,17 @@ win, and the branding belongs around it, not in it.
 
 **The free weight input goes.** The Quick View offers **only the product's defined options**.
 
-**Multipliers apply to `weight` options and `money` (dollar) options — NOT to `unit` options.** An earlier
-entry here recorded that reading wrongly ("multipliers for every option kind"); the owner corrected it on
-2026-11-17. So:
+**Multipliers / quantity apply to EVERY option kind.** **The dollar amount is the only thing restricted: it
+is offered on weight-priced products only** — you cannot buy "a dollar of a unit".
 
 | option kind | in the Quick View |
 | --- | --- |
-| `weight` (e.g. `weightGrams: 454`) | the defined weights, each with a multiplier — 1 lb, 2 lb, 3 lb |
-| `money` (e.g. a $5 tier) | the defined amounts, each with a multiplier — $5, $10 |
-| `unit` (Porción, Funda, Unidad) | **no multiplier** — a unit is a unit; quantity is the cart's stepper's job, as it already is |
+| `weight` (e.g. `weightGrams: 454`) | the defined weights with multipliers — 1 lb, 2 lb, 3 lb — **and** a dollar amount |
+| `money` (a defined $ tier) | the defined amounts with multipliers — $5, $10 |
+| `unit` (Porción, Funda, Unidad) | the defined units **with quantity** — 1, 2, 3 — but **no dollar amount** |
 
-**Open consequence to confirm:** with no multiplier on units, the only way to buy three *Porciones* is the
-cart's existing quantity stepper. That is the sensible reading and the cart already supports it, but it is
-the one thing that must be right, because it decides whether a customer can order three of something.
-
-**A correction to this ticket's own record.** An earlier entry here claimed "159 weight options carry no
-label at all — raw grams" and asked whether that was a data problem. It was **a bug in my own scan**: I read
-`grams` when the canonical data and the code both use **`weightGrams`**. The data is complete — there are
-exactly two option shapes, both whole:
-
-```
-264 ×  ['kind', 'label', 'price']          unit  (label + price)
-159 ×  ['kind', 'price', 'weightGrams']    weight (grams + price)
-```
-
-**Zero weight options are missing a weight value.** The only real consequence is that weight options carry
-**no display label**, so the UI derives one from the grams — and `formatInUnit()` in `lib/web/lib/payload.ts`
-already does that.
-
-**Where this lands:** the Quick View, so tickets 13/14 rather than 23. Added to ticket 24 so it is not lost.
-The order record already expresses the result — a line carries `optionLabel`, a multiplier and/or an amount —
-so nothing in `Orders` changes.
-
+*(Two earlier entries on this ticket recorded this rule wrongly, in opposite directions. This is the owner's
+state as of 2026-11-17 and is the one to build from.)*
 
 ### Task: use the branded payment images
 
