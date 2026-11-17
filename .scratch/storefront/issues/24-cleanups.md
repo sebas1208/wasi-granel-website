@@ -205,3 +205,11 @@ Note: this is the same *shape* as the Admin Panel's own `popup-button` mismatch 
   Quick View work (tickets 13/14), not with checkout. The `Orders` record already supports the result.
 - Note from the same review: **weight options carry no display label**, so the UI derives it from
   `weightGrams` — `formatInUnit()` in `apps/web/lib/payload.ts` already exists for that.
+
+## Ideas parked by the owner (to pick up later)
+
+- **Derive the delivery case from the address, instead of asking.** The owner's words: 'Ideally we would
+  have to automate based on the address but thats another thing.' Today the customer picks one of the three
+  delivery cases and the father reads the order and corrects it if needed, which is deliberate for launch.
+  Later this could come from the address itself (or a maps lookup), so the picker is a confirmation rather
+  than a question. Not for now — and note it interacts with `Orders.zone`, which is an enum.
