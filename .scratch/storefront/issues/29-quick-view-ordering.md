@@ -1,5 +1,7 @@
 # 29: Quick View ordering — defined options with multipliers, no free weight
 
+**Status:** ready-for-agent — decided by the owner 2026-11-17; not started.
+
 **What to build:** the ordering control in the product Quick View. Today it accepts an **arbitrary weight**;
 the owner wants that removed.
 
