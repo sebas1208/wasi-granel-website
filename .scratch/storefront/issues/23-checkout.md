@@ -4,8 +4,9 @@
 
 **Blocked by:** 14 (cart UI), 08 (Payload collections — needs an `Orders` collection).
 
-**Status:** BUILDING 2026-10-28 — the `Orders` collection and its migration are in and verified; the
-checkout form waits on the Stitch screens; the email notification is blocked on an email provider. **The recommended
+**Status:** BUILDING 2026-11-17 — the `Orders` collection and its migration are in and verified; the checkout
+screens are on disk; **the shipping and payment decisions have landed** (below). One new question is open:
+the ordering model. The email notification is the father's to set up. **The recommended
 shape is the admin-composed message with a human tapping send** — free, no API, no partner, keeps the phone
 app. Fully automatic sending is costed below as a later upgrade. Owner's set-up, verbatim: *"We have a different WhatsApp number in another cellphone
 with business enabled but we haven't setup anything yet nor setup the API."*
@@ -468,3 +469,63 @@ plainly that no email arrives yet and the list must be checked by hand.
 
 **Still to build:** the route handler + API key, the `/pago` page hosting the QR, the email notification
 (once a provider exists), and the checkout form itself (waiting on Stitch).
+
+
+## Owner's answers, round 3 (2026-11-17) — after talking to his parents
+
+### Shipping — decided
+
+- **Motofast** is the in-city courier: **$1.50** inside Riobamba, **$2.50** outside the city but inside the
+  perimeter (the neighbouring towns).
+- **Free-shipping thresholds — the numbers finally exist:**
+  - **≥ $30** — free inside the city *and its surroundings* (the Motofast zone).
+  - **≥ $60** — free outside the city.
+- **Outside the city → Servientrega**, and the cost genuinely varies case by case — usually about **$5**.
+  The copy must not promise a figure: *"a acordar en checkout"*.
+- **This unblocks the free-shipping bar parked in ticket 14**, which has been gated off for want of exactly
+  these two numbers.
+
+So the zone model is now two tiers, matching the couriers rather than the provinces:
+
+| zone | how it travels | cost | free over |
+| --- | --- | --- | --- |
+| Riobamba + surroundings | Motofast | $1.50 / $2.50 | **$30** |
+| Rest of Ecuador | Servientrega | ~$5, quoted per order | **$60** |
+
+### Payments — decided
+
+- The receiving account is the mother's: **Dolores Mercedes Torres Muñoz**, RUC **0601801327001** — she is the
+  owner, and the RUC is the store's.
+- The DeUna QR supplied is a **personal** DeUna QR, which is the 0% channel — consistent with Q5. The 2%
+  merchant route is not in play.
+- **The QR arrived as a screenshot of a DeUna dashboard and must not be published as-is.** The instruction:
+  read the information out of it and produce a cleaner image for the web and chat.
+
+### The WhatsApp promises — kept
+
+Yes to both — the **scale photo** with the exact grammage, and the **packaging photos**. They are real
+commitments now, so the admin's composed message must make them easy to honour rather than leaving them as
+copy on a screen.
+
+### Order notifications
+
+The **father** will receive them, and **he will set the notification up himself**. So the code should be ready
+to send; the provider and credentials are his to provide.
+
+### NEW and open — the ordering model
+
+The owner does not want an arbitrary weight ("gramaje exacto") as an input. Ordering should be **the product's
+defined options and multiples of them** — 1 lb, 2 lb, 3 kg — or **a dollar amount** such as $5, which is
+itself a multiple of the defined options.
+
+What the catalogue actually contains today, from `canonical/products.json` (278 products):
+
+- option kinds: **`unit` ×264, `weight` ×159**
+- labels: **Porción ×146, Funda ×57, ½ Libra ×42, ½ lb ×4, Unidad ×3, Paquete ×1**
+- **159 weight options carry no label at all** — raw grams
+- a handful are volumes: 250 cm³, 500 cm³, 750 cm³, 100 cm³, 150 cm³, 400 cm³
+
+The order record already expresses this shape: a line carries `optionLabel`, a multiplier (`qty`) and/or a
+dollar amount. **So this is a change to the storefront's weight selection, not to the Orders model.** It
+belongs with the Quick View (tickets 13/14) and must land before checkout is meaningful, because it decides
+what a line even is.
