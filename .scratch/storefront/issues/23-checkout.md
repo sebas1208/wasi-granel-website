@@ -5,8 +5,8 @@
 **Blocked by:** 14 (cart UI), 08 (Payload collections — needs an `Orders` collection).
 
 **Status:** BUILDING 2026-11-17 — the `Orders` collection and its migration are in and verified; the checkout
-screens are on disk; **the shipping and payment decisions have landed** (below). One new question is open:
-the ordering model. The email notification is the father's to set up. **The recommended
+screens are on disk; the shipping and payment decisions landed; the branded payment images are made. The
+ordering model is decided (below). The email notification is the father's to set up. **The recommended
 shape is the admin-composed message with a human tapping send** — free, no API, no partner, keeps the phone
 app. Fully automatic sending is costed below as a later upgrade. Owner's set-up, verbatim: *"We have a different WhatsApp number in another cellphone
 with business enabled but we haven't setup anything yet nor setup the API."*
@@ -529,3 +529,51 @@ The order record already expresses this shape: a line carries `optionLabel`, a m
 dollar amount. **So this is a change to the storefront's weight selection, not to the Orders model.** It
 belongs with the Quick View (tickets 13/14) and must land before checkout is meaningful, because it decides
 what a line even is.
+
+
+## Round 3 continued (2026-11-17)
+
+### The DeUna account is personal — settled
+
+The decoded payload carries `/merchant` in its path, which looked like a DeUna Negocios QR. The owner
+confirms the account is **personal**, and that the path is simply how the bank formats those links. So the
+0% channel stands and the 2% merchant route is not in play. *Noted for the record: the URL path is not a
+reliable signal of account type here, and nothing should branch on it later.*
+
+### Branded payment images — made and verified
+
+| asset | what it is |
+| --- | --- |
+| `apps/web/public/pago/deuna-qr.png` | the bare QR, 900×900, high contrast |
+| `apps/web/public/pago/deuna-qr.svg` | vector version |
+| `apps/web/public/pago/deuna-pago-card.png` | **1080×1350 branded card** — the QR on a white panel with the wordmark, "Pago con DeUna", the account holder and the RUC |
+
+All three were decoded back with `zbarimg` and return the **identical payload**. The branding sits entirely
+outside the code — nothing intrudes on its quiet zone — and the card's title band and QR panel are separated
+by verified clean space. The QR itself stays black on white on purpose: on a payment code the scanner has to
+win, and the branding belongs around it, not in it.
+
+### The ordering model — decided
+
+**The free weight input goes.** The Quick View should offer **only the product's defined options, with
+multipliers**, and a **money amount only for weight-priced products**. (Read as: multipliers apply to every
+option kind; the dollar amount is offered only where a dollar maps to a weight. Correct that reading if it
+is wrong.)
+
+**A correction to this ticket's own record.** An earlier entry here claimed "159 weight options carry no
+label at all — raw grams" and asked whether that was a data problem. It was **a bug in my own scan**: I read
+`grams` when the canonical data and the code both use **`weightGrams`**. The data is complete — there are
+exactly two option shapes, both whole:
+
+```
+264 ×  ['kind', 'label', 'price']          unit  (label + price)
+159 ×  ['kind', 'price', 'weightGrams']    weight (grams + price)
+```
+
+**Zero weight options are missing a weight value.** The only real consequence is that weight options carry
+**no display label**, so the UI derives one from the grams — and `formatInUnit()` in `lib/web/lib/payload.ts`
+already does that.
+
+**Where this lands:** the Quick View, so tickets 13/14 rather than 23. Added to ticket 24 so it is not lost.
+The order record already expresses the result — a line carries `optionLabel`, a multiplier and/or an amount —
+so nothing in `Orders` changes.
