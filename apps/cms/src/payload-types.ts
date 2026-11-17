@@ -97,11 +97,13 @@ export interface Config {
     contacto: Contacto;
     inicio: Inicio;
     footer: Footer;
+    tienda: Tienda;
   };
   globalsSelect: {
     contacto: ContactoSelect<false> | ContactoSelect<true>;
     inicio: InicioSelect<false> | InicioSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    tienda: TiendaSelect<false> | TiendaSelect<true>;
   };
   locale: null;
   widgets: {
@@ -917,6 +919,82 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
+ * Cómo nos pagan y cómo entregamos. Se muestra en la página de pago y en el checkout. Guardar aquí no publica: hay que pulsar Publicar.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tienda".
+ */
+export interface Tienda {
+  id: number;
+  pago: {
+    /**
+     * Ej. Banco del Pichincha.
+     */
+    banco: string;
+    /**
+     * Ej. Cuenta de ahorros.
+     */
+    tipoCuenta: string;
+    /**
+     * Se muestra al cliente para que transfiera. Un dígito mal aquí significa una transferencia rechazada.
+     */
+    numeroCuenta: string;
+    /**
+     * Tal como aparece en el banco. El cliente lo compara con su app antes de transferir.
+     */
+    titular: string;
+    /**
+     * El RUC del negocio, tal como consta en el SRI.
+     */
+    ruc: string;
+    /**
+     * La imagen que el cliente escanea. Súbela aquí para reemplazarla sin tocar el código.
+     */
+    qr?: (number | null) | Media;
+    /**
+     * Ej. "Cuando hayas pagado, envíanos el comprobante por WhatsApp y confirmamos tu pedido."
+     */
+    nota?: string | null;
+  };
+  envios?: {
+    /**
+     * Riobamba y sus alrededores van con Motofast; el resto del país con Servientrega. Se pueden añadir más zonas, pero cada una necesita una clave que el sistema entienda.
+     */
+    zonas?:
+      | {
+          /**
+           * Debe coincidir con lo que el checkout ofrece y con lo que guarda cada pedido. No cambiar sin una migración.
+           */
+          clave: 'riobamba' | 'otra';
+          /**
+           * Ej. "Riobamba (entrega gratis)".
+           */
+          etiqueta: string;
+          /**
+           * Ej. Motofast, Servientrega.
+           */
+          courier: string;
+          /**
+           * Lo que cobramos. Déjalo vacío cuando el precio se acuerda caso por caso, como fuera de Riobamba.
+           */
+          costo?: number | null;
+          /**
+           * Monto desde el cual el envío corre por nuestra cuenta. Ej. 30 o 60.
+           */
+          gratisDesde?: number | null;
+          /**
+           * Ej. "El costo del envío se confirma contigo por WhatsApp antes de despachar."
+           */
+          nota?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contacto_select".
  */
@@ -1077,6 +1155,42 @@ export interface FooterSelect<T extends boolean = true> {
         branchesLine?: T;
       };
   legalLine?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tienda_select".
+ */
+export interface TiendaSelect<T extends boolean = true> {
+  pago?:
+    | T
+    | {
+        banco?: T;
+        tipoCuenta?: T;
+        numeroCuenta?: T;
+        titular?: T;
+        ruc?: T;
+        qr?: T;
+        nota?: T;
+      };
+  envios?:
+    | T
+    | {
+        zonas?:
+          | T
+          | {
+              clave?: T;
+              etiqueta?: T;
+              courier?: T;
+              costo?: T;
+              gratisDesde?: T;
+              nota?: T;
+              id?: T;
+            };
+      };
   _status?: T;
   updatedAt?: T;
   createdAt?: T;
