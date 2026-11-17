@@ -4,9 +4,10 @@
 
 **Blocked by:** 14 (cart UI), 08 (Payload collections — needs an `Orders` collection).
 
-**Status:** BUILDING 2026-11-17 — the `Orders` collection and its migration are in and verified; the checkout
-screens are on disk; the shipping and payment decisions landed; the branded payment images are made. The
-ordering model is decided (below). The email notification is the father's to set up. **The recommended
+**Status:** BUILDING 2026-11-17 — done and verified: the `Orders` collection + its migration, the `tienda`
+global + its migration, its web resolver and the four-global seed, the branded payment images, and the
+checkout screens on disk. **Next: the write path** (spec below). The email notification is the father's to
+set up. **The recommended
 shape is the admin-composed message with a human tapping send** — free, no API, no partner, keeps the phone
 app. Fully automatic sending is costed below as a later upgrade. Owner's set-up, verbatim: *"We have a different WhatsApp number in another cellphone
 with business enabled but we haven't setup anything yet nor setup the API."*
@@ -579,3 +580,44 @@ now, so this is the task that will:
 2. Use it in the **WhatsApp message** the admin composes, or link `/pago` from that message (the link is the
    route that works today; a link is text, an image is not).
 3. Leave the bare QR + SVG for anywhere a transparent or scalable code is more useful than the card.
+
+
+## The write path — spec, settled by the grill (2026-11-17)
+
+Everything here is decided. Nothing in it needs the owner again until the email provider.
+
+**Shape.** A Next route handler in `apps/web` that the checkout POSTs to. It validates, re-prices, and
+creates the order in Payload through a **server-side API key** (`PAYLOAD_API_KEY`) — the CMS is a different
+origin and the browser has no session, so this is the only path that can exist.
+
+**The five decisions:**
+
+1. **Re-price server-side, and treat the server's numbers as authoritative.** The cart lives in
+   `localStorage`, so the POST carries prices the customer's browser chose. `computeOptionPrice` reads the
+   canonical rate and the option, and the re-priced total is what the order stores. A stale price between
+   page load and submit therefore self-corrects rather than being rejected — the store confirms the total in
+   chat anyway. **Validation is separate from re-pricing:** implausible payloads are refused, plausible ones
+   are re-priced.
+2. **Record BOTH consents with timestamps.** `whatsappConsent`/`whatsappConsentAt` already exist;
+   `privacyConsent`/`privacyConsentAt` were added by the last migration. Both are required, and the handler
+   must refuse a submission missing either — the checkbox is the legal basis, so an order without one is not
+   an order.
+3. **`Orders.items[].kind` gains `money`** — done in the same migration, so a dollar-option line is
+   expressible when ticket 29 lands. Nothing to do here.
+4. **Guard the endpoint.** It is public and every accepted request creates a record. Strict validation plus
+   a **honeypot field the form renders and humans never fill** — any submission with it filled is dropped
+   silently. A real rate limit needs infrastructure (Vercel's WAF), so that stays a release-time item rather
+   than a weak in-memory throttle pretending to be protection.
+5. **`tienda` is the source of the zone data**, so the handler resolves zones through `resolveTienda()`
+   rather than hardcoding couriers or thresholds.
+
+**Failure behaviour, already a project rule.** On a failed write the customer sees an **honest error and a
+WhatsApp fallback pre-filled with their cart** — never a fake success. The contact form already works this
+way, and "never ship a lying success state" is why.
+
+**Ordering.** The order is stored **before** the confirmation screen shows a reference, so a reference always
+means a real order — and the write path is what makes the confirmation page buildable at all.
+
+**Open, and deliberately not blocking:** clearing `costo`/`gratisDesde` for a known zone falls back to the
+default number rather than rendering empty, which is the fallback rule doing its job but means a *deliberate*
+blank cannot be expressed. If the owner ever wants to clear Motofast's $1.50, that is a one-line change.
