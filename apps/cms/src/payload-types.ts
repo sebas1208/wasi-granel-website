@@ -333,7 +333,7 @@ export interface Order {
      * What the customer actually chose, e.g. "500 g" or "1 unidad".
      */
     optionLabel?: string | null;
-    kind: 'weight' | 'unit';
+    kind: 'weight' | 'unit' | 'money';
     /**
      * Peso solicitado, en gramos (peso).
      */
@@ -373,6 +373,14 @@ export interface Order {
    * Cuándo lo aceptó. Es la prueba del consentimiento.
    */
   whatsappConsentAt?: string | null;
+  /**
+   * El cliente aceptó el tratamiento de sus datos según la Política de Privacidad.
+   */
+  privacyConsent: boolean;
+  /**
+   * Cuándo lo aceptó. Es la prueba del consentimiento.
+   */
+  privacyConsentAt?: string | null;
   /**
    * Primer mensaje enviado.
    */
@@ -603,6 +611,8 @@ export interface OrdersSelect<T extends boolean = true> {
   paymentMethod?: T;
   whatsappConsent?: T;
   whatsappConsentAt?: T;
+  privacyConsent?: T;
+  privacyConsentAt?: T;
   messageSentAt?: T;
   paidAt?: T;
   deliveredAt?: T;

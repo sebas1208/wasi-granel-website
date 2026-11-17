@@ -77,6 +77,9 @@ const beforeChange: CollectionBeforeChangeHook = async ({ data, req, operation, 
     if (data.whatsappConsent && !data.whatsappConsentAt) {
       data.whatsappConsentAt = new Date().toISOString()
     }
+    if (data.privacyConsent && !data.privacyConsentAt) {
+      data.privacyConsentAt = new Date().toISOString()
+    }
   }
 
   const status = data.status ?? originalDoc?.status
@@ -190,6 +193,7 @@ export const Orders: CollectionConfig = {
           options: [
             { label: 'Al peso', value: 'weight' },
             { label: 'Por unidad', value: 'unit' },
+            { label: 'Monto en dólares', value: 'money' },
           ],
         },
         { name: 'grams', type: 'number', admin: { description: 'Peso solicitado, en gramos (peso).' } },
@@ -250,6 +254,31 @@ export const Orders: CollectionConfig = {
         },
         {
           name: 'whatsappConsentAt',
+          type: 'date',
+          admin: { readOnly: true, description: 'Cuándo lo aceptó. Es la prueba del consentimiento.' },
+        },
+      ],
+    },
+    /**
+     * The data-treatment consent, kept for the same reason as the WhatsApp one: the privacy policy
+     * names consent as the legal basis, and the burden of PROVING it sits with the business, not the
+     * customer. Recording only half of it left half the proof missing.
+     */
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'privacyConsent',
+          type: 'checkbox',
+          required: true,
+          label: 'Consentimiento de datos',
+          admin: {
+            readOnly: true,
+            description: 'El cliente aceptó el tratamiento de sus datos según la Política de Privacidad.',
+          },
+        },
+        {
+          name: 'privacyConsentAt',
           type: 'date',
           admin: { readOnly: true, description: 'Cuándo lo aceptó. Es la prueba del consentimiento.' },
         },
