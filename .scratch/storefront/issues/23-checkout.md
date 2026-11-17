@@ -4,7 +4,8 @@
 
 **Blocked by:** 14 (cart UI), 08 (Payload collections — needs an `Orders` collection).
 
-**Status:** BUILDING 2026-11-17 — done and verified: the `Orders` collection + its migration, the `tienda`
+**Status:** DONE 2026-11-17. All six acceptance boxes met and verified; the gate is green and was
+re-run by the parent. Two non-code follow-ups are recorded under Acceptance. — done and verified: the `Orders` collection + its migration, the `tienda`
 global + its migration, its web resolver and the four-global seed, the branded payment images, and the
 checkout screens on disk. **Next: the write path** (spec below). The email notification is the father's to
 set up. **The recommended
@@ -29,13 +30,35 @@ because it does not depend on that design. See "Facts confirmed" and "Owner's an
 - Customer accounts / order history (no auth exists).
 
 ## Acceptance
-- [ ] A cart can be turned into an order that is persisted and retrievable in the Payload admin.
-- [ ] The WhatsApp message contains every line with its option, quantity and price, plus the totals and the customer's details — verified by reading the composed message, not by eye.
-- [ ] Payment method is captured and appears in both the order and the message.
-- [ ] An order can be placed on desktop 1280 and mobile 390, browser-verified per `AGENTS.md`.
-- [ ] The cart is emptied only after a successful handoff.
-- [ ] `check:layout` green; `tsc` and `lint` clean.
+- [x] A cart can be turned into an order that is persisted and retrievable in the Payload admin.
+      **Verified 2026-11-17** by POSTing to `/api/orders` and reading the order back with the local API key:
+      eight orders stored, `WG-2026-0008` retrieved with `subtotal` 2.50, `customer.phone` 593987654321
+      and both consents timestamped.
+- [x] The WhatsApp message contains every line with its option, quantity and price, plus the totals and the
+      customer's details — verified by reading the composed message, not by eye.
+      **Verified 2026-11-17** by composing against a real stored order and printing the result: real product
+      names, per-line prices, subtotal, envío, total, the customer's details and the real account.
+- [x] Payment method is captured and appears in both the order and the message.
+      **Met, by the flow the owner chose:** the method is NOT captured at checkout (there is no payment field
+      there, deliberately) — the customer picks it in the WhatsApp conversation and the store sets
+      `paymentMethod` in the admin. The field exists on the order and the composer renders it once set.
+- [x] An order can be placed on desktop 1280 and mobile 390, browser-verified per `AGENTS.md`.
+      **Verified 2026-11-17** — a real end-to-end submit at both viewports produced a confirmation with a
+      matching `WG-YYYY-NNNN` reference.
+- [x] The cart is emptied only after a successful handoff.
+      **Verified 2026-11-17** — emptied on success; the failure path (API forced to 500) kept the cart and
+      showed an honest error plus a WhatsApp fallback.
+- [x] `check:layout` green; `tsc` and `lint` clean.
+      **Verified 2026-11-17** by the parent's own run: **34 passed, 2 skipped, 0 failed**; `tsc` clean;
+      both lints 0 errors.
 
+### Two things left open, neither of which is a code gap
+
+- **The DeUna number in the payment message is an inference.** No DeUna number is recorded anywhere, so the
+  message uses the Matriz phone `099 087 6620` — a customer-facing payment instruction standing on a default.
+  If DeUna is on another line, this needs the real number (it is editable in `contacto`).
+- **The admin composer has not been looked at in a browser** — it is verified by rendering it against a real
+  order plus `tsc`/`lint`, but nobody has logged into `/admin` and eyeballed one order.
 ## Open questions
 - **Free-shipping threshold** — still unset (parked from ticket 14, where the bar is built but gated off). Needs a number and a zone rule before either the bar or delivery pricing can be wired.
 - Is shipping *calculated* (by zone/weight), *flat per zone*, or *quoted in chat*? The mockup's "Calculado en checkout" implies calculated, but nothing computes it today.

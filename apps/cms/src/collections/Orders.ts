@@ -294,5 +294,28 @@ export const Orders: CollectionConfig = {
         { name: 'deliveredAt', type: 'date', admin: { readOnly: true } },
       ],
     },
+    /**
+     * The WhatsApp composer (ticket 23).
+     *
+     * This is a `type: 'ui'` field: **presentational only**, so it adds no column to `orders` and needs no
+     * migration. It exists so the store can turn a stored order into the message the customer receives —
+     * order lines, totals, delivery details, the real payment details and a link to the payment page —
+     * without that wording living in someone's notes.
+     *
+     * It is placed at the END of the main column rather than in the action bar, because
+     * `admin.components.edit.beforeDocumentControls` renders inside a fixed-height flex row next to Save,
+     * which a full order message would overflow. See `src/components/WhatsAppOrderComposer.tsx`.
+     */
+    {
+      name: 'whatsappComposer',
+      type: 'ui',
+      label: 'Mensaje de WhatsApp',
+      admin: {
+        disableListColumn: true,
+        components: {
+          Field: '/components/WhatsAppOrderComposer#WhatsAppOrderComposer',
+        },
+      },
+    },
   ],
 }

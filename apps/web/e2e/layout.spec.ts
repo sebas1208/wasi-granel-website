@@ -645,8 +645,11 @@ test("cart: navbar drawer, live lines, and the agreed exclusions", async ({ page
   expect(text, "packaging must not appear").not.toMatch(/Envases Retornables|Frasco de Vidrio|dep[óo]sito/i)
   expect(text, "no tax line").not.toMatch(/Impuestos/i)
   expect(text, "free-shipping bar is gated off").not.toMatch(/Env[íi]o Gratis/i)
-  // checkout belongs to ticket 23 — present in the mockup's shape, but not functional
-  await expect(drawer.getByTestId("cart-checkout")).toBeDisabled()
+  // Checkout became functional in ticket 23: the drawer's CTA is no longer the disabled
+  // placeholder it used to be but a real link into /checkout, so assert that truth instead.
+  const checkout = drawer.getByTestId("cart-checkout")
+  await expect(checkout).toBeVisible()
+  await expect(checkout).toHaveAttribute("href", "/checkout")
 
   // stepper is live, and so is the navbar badge
   await drawer.getByRole("button", { name: new RegExp(`Añadir una unidad de ${name}`) }).click()

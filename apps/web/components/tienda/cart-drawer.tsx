@@ -177,17 +177,17 @@ export function CartDrawer({ open, onOpenChange }: { open: boolean; onOpenChange
                 </div>
               </div>
 
-              {/* Checkout belongs to ticket 23 — the button keeps the mockup's shape, disabled. */}
-              <button
-                type="button"
-                disabled
-                data-testid="cart-checkout"
-                title="Próximamente"
-                className="w-full py-3.5 px-6 rounded-xl bg-[#fcbf00]/40 text-[#544738]/60 font-bold text-sm flex items-center justify-center gap-2 cursor-not-allowed"
-              >
-                <span>Continuar a Checkout</span>
-                <span className="text-[11px] font-semibold">(Próximamente)</span>
-              </button>
+              {/* Checkout entry (ticket 23) — the real /checkout page. */}
+              <SheetClose asChild>
+                <Link
+                  href="/checkout"
+                  data-testid="cart-checkout"
+                  className="w-full py-3.5 px-6 rounded-xl bg-[#fcbf00] hover:brightness-95 text-[#544738] font-bold text-sm flex items-center justify-center gap-2 active:scale-[0.99] transition-all"
+                >
+                  <span>Continuar a Checkout</span>
+                  <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </Link>
+              </SheetClose>
 
               <SheetClose asChild>
                 <button
