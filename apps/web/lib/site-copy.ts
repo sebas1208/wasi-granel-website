@@ -404,8 +404,8 @@ export async function resolveFooterProps(opts?: { draft?: boolean }): Promise<Fo
  * cannot be confused for one another.
  */
 
-/** The two values `Orders.zone` and the checkout speak. A third tier is a schema change, not a new string. */
-export type TiendaZoneClave = "riobamba" | "otra"
+/** The values `Orders.zone` and the checkout speak. A further tier is a schema change, not a new string. */
+export type TiendaZoneClave = "riobamba" | "alrededores" | "otra"
 
 export type TiendaZoneCopy = {
   clave: TiendaZoneClave
@@ -451,11 +451,19 @@ export const TIENDA_DEFAULTS: TiendaCopy = {
   zonas: [
     {
       clave: "riobamba",
-      etiqueta: "Riobamba y alrededores",
+      etiqueta: "Dentro de Riobamba",
       courier: "Motofast",
       costo: 1.5,
       gratisDesde: 30,
-      nota: "",
+      nota: "Entregamos dentro de Riobamba con Motofast por $1.50. El envío es gratis desde $30.",
+    },
+    {
+      clave: "alrededores",
+      etiqueta: "Alrededores de Riobamba",
+      courier: "Motofast",
+      costo: 2.5,
+      gratisDesde: 30,
+      nota: "En los alrededores de Riobamba entregamos con Motofast por $2.50. El envío es gratis desde $30.",
     },
     {
       clave: "otra",
@@ -473,7 +481,7 @@ const orNumber = (v: number | null | undefined, fallback: number | null): number
   typeof v === "number" && Number.isFinite(v) ? v : fallback
 
 const isZoneClave = (v: string | null | undefined): v is TiendaZoneClave =>
-  v === "riobamba" || v === "otra"
+  v === "riobamba" || v === "alrededores" || v === "otra"
 
 /** An upload arrives populated at the REST default depth; a bare id means depth 0 — treat that as absent. */
 const qrUrl = (qr: number | PayloadImage | null | undefined): string | null => {

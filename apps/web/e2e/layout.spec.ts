@@ -613,6 +613,34 @@ test("card Agregar adds to the cart and does NOT open the Quick View", async ({ 
   expect(Math.abs(box!.y - chipBox!.y), "customise must sit on the chips' line").toBeLessThanOrEqual(2)
 })
 
+test("checkout: the zone dropdown offers the three shipping cases, each with its cost", async ({ page }) => {
+  // The owner added the surroundings case (2026-11-17): inside Riobamba $1.50, its surroundings $2.50,
+  // anywhere else quoted by Servientrega. The dropdown was a two-option control before that.
+  await page.goto("/checkout")
+  const select = page.locator("#delivery-zone")
+  await expect(select).toBeVisible({ timeout: 20_000 })
+
+  const options = await select.locator("option").evaluateAll((els) =>
+    (els as HTMLOptionElement[]).map((e) => ({ value: e.value, label: (e.textContent || "").trim() })),
+  )
+  expect(options.map((o) => o.value), "the three shipping cases, in order").toEqual([
+    "riobamba",
+    "alrededores",
+    "otra",
+  ])
+  expect(options).toHaveLength(3)
+
+  // The amber callout states the chosen case's cost, so the price is readable before submitting.
+  await select.selectOption("alrededores")
+  await expect(page.getByTestId("shipping-callout")).toHaveAttribute("data-zone", "alrededores")
+  await expect(page.getByTestId("shipping-callout-text")).toContainText("$2.50")
+
+  // ...and the non-local case still says what happens: Servientrega, quoted by WhatsApp.
+  await select.selectOption("otra")
+  await expect(page.getByTestId("shipping-callout")).toHaveAttribute("data-zone", "otra")
+  await expect(page.getByTestId("shipping-callout-text")).toContainText("Servientrega")
+})
+
 test("cart: navbar drawer, live lines, and the agreed exclusions", async ({ page }) => {
   await page.goto("/tienda?categoria=frutos-secos")
   await page.getByTestId("catalog-card").first().waitFor({ timeout: 20_000 })

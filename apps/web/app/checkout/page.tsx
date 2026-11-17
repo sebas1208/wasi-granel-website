@@ -26,9 +26,10 @@ export const metadata: Metadata = {
  *   - the placeholder customer name, the conflicting copyright years, and the "Menos de 2 minutos"
  *     style promises — none of those exist here
  *
- * What IS kept from the mockups: the two zone options verbatim, the field labels, both consent boxes
+ * What IS kept from the mockups: the zone options, the field labels, both consent boxes
  * unticked, the "Confirmar pedido" CTA, the reassurance line, the amber shipping callout and the
- * three numbered steps on the confirmation screen.
+ * three numbered steps on the confirmation screen. The owner added the third zone — Riobamba's
+ * surroundings at $2.50 — on 2026-11-17.
  */
 export default async function CheckoutPage() {
   const { isEnabled: draft } = await draftMode()

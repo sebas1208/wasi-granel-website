@@ -64,6 +64,13 @@ customer tries to buy.
 - [ ] The key is a **secret**: not committed, never in a client bundle.
 - [ ] After the first real order in production: confirm it is retrievable in the admin and that the
       reference matches `WG-YYYY-NNNN`.
+- [ ] **The payment conversation happens on `099 087 6620` — confirmed by the owner, 2026-11-17.** There is
+      no payment gateway: the store messages the customer at that number, confirms the order, and the customer
+      then pays by **DeUna or a bank transfer** and **reports the payment in that same chat**. The WhatsApp
+      composer states the chosen delivery case and its cost — $1.50 inside Riobamba, $2.50 in its
+      surroundings (both Motofast, free from $30), and another city quoted by Servientrega (free from $60) —
+      together with this payment flow, in Spanish. Nothing to configure: it reads the first `contacto` branch
+      phone and the `tienda` global. Verify the flow once production has real orders.
 
 
 - [ ] `REVALIDATE_SECRET` — set.
@@ -100,8 +107,8 @@ re-claims the domain on its own**, and the merge is that deployment.
       ```
       (`pnpm --filter @wasi-granel/cms seed:site-copy` locally.) It now seeds **all FOUR globals** —
       `contacto`, `inicio`, `footer` and **`tienda`** (the bank account, the titular/RUC, the payment note
-      and both delivery zones with their couriers, costs and free-shipping thresholds) — to match today's
-      copy and the owner's real facts exactly. **This must be run against production after the deploy that
+      and the **three** delivery zones with their couriers, costs and free-shipping thresholds) — to match
+      today's copy and the owner's real facts exactly. **This must be run against production after the deploy that
       adds `tienda`**: the seed writes `_status: 'published'`, so a run is what makes the real account
       number and shipping rules live rather than merely present. It refuses a non-local database unless
       `ALLOW_REMOTE_SEED=1` is set, which is exactly the guard to override for that production run.
@@ -145,7 +152,9 @@ is the only place the real thing can be exercised.
 - [ ] **Lawyer review** of Términos y Condiciones and Política de Privacidad before the wording binds
       anyone (ticket 27).
 - [ ] **Is the storefront ready to be public?** The merge publishes it — the placeholder goes away.
-- [ ] Payment provider and the **free-shipping threshold** (ticket 23).
+- [ ] Payment provider and the **free-shipping threshold** (ticket 23). The thresholds are now parametrised
+      per zone in `tienda.envios.zonas` ($30 inside Riobamba and its surroundings, $60 elsewhere) — the
+      remaining owner decision is the payment provider itself.
 - [ ] Email provider + DNS/secret (ticket 25).
 - [ ] Product image sourcing (ticket 22).
 

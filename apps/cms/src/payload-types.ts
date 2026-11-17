@@ -326,9 +326,9 @@ export interface Order {
     note?: string | null;
   };
   /**
-   * Riobamba is free delivery by our own staff. "Otra ciudad" is quoted by Servientrega and confirmed with the buyer in the same WhatsApp conversation.
+   * Tres casos: dentro de Riobamba y sus alrededores los entrega Motofast con el costo de la zona; "otra ciudad" lo cotiza Servientrega y se confirma con el cliente en la misma conversación de WhatsApp.
    */
-  zone: 'riobamba' | 'otra';
+  zone: 'riobamba' | 'alrededores' | 'otra';
   items: {
     product: number | Product;
     /**
@@ -356,7 +356,7 @@ export interface Order {
    */
   subtotal: number;
   /**
-   * Costo de envío, fijado por la tienda al confirmar. Vacío en Riobamba.
+   * Costo de envío, fijado por la tienda al confirmar. Vacío mientras no se haya fijado: el costo de cada zona vive en Datos de compra.
    */
   shipping?: number | null;
   /**
@@ -958,14 +958,14 @@ export interface Tienda {
   };
   envios?: {
     /**
-     * Riobamba y sus alrededores van con Motofast; el resto del país con Servientrega. Se pueden añadir más zonas, pero cada una necesita una clave que el sistema entienda.
+     * Dentro de Riobamba y sus alrededores entregamos con Motofast (con distinto costo cada uno); el resto del país con Servientrega. Se pueden añadir más zonas, pero cada una necesita una clave que el sistema entienda.
      */
     zonas?:
       | {
           /**
            * Debe coincidir con lo que el checkout ofrece y con lo que guarda cada pedido. No cambiar sin una migración.
            */
-          clave: 'riobamba' | 'otra';
+          clave: 'riobamba' | 'alrededores' | 'otra';
           /**
            * Ej. "Riobamba (entrega gratis)".
            */

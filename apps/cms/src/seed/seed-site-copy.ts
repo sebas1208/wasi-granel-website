@@ -158,8 +158,9 @@ async function main() {
   console.log('  wrote footer')
 
   // ——— tienda ———
-  // The payment/shipping facts (ticket 23): the account a customer transfers to, and the two delivery
-  // zones. `pago.qr` is deliberately NOT seeded — it is an upload (a media relationship), and there is
+  // The payment/shipping facts (ticket 23): the account a customer transfers to, and the THREE delivery
+  // zones — inside Riobamba ($1.50), its surroundings ($2.50) and anywhere else (quoted) — each with the
+  // note the customer reads. `pago.qr` is deliberately NOT seeded — it is an upload (a media relationship),
   // no upload to point at on a fresh database. The storefront falls back to the bundled
   // `public/pago/deuna-qr.png`, so an unseeded QR renders the real image rather than an empty frame; the
   // owner replaces it from the admin when a new QR is issued.
@@ -250,6 +251,10 @@ async function main() {
       (t.envios?.zonas ?? []).every(
         (z, n) => (z?.gratisDesde ?? null) === d.tienda.zonas[n]?.gratisDesde,
       ),
+    ],
+    [
+      'tienda zona notas match',
+      (t.envios?.zonas ?? []).every((z, n) => (z?.nota ?? '') === d.tienda.zonas[n]?.nota),
     ],
   ]
 

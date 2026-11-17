@@ -11,21 +11,29 @@ import { fmtPrice } from "@/lib/payload"
  * The checkout form from the owner's Stitch "Finalizar Pedido" screens (desktop 7/12 + mobile), wired to
  * the fixed POST contract of `app/api/orders/route.ts`.
  *
- * The zone option labels are UI copy taken verbatim from the mockup — NOT `tienda.zonas[].etiqueta`,
- * which is the owner's admin-facing wording ("Riobamba y alrededores"). The two `value`s are the only
- * two values `Orders.zone` and the handler accept.
+ * The zone option labels are UI copy, not `tienda.zonas[].etiqueta` (which is the owner's admin-facing
+ * wording). The three `value`s are the three cases `Orders.zone` and the handler accept: inside Riobamba,
+ * its surroundings, and anywhere else. The owner added the surroundings case (2026-11-17) at $2.50.
  */
 const ZONES = [
-  { value: "riobamba", label: "Riobamba (entrega gratis)" },
+  { value: "riobamba", label: "Riobamba (dentro de la ciudad)" },
+  { value: "alrededores", label: "Alrededores de Riobamba" },
   { value: "otra", label: "Otra ciudad (envío por Servientrega)" },
 ] as const
 
 type Zone = (typeof ZONES)[number]["value"]
 
+/**
+ * The amber callout. Each case states its own parametrised cost, so the customer reads the price they
+ * are agreeing to; the non-local case still says the exact figure is confirmed by WhatsApp because
+ * Servientrega quotes by weight and destination.
+ */
 const CALLOUT: Record<Zone, string> = {
   riobamba:
-    "El costo del envío se confirma contigo por WhatsApp antes de despachar. En Riobamba la entrega es gratis.",
-  otra: "Para envíos fuera de Riobamba despachamos por Servientrega. El valor exacto según peso y destino te lo informamos vía WhatsApp.",
+    "Entregamos dentro de Riobamba con Motofast por $1.50. El envío es gratis desde $30. El valor exacto se confirma contigo por WhatsApp antes de despachar.",
+  alrededores:
+    "En los alrededores de Riobamba entregamos con Motofast por $2.50. El envío es gratis desde $30. El valor exacto se confirma contigo por WhatsApp antes de despachar.",
+  otra: "Para envíos fuera de Riobamba despachamos por Servientrega. El valor exacto según peso y destino te lo informamos vía WhatsApp. Envío gratis desde $60.",
 }
 
 type Errors = Partial<Record<"name" | "phone" | "address" | "privacy" | "whatsapp", string>>

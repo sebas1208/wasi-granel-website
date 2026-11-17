@@ -29,7 +29,12 @@ import {
 
 /* ——— Constants ————————————————————————————————————————————————————————————————— */
 
-const ZONES = new Set(["riobamba", "otra"])
+// The delivery cases, in the order the checkout offers them. Declared as one list with the type DERIVED from
+// it, because this set, the cast below and the CMS enum drifting apart is exactly how a customer ends up
+// choosing a case the endpoint rejects -- with no order stored and nothing in the logs to explain it.
+const ZONES = ["riobamba", "alrededores", "otra"] as const
+type Zone = (typeof ZONES)[number]
+const isZone = (v: unknown): v is Zone => typeof v === "string" && (ZONES as readonly string[]).includes(v)
 const KINDS = new Set(["weight", "unit", "money"])
 const MAX_LINES = 50
 const MAX_QTY = 999
@@ -252,10 +257,10 @@ export async function POST(request: Request) {
 
       const customer = validateCustomer(body.customer)
 
-      if (typeof body.zone !== "string" || !ZONES.has(body.zone)) {
+      if (!isZone(body.zone)) {
         fail("La zona de envío no es válida.")
       }
-      const zone = body.zone as "riobamba" | "otra"
+      const zone: Zone = body.zone
 
       // BOTH consents are required. The checkbox is the legal basis for holding someone's data, so an
       // order without one is not an order — it is data we are not allowed to keep. Missing counts as

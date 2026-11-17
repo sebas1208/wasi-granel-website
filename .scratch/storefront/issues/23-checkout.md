@@ -52,11 +52,13 @@ because it does not depend on that design. See "Facts confirmed" and "Owner's an
       **Verified 2026-11-17** by the parent's own run: **34 passed, 2 skipped, 0 failed**; `tsc` clean;
       both lints 0 errors.
 
-### Two things left open, neither of which is a code gap
+### What is left open
 
-- **The DeUna number in the payment message is an inference.** No DeUna number is recorded anywhere, so the
-  message uses the Matriz phone `099 087 6620` — a customer-facing payment instruction standing on a default.
-  If DeUna is on another line, this needs the real number (it is editable in `contacto`).
+- **The DeUna number is CONFIRMED: `099 087 6620` (the Matriz line).** The owner confirmed it on 2026-11-17,
+  so the payment instruction no longer stands on a default. The flow is the conversation itself: the
+  customer writes to `099 087 6620`, the store confirms the order there, the customer pays by DeUna or a
+  bank transfer, and reports the payment **in that same chat** — the composed message says exactly that, in
+  Spanish. The number is still read from `contacto` (first branch), so it stays editable in one place.
 - **The admin composer has not been looked at in a browser** — it is verified by rendering it against a real
   order plus `tsc`/`lint`, but nobody has logged into `/admin` and eyeballed one order.
 ## Open questions

@@ -17,9 +17,16 @@ import { revalidateGlobals } from '../hooks/revalidateStorefront'
  *    fields where a typo costs a sale rather than looking untidy.
  *  - `qr` is an **upload**, not a file in the web app, so a reissued DeUna QR can be replaced here without
  *    a deploy. The image in `apps/web/public/pago/` is the seed, not the home.
- *  - The two shipping zones are an **array** on purpose: the owner can add a third tier later. Its `clave`
- *    is pinned to the same two values the checkout and `Orders.zone` use, so a new tier is a schema change
- *    rather than a silent mismatch.
+ *  - The shipping zones are an **array** on purpose, and each one's `clave` is pinned to the values the
+ *    checkout and `Orders.zone` use, so a new tier is a schema change rather than a silent mismatch.
+ *
+ * ASSUMPTION (2026-11-17, easy to reverse): the CUSTOMER picks city vs surroundings at checkout, so there
+ * are THREE cases — inside Riobamba ($1.50), Riobamba's surroundings ($2.50) and anywhere else (quoted).
+ * The owner's words were "inside Riobamba the shipping costs $1.5 and outside (in the surroundings) $2.5…
+ * and be parametrizable… if the user already chose…", which reads as the customer declaring which of the
+ * two local prices applies. The alternative — one "Riobamba" option and the store resolving the price from
+ * the address — would collapse `riobamba` and `alrededores` back into a single zone and drop this extra
+ * checkout option; nothing else here would have to change.
  */
 export const Tienda: GlobalConfig = {
   slug: 'tienda',
@@ -122,7 +129,7 @@ export const Tienda: GlobalConfig = {
           minRows: 1,
           admin: {
             description:
-              'Riobamba y sus alrededores van con Motofast; el resto del país con Servientrega. Se pueden añadir más zonas, pero cada una necesita una clave que el sistema entienda.',
+              'Dentro de Riobamba y sus alrededores entregamos con Motofast (con distinto costo cada uno); el resto del país con Servientrega. Se pueden añadir más zonas, pero cada una necesita una clave que el sistema entienda.',
           },
           fields: [
             {
@@ -131,7 +138,8 @@ export const Tienda: GlobalConfig = {
               required: true,
               label: 'Clave del sistema',
               options: [
-                { label: 'Riobamba y alrededores', value: 'riobamba' },
+                { label: 'Dentro de Riobamba (ciudad)', value: 'riobamba' },
+                { label: 'Alrededores de Riobamba', value: 'alrededores' },
                 { label: 'Otra ciudad', value: 'otra' },
               ],
               admin: {

@@ -166,12 +166,13 @@ export const Orders: CollectionConfig = {
       type: 'select',
       required: true,
       options: [
-        { label: 'Riobamba (envío gratis)', value: 'riobamba' },
+        { label: 'Dentro de Riobamba (Motofast, $1.50 — gratis desde $30)', value: 'riobamba' },
+        { label: 'Alrededores de Riobamba (Motofast, $2.50 — gratis desde $30)', value: 'alrededores' },
         { label: 'Otra ciudad (Servientrega, costo por confirmar)', value: 'otra' },
       ],
       admin: {
         description:
-          'Riobamba is free delivery by our own staff. "Otra ciudad" is quoted by Servientrega and confirmed with the buyer in the same WhatsApp conversation.',
+          'Tres casos: dentro de Riobamba y sus alrededores los entrega Motofast con el costo de la zona; "otra ciudad" lo cotiza Servientrega y se confirma con el cliente en la misma conversación de WhatsApp.',
       },
     },
     {
@@ -219,7 +220,7 @@ export const Orders: CollectionConfig = {
         {
           name: 'shipping',
           type: 'number',
-          admin: { description: 'Costo de envío, fijado por la tienda al confirmar. Vacío en Riobamba.' },
+          admin: { description: 'Costo de envío, fijado por la tienda al confirmar. Vacío mientras no se haya fijado: el costo de cada zona vive en Datos de compra.' },
         },
         {
           name: 'total',
