@@ -51,6 +51,21 @@ is the *how*.
 
 ## 3. Vercel (storefront) environment
 
+### 3a. What checkout (ticket 23) needs — it fails only in production
+
+The write path fails as a **500 on submit**, not at build time, so nothing catches a missing key until a
+customer tries to buy.
+
+- [ ] **`PAYLOAD_API_KEY` set on Vercel, in BOTH Production and Preview.** Server-only, never `NEXT_PUBLIC_`.
+      It is what the storefront uses to write an order into Payload; without it every checkout submission fails.
+- [ ] **The matching API-key user exists in the PRODUCTION CMS.** The key is a user's `apiKey`, and
+      `enableAPIKey` is already on the collection — but the local user was created against the local database.
+      Production needs its own user with its own key, and that key is the one that goes into Vercel.
+- [ ] The key is a **secret**: not committed, never in a client bundle.
+- [ ] After the first real order in production: confirm it is retrievable in the admin and that the
+      reference matches `WG-YYYY-NNNN`.
+
+
 - [ ] `REVALIDATE_SECRET` — set.
 - [ ] `PREVIEW_SECRET` — set for Production, Preview and Development (all as encrypted `Sensitive`).
 - [ ] `PAYLOAD_URL` and `NEXT_PUBLIC_PAYLOAD_URL` — the CMS base.
