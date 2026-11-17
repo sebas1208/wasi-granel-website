@@ -253,7 +253,7 @@ export async function getCategoryCounts(): Promise<Record<string, number>> {
 
 
 /* ——— Site copy (Payload Globals, ticket 19) ——————————————————————————————————————
- * Three single documents the owner edits himself: contacto, inicio, footer.
+ * Four single documents the owner edits himself: contacto, inicio, footer, tienda.
  *
  * Every field is OPTIONAL and every fetch returns `null` on failure, on purpose. Two reasons:
  *  1. a global can legitimately be saved before all its fields are filled in;
@@ -329,6 +329,35 @@ export type GlobalInicio = {
 
 export type LegalDocumentSlug = "terms" | "privacy"
 
+/**
+ * `tienda` — how customers pay and how we deliver (ticket 23). Same shape as the global, same
+ * all-optional rule as the rest: the storefront falls back to `TIENDA_DEFAULTS`.
+ *
+ * `qr` is an upload, so at the REST default depth it arrives as a `PayloadImage`; at depth 0 it would be
+ * a bare media id, which the resolver deliberately treats as "no QR" rather than guessing a URL.
+ */
+export type GlobalTiendaZone = {
+  clave?: string | null
+  etiqueta?: string | null
+  courier?: string | null
+  costo?: number | null
+  gratisDesde?: number | null
+  nota?: string | null
+}
+
+export type GlobalTienda = {
+  pago?: {
+    banco?: string | null
+    tipoCuenta?: string | null
+    numeroCuenta?: string | null
+    titular?: string | null
+    ruc?: string | null
+    qr?: (number | PayloadImage) | null
+    nota?: string | null
+  } | null
+  envios?: { zonas?: (GlobalTiendaZone | null)[] | null } | null
+}
+
 export type GlobalFooter = {
   brandBlurb?: string | null
   navigation?: ({ label?: string | null; path?: string | null } | null)[] | null
@@ -387,6 +416,7 @@ async function fetchGlobal<T>(slug: string, opts: { draft?: boolean } = {}): Pro
 export const getContacto = (o?: { draft?: boolean }) => fetchGlobal<GlobalContacto>("contacto", o)
 export const getInicio = (o?: { draft?: boolean }) => fetchGlobal<GlobalInicio>("inicio", o)
 export const getFooter = (o?: { draft?: boolean }) => fetchGlobal<GlobalFooter>("footer", o)
+export const getTienda = (o?: { draft?: boolean }) => fetchGlobal<GlobalTienda>("tienda", o)
 
 /** Grams per canonical unit (priceUnit). null = not a weight-based price. */
 export function unitGrams(u: PriceUnit | null | undefined): number | null {

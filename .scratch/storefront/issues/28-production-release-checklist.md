@@ -76,14 +76,24 @@ re-claims the domain on its own**, and the merge is that deployment.
 
 ## 5. Production data
 
-- [ ] **The globals will exist but be EMPTY.** The migration creates the `inicio` / `footer` / `contacto`
-      tables; it does not put anything in them. The storefront falls back to its hardcoded copy, so nothing
-      breaks — but the editor opens a blank admin. Run the site-copy seed:
+- [ ] **The globals will exist but be EMPTY.** The migrations create the `inicio` / `footer` / `contacto`
+      tables (2026-10-24) and the `tienda` tables (2026-11-17); they do not put anything in them. The
+      storefront falls back to its hardcoded copy, so nothing breaks — but the editor opens a blank admin,
+      and the payment page would show the fallback account rather than the CMS one. Run the site-copy seed:
       ```bash
       docker exec "$CONT" sh -c 'cd /repo/apps/cms && npx tsx src/seed/seed-site-copy.ts'
       ```
-      (`pnpm --filter @wasi-granel/cms seed:site-copy` locally.) It seeds all three globals to match
-      today's copy exactly.
+      (`pnpm --filter @wasi-granel/cms seed:site-copy` locally.) It now seeds **all FOUR globals** —
+      `contacto`, `inicio`, `footer` and **`tienda`** (the bank account, the titular/RUC, the payment note
+      and both delivery zones with their couriers, costs and free-shipping thresholds) — to match today's
+      copy and the owner's real facts exactly. **This must be run against production after the deploy that
+      adds `tienda`**: the seed writes `_status: 'published'`, so a run is what makes the real account
+      number and shipping rules live rather than merely present. It refuses a non-local database unless
+      `ALLOW_REMOTE_SEED=1` is set, which is exactly the guard to override for that production run.
+- [ ] **`tienda.pago.qr` stays empty after the seed** — the QR is an upload, not a value the seed can
+      write. The storefront falls back to the bundled `apps/web/public/pago/deuna-qr.png` (the real code,
+      verified by `zbarimg`), so the payment page is correct without it; upload the DeUna QR in the admin
+      when the branded asset should live in the CMS instead of the web app.
 - [ ] `products.price` / `price_unit` backfill has run on production — **the storefront's sort-by-price
       depends on it** (ticket 12):
       ```bash

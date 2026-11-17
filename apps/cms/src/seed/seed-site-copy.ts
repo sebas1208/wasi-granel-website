@@ -1,5 +1,6 @@
 /**
- * Seed the three site-copy globals (ticket 19, step 3) from the storefront's OWN fallback values.
+ * Seed the four site-copy globals (ticket 19, step 3; `tienda` added with ticket 23) from the storefront's
+ * OWN fallback values.
  *
  * Why this exists: the storefront keeps today's copy as a code fallback, so until the CMS holds values
  * every page renders that copy. Seeding puts the SAME strings into the CMS, which is what makes "the
@@ -33,7 +34,7 @@ import 'dotenv/config'
 import { getPayload } from 'payload'
 import config from '../payload.config'
 import { siteCopyDefaults } from '../../../web/lib/site-copy'
-import type { Contacto, Footer, Inicio } from '../payload-types'
+import type { Contacto, Footer, Inicio, Tienda } from '../payload-types'
 
 /**
  * The CMS types `icon` / `path` / `document` as unions of their select option values, while the
@@ -156,11 +157,47 @@ async function main() {
   })
   console.log('  wrote footer')
 
+  // ——— tienda ———
+  // The payment/shipping facts (ticket 23): the account a customer transfers to, and the two delivery
+  // zones. `pago.qr` is deliberately NOT seeded — it is an upload (a media relationship), and there is
+  // no upload to point at on a fresh database. The storefront falls back to the bundled
+  // `public/pago/deuna-qr.png`, so an unseeded QR renders the real image rather than an empty frame; the
+  // owner replaces it from the admin when a new QR is issued.
+  await payload.updateGlobal({
+    slug: 'tienda',
+    draft: false,
+    overrideAccess: true,
+    data: {
+      _status: 'published',
+      pago: {
+        banco: d.tienda.pago.banco,
+        tipoCuenta: d.tienda.pago.tipoCuenta,
+        numeroCuenta: d.tienda.pago.numeroCuenta,
+        titular: d.tienda.pago.titular,
+        ruc: d.tienda.pago.ruc,
+        nota: d.tienda.pago.nota,
+      },
+      envios: asOptions<Tienda['envios']>({
+        zonas: d.tienda.zonas.map((z) => ({
+          clave: z.clave,
+          etiqueta: z.etiqueta,
+          courier: z.courier,
+          // null means "quoted per order", which is an empty column — not 0.
+          costo: z.costo ?? undefined,
+          gratisDesde: z.gratisDesde ?? undefined,
+          nota: z.nota,
+        })),
+      }),
+    },
+  })
+  console.log('  wrote tienda')
+
   // ——— read back: a seed that did not land must not report success ———
-  const [c, i, f] = await Promise.all([
+  const [c, i, f, t] = await Promise.all([
     payload.findGlobal({ slug: 'contacto', draft: false }),
     payload.findGlobal({ slug: 'inicio', draft: false }),
     payload.findGlobal({ slug: 'footer', draft: false }),
+    payload.findGlobal({ slug: 'tienda', draft: false }),
   ])
 
   const checks: [string, boolean][] = [
@@ -183,7 +220,59 @@ async function main() {
     ['footer navigation', (f.navigation?.length ?? 0) === d.footer.navigation.length],
     ['footer legal', (f.legal?.length ?? 0) === d.footer.legal.length],
     ['footer legalLine', f.legalLine === d.footer.legalLine],
+    // tienda: publication first, then the fields a customer actually acts on.
+    ['tienda is PUBLISHED', t._status === 'published'],
+    ['tienda.pago.banco', t.pago?.banco === d.tienda.pago.banco],
+    ['tienda.pago.tipoCuenta', t.pago?.tipoCuenta === d.tienda.pago.tipoCuenta],
+    ['tienda.pago.numeroCuenta', t.pago?.numeroCuenta === d.tienda.pago.numeroCuenta],
+    ['tienda.pago.titular', t.pago?.titular === d.tienda.pago.titular],
+    ['tienda.pago.ruc', t.pago?.ruc === d.tienda.pago.ruc],
+    ['tienda.pago.nota', t.pago?.nota === d.tienda.pago.nota],
+    ['tienda zonas', (t.envios?.zonas?.length ?? 0) === d.tienda.zonas.length],
+    [
+      'tienda zona claves match',
+      (t.envios?.zonas ?? []).every((z, n) => z?.clave === d.tienda.zonas[n]?.clave),
+    ],
+    [
+      'tienda zona couriers match',
+      (t.envios?.zonas ?? []).every((z, n) => z?.courier === d.tienda.zonas[n]?.courier),
+    ],
+    [
+      'tienda zona etiquetas match',
+      (t.envios?.zonas ?? []).every((z, n) => z?.etiqueta === d.tienda.zonas[n]?.etiqueta),
+    ],
+    [
+      'tienda zona costos match',
+      (t.envios?.zonas ?? []).every((z, n) => (z?.costo ?? null) === d.tienda.zonas[n]?.costo),
+    ],
+    [
+      'tienda zona gratisDesde match',
+      (t.envios?.zonas ?? []).every(
+        (z, n) => (z?.gratisDesde ?? null) === d.tienda.zonas[n]?.gratisDesde,
+      ),
+    ],
   ]
+
+  // The fields a customer reads off the page, printed as they LANDED — the checks above can only say
+  // "matches", and on a fresh database the point is to see the numbers.
+  console.log('\n  tienda read back (as stored):')
+  console.log(
+    JSON.stringify(
+      {
+        pago: { ...t.pago, qr: t.pago?.qr ? `media:${typeof t.pago.qr === 'object' ? t.pago.qr.id : t.pago.qr}` : null },
+        zonas: (t.envios?.zonas ?? []).map((z) => ({
+          clave: z?.clave,
+          etiqueta: z?.etiqueta,
+          courier: z?.courier,
+          costo: z?.costo ?? null,
+          gratisDesde: z?.gratisDesde ?? null,
+          nota: z?.nota ?? '',
+        })),
+      },
+      null,
+      2,
+    ),
+  )
 
   console.log('\n  read-back verification:')
   let failed = 0

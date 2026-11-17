@@ -1,4 +1,5 @@
-import { getContacto, getFooter, getInicio } from "./payload"
+import { absoluteImage, getContacto, getFooter, getInicio, getTienda } from "./payload"
+import type { GlobalTiendaZone, PayloadImage } from "./payload"
 import { HOURS, PILLARS, STORE, whatsappLink } from "./store-info"
 
 /**
@@ -392,8 +393,150 @@ export async function resolveFooterProps(opts?: { draft?: boolean }): Promise<Fo
   return { ...footer, email: contacto.email, branches: contacto.branches }
 }
 
+/* ——— Tienda (datos de compra) ————————————————————————————————————————————————————
+ * How customers pay and how we deliver (ticket 23). Every one of these values is shown to a customer who
+ * is about to send money or expecting a delivery, which is why the same all-fallbacks rule applies here
+ * with the least tolerance anywhere on the site: a blank account number, courier or free-shipping
+ * threshold is not untidy, it is a lost sale or an angry message.
+ *
+ * The resolved shape keeps the CMS's `pago` group intact rather than flattening it, so a field here can be
+ * read against the admin screen without a translation step — and so `nota` (payment) and a zone's `nota`
+ * cannot be confused for one another.
+ */
+
+/** The two values `Orders.zone` and the checkout speak. A third tier is a schema change, not a new string. */
+export type TiendaZoneClave = "riobamba" | "otra"
+
+export type TiendaZoneCopy = {
+  clave: TiendaZoneClave
+  etiqueta: string
+  courier: string
+  /** null = quoted per order (see `nota`), never "we forgot to fill it in". */
+  costo: number | null
+  /** null = no free-shipping threshold for this zone. */
+  gratisDesde: number | null
+  nota: string
+}
+
+export type TiendaCopy = {
+  pago: {
+    banco: string
+    tipoCuenta: string
+    numeroCuenta: string
+    titular: string
+    ruc: string
+    /** Resolved URL: the CMS upload when there is one, else the bundled DeUna QR. */
+    qr: string
+    nota: string
+  }
+  zonas: TiendaZoneCopy[]
+}
+
+/** Today's values, used wherever the global is empty or unreachable (owner's parents, 2026-11-17). */
+export const TIENDA_DEFAULTS: TiendaCopy = {
+  pago: {
+    banco: "Banco del Pichincha",
+    tipoCuenta: "Cuenta de ahorros",
+    numeroCuenta: "2209835002",
+    titular: "Dolores Mercedes Torres Muñoz",
+    ruc: "0601801327001",
+    /**
+     * The bundled QR in `public/pago/` — the same image the seed ships. It is a same-origin path on
+     * purpose: the CMS `qr` is an upload whose home is Payload, but the fallback must survive Payload
+     * being unreachable, and a fallback that points at the unreachable thing is not a fallback.
+     */
+    qr: "/pago/deuna-qr.png",
+    nota: "Cuando hayas pagado, envíanos el comprobante por WhatsApp y confirmamos tu pedido.",
+  },
+  zonas: [
+    {
+      clave: "riobamba",
+      etiqueta: "Riobamba y alrededores",
+      courier: "Motofast",
+      costo: 1.5,
+      gratisDesde: 30,
+      nota: "",
+    },
+    {
+      clave: "otra",
+      etiqueta: "Otra ciudad",
+      courier: "Servientrega",
+      costo: null,
+      gratisDesde: 60,
+      nota: "El costo del envío se confirma contigo por WhatsApp antes de despachar. Envío gratis desde $60.",
+    },
+  ],
+}
+
+/** A number from the CMS, or the fallback — `0` is a real value, `NaN` is not. */
+const orNumber = (v: number | null | undefined, fallback: number | null): number | null =>
+  typeof v === "number" && Number.isFinite(v) ? v : fallback
+
+const isZoneClave = (v: string | null | undefined): v is TiendaZoneClave =>
+  v === "riobamba" || v === "otra"
+
+/** An upload arrives populated at the REST default depth; a bare id means depth 0 — treat that as absent. */
+const qrUrl = (qr: number | PayloadImage | null | undefined): string | null => {
+  if (!qr || typeof qr === "number") return null
+  return absoluteImage(qr)
+}
+
+/**
+ * Merge the CMS zones onto the defaults BY `clave` — never as a whole array.
+ *
+ * Replacing the array wholesale is how adding a third zone in the admin would silently delete the two
+ * that were there (an array field is edited as a whole in the admin, and a save with one row leaves one
+ * row). Merging by clave means each zone is complete on its own: the zone the owner did not touch keeps
+ * its real courier and threshold, and a half-filled row falls back field by field.
+ *
+ * A clave the checkout does not know is skipped rather than passed through: nothing downstream could
+ * render it, and `Orders.zone` could not store it. See `TiendaZoneClave`.
+ */
+function resolveZonas(raw: (GlobalTiendaZone | null)[] | null | undefined): TiendaZoneCopy[] {
+  const byClave = new Map<TiendaZoneClave, GlobalTiendaZone>()
+  for (const z of raw ?? []) {
+    if (!z || !isZoneClave(z.clave) || byClave.has(z.clave)) continue
+    byClave.set(z.clave, z)
+  }
+  if (byClave.size === 0) return TIENDA_DEFAULTS.zonas
+
+  return TIENDA_DEFAULTS.zonas.map((fallback) => {
+    const z = byClave.get(fallback.clave)
+    if (!z) return fallback
+    return {
+      clave: fallback.clave,
+      etiqueta: or(z.etiqueta, fallback.etiqueta),
+      courier: or(z.courier, fallback.courier),
+      costo: orNumber(z.costo, fallback.costo),
+      gratisDesde: orNumber(z.gratisDesde, fallback.gratisDesde),
+      nota: or(z.nota, fallback.nota),
+    }
+  })
+}
+
+export async function resolveTienda(opts?: { draft?: boolean }): Promise<TiendaCopy> {
+  const g = await getTienda(opts)
+  if (!g) return TIENDA_DEFAULTS
+
+  const d = TIENDA_DEFAULTS
+  const p = g.pago
+
+  return {
+    pago: {
+      banco: or(p?.banco, d.pago.banco),
+      tipoCuenta: or(p?.tipoCuenta, d.pago.tipoCuenta),
+      numeroCuenta: or(p?.numeroCuenta, d.pago.numeroCuenta),
+      titular: or(p?.titular, d.pago.titular),
+      ruc: or(p?.ruc, d.pago.ruc),
+      qr: qrUrl(p?.qr) ?? d.pago.qr,
+      nota: or(p?.nota, d.pago.nota),
+    },
+    zonas: resolveZonas(g.envios?.zonas),
+  }
+}
+
 /* ——— defaults, for seeding ————————————————————————————————————————————————————————
- * The unresolvable-free fallback copy for all three globals (no CMS read at all).
+ * The unresolvable-free fallback copy for all four globals (no CMS read at all).
  *
  * Exported so the seeding script can start the CMS out matching today's copy EXACTLY. That is what makes
  * the switch from hardcoded strings to CMS-driven copy provably non-visual: any visible difference
@@ -404,10 +547,12 @@ export function siteCopyDefaults(): {
   contacto: ContactoCopy
   inicio: InicioCopy
   footer: FooterCopy
+  tienda: TiendaCopy
 } {
   return {
     contacto: CONTACTO_DEFAULTS,
     inicio: INICIO_DEFAULTS,
     footer: FOOTER_DEFAULTS,
+    tienda: TIENDA_DEFAULTS,
   }
 }
